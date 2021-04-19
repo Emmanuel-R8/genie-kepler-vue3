@@ -1,0 +1,76 @@
+{
+  "name": "go-vue3-tsx",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "John Campbell <johncampbell@geospatialweb.ca> <http://www.linkedin.com/in/geospatialweb>",
+  "description": "Golang, Vue 3, TypeScript, tsx, Vuex, Vite, Mapbox GL, Deck.gl, PostGIS, Docker, Geospatial Web Mapping",
+  "keywords": [
+    "Golang",
+    "Vue 3",
+    "TypeScript",
+    ".tsx",
+    "Vuex",
+    "Vite",
+    "Mapbox GL",
+    "Deck.GL",
+    "PostGIS",
+    "Docker",
+    "Geospatial",
+    "Web Map"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/geospatialweb/go-vue3-tsx"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build --emptyOutDir",
+    "serve": "vite preview",
+    "format": "prettier --write 'src/'",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "stylelint": "stylelint '**/*.scss' --fix"
+  },
+  "dependencies": {
+    "mapbox-gl": "^2.2.0",
+    "vue": "^3.0.11",
+    "vue-router": "^4.0.6",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/eslint-parser": "^7.13.14",
+    "@types/mapbox-gl": "^2.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "@vitejs/plugin-vue": "^1.2.1",
+    "@vitejs/plugin-vue-jsx": "^1.1.3",
+    "@vue/babel-plugin-jsx": "^1.0.5",
+    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "eslint": "^7.24.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-vue": "^7.9.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.10",
+    "stylelint": "^13.12.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-prettier": "^1.2.0",
+    "typescript": "^4.2.4",
+    "vite": "^2.1.5",
+    "vue-tsc": "^0.0.24",
+    "webpack": "^5.32.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --fix prettier -w -u"
+  }
+}

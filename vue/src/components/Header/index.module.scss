@@ -1,0 +1,39 @@
+.header {
+  background: rgb(120, 110, 100);
+  font-family: 'Orbitron', sans-serif;
+  height: 45px;
+  position: absolute;
+  width: 100%;
+
+  a {
+    color: rgb(0, 0, 0);
+    font-size: 0.95em;
+    position: absolute;
+    right: 10px;
+    top: 13px;
+  }
+
+  img {
+    height: 35px;
+    left: 8px;
+    position: absolute;
+    top: 6px;
+    width: 35px;
+  }
+
+  .name {
+    color: rgb(0, 0, 0);
+    font-size: 1.34em;
+    left: 50px;
+    position: absolute;
+    top: 9px;
+  }
+
+  .title {
+    color: rgb(160, 0, 0);
+    font-size: 1.09em;
+    left: 250px;
+    position: absolute;
+    top: 13px;
+  }
+}
