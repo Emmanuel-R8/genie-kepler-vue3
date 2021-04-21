@@ -8,7 +8,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint'
   ],
@@ -24,13 +24,13 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     '@typescript-eslint/arrow-body-style': 'off',
-    // '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/prefer-arrow-callback': 'off',
     '@typescript-eslint/no-console': 'off',
     '@typescript-eslint/no-debugger': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    // '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/prefer-arrow-callback': 'off'
+    '@typescript-eslint/no-explicit-any': 'off'
+    // '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // '@typescript-eslint/no-unused-vars': 'off',
+    // '@typescript-eslint/no-var-requires': 'off'
   },
   overrides: [
     {
