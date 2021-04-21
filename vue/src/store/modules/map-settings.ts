@@ -1,20 +1,29 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import config from '../../config/mapbox'
-import { StoreActions, StoreMutations } from '../enums'
+import config from '@/config/mapbox'
+import { StoreActions, StoreGetters, StoreMutations } from '../enums'
+
+type MapSettings = {
+  bearing: number
+  bounds: LngLatBoundsLike
+  center: LngLatLike
+  pitch: number
+  style: string
+  zoom: number
+}
 
 type State = {
   bearing: number
   bounds: LngLatBoundsLike | null
   center: LngLatLike
   pitch: number
-  // style: string
+  style: string
   zoom: number
 }
 
 type Mutations = {
-  [StoreMutations.setMapSettings](state: State, mapSettings: any): void
+  [StoreMutations.setMapSettings](state: State, mapSettings: MapSettings): void
 }
 
 type Context = Omit<ActionContext<State, State>, 'commit'> & {
@@ -25,11 +34,11 @@ type Context = Omit<ActionContext<State, State>, 'commit'> & {
 }
 
 type Actions = {
-  [StoreActions.setMapSettings](context: Context, mapSettings: any): void
+  [StoreActions.setMapSettings](context: Context, mapSettings: MapSettings): void
 }
 
 type Getters = {
-  getMapSettings(state: State): State
+  [StoreGetters.getMapSettings](state: State): State
 }
 
 type RouterModule = {
@@ -45,7 +54,7 @@ const state: State = {
   bounds: config.settings.bounds,
   center: config.settings.center as LngLatLike,
   pitch: config.settings.pitch,
-  // style: config.settings.style,
+  style: config.settings.style,
   zoom: config.settings.zoom
 }
 
@@ -55,7 +64,7 @@ const mutations: MutationTree<State> & Mutations = {
     state.bounds = mapSettings.bounds
     state.center = mapSettings.center
     state.pitch = mapSettings.pitch
-    // state.style = mapSettings.style
+    state.style = mapSettings.style
     state.zoom = mapSettings.zoom
   }
 }
@@ -67,7 +76,7 @@ const actions: ActionTree<State, State> & Actions = {
 }
 
 const getters: GetterTree<State, State> & Getters = {
-  getMapSettings(state) {
+  [StoreGetters.getMapSettings](state) {
     return { ...state }
   }
 }
