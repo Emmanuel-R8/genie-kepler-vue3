@@ -1,15 +1,13 @@
 import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
 import { defineComponent, onMounted } from 'vue'
-import { Store, useStore } from 'vuex'
 
 import config from '../../config/mapbox'
 import scss from './index.module.scss'
 import store from '../../store'
-// import MapSettings from '../../store/modules/map-settings'
+import { StoreActions } from '../../store/enums'
 
 export default defineComponent({
   setup() {
-    const store: Store<any> = useStore()
     const mapSettings: any = store.getters['mapSettings/getMapSettings']
 
     onMounted(() => {
@@ -47,5 +45,5 @@ const setMapSettings: any = (map: Map): void => {
     pitch: map.getPitch(),
     zoom: map.getZoom()
   }
-  store.commit('mapSettings/SET_MAP_SETTINGS', mapSettings)
+  store.dispatch(`mapSettings/${StoreActions.setMapSettings}`, mapSettings)
 }

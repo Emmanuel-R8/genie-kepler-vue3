@@ -1,7 +1,8 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
-// import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import config from '../../config/mapbox'
+import { StoreActions, StoreMutations } from '../enums'
 
 type State = {
   bearing: number
@@ -10,6 +11,33 @@ type State = {
   pitch: number
   // style: string
   zoom: number
+}
+
+type Mutations = {
+  [StoreMutations.setMapSettings](state: State, mapSettings: any): void
+}
+
+type Context = Omit<ActionContext<State, State>, 'commit'> & {
+  commit<K extends keyof Mutations>(
+    key: K,
+    payload: Parameters<Mutations[K]>[1]
+  ): ReturnType<Mutations[K]>
+}
+
+type Actions = {
+  [StoreActions.setMapSettings](context: Context, mapSettings: any): void
+}
+
+type Getters = {
+  getMapSettings(state: State): State
+}
+
+type RouterModule = {
+  namespaced: boolean
+  state: State
+  mutations: Mutations
+  actions: Actions
+  getters: Getters
 }
 
 const state: State = {
@@ -21,76 +49,30 @@ const state: State = {
   zoom: config.settings.zoom
 }
 
-// export enum MutationTypes {
-//   SetMapSettings = 'SET_MAP_SETTINGS'
-// }
-
-// export type Mutations = {
-//   [MutationTypes.SetMapSettings](state: State, mapSettings: any): void
-// }
-
-// const mutations: MutationTree<State> & Mutations = {
-//   [MutationTypes.SetMapSettings](mapSettings) {
-//     state = { ...state, ...mapSettings }
-//   }
-// }
-
-const mutations: any = {
-  SET_MAP_SETTINGS(state: State, mapSettings: State) {
+const mutations: MutationTree<State> & Mutations = {
+  [StoreMutations.setMapSettings](state, mapSettings) {
     state.bearing = mapSettings.bearing
     state.bounds = mapSettings.bounds
     state.center = mapSettings.center
     state.pitch = mapSettings.pitch
+    // state.style = mapSettings.style
     state.zoom = mapSettings.zoom
   }
 }
 
-// enum ActionTypes {
-//   SetMapSettings = 'SET_MAP_SETTINGS'
-// }
-
-// type ActionAugments = Omit<ActionContext<State, State>, 'commit'> & {
-//   commit<K extends keyof Mutations>(
-//     key: K,
-//     payload: Parameters<Mutations[K]>[1]
-//   ): ReturnType<Mutations[K]>
-// }
-
-// type Actions = {
-//   [ActionTypes.SetMapSettings](context: ActionAugments, mapSettings: any): void
-// }
-
-// const actions: ActionTree<State, State> & Actions = {
-//   [ActionTypes.SetMapSettings]({ commit }, mapSettings) {
-//     commit(MutationTypes.SetMapSettings, mapSettings)
-//   }
-// }
-
-const actions: any = {
-  setMapSettings({ commit }, mapSettings: any): void {
-    commit('SET_MAP_SETTINGS', mapSettings)
+const actions: ActionTree<State, State> & Actions = {
+  [StoreActions.setMapSettings]({ commit }, mapSettings) {
+    commit(StoreMutations.setMapSettings, mapSettings)
   }
 }
 
-// type Getters = {
-//   getMapSettings(state: any): any
-// }
-
-const getters: any = {
-  getMapSettings(state: State): any {
+const getters: GetterTree<State, State> & Getters = {
+  getMapSettings(state) {
     return { ...state }
   }
 }
 
-type Module = {
-  namespaced: boolean
-  state: State
-  mutations: any
-  actions: any
-  getters: any
-}
-
-const mapSettings: Module = {
+const mapSettings: RouterModule = {
   namespaced: true,
   state,
   mutations,
