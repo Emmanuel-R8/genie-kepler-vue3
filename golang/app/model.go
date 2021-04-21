@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/georgysavva/scany/pgxscan"
-	"gitlab.com/geospatialweb/go-vue3/collection"
+	"gitlab.com/geospatialweb/go-vue3-tsx/collection"
 )
 
 func (a *App) GetGeoJsonFeatures(params map[string]string) ([]*collection.Feature, error) {

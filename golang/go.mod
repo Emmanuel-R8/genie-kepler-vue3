@@ -1,4 +1,4 @@
-module gitlab.com/geospatialweb/go-vue3
+module gitlab.com/geospatialweb/go-vue3-tsx
 
 go 1.16
 

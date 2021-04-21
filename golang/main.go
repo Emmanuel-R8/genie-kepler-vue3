@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/geospatialweb/go-vue3/app"
-	"gitlab.com/geospatialweb/go-vue3/env"
+	"gitlab.com/geospatialweb/go-vue3-tsx/app"
+	"gitlab.com/geospatialweb/go-vue3-tsx/env"
 )
 
 func main() {
