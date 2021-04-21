@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, Router, RouterHistory } from 'vue-router'
-import Mapbox from '../views/Mapbox'
+import Mapbox from '@/views/Mapbox'
 
 const history: RouterHistory = createWebHistory()
 

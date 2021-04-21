@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import Mapbox from '../../components/Mapbox'
+import Mapbox from '@/components/Mapbox'
 
 export default defineComponent({
   setup() {
