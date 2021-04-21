@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
+import mapSettings from './modules/map-settings'
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+export default createStore<any>({
+  modules: {
+    mapSettings
+  }
 })

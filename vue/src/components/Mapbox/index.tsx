@@ -1,28 +1,51 @@
+import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
 import { defineComponent, onMounted } from 'vue'
-import mapboxgl, { Map, NavigationControl } from 'mapbox-gl'
+import { Store, useStore } from 'vuex'
 
+import config from '../../config/mapbox'
 import scss from './index.module.scss'
+import store from '../../store'
+// import MapSettings from '../../store/modules/map-settings'
 
 export default defineComponent({
   setup() {
-    mapboxgl.accessToken =
-      'pk.eyJ1IjoiZ2Vvc3BhdGlhbHdlYiIsImEiOiJ6WGdOUFRvIn0.GoVRwZq5EfVsLNGyCqgZTw'
+    const store: Store<any> = useStore()
+    const mapSettings: any = store.getters['mapSettings/getMapSettings']
 
     onMounted(() => {
-      const map: Map = new Map({
-        bearing: 0,
-        center: [-76.3, 44.45],
-        container: 'mapbox',
-        doubleClickZoom: false,
-        maxZoom: 18,
-        minZoom: 2,
-        pitch: 0,
-        style: 'mapbox://styles/mapbox/outdoors-v11',
-        zoom: 9
-      }).addControl(new NavigationControl(), 'top-left')
+      loadMap(mapSettings)
     })
     return () => {
       return <div id="mapbox" class={scss.mapbox}></div>
     }
   }
 })
+
+const loadMap: any = (mapSettings: any): Map => {
+  const options: any = {
+    accessToken: config.settings.accessToken,
+    container: config.settings.container,
+    doubleClickZoom: config.settings.doubleClickZoom,
+    maxZoom: config.settings.maxZoom,
+    minZoom: config.settings.minZoom,
+    style: 'mapbox://styles/mapbox/outdoors-v11',
+    ...mapSettings
+  }
+  const map: Map = new Map(options)
+    .addControl(new NavigationControl(), 'top-left')
+    .on('render', () => {
+      setMapSettings(map)
+    })
+  return map
+}
+
+const setMapSettings: any = (map: Map): void => {
+  const mapSettings: any = {
+    bearing: map.getBearing(),
+    bounds: map.getBounds() as LngLatBoundsLike,
+    center: map.getCenter() as LngLatLike,
+    pitch: map.getPitch(),
+    zoom: map.getZoom()
+  }
+  store.commit('mapSettings/SET_MAP_SETTINGS', mapSettings)
+}
