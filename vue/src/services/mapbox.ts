@@ -1,63 +1,53 @@
 import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
+import { Service } from 'typedi'
 
-import config from '@/config/mapbox'
 import store from '@/store'
-import { StoreActions, StoreGetters } from '@/store/enums'
+import { StoreGetters, StoreMutations } from '@/enums'
+import { MapOptions, MapSettings } from '@/interfaces'
+import { uiConfig } from '@/config'
 
-interface MapSettings {
-  bearing: number
-  bounds: LngLatBoundsLike
-  center: LngLatLike
-  pitch: number
-  style: string
-  zoom: number
-}
+@Service()
+export default class MapboxService {
+  constructor(private map: Map, private mapStyle: string) {}
 
-interface MapOptions extends MapSettings {
-  accessToken: string
-  container: string
-  doubleClickZoom: boolean
-  maxZoom: number
-  minZoom: number
-}
-
-let map: Map
-let mapStyle: string
-
-const setMapSettings = (): void => {
-  const mapSettings: MapSettings = {
-    bearing: map.getBearing(),
-    bounds: map.getBounds() as LngLatBoundsLike,
-    center: map.getCenter() as LngLatLike,
-    pitch: map.getPitch(),
-    style: mapStyle,
-    zoom: map.getZoom()
-  }
-
-  store.dispatch(`mapSettings/${StoreActions.setMapSettings}`, mapSettings)
-}
-
-export default {
   loadMap(): void {
     const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
-    mapStyle = mapSettings.style
-
+    const {
+      mapbox: {
+        navigationControl: { position },
+        settings: { accessToken, container, doubleClickZoom, maxZoom, minZoom }
+      }
+    } = uiConfig
     const mapOptions: MapOptions = {
-      accessToken: config.settings.accessToken,
-      container: config.settings.container,
-      doubleClickZoom: config.settings.doubleClickZoom,
-      maxZoom: config.settings.maxZoom,
-      minZoom: config.settings.minZoom,
+      accessToken,
+      container,
+      doubleClickZoom,
+      maxZoom,
+      minZoom,
       ...mapSettings
     }
 
-    map = new Map(mapOptions)
-      .addControl(new NavigationControl(), 'top-left')
+    this.mapStyle = mapSettings.style
+    this.map = new Map(mapOptions)
+      .addControl(new NavigationControl(), position as any)
       .on('load', () => {
         return true
       })
       .on('idle', () => {
-        setMapSettings()
+        this.setMapSettings()
       })
+  }
+
+  private setMapSettings(): void {
+    const mapSettings: MapSettings = {
+      bearing: this.map.getBearing(),
+      bounds: this.map.getBounds() as LngLatBoundsLike,
+      center: this.map.getCenter() as LngLatLike,
+      pitch: this.map.getPitch(),
+      style: this.mapStyle,
+      zoom: this.map.getZoom()
+    }
+
+    store.commit(`mapSettings/${StoreMutations.setMapSettings}`, mapSettings)
   }
 }

@@ -1,17 +1,9 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import config from '@/config/mapbox'
-import { StoreActions, StoreGetters, StoreMutations } from '../enums'
-
-type MapSettings = {
-  bearing: number
-  bounds: LngLatBoundsLike
-  center: LngLatLike
-  pitch: number
-  style: string
-  zoom: number
-}
+import config from '@/config/ui'
+import { StoreActions, StoreGetters, StoreMutations } from '@/enums'
+import { MapSettings } from '@/interfaces'
 
 type State = {
   mapSettings: {
@@ -51,14 +43,20 @@ type RouterModule = {
   getters: Getters
 }
 
+const {
+  mapbox: {
+    settings: { bearing, bounds, center, pitch, style, zoom }
+  }
+} = config
+
 const state: State = {
   mapSettings: {
-    bearing: config.settings.bearing,
-    bounds: config.settings.bounds,
-    center: config.settings.center as LngLatLike,
-    pitch: config.settings.pitch,
-    style: config.settings.style,
-    zoom: config.settings.zoom
+    bearing,
+    bounds,
+    center: center as LngLatLike,
+    pitch,
+    style,
+    zoom
   }
 }
 

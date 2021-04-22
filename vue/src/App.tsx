@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import Header from '@/components/Header'
+import { Header } from '@/components'
 
 export default defineComponent({
   setup() {
