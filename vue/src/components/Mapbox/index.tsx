@@ -61,7 +61,7 @@ const setMapSettings = (): void => {
 
 export default defineComponent({
   setup() {
-    const mapSettings: MapSettings = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
+    const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
     mapStyle = mapSettings.style
 
     onMounted(() => {

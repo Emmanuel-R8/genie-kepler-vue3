@@ -14,12 +14,14 @@ type MapSettings = {
 }
 
 type State = {
-  bearing: number
-  bounds: LngLatBoundsLike | null
-  center: LngLatLike
-  pitch: number
-  style: string
-  zoom: number
+  mapSettings: {
+    bearing: number
+    bounds: LngLatBoundsLike | null
+    center: LngLatLike
+    pitch: number
+    style: string
+    zoom: number
+  }
 }
 
 type Mutations = {
@@ -38,7 +40,7 @@ type Actions = {
 }
 
 type Getters = {
-  [StoreGetters.getMapSettings](state: State): State
+  [StoreGetters.getMapSettings](state: State['mapSettings']): State['mapSettings']
 }
 
 type RouterModule = {
@@ -50,22 +52,19 @@ type RouterModule = {
 }
 
 const state: State = {
-  bearing: config.settings.bearing,
-  bounds: config.settings.bounds,
-  center: config.settings.center as LngLatLike,
-  pitch: config.settings.pitch,
-  style: config.settings.style,
-  zoom: config.settings.zoom
+  mapSettings: {
+    bearing: config.settings.bearing,
+    bounds: config.settings.bounds,
+    center: config.settings.center as LngLatLike,
+    pitch: config.settings.pitch,
+    style: config.settings.style,
+    zoom: config.settings.zoom
+  }
 }
 
 const mutations: MutationTree<State> & Mutations = {
   [StoreMutations.setMapSettings](state, mapSettings) {
-    state.bearing = mapSettings.bearing
-    state.bounds = mapSettings.bounds
-    state.center = mapSettings.center
-    state.pitch = mapSettings.pitch
-    state.style = mapSettings.style
-    state.zoom = mapSettings.zoom
+    state.mapSettings = { ...mapSettings }
   }
 }
 
@@ -75,7 +74,7 @@ const actions: ActionTree<State, State> & Actions = {
   }
 }
 
-const getters: GetterTree<State, State> & Getters = {
+const getters: GetterTree<State['mapSettings'], State['mapSettings']> & Getters = {
   [StoreGetters.getMapSettings](state) {
     return { ...state }
   }
