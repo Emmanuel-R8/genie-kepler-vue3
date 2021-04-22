@@ -8,7 +8,7 @@ import { uiConfig } from '@/config'
 
 @Service()
 export default class MapboxService {
-  constructor(private map: Map, private mapStyle: string) {}
+  constructor(private _map: Map, private _mapStyle: string) {}
 
   loadMap(): void {
     const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
@@ -27,8 +27,8 @@ export default class MapboxService {
       ...mapSettings
     }
 
-    this.mapStyle = mapSettings.style
-    this.map = new Map(mapOptions)
+    this._mapStyle = mapSettings.style
+    this._map = new Map(mapOptions)
       .addControl(new NavigationControl(), position as any)
       .on('load', () => {
         return true
@@ -40,12 +40,12 @@ export default class MapboxService {
 
   private setMapSettings(): void {
     const mapSettings: MapSettings = {
-      bearing: this.map.getBearing(),
-      bounds: this.map.getBounds() as LngLatBoundsLike,
-      center: this.map.getCenter() as LngLatLike,
-      pitch: this.map.getPitch(),
-      style: this.mapStyle,
-      zoom: this.map.getZoom()
+      bearing: this._map.getBearing(),
+      bounds: this._map.getBounds() as LngLatBoundsLike,
+      center: this._map.getCenter() as LngLatLike,
+      pitch: this._map.getPitch(),
+      style: this._mapStyle,
+      zoom: this._map.getZoom()
     }
 
     store.commit(`mapSettings/${StoreMutations.setMapSettings}`, mapSettings)
