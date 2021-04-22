@@ -1,7 +1,7 @@
 import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
 import { Service } from 'typedi'
 
-import store from '@/store'
+import { store } from '@/store'
 import { StoreGetters, StoreMutations } from '@/enums'
 import { MapOptions, MapSettings } from '@/interfaces'
 import { uiConfig } from '@/config'
