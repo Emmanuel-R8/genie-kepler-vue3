@@ -1,71 +1,74 @@
-import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
+// import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
 import { defineComponent, onMounted } from 'vue'
 
-import config from '@/config/mapbox'
+// import config from '@/config/mapbox'
 import scss from './index.module.scss'
-import store from '@/store'
-import { StoreActions, StoreGetters } from '@/store/enums'
+// import store from '@/store'
+// import { StoreActions, StoreGetters } from '@/store/enums'
 
-interface MapSettings {
-  bearing: number
-  bounds: LngLatBoundsLike
-  center: LngLatLike
-  pitch: number
-  style: string
-  zoom: number
-}
+import { MapboxService } from '@/services'
 
-interface MapOptions extends MapSettings {
-  accessToken: string
-  container: string
-  doubleClickZoom: boolean
-  maxZoom: number
-  minZoom: number
-}
+// interface MapSettings {
+//   bearing: number
+//   bounds: LngLatBoundsLike
+//   center: LngLatLike
+//   pitch: number
+//   style: string
+//   zoom: number
+// }
 
-let map: Map
-let mapStyle: string
+// interface MapOptions extends MapSettings {
+//   accessToken: string
+//   container: string
+//   doubleClickZoom: boolean
+//   maxZoom: number
+//   minZoom: number
+// }
 
-const loadMap = (mapSettings: MapSettings): void => {
-  const mapOptions: MapOptions = {
-    accessToken: config.settings.accessToken,
-    container: config.settings.container,
-    doubleClickZoom: config.settings.doubleClickZoom,
-    maxZoom: config.settings.maxZoom,
-    minZoom: config.settings.minZoom,
-    ...mapSettings
-  }
+// let map: Map
+// let mapStyle: string
 
-  map = new Map(mapOptions)
-    .addControl(new NavigationControl(), 'top-left')
-    .on('load', () => {
-      return true
-    })
-    .on('render', () => {
-      setMapSettings()
-    })
-}
+// const loadMap = (mapSettings: MapSettings): void => {
+//   const mapOptions: MapOptions = {
+//     accessToken: config.settings.accessToken,
+//     container: config.settings.container,
+//     doubleClickZoom: config.settings.doubleClickZoom,
+//     maxZoom: config.settings.maxZoom,
+//     minZoom: config.settings.minZoom,
+//     ...mapSettings
+//   }
 
-const setMapSettings = (): void => {
-  const mapSettings: MapSettings = {
-    bearing: map.getBearing(),
-    bounds: map.getBounds() as LngLatBoundsLike,
-    center: map.getCenter() as LngLatLike,
-    pitch: map.getPitch(),
-    style: mapStyle,
-    zoom: map.getZoom()
-  }
+//   map = new Map(mapOptions)
+//     .addControl(new NavigationControl(), 'top-left')
+//     .on('load', () => {
+//       return true
+//     })
+//     .on('render', () => {
+//       setMapSettings()
+//     })
+// }
 
-  store.dispatch(`mapSettings/${StoreActions.setMapSettings}`, mapSettings)
-}
+// const setMapSettings = (): void => {
+//   const mapSettings: MapSettings = {
+//     bearing: map.getBearing(),
+//     bounds: map.getBounds() as LngLatBoundsLike,
+//     center: map.getCenter() as LngLatLike,
+//     pitch: map.getPitch(),
+//     style: mapStyle,
+//     zoom: map.getZoom()
+//   }
+
+//   store.dispatch(`mapSettings/${StoreActions.setMapSettings}`, mapSettings)
+// }
 
 export default defineComponent({
   setup() {
-    const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
-    mapStyle = mapSettings.style
+    // const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
+    // mapStyle = mapSettings.style
 
     onMounted(() => {
-      loadMap(mapSettings)
+      // loadMap(mapSettings)
+      MapboxService.loadMap()
     })
     return () => {
       return <div id="mapbox" class={scss.mapbox}></div>

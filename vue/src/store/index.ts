@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import mapSettings from './modules/map-settings'
+import { mapSettings } from './modules'
 
 export default createStore({
   modules: {
