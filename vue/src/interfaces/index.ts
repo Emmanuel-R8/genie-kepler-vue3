@@ -1,7 +1,34 @@
+import { FeatureCollection } from 'geojson'
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 
+export interface HttpParams {
+  fields: string
+  table: string
+}
+
+export interface Layer {
+  active: boolean
+  fields: string
+  id: string
+  layer: any
+  layout: {
+    visibility: string
+  }
+  paint: {
+    'fill-color'?: string
+    'fill-opacity'?: number
+    'fill-outline-color'?: string
+    'line-color'?: string
+    'line-width'?: number
+  }
+  source: {
+    data: FeatureCollection | null
+    type: string
+  }
+  type: string
+}
+
 export interface MapOptions extends MapSettings {
-  accessToken: string
   container: string
   doubleClickZoom: boolean
   maxZoom: number

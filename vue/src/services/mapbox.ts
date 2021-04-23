@@ -1,25 +1,25 @@
 import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
-import { Service } from 'typedi'
+import { Container, Service } from 'typedi'
 
-import { store } from '@/store'
+import { ui } from '@/config'
 import { StoreGetters, StoreMutations } from '@/enums'
 import { MapOptions, MapSettings } from '@/interfaces'
-import { uiConfig } from '@/config'
+import { DataService } from '@/services'
+import store from '@/store'
 
 @Service()
 export default class MapboxService {
   constructor(private _map: Map, private _mapStyle: string) {}
 
-  loadMap(): void {
+  loadMapbox(): void {
     const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
     const {
       mapbox: {
         navigationControl: { position },
-        settings: { accessToken, container, doubleClickZoom, maxZoom, minZoom }
+        settings: { container, doubleClickZoom, maxZoom, minZoom, style }
       }
-    } = uiConfig
+    } = ui
     const mapOptions: MapOptions = {
-      accessToken,
       container,
       doubleClickZoom,
       maxZoom,
@@ -27,11 +27,12 @@ export default class MapboxService {
       ...mapSettings
     }
 
-    this._mapStyle = mapSettings.style
+    this._mapStyle = style
     this._map = new Map(mapOptions)
       .addControl(new NavigationControl(), position as any)
       .on('load', () => {
-        return true
+        const dataService: DataService = Container.get(DataService)
+        dataService.loadData()
       })
       .on('idle', () => {
         this.setMapSettings()

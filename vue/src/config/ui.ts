@@ -4,7 +4,6 @@ export default {
       position: 'top-left'
     },
     settings: {
-      accessToken: 'pk.eyJ1IjoiZ2Vvc3BhdGlhbHdlYiIsImEiOiJ6WGdOUFRvIn0.GoVRwZq5EfVsLNGyCqgZTw',
       bearing: 0,
       bounds: null,
       center: [-76.3, 44.45],

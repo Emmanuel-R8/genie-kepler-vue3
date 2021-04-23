@@ -1,7 +1,7 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import { uiConfig } from '@/config'
+import { ui } from '@/config'
 import { StoreActions, StoreGetters, StoreMutations } from '@/enums'
 import { MapSettings } from '@/interfaces'
 
@@ -47,7 +47,7 @@ const {
   mapbox: {
     settings: { bearing, bounds, center, pitch, style, zoom }
   }
-} = uiConfig
+} = ui
 
 const state: State = {
   mapSettings: {

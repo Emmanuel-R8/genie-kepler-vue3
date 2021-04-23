@@ -1,2 +1,3 @@
-export { default as layersConfig } from './layers'
-export { default as uiConfig } from './ui'
+export { default as layers } from './layers'
+export { default as markers } from './markers'
+export { default as ui } from './ui'
