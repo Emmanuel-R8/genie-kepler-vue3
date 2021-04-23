@@ -43,9 +43,8 @@ export default class DataService {
   }
 
   loadData(): void {
-    // this.getDeckGlData()
+    this.getDeckGlData()
     this.getMapboxData()
-    // this.getMapboxMarkers()
   }
 
   private getDeckGlData(): void {
