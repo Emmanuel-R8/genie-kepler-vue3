@@ -22,7 +22,7 @@ export interface Layer {
     'line-width'?: number
   }
   source: {
-    data: FeatureCollection | null
+    data: FeatureCollection | Record<string, never>
     type: string
   }
   type: string

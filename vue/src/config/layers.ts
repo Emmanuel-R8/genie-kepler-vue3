@@ -7,7 +7,7 @@ export default [
       type: 'fill',
       source: {
         type: 'geojson',
-        data: null
+        data: {}
       },
       layout: {
         visibility: 'visible'
@@ -27,7 +27,7 @@ export default [
       type: 'line',
       source: {
         type: 'geojson',
-        data: null
+        data: {}
       },
       layout: {
         visibility: 'none'

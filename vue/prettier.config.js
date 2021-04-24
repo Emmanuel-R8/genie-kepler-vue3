@@ -3,5 +3,13 @@ module.exports = {
   printWidth: 100,
   semi: false,
   singleQuote: true,
-  trailingComma: 'none'
+  trailingComma: 'none',
+  overrides: [
+    {
+      files: 'index.html',
+      options: {
+        parser: 'html'
+      }
+    }
+  ]
 }

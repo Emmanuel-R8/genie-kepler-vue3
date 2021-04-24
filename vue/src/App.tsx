@@ -8,7 +8,7 @@ export default defineComponent({
       return (
         <div>
           <Header />
-          <router-view></router-view>
+          <router-view />
         </div>
       )
     }

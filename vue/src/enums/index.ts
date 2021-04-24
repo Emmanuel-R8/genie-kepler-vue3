@@ -10,8 +10,11 @@ export enum StoreMutations {
   setMapSettings = 'SET_MAP_SETTINGS'
 }
 
-export enum Urls {
+export enum EndPoints {
   GEOJSON_ENDPOINT = '/geojson',
-  HEXAGON_DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv',
   MAPBOX_ACCESS_TOKEN_ENDPOINT = '/mapbox-access-token'
+}
+
+export enum Urls {
+  HEATMAP_DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
 }

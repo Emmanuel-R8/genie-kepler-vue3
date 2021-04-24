@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory, Router, RouterHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouterHistory } from 'vue-router'
 import { Mapbox } from '@/views'
 
 const history: RouterHistory = createWebHistory()
-
 const routes: any[] = [
   {
     path: '/',
@@ -11,9 +10,4 @@ const routes: any[] = [
   }
 ]
 
-const router: Router = createRouter({
-  history,
-  routes
-})
-
-export default router
+export default createRouter({ history, routes })

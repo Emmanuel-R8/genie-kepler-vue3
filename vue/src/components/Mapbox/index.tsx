@@ -12,7 +12,7 @@ const loadMapbox = (): any => {
   if (!mapboxgl.accessToken) {
     return dataService.getMapboxAccessToken()
   }
-  mapboxService.loadMapbox()
+  return mapboxService.loadMapbox()
 }
 
 export default defineComponent({
