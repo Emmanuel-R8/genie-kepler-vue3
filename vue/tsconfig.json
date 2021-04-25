@@ -17,7 +17,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "types": ["vite/client"],
+    "types": ["node", "vite/client"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
       "@/*": ["src/*"]

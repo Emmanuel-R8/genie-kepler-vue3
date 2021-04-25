@@ -1,4 +1,8 @@
+export { default as AppService } from './app'
 export { default as AxiosService } from './axios'
 export { default as DataService } from './data'
 export { default as HttpService } from './http'
+export { default as LayerService } from './layer'
 export { default as MapboxService } from './mapbox'
+export { default as MarkerService } from './marker'
+export { default as PopupService } from './popup'

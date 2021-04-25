@@ -1,24 +1,18 @@
-import mapboxgl from 'mapbox-gl'
 import { Container } from 'typedi'
 import { defineComponent, onMounted } from 'vue'
 
-import { DataService, MapboxService } from '@/services'
+import { AppService } from '@/services'
 import scss from './index.module.scss'
 
-const loadMapbox = (): any => {
-  const dataService: DataService = Container.get(DataService)
-  const mapboxService: MapboxService = Container.get(MapboxService)
-
-  if (!mapboxgl.accessToken) {
-    return dataService.getMapboxAccessToken()
-  }
-  return mapboxService.loadMapbox()
+const loadApp = (): void => {
+  const appService: AppService = Container.get(AppService)
+  appService.loadApp()
 }
 
 export default defineComponent({
   setup() {
     onMounted(() => {
-      loadMapbox()
+      loadApp()
     })
     return () => {
       return <div id="mapbox" class={scss.mapbox}></div>

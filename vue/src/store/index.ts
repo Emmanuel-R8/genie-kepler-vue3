@@ -1,8 +1,12 @@
-import { createStore } from 'vuex'
-import { mapSettings } from './modules'
+import { createLogger, createStore } from 'vuex'
 
-export default createStore({
+import { layers, mapSettings, markers } from './modules'
+
+export default createStore<any>({
+  plugins: process.env.NODE_ENV === 'development' ? [createLogger()] : [],
   modules: {
-    mapSettings
+    layers,
+    mapSettings,
+    markers
   }
 })

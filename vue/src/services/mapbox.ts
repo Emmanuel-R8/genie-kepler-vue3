@@ -1,24 +1,33 @@
-import { LngLatBoundsLike, LngLatLike, Map, NavigationControl } from 'mapbox-gl'
+import {
+  FillLayer,
+  LineLayer,
+  LngLatBoundsLike,
+  LngLatLike,
+  Map,
+  Marker,
+  NavigationControl,
+  Popup
+} from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { ui } from '@/config'
-import { StoreGetters, StoreMutations } from '@/enums'
+import { StoreMutations } from '@/enums'
 import { MapOptions, MapSettings } from '@/interfaces'
-import { DataService } from '@/services'
+import { LayerService } from '@/services'
 import store from '@/store'
 
 @Service()
 export default class MapboxService {
-  constructor(private _map: Map, private _mapStyle: string) {}
+  constructor(private _layerService: LayerService, private _map: Map, private _mapStyle: string) {
+    this._layerService = Container.get(LayerService)
+  }
 
   loadMapbox(): void {
-    const { mapSettings } = store.getters[`mapSettings/${StoreGetters.getMapSettings}`]
     const {
-      mapbox: {
-        navigationControl: { position },
-        settings: { container, doubleClickZoom, maxZoom, minZoom, style }
-      }
+      navigationControl: { position },
+      settings: { container, doubleClickZoom, maxZoom, minZoom, style }
     } = ui
+    const { mapSettings } = store.getters['mapSettings/getMapSettings']
     const mapOptions: MapOptions = {
       container,
       doubleClickZoom,
@@ -31,12 +40,36 @@ export default class MapboxService {
     this._map = new Map(mapOptions)
       .addControl(new NavigationControl(), position as any)
       .on('load', () => {
-        const dataService: DataService = Container.get(DataService)
-        dataService.loadData()
+        this.addLayers()
       })
       .on('idle', () => {
         this.setMapSettings()
       })
+  }
+
+  addToMap(el: Marker | Popup): void {
+    el.addTo(this._map)
+  }
+
+  addLayer(layer: FillLayer | LineLayer): void {
+    if (layer.source) {
+      const { id } = layer
+      this._map.addLayer(layer)
+      this.setLayerVisibility(id)
+    }
+  }
+
+  setLayerVisibility(id: string): void {
+    const { layers } = store.getters['layers/getLayersVisibility']
+    layers[id].active
+      ? this._map.setLayoutProperty(id, 'visibility', 'visible')
+      : this._map.setLayoutProperty(id, 'visibility', 'none')
+  }
+
+  private addLayers(): void {
+    for (const layer of this._layerService.layers) {
+      this.addLayer(layer)
+    }
   }
 
   private setMapSettings(): void {
@@ -48,7 +81,6 @@ export default class MapboxService {
       style: this._mapStyle,
       zoom: this._map.getZoom()
     }
-
-    store.commit(`mapSettings/${StoreMutations.setMapSettings}`, mapSettings)
+    store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, mapSettings)
   }
 }

@@ -3,14 +3,13 @@ export default [
     fields: 'name,description,geom',
     layer: {
       id: 'biosphere',
-      active: true,
       type: 'fill',
       source: {
         type: 'geojson',
         data: {}
       },
       layout: {
-        visibility: 'visible'
+        visibility: 'none'
       },
       paint: {
         'fill-color': '#090',
@@ -23,7 +22,6 @@ export default [
     fields: 'name,description,lat,lng,geom',
     layer: {
       id: 'trails',
-      active: false,
       type: 'line',
       source: {
         type: 'geojson',
