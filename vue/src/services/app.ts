@@ -9,16 +9,12 @@ export default class AppService {
     this._mapboxService = Container.get(MapboxService)
   }
 
-  loadApp(): void {
-    this.loadData()
-    this.loadMap()
+  loadData(): void {
+    const dataService: DataService = Container.get(DataService)
+    dataService.loadData()
   }
 
-  private loadData(): void {
-    this._dataService.loadData()
-  }
-
-  private async loadMap(): Promise<void> {
+  async loadMap(): Promise<void> {
     await this._dataService.getMapboxAccessToken()
     this._mapboxService.loadMapbox()
   }
