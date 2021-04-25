@@ -1,8 +1,8 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
-import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
+import { GetterTree, MutationTree } from 'vuex'
 
 import { ui } from '@/config'
-import { StoreActions, StoreGetters, StoreMutations } from '@/enums'
+import { StoreMutations } from '@/enums'
 import { MapSettings } from '@/interfaces'
 
 type State = {
@@ -16,37 +16,8 @@ type State = {
   }
 }
 
-type Mutations = {
-  [StoreMutations.setMapSettings](state: State, mapSettings: MapSettings): void
-}
-
-type Context = Omit<ActionContext<State, State>, 'commit'> & {
-  commit<K extends keyof Mutations>(
-    key: K,
-    payload: Parameters<Mutations[K]>[1]
-  ): ReturnType<Mutations[K]>
-}
-
-type Actions = {
-  [StoreActions.setMapSettings](context: Context, mapSettings: MapSettings): void
-}
-
-type Getters = {
-  [StoreGetters.getMapSettings](state: State['mapSettings']): State['mapSettings']
-}
-
-type RouterModule = {
-  namespaced: boolean
-  state: State
-  mutations: Mutations
-  actions: Actions
-  getters: Getters
-}
-
 const {
-  mapbox: {
-    settings: { bearing, bounds, center, pitch, style, zoom }
-  }
+  settings: { bearing, bounds, center, pitch, style, zoom }
 } = ui
 
 const state: State = {
@@ -60,29 +31,37 @@ const state: State = {
   }
 }
 
+type Mutations = {
+  [StoreMutations.SET_MAP_SETTINGS](state: State, mapSettings: MapSettings): void
+}
+
 const mutations: MutationTree<State> & Mutations = {
-  [StoreMutations.setMapSettings](state, mapSettings) {
-    state.mapSettings = { ...mapSettings }
+  [StoreMutations.SET_MAP_SETTINGS](state, mapSettings) {
+    state.mapSettings = mapSettings
   }
 }
 
-const actions: ActionTree<State, State> & Actions = {
-  [StoreActions.setMapSettings]({ commit }, mapSettings) {
-    commit(StoreMutations.setMapSettings, mapSettings)
-  }
+type Getters = {
+  getMapSettings(state: State['mapSettings']): State['mapSettings']
 }
 
-const getters: GetterTree<State['mapSettings'], State['mapSettings']> & Getters = {
-  [StoreGetters.getMapSettings](state) {
+const getters: GetterTree<State['mapSettings'], State> & Getters = {
+  getMapSettings(state) {
     return { ...state }
   }
+}
+
+type RouterModule = {
+  namespaced: boolean
+  state: State
+  mutations: Mutations
+  getters: Getters
 }
 
 const mapSettings: RouterModule = {
   namespaced: true,
   state,
   mutations,
-  actions,
   getters
 }
 
