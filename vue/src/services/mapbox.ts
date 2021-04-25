@@ -18,7 +18,7 @@ import store from '@/store'
 
 @Service()
 export default class MapboxService {
-  constructor(private _layerService: LayerService, private _map: Map, private _mapStyle: string) {
+  constructor(public map: Map, private _mapStyle: string, private _layerService: LayerService) {
     this._layerService = Container.get(LayerService)
   }
 
@@ -37,7 +37,7 @@ export default class MapboxService {
     }
 
     this._mapStyle = style
-    this._map = new Map(mapOptions)
+    this.map = new Map(mapOptions)
       .addControl(new NavigationControl(), position as any)
       .on('load', () => {
         this.addLayers()
@@ -48,13 +48,13 @@ export default class MapboxService {
   }
 
   addToMap(el: Marker | Popup): void {
-    el.addTo(this._map)
+    el.addTo(this.map)
   }
 
   addLayer(layer: FillLayer | LineLayer): void {
     if (layer.source) {
       const { id } = layer
-      this._map.addLayer(layer)
+      this.map.addLayer(layer)
       this.setLayerVisibility(id)
     }
   }
@@ -62,8 +62,8 @@ export default class MapboxService {
   setLayerVisibility(id: string): void {
     const { layers } = store.getters['layers/getLayersVisibility']
     layers[id].active
-      ? this._map.setLayoutProperty(id, 'visibility', 'visible')
-      : this._map.setLayoutProperty(id, 'visibility', 'none')
+      ? this.map.setLayoutProperty(id, 'visibility', 'visible')
+      : this.map.setLayoutProperty(id, 'visibility', 'none')
   }
 
   private addLayers(): void {
@@ -74,12 +74,12 @@ export default class MapboxService {
 
   private setMapSettings(): void {
     const mapSettings: MapSettings = {
-      bearing: this._map.getBearing(),
-      bounds: this._map.getBounds() as LngLatBoundsLike,
-      center: this._map.getCenter() as LngLatLike,
-      pitch: this._map.getPitch(),
+      bearing: this.map.getBearing(),
+      bounds: this.map.getBounds() as LngLatBoundsLike,
+      center: this.map.getCenter() as LngLatLike,
+      pitch: this.map.getPitch(),
       style: this._mapStyle,
-      zoom: this._map.getZoom()
+      zoom: this.map.getZoom()
     }
     store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, mapSettings)
   }

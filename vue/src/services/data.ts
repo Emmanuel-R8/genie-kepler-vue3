@@ -39,7 +39,7 @@ export default class DataService {
         mapboxgl.accessToken = token
         return
       }
-      return console.log(`No Mapbox Access Token Found:\n`, data)
+      console.log(`No Mapbox Access Token Found:\n`, data)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
@@ -82,7 +82,7 @@ export default class DataService {
         layer.source.data = fc
         return this._layerService.setLayers(layer)
       }
-      return console.log(`No ${id.toUpperCase()} Layer Found:\n`, fc)
+      console.log(`No ${id.toUpperCase()} Layer Found:\n`, fc)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
@@ -97,7 +97,7 @@ export default class DataService {
       if (markers?.features?.length) {
         return this._markerService.setMarkers(markers, id)
       }
-      return console.log(`No ${id.toUpperCase()} Markers Found:\n`, marker)
+      console.log(`No ${id.toUpperCase()} Markers Found:\n`, marker)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }

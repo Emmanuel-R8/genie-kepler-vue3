@@ -22,23 +22,22 @@ export default class PopupService {
            <div>${evt.features[0].properties.description}</div>`
         )
         .setLngLat(evt.lngLat)
-
-      this._mapboxService.addToMap(this._popup)
+        .addTo(this._mapboxService.map)
     }
   }
 
   addMarkerPopup(layer: string, feature: Feature): void {
     if (feature?.properties) {
-      this._popup.setHTML(
-        `<div class="bold">${feature.properties.name}</div>
+      this._popup
+        .setHTML(
+          `<div class="bold">${feature.properties.name}</div>
          <div>${feature.properties.description}</div>`
-      )
+        )
+        .addTo(this._mapboxService.map)
 
       layer === 'trails'
         ? this._popup.setLngLat([feature.properties.lng, feature.properties.lat] as LngLatLike)
         : this._popup.setLngLat((feature.geometry as Point).coordinates as LngLatLike)
-
-      this._mapboxService.addToMap(this._popup)
     }
   }
 
