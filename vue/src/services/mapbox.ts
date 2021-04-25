@@ -61,7 +61,7 @@ export default class MapboxService {
 
   setLayerVisibility(id: string): void {
     const { layers } = store.getters['layers/getLayersVisibility']
-    layers[id].active
+    layers[id].visible
       ? this.map.setLayoutProperty(id, 'visibility', 'visible')
       : this.map.setLayoutProperty(id, 'visibility', 'none')
   }

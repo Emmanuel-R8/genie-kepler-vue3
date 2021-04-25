@@ -28,11 +28,11 @@ export default class MarkerService {
   setMarkers(fc: FeatureCollection, id: string): void {
     const markers: Marker[] = []
 
-    fc.features.forEach((feature: Feature): void => {
+    fc.features.forEach((feature: Feature): any => {
       if (feature?.properties) {
         const el: HTMLMarkerElement = <HTMLMarkerElement>document.createElement('div')
         el.className = `${id}-marker`
-        el.active = false
+        el.visible = false
         el.addEventListener('mouseenter', (): void => {
           this._popupService.addMarkerPopup(id, feature)
         })
@@ -43,18 +43,18 @@ export default class MarkerService {
         switch (id) {
           case 'office':
           case 'places':
-            markers.push(
+            return markers.push(
               new Marker(el).setLngLat((feature.geometry as Point).coordinates as LngLatLike)
             )
-            break
           case 'trails':
-            markers.push(
+            return markers.push(
               new Marker(el).setLngLat([
                 feature.properties.lng,
                 feature.properties.lat
               ] as LngLatLike)
             )
-            break
+          default:
+            throw new Error('Marker ID error')
         }
       }
     })
@@ -68,18 +68,18 @@ export default class MarkerService {
       markers.forEach((marker: Marker): void => {
         const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
 
-        if (!el.active && !el.hidden) {
+        if (!el.hidden && !el.visible) {
           return
         }
 
-        el.active = !el.active
         el.hidden = !el.hidden
+        el.visible = !el.visible
 
-        if (!el.active) {
-          marker.remove()
-        }
         if (!el.hidden) {
           marker.addTo(this._mapboxService.map)
+        }
+        if (!el.visible) {
+          marker.remove()
         }
       })
     })
@@ -90,7 +90,7 @@ export default class MarkerService {
 
     this._markers[this._markersHash[id]].forEach((marker: Marker): void => {
       const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
-      el.active ? marker.remove() : marker.addTo(this._mapboxService.map)
+      el.visible ? marker.remove() : marker.addTo(this._mapboxService.map)
     })
   }
 }

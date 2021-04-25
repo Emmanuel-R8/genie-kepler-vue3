@@ -6,10 +6,10 @@ import { LayersVisibility } from '@/interfaces'
 type State = {
   layers: {
     biosphere: {
-      active: boolean
+      visible: boolean
     }
     trails: {
-      active: boolean
+      visible: boolean
     }
   }
 }
@@ -17,10 +17,10 @@ type State = {
 const state: State = {
   layers: {
     biosphere: {
-      active: true
+      visible: true
     },
     trails: {
-      active: false
+      visible: false
     }
   }
 }
@@ -49,7 +49,7 @@ type Actions = {
 const actions: ActionTree<State['layers'], State> & Actions = {
   [StoreActions.SET_LAYERS_VISIBILITY]({ commit }, id) {
     const { layers }: any = { ...state.layers }
-    layers[id].active = !layers[id].active
+    layers[id].visible = !layers[id].visible
     commit(StoreMutations.SET_LAYERS_VISIBILITY, layers)
   }
 }

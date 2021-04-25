@@ -17,15 +17,15 @@ export default {
   styles: {
     outdoors: {
       name: 'outdoors',
-      active: true,
       type: 'vector',
-      url: 'mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g'
+      url: 'mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g',
+      visible: true
     },
     satellite: {
       name: 'satellite',
-      active: false,
       type: 'vector',
-      url: 'mapbox://styles/mapbox/satellite-v9'
+      url: 'mapbox://styles/mapbox/satellite-v9',
+      visible: true
     }
   }
 }

@@ -2,7 +2,7 @@ import { FeatureCollection } from 'geojson'
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 
 export interface HTMLMarkerElement extends HTMLDivElement {
-  active: boolean
+  visible: boolean
 }
 
 export interface HttpParams {
@@ -39,10 +39,10 @@ export interface LayerElement {
 
 export interface LayersVisibility {
   biosphere: {
-    active: boolean
+    visible: boolean
   }
   trails: {
-    active: boolean
+    visible: boolean
   }
 }
 
@@ -70,15 +70,15 @@ export interface Marker {
 
 export interface MarkersVisibility {
   office: {
-    active: boolean
     hidden: boolean
+    visible: boolean
   }
   places: {
-    active: boolean
     hidden: boolean
+    visible: boolean
   }
   trails: {
-    active: boolean
     hidden: boolean
+    visible: boolean
   }
 }

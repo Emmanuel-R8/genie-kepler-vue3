@@ -6,16 +6,16 @@ import { MarkersVisibility } from '@/interfaces'
 type State = {
   markers: {
     office: {
-      active: boolean
       hidden: boolean
+      visible: boolean
     }
     places: {
-      active: boolean
       hidden: boolean
+      visible: boolean
     }
     trails: {
-      active: boolean
       hidden: boolean
+      visible: boolean
     }
   }
 }
@@ -23,16 +23,16 @@ type State = {
 const state: State = {
   markers: {
     office: {
-      active: false,
-      hidden: false
+      hidden: false,
+      visible: false
     },
     places: {
-      active: false,
-      hidden: false
+      hidden: false,
+      visible: false
     },
     trails: {
-      active: false,
-      hidden: false
+      hidden: false,
+      visible: false
     }
   }
 }
@@ -61,7 +61,7 @@ type Actions = {
 const actions: ActionTree<State['markers'], State> & Actions = {
   [StoreActions.SET_MARKERS_VISIBILITY]({ commit }, id) {
     const { markers }: any = { ...state.markers }
-    markers[id].active = !markers[id].active
+    markers[id].visible = !markers[id].visible
     commit(StoreMutations.SET_MARKERS_VISIBILITY, markers)
   }
 }
