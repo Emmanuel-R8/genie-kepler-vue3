@@ -3,6 +3,7 @@ import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { StoreActions } from '@/enums'
+import { HTMLMarkerElement } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 import store from '@/store'
 
@@ -23,16 +24,15 @@ export default class MarkerService {
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
   }
-  /* create individual marker elements and add mouse event handlers */
+  /* create individual html marker elements & add mouse event handlers */
   setMarkers(fc: FeatureCollection, id: string): void {
     const markers: Marker[] = []
 
     fc.features.forEach((feature: Feature): void => {
       if (feature?.properties) {
-        const el: any = document.createElement('div')
+        const el: HTMLMarkerElement = <HTMLMarkerElement>document.createElement('div')
         el.className = `${id}-marker`
         el.active = false
-        el.hidden = false
         el.addEventListener('mouseenter', (): void => {
           this._popupService.addMarkerPopup(id, feature)
         })
@@ -66,7 +66,7 @@ export default class MarkerService {
   showMarkers(): void {
     this._markers.forEach((markers: Marker[]): void => {
       markers.forEach((marker: Marker): void => {
-        const el: any = marker.getElement()
+        const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
 
         if (!el.active && !el.hidden) {
           return
@@ -79,9 +79,8 @@ export default class MarkerService {
           marker.remove()
         }
         if (!el.hidden) {
-          this._mapboxService.addToMap(marker)
+          marker.addTo(this._mapboxService.map)
         }
-        return
       })
     })
   }
@@ -90,8 +89,8 @@ export default class MarkerService {
     store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, id)
 
     this._markers[this._markersHash[id]].forEach((marker: Marker): void => {
-      const el: any = marker.getElement()
-      el.active ? marker.remove() : this._mapboxService.addToMap(marker)
+      const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
+      el.active ? marker.remove() : marker.addTo(this._mapboxService.map)
     })
   }
 }

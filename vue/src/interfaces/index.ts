@@ -1,6 +1,10 @@
 import { FeatureCollection } from 'geojson'
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 
+export interface HTMLMarkerElement extends HTMLDivElement {
+  active: boolean
+}
+
 export interface HttpParams {
   fields: string
   table: string
