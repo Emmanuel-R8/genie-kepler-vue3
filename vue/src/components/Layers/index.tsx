@@ -1,9 +1,8 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent, onMounted } from 'vue'
+import { computed, ComputedRef, defineComponent, watchEffect } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
-import { LayerElements } from '@/interfaces'
-import { layer_elements, layerIcons } from '@/config'
+import { layer_icons } from '@/config'
 import { StoreActions } from '@/enums'
 import router from '@/router'
 import { MapService, MarkerService } from '@/services'
@@ -22,7 +21,7 @@ const displayLayer = (layer: Layer): void => {
       /* hide visible markers when changing map styles for aesthetic purposes */
       markerService.showMarkers()
       /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, setActive(layer))
+      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       store.dispatch(`mapStyles/${StoreActions.SET_MAP_STYLES}`)
       mapService.setMapStyle()
       /* show hidden markers when changing map styles for aesthetic purposes */
@@ -30,8 +29,7 @@ const displayLayer = (layer: Layer): void => {
       break
     case 'biosphere':
     case 'trails':
-      // updateLayerElementsState(layer)
-      // store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, setActive(layer))
+      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       store.dispatch(`layers/${StoreActions.SET_LAYERS_VISIBILITY}`, layer)
       mapService.setLayerVisibility(layer)
 
@@ -39,14 +37,12 @@ const displayLayer = (layer: Layer): void => {
         mapService.setLayerVisibility('biosphere-border')
       }
       if (layer === 'trails') {
-        // store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, layer)
         markerService.toggleMarkers(layer)
       }
       break
     case 'office':
     case 'places':
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, setActive(layer))
-      // store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, layer)
+      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       markerService.toggleMarkers(layer)
       break
     case 'deckgl':
@@ -58,24 +54,9 @@ const displayLayer = (layer: Layer): void => {
   }
 }
 
-// const updateLayerElementsState = (layer: Layer): void => {
-//   const layerElements = [...layerElementsState]
-
-//   layerElements[layerElementsHash[id]].active = !layerElements[layerElementsHash[id]].active
-//   layerElements[layerElementsHash[id]].active
-//     ? (layerElements[layerElementsHash[id]].class = 'active')
-//     : (layerElements[layerElementsHash[id]].class = '')
-
-//   setLayerElementsState(layerElements)
-// }
-
-const setActive = (layer: Layer): number => {
-  return 1
-}
-
 const onDisplayLayerHandler = (evt: any): void => {
+  /* prettier-ignore */
   if (evt?.target?.id) {
-    /* prettier-ignore */
     const { target: { id } } = evt
     const layer: Layer = id.split('-')[0]
     displayLayer(layer)
@@ -84,17 +65,17 @@ const onDisplayLayerHandler = (evt: any): void => {
 
 export default defineComponent({
   setup() {
-    // onMounted(() => {
-    //   const state: ComputedRef<any> = computed(
-    //     () => store.getters['layerElements/getLayerElements']
-    //   )
-    //   layerElements = state.value.layerElements
-    //   return layerElements
-    // })
+    const layerElements: ComputedRef<any> = computed(
+      () => store.getters['layerElements/getLayerElements']
+    )
+
+    watchEffect(() => {
+      console.log(layerElements.value)
+    })
     return () => (
       <>
         <ul class={scss.elements}>
-          {layer_elements.map((el: any) => (
+          {layerElements.value.map((el: any) => (
             <LayerElement
               class={scss[el.class]}
               click={onDisplayLayerHandler}
@@ -105,7 +86,7 @@ export default defineComponent({
           ))}
         </ul>
         <ul class={scss.icons}>
-          {layerIcons.map((icon: any) => (
+          {layer_icons.map((icon: any) => (
             <LayerIcon
               alt={icon.name}
               class={scss[icon.id]}
