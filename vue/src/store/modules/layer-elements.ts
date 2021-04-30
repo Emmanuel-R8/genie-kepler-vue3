@@ -115,10 +115,8 @@ type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
   ): ReturnType<Mutations[K]>
 }
 
-type Layer = 'biosphere' | 'charts' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
-
 type Actions = {
-  [StoreActions.SET_LAYER_ELEMENTS](context: AugmentedActionContext, id: Layer): void
+  [StoreActions.SET_LAYER_ELEMENTS](context: AugmentedActionContext, id: string): void
 }
 
 const actions: ActionTree<State, State> & Actions = {
