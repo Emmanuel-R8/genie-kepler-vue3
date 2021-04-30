@@ -14,13 +14,11 @@ export default defineComponent({
     onBeforeMount(() => {
       loadData()
     })
-    return () => {
-      return (
-        <div>
-          <Header />
-          <router-view />
-        </div>
-      )
-    }
+    return () => (
+      <div>
+        <Header />
+        <router-view />
+      </div>
+    )
   }
 })

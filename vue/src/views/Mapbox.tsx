@@ -1,15 +1,13 @@
 import { defineComponent } from 'vue'
 
-import { Mapbox } from '@/components'
+import { Map } from '@/components'
 
 export default defineComponent({
   setup() {
-    return () => {
-      return (
-        <>
-          <Mapbox />
-        </>
-      )
-    }
+    return () => (
+      <>
+        <Map />
+      </>
+    )
   }
 })

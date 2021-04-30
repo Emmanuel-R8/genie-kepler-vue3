@@ -1,20 +1,14 @@
 export default [
   {
     fields: 'name,description,geom',
-    layer: {
-      id: 'office'
-    }
+    table: 'office'
   },
   {
     fields: 'name,description,geom',
-    layer: {
-      id: 'places'
-    }
+    table: 'places'
   },
   {
     fields: 'name,description,lat,lng,geom',
-    layer: {
-      id: 'trails'
-    }
+    table: 'trails'
   }
 ]

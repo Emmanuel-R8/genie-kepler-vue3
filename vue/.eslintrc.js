@@ -25,9 +25,10 @@ module.exports = {
     'prettier/prettier': 'error',
     '@typescript-eslint/no-console': 'off',
     '@typescript-eslint/no-debugger': 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
-    // '@typescript-eslint/no-unused-vars': 'off'
-    // '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off'
   },
   overrides: [
     {

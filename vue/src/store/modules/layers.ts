@@ -1,11 +1,13 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { StoreActions, StoreMutations } from '@/enums'
-import { LayersVisibility } from '@/interfaces'
 
 type State = {
   layers: {
     biosphere: {
+      visible: boolean
+    }
+    'biosphere-border': {
       visible: boolean
     }
     trails: {
@@ -19,6 +21,9 @@ const state: State = {
     biosphere: {
       visible: true
     },
+    'biosphere-border': {
+      visible: true
+    },
     trails: {
       visible: false
     }
@@ -26,7 +31,7 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_LAYERS_VISIBILITY](state: State, layers: LayersVisibility): void
+  [StoreMutations.SET_LAYERS_VISIBILITY](state: State, layers: State['layers']): void
 }
 
 const mutations: MutationTree<State> & Mutations = {
@@ -35,7 +40,7 @@ const mutations: MutationTree<State> & Mutations = {
   }
 }
 
-type AugmentedActionContext = Omit<ActionContext<State['layers'], State>, 'commit'> & {
+type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
   commit<K extends keyof Mutations>(
     key: K,
     payload: Parameters<Mutations[K]>[1]
@@ -46,19 +51,22 @@ type Actions = {
   [StoreActions.SET_LAYERS_VISIBILITY](context: AugmentedActionContext, id: string): void
 }
 
-const actions: ActionTree<State['layers'], State> & Actions = {
+const actions: ActionTree<State, State> & Actions = {
   [StoreActions.SET_LAYERS_VISIBILITY]({ commit }, id) {
-    const { layers }: any = { ...state.layers }
+    const { layers }: any = { ...state }
     layers[id].visible = !layers[id].visible
+    if (id === 'biosphere') {
+      layers['biosphere-border'].visible = !layers['biosphere-border'].visible
+    }
     commit(StoreMutations.SET_LAYERS_VISIBILITY, layers)
   }
 }
 
 type Getters = {
-  getLayersVisibility(state: State['layers']): State['layers']
+  getLayersVisibility(state: State): State
 }
 
-const getters: GetterTree<State['layers'], State> & Getters = {
+const getters: GetterTree<State, State> & Getters = {
   getLayersVisibility(state) {
     return { ...state }
   }

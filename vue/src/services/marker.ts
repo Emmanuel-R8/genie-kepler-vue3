@@ -2,17 +2,17 @@ import { Feature, FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { StoreActions } from '@/enums'
+// import { StoreActions } from '@/enums'
 import { HTMLMarkerElement } from '@/interfaces'
-import { MapboxService, PopupService } from '@/services'
-import store from '@/store'
+import { MapService, PopupService } from '@/services'
+// import store from '@/store'
 
 @Service()
 export default class MarkerService {
   constructor(
     private _markers: any[],
     private _markersHash: Record<string, number>,
-    private _mapboxService: MapboxService,
+    private _mapService: MapService,
     private _popupService: PopupService
   ) {
     this._markers = []
@@ -21,7 +21,7 @@ export default class MarkerService {
       places: 0,
       trails: 0
     }
-    this._mapboxService = Container.get(MapboxService)
+    this._mapService = Container.get(MapService)
     this._popupService = Container.get(PopupService)
   }
   /* create individual html marker elements & add mouse event handlers */
@@ -64,8 +64,8 @@ export default class MarkerService {
   }
 
   showMarkers(): void {
-    this._markers.forEach((markers: Marker[]): void => {
-      markers.forEach((marker: Marker): void => {
+    for (const markers of this._markers) {
+      for (const marker of markers) {
         const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
 
         if (!el.hidden && !el.visible) {
@@ -75,22 +75,22 @@ export default class MarkerService {
         el.hidden = !el.hidden
         el.visible = !el.visible
 
-        if (!el.hidden) {
-          marker.addTo(this._mapboxService.map)
-        }
-        if (!el.visible) {
+        if (el.hidden) {
           marker.remove()
         }
-      })
-    })
+        if (el.visible) {
+          marker.addTo(this._mapService.map)
+        }
+      }
+    }
   }
 
   toggleMarkers(id: string): void {
-    store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, id)
-
-    this._markers[this._markersHash[id]].forEach((marker: Marker): void => {
+    // store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, id)
+    for (const marker of this._markers[this._markersHash[id]]) {
       const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
-      el.visible ? marker.remove() : marker.addTo(this._mapboxService.map)
-    })
+      el.visible = !el.visible
+      el.visible ? marker.addTo(this._mapService.map) : marker.remove()
+    }
   }
 }

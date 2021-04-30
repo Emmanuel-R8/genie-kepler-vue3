@@ -1,21 +1,20 @@
 import { Container, Service } from 'typedi'
 
-import { DataService, MapboxService } from '@/services'
+import { DataService, MapService } from '@/services'
 
 @Service()
 export default class AppService {
-  constructor(private _dataService: DataService, private _mapboxService: MapboxService) {
+  constructor(private _dataService: DataService, private _mapService: MapService) {
     this._dataService = Container.get(DataService)
-    this._mapboxService = Container.get(MapboxService)
+    this._mapService = Container.get(MapService)
   }
 
   loadData(): void {
-    const dataService: DataService = Container.get(DataService)
-    dataService.loadData()
+    this._dataService.loadData()
   }
 
   async loadMap(): Promise<void> {
     await this._dataService.getMapboxAccessToken()
-    this._mapboxService.loadMapbox()
+    this._mapService.loadMap()
   }
 }

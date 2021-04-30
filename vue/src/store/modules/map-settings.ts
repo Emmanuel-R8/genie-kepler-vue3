@@ -1,9 +1,8 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { GetterTree, MutationTree } from 'vuex'
 
-import { ui } from '@/config'
+import { mapboxSettings } from '@/config'
 import { StoreMutations } from '@/enums'
-import { MapSettings } from '@/interfaces'
 
 type State = {
   mapSettings: {
@@ -18,13 +17,13 @@ type State = {
 
 const {
   settings: { bearing, bounds, center, pitch, style, zoom }
-} = ui
+} = mapboxSettings
 
 const state: State = {
   mapSettings: {
     bearing,
     bounds,
-    center: center as LngLatLike,
+    center,
     pitch,
     style,
     zoom
@@ -32,7 +31,7 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_MAP_SETTINGS](state: State, mapSettings: MapSettings): void
+  [StoreMutations.SET_MAP_SETTINGS](state: State, mapSettings: State['mapSettings']): void
 }
 
 const mutations: MutationTree<State> & Mutations = {
@@ -42,10 +41,10 @@ const mutations: MutationTree<State> & Mutations = {
 }
 
 type Getters = {
-  getMapSettings(state: State['mapSettings']): State['mapSettings']
+  getMapSettings(state: State): State
 }
 
-const getters: GetterTree<State['mapSettings'], State> & Getters = {
+const getters: GetterTree<State, State> & Getters = {
   getMapSettings(state) {
     return { ...state }
   }

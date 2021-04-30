@@ -46,7 +46,7 @@ export default class DataService {
   }
 
   loadData(): void {
-    this.getHeatmapData()
+    // this.getHeatmapData()
     this.getMapboxData()
   }
 
@@ -73,7 +73,7 @@ export default class DataService {
 
   private async getLayers(layer: Layer, i: number): Promise<void> {
     try {
-      // prettier-ignore
+      /* prettier-ignore */
       const { layer: { id } } = layer
       const fc: FeatureCollection = await this.getGeoJsonFeatureCollection(layer)
 
@@ -90,23 +90,22 @@ export default class DataService {
 
   private async getMarkers(marker: Marker): Promise<void> {
     try {
-      // prettier-ignore
-      const { layer: { id } } = marker
+      const { table } = marker
       const markers: FeatureCollection = await this.getGeoJsonFeatureCollection(marker)
 
       if (markers?.features?.length) {
-        return this._markerService.setMarkers(markers, id)
+        return this._markerService.setMarkers(markers, table)
       }
-      console.log(`No ${id.toUpperCase()} Markers Found:\n`, marker)
+      console.log(`No ${table.toUpperCase()} Markers Found:\n`, marker)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
   }
 
   private async getGeoJsonFeatureCollection(element: Layer | Marker): Promise<FeatureCollection> {
-    // prettier-ignore
-    const { fields, layer: { id } } = element
-    const params: HttpParams = { fields, table: id }
+    /* prettier-ignore */
+    const { fields, table } = element
+    const params: HttpParams = { fields, table }
     const { GEOJSON_ENDPOINT } = this._endPoints
     const { data } = await this._http.get(GEOJSON_ENDPOINT, { params })
     return data

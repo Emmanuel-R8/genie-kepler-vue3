@@ -1,3 +1,7 @@
+export { default as layer_elements } from './layer-elements'
+export { default as layerIcons } from './layer-icons'
 export { default as layers } from './layers'
 export { default as markers } from './markers'
-export { default as ui } from './ui'
+export { default as mapboxSettings } from './mapbox-settings'
+export { default as map_styles } from './map-styles'
+export { default as trails } from './trails'

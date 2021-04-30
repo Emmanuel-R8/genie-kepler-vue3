@@ -23,27 +23,16 @@ export interface Layer {
   'line-color'?: string
   'line-width'?: number
   source: Record<string, any>
+  table: string
   type: string
   visibility: string
 }
 
-export interface LayerElement {
-  class?: string
-  height: number
-  icon_id: string
+export interface LayerElements {
+  active: string
+  class: string
   id: string
   name: string
-  src: string
-  width: number
-}
-
-export interface LayersVisibility {
-  biosphere: {
-    visible: boolean
-  }
-  trails: {
-    visible: boolean
-  }
 }
 
 export interface MapSettings {
@@ -62,13 +51,26 @@ export interface MapOptions extends MapSettings {
   minZoom: number
 }
 
+// export interface MapStyle {
+//   active: string
+//   outdoors: {
+//     id: string
+//     url: string
+//     visible: boolean
+//   }
+//   satellite: {
+//     id: string
+//     url: string
+//     visible: boolean
+//   }
+// }
+
 export interface Marker {
   fields: string
-  id: string
-  layer: Record<string, string>
+  table: string
 }
 
-export interface MarkersVisibility {
+export interface MarkerVisibility {
   office: {
     hidden: boolean
     visible: boolean

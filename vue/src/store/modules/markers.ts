@@ -1,7 +1,7 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { StoreActions, StoreMutations } from '@/enums'
-import { MarkersVisibility } from '@/interfaces'
+import { MarkerVisibility } from '@/interfaces'
 
 type State = {
   markers: {
@@ -38,7 +38,7 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_MARKERS_VISIBILITY](state: State, markers: MarkersVisibility): void
+  [StoreMutations.SET_MARKERS_VISIBILITY](state: State, markers: MarkerVisibility): void
 }
 
 const mutations: MutationTree<State> & Mutations = {
@@ -47,7 +47,7 @@ const mutations: MutationTree<State> & Mutations = {
   }
 }
 
-type AugmentedActionContext = Omit<ActionContext<State['markers'], State>, 'commit'> & {
+type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
   commit<K extends keyof Mutations>(
     key: K,
     payload: Parameters<Mutations[K]>[1]
@@ -58,19 +58,19 @@ type Actions = {
   [StoreActions.SET_MARKERS_VISIBILITY](context: AugmentedActionContext, id: string): void
 }
 
-const actions: ActionTree<State['markers'], State> & Actions = {
+const actions: ActionTree<State, State> & Actions = {
   [StoreActions.SET_MARKERS_VISIBILITY]({ commit }, id) {
-    const { markers }: any = { ...state.markers }
+    const { markers }: any = { ...state }
     markers[id].visible = !markers[id].visible
     commit(StoreMutations.SET_MARKERS_VISIBILITY, markers)
   }
 }
 
 type Getters = {
-  getMarkersVisibility(state: State['markers']): State['markers']
+  getMarkersVisibility(state: State): State
 }
 
-const getters: GetterTree<State['markers'], State> & Getters = {
+const getters: GetterTree<State, State> & Getters = {
   getMarkersVisibility(state) {
     return { ...state }
   }
