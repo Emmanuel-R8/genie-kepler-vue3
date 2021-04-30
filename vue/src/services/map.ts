@@ -3,7 +3,7 @@ import { FillLayer, LineLayer, Map, MapLayerMouseEvent, Marker, Popup, SkyLayer 
 import { Container, Service } from 'typedi'
 import { Store } from 'vuex'
 
-import { mapboxSettings } from '@/config'
+import { mapbox_settings } from '@/config'
 import { LayerService, MapboxService } from '@/services'
 import store from '@/store'
 
@@ -18,7 +18,7 @@ export default class MapService {
   ) {
     this._layerService = Container.get(LayerService)
     this._mapboxService = Container.get(MapboxService)
-    this._skyLayer = mapboxSettings.sky
+    this._skyLayer = mapbox_settings.sky
     this._store = store
   }
 

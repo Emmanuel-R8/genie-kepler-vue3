@@ -2,6 +2,7 @@ import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { layer_elements } from '@/config'
 import { StoreActions, StoreMutations } from '@/enums'
+import { LayerElements } from '@/interfaces'
 
 type State = {
   layerElements: [
@@ -114,13 +115,16 @@ type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
   ): ReturnType<Mutations[K]>
 }
 
+type Layer = 'biosphere' | 'charts' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
+
 type Actions = {
-  [StoreActions.SET_LAYER_ELEMENTS](context: AugmentedActionContext, i: number): void
+  [StoreActions.SET_LAYER_ELEMENTS](context: AugmentedActionContext, id: Layer): void
 }
 
 const actions: ActionTree<State, State> & Actions = {
-  [StoreActions.SET_LAYER_ELEMENTS]({ commit }, i: number) {
+  [StoreActions.SET_LAYER_ELEMENTS]({ commit }, id) {
     const { layerElements } = { ...state }
+    const i: number = layer_elements.findIndex((obj: LayerElements) => obj.id === id)
     layerElements[i].active = !layerElements[i].active
     layerElements[i].active ? (layerElements[i].class = 'active') : (layerElements[i].class = '')
     commit(StoreMutations.SET_LAYER_ELEMENTS, layerElements)
@@ -128,12 +132,12 @@ const actions: ActionTree<State, State> & Actions = {
 }
 
 type Getters = {
-  getLayerElements(state: State): State
+  getLayerElements(state: State): State['layerElements']
 }
 
-const getters: GetterTree<State, State> & Getters = {
+const getters: GetterTree<State, State['layerElements']> & Getters = {
   getLayerElements(state) {
-    return { ...state }
+    return state.layerElements
   }
 }
 

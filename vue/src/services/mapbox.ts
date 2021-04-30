@@ -3,7 +3,7 @@ import { LngLatLike, Map, NavigationControl } from 'mapbox-gl'
 import { Service } from 'typedi'
 import { Store } from 'vuex'
 
-import { mapboxSettings } from '@/config'
+import { mapbox_settings } from '@/config'
 import { StoreMutations } from '@/enums'
 import { MapOptions, MapSettings } from '@/interfaces'
 import store from '@/store'
@@ -16,7 +16,7 @@ export default class MapboxService {
     private _mapboxSettings: any,
     private _store: Store<any>
   ) {
-    this._mapboxSettings = mapboxSettings
+    this._mapboxSettings = mapbox_settings
     this._store = store
   }
 

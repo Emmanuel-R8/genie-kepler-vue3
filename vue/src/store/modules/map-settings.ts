@@ -1,7 +1,7 @@
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { GetterTree, MutationTree } from 'vuex'
 
-import { mapboxSettings } from '@/config'
+import { mapbox_settings } from '@/config'
 import { StoreMutations } from '@/enums'
 
 type State = {
@@ -17,7 +17,7 @@ type State = {
 
 const {
   settings: { bearing, bounds, center, pitch, style, zoom }
-} = mapboxSettings
+} = mapbox_settings
 
 const state: State = {
   mapSettings: {

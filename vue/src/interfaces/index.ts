@@ -29,7 +29,7 @@ export interface Layer {
 }
 
 export interface LayerElements {
-  active: string
+  active: boolean
   class: string
   id: string
   name: string
@@ -50,20 +50,6 @@ export interface MapOptions extends MapSettings {
   maxZoom: number
   minZoom: number
 }
-
-// export interface MapStyle {
-//   active: string
-//   outdoors: {
-//     id: string
-//     url: string
-//     visible: boolean
-//   }
-//   satellite: {
-//     id: string
-//     url: string
-//     visible: boolean
-//   }
-// }
 
 export interface Marker {
   fields: string

@@ -2,10 +2,8 @@ import { Feature, FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-// import { StoreActions } from '@/enums'
 import { HTMLMarkerElement } from '@/interfaces'
 import { MapService, PopupService } from '@/services'
-// import store from '@/store'
 
 @Service()
 export default class MarkerService {
@@ -86,7 +84,6 @@ export default class MarkerService {
   }
 
   toggleMarkers(id: string): void {
-    // store.dispatch(`markers/${StoreActions.SET_MARKERS_VISIBILITY}`, id)
     for (const marker of this._markers[this._markersHash[id]]) {
       const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
       el.visible = !el.visible

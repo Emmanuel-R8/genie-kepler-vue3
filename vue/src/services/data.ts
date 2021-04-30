@@ -46,7 +46,7 @@ export default class DataService {
   }
 
   loadData(): void {
-    // this.getHeatmapData()
+    this.getHeatmapData()
     this.getMapboxData()
   }
 
