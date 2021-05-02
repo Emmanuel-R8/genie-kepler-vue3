@@ -1,25 +1,14 @@
-import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 import { GetterTree, MutationTree } from 'vuex'
 
-import { mapbox_settings } from '@/config'
+import { map_settings } from '@/config'
 import { StoreMutations } from '@/enums'
-
-type State = {
-  mapSettings: {
-    bearing: number
-    bounds: LngLatBoundsLike | null
-    center: LngLatLike
-    pitch: number
-    style: string
-    zoom: number
-  }
-}
+import { MapSetting, MapSettings } from '@/interfaces'
 
 const {
-  settings: { bearing, bounds, center, pitch, style, zoom }
-} = mapbox_settings
+  options: { bearing, bounds, center, pitch, style, zoom }
+} = map_settings
 
-const state: State = {
+const state: MapSettings = {
   mapSettings: {
     bearing,
     bounds,
@@ -31,37 +20,28 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_MAP_SETTINGS](state: State, mapSettings: State['mapSettings']): void
+  [StoreMutations.SET_MAP_SETTINGS](state: MapSettings, mapSettings: MapSetting): void
 }
 
-const mutations: MutationTree<State> & Mutations = {
+const mutations: MutationTree<MapSettings> & Mutations = {
   [StoreMutations.SET_MAP_SETTINGS](state, mapSettings) {
-    state.mapSettings = mapSettings
+    state.mapSettings = { ...mapSettings }
   }
 }
 
 type Getters = {
-  getMapSettings(state: State): State
+  getMapSettings(state: MapSettings): MapSettings
 }
 
-const getters: GetterTree<State, State> & Getters = {
+const getters: GetterTree<MapSettings, MapSettings> & Getters = {
   getMapSettings(state) {
     return { ...state }
   }
 }
 
-type RouterModule = {
-  namespaced: boolean
-  state: State
-  mutations: Mutations
-  getters: Getters
-}
-
-const mapSettings: RouterModule = {
+export default {
   namespaced: true,
   state,
   mutations,
   getters
 }
-
-export default mapSettings

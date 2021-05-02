@@ -16,6 +16,7 @@ const selectTrail = (trailName: string) => {
 }
 
 const onSelectTrailHandler = (evt: any) => {
+  evt.stopPropagation()
   /* prettier-ignore */
   if (evt?.target?.value) {
     const { target: { value } } = evt

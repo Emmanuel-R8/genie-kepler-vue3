@@ -6,49 +6,49 @@ export interface HTMLMarkerElement extends HTMLDivElement {
 }
 
 export interface HttpParams {
-  fields: string
-  table: string
+  fields: string | undefined
+  table: string | undefined
 }
 
-export interface Layer {
-  fields: string
-  data: FeatureCollection | Record<string, never>
-  id: string
-  layer: Record<string, string>
-  layout: Record<string, string>
-  paint: Record<string, string>
-  'fill-color'?: string
-  'fill-opacity'?: number
-  'fill-outline-color'?: string
-  'line-color'?: string
-  'line-width'?: number
-  source: Record<string, any>
-  table: string
-  type: string
-  visibility: string
-}
-
-export interface LayerElements {
+export interface LayerElement {
   active: boolean
-  class: string
   id: string
   name: string
 }
 
-export interface MapSettings {
+export interface LayerElements {
+  layerElements: LayerElement[]
+}
+
+export interface MapSetting {
   bearing: number
-  bounds: LngLatBoundsLike
+  bounds: LngLatBoundsLike | undefined
   center: LngLatLike
   pitch: number
   style: string
   zoom: number
 }
 
-export interface MapOptions extends MapSettings {
-  container: string
-  doubleClickZoom: boolean
-  maxZoom: number
-  minZoom: number
+export interface MapSettings {
+  mapSettings: MapSetting
+}
+
+export interface MapStyle {
+  active: string
+  outdoors: {
+    id: string
+    url: string
+    visible: boolean
+  }
+  satellite: {
+    id: string
+    url: string
+    visible: boolean
+  }
+}
+
+export interface MapStyles {
+  mapStyles: MapStyle
 }
 
 export interface Marker {
@@ -56,17 +56,28 @@ export interface Marker {
   table: string
 }
 
-export interface MarkerVisibility {
-  office: {
-    hidden: boolean
-    visible: boolean
-  }
-  places: {
-    hidden: boolean
-    visible: boolean
-  }
-  trails: {
-    hidden: boolean
-    visible: boolean
-  }
+export interface StyleLayer {
+  biosphere?: Record<string, boolean>
+  'biosphere-border'?: Record<string, boolean>
+  fields?: string
+  data?: Record<string, never> | FeatureCollection
+  'fill-color'?: string
+  'fill-opacity'?: number
+  'fill-outline-color'?: string
+  id?: string
+  layer?: any
+  layout?: Record<string, string>
+  'line-color'?: string
+  'line-width'?: number
+  paint?: Record<string, string>
+  source?: any
+  table?: string
+  trails?: Record<string, boolean>
+  type?: string
+  visible?: boolean
+  visibility?: string
+}
+
+export interface StyleLayers {
+  styleLayers: StyleLayer
 }

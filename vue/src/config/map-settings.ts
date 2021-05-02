@@ -3,9 +3,9 @@ export default {
     position: 'top-left',
     visualizePitch: true
   },
-  settings: {
+  options: {
     bearing: 0,
-    bounds: null,
+    bounds: undefined,
     center: { lng: -76.3, lat: 44.5 },
     container: 'mapbox',
     doubleClickZoom: false,

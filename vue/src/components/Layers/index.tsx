@@ -4,8 +4,8 @@ import { computed, ComputedRef, defineComponent, watchEffect } from 'vue'
 import { LayerElement, LayerIcon } from '@/components'
 import { layer_icons } from '@/config'
 import { StoreActions } from '@/enums'
-import router from '@/router'
 import { MapService, MarkerService } from '@/services'
+import router from '@/router'
 import store from '@/store'
 
 import scss from './index.module.scss'
@@ -30,11 +30,11 @@ const displayLayer = (layer: Layer): void => {
     case 'biosphere':
     case 'trails':
       store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
-      store.dispatch(`layers/${StoreActions.SET_LAYERS_VISIBILITY}`, layer)
-      mapService.setLayerVisibility(layer)
+      store.dispatch(`styleLayers/${StoreActions.SET_STYLE_LAYERS_VISIBILITY}`, layer)
+      mapService.setStyleLayerVisibility(layer)
 
       if (layer === 'biosphere') {
-        mapService.setLayerVisibility('biosphere-border')
+        mapService.setStyleLayerVisibility('biosphere-border')
       }
       if (layer === 'trails') {
         markerService.toggleMarkers(layer)
@@ -55,6 +55,7 @@ const displayLayer = (layer: Layer): void => {
 }
 
 const onDisplayLayerHandler = (evt: any): void => {
+  evt.stopPropagation()
   /* prettier-ignore */
   if (evt?.target?.id) {
     const { target: { id } } = evt
@@ -68,16 +69,15 @@ export default defineComponent({
     const layerElements: ComputedRef<any> = computed(
       () => store.getters['layerElements/getLayerElements']
     )
-
     watchEffect(() => {
       console.log(layerElements.value)
     })
     return () => (
       <>
         <ul class={scss.elements}>
-          {layerElements.value.map((el: any) => (
+          {layerElements.value.map((el: Record<string, any>) => (
             <LayerElement
-              class={scss[el.class]}
+              active={el.active}
               click={onDisplayLayerHandler}
               id={el.id}
               key={el.id}
@@ -86,10 +86,9 @@ export default defineComponent({
           ))}
         </ul>
         <ul class={scss.icons}>
-          {layer_icons.map((icon: any) => (
+          {layer_icons.map((icon: Record<string, any>) => (
             <LayerIcon
               alt={icon.name}
-              class={scss[icon.id]}
               click={onDisplayLayerHandler}
               height={icon.height}
               id={icon.id}

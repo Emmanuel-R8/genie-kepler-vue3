@@ -1,27 +1,12 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { map_styles } from '@/config'
+import { MapStyle, MapStyles } from '@/interfaces'
 import { StoreActions, StoreMutations } from '@/enums'
-
-type State = {
-  mapStyles: {
-    active: string
-    outdoors: {
-      id: string
-      url: string
-      visible: boolean
-    }
-    satellite: {
-      id: string
-      url: string
-      visible: boolean
-    }
-  }
-}
 
 const { outdoors, satellite } = map_styles
 
-const state: State = {
+const state: MapStyles = {
   mapStyles: {
     active: outdoors.id,
     outdoors: {
@@ -38,16 +23,16 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_MAP_STYLES](state: State, mapStyles: State['mapStyles']): void
+  [StoreMutations.SET_MAP_STYLES](state: MapStyles, mapStyles: MapStyle): void
 }
 
-const mutations: MutationTree<State> & Mutations = {
+const mutations: MutationTree<MapStyles> & Mutations = {
   [StoreMutations.SET_MAP_STYLES](state, mapStyles) {
-    state.mapStyles = mapStyles
+    state.mapStyles = { ...mapStyles }
   }
 }
 
-type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
+type AugmentedActionContext = Omit<ActionContext<MapStyles, MapStyles>, 'commit'> & {
   commit<K extends keyof Mutations>(
     key: K,
     payload: Parameters<Mutations[K]>[1]
@@ -58,7 +43,7 @@ type Actions = {
   [StoreActions.SET_MAP_STYLES](context: AugmentedActionContext, id: string): void
 }
 
-const actions: ActionTree<State, State> & Actions = {
+const actions: ActionTree<MapStyles, MapStyles> & Actions = {
   [StoreActions.SET_MAP_STYLES]({ commit }) {
     let id: string
     const { mapStyles }: any = { ...state }
@@ -73,29 +58,19 @@ const actions: ActionTree<State, State> & Actions = {
 }
 
 type Getters = {
-  getMapStyles(state: State): State
+  getMapStyles(state: MapStyles): MapStyles
 }
 
-const getters: GetterTree<State, State> & Getters = {
+const getters: GetterTree<MapStyles, MapStyles> & Getters = {
   getMapStyles(state) {
     return { ...state }
   }
 }
 
-type RouterModule = {
-  namespaced: boolean
-  state: State
-  mutations: Mutations
-  actions: Actions
-  getters: Getters
-}
-
-const mapStyles: RouterModule = {
+export default {
   namespaced: true,
   state,
   mutations,
   actions,
   getters
 }
-
-export default mapStyles

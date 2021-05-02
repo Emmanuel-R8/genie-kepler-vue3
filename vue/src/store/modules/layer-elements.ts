@@ -2,96 +2,42 @@ import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { layer_elements } from '@/config'
 import { StoreActions, StoreMutations } from '@/enums'
-import { LayerElements } from '@/interfaces'
+import { LayerElement, LayerElements } from '@/interfaces'
 
-type State = {
-  layerElements: [
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    },
-    {
-      active: boolean
-      class: string
-      id: string
-      name: string
-    }
-  ]
-}
-
-const state: State = {
+const state: LayerElements = {
   layerElements: [
     {
       active: layer_elements[0].active,
-      class: layer_elements[0].class,
       id: layer_elements[0].id,
       name: layer_elements[0].name
     },
     {
       active: layer_elements[1].active,
-      class: layer_elements[1].class,
       id: layer_elements[1].id,
       name: layer_elements[1].name
     },
     {
       active: layer_elements[2].active,
-      class: layer_elements[2].class,
       id: layer_elements[2].id,
       name: layer_elements[2].name
     },
     {
       active: layer_elements[3].active,
-      class: layer_elements[3].class,
       id: layer_elements[3].id,
       name: layer_elements[3].name
     },
     {
       active: layer_elements[4].active,
-      class: layer_elements[4].class,
       id: layer_elements[4].id,
       name: layer_elements[4].name
     },
     {
       active: layer_elements[5].active,
-      class: layer_elements[5].class,
       id: layer_elements[5].id,
       name: layer_elements[5].name
     },
     {
       active: layer_elements[6].active,
-      class: layer_elements[6].class,
       id: layer_elements[6].id,
       name: layer_elements[6].name
     }
@@ -99,16 +45,16 @@ const state: State = {
 }
 
 type Mutations = {
-  [StoreMutations.SET_LAYER_ELEMENTS](state: State, layerElements: State['layerElements']): void
+  [StoreMutations.SET_LAYER_ELEMENTS](state: LayerElements, layerElements: LayerElement[]): void
 }
 
-const mutations: MutationTree<State> & Mutations = {
+const mutations: MutationTree<LayerElements> & Mutations = {
   [StoreMutations.SET_LAYER_ELEMENTS](state, layerElements) {
     state.layerElements = layerElements
   }
 }
 
-type AugmentedActionContext = Omit<ActionContext<State, State>, 'commit'> & {
+type AugmentedActionContext = Omit<ActionContext<LayerElements, LayerElements>, 'commit'> & {
   commit<K extends keyof Mutations>(
     key: K,
     payload: Parameters<Mutations[K]>[1]
@@ -119,40 +65,29 @@ type Actions = {
   [StoreActions.SET_LAYER_ELEMENTS](context: AugmentedActionContext, id: string): void
 }
 
-const actions: ActionTree<State, State> & Actions = {
+const actions: ActionTree<LayerElements, LayerElements> & Actions = {
   [StoreActions.SET_LAYER_ELEMENTS]({ commit }, id) {
-    const { layerElements } = { ...state }
-    const i: number = layer_elements.findIndex((obj: LayerElements) => obj.id === id)
+    const layerElements: LayerElement[] = state.layerElements
+    const i: number = layerElements.findIndex((obj: LayerElement) => obj.id === id)
     layerElements[i].active = !layerElements[i].active
-    layerElements[i].active ? (layerElements[i].class = 'active') : (layerElements[i].class = '')
     commit(StoreMutations.SET_LAYER_ELEMENTS, layerElements)
   }
 }
 
 type Getters = {
-  getLayerElements(state: State): State['layerElements']
+  getLayerElements(state: LayerElements): LayerElements['layerElements']
 }
 
-const getters: GetterTree<State, State['layerElements']> & Getters = {
+const getters: GetterTree<LayerElements, LayerElements['layerElements']> & Getters = {
   getLayerElements(state) {
     return state.layerElements
   }
 }
 
-type RouterModule = {
-  namespaced: boolean
-  state: State
-  mutations: Mutations
-  actions: Actions
-  getters: Getters
-}
-
-const layerElements: RouterModule = {
+export default {
   namespaced: true,
   state,
   mutations,
   actions,
   getters
 }
-
-export default layerElements

@@ -1,12 +1,10 @@
 import { defineComponent } from 'vue'
 
+import scss from '@/components/Layers/index.module.scss'
+
 export default defineComponent({
   props: {
     alt: {
-      type: String,
-      required: true
-    },
-    class: {
       type: String,
       required: true
     },
@@ -35,7 +33,7 @@ export default defineComponent({
     return (props: Record<string, any>) => (
       <img
         alt={props.alt}
-        class={props.class}
+        class={scss[props.id]}
         height={props.height}
         id={props.id}
         onClick={props.click}

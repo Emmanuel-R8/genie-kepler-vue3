@@ -1,10 +1,12 @@
 import { defineComponent } from 'vue'
 
+import scss from '@/components/Layers/index.module.scss'
+
 export default defineComponent({
   props: {
-    class: {
-      type: String,
-      default: '',
+    active: {
+      type: Boolean,
+      default: false,
       required: true
     },
     click: {
@@ -23,7 +25,7 @@ export default defineComponent({
   setup() {
     return (props: Record<string, any>) => (
       <li>
-        <div id={props.id} class={props.class} onClick={props.click}>
+        <div id={props.id} class={props.active ? scss['active'] : ''} onClick={props.click}>
           {props.name}
         </div>
       </li>

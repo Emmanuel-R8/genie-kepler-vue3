@@ -1,11 +1,10 @@
-import cloneDeep from 'lodash/cloneDeep'
-import { LngLatLike, Map, NavigationControl } from 'mapbox-gl'
+import { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Service } from 'typedi'
 import { Store } from 'vuex'
 
-import { mapbox_settings } from '@/config'
+import { map_settings } from '@/config'
 import { StoreMutations } from '@/enums'
-import { MapOptions, MapSettings } from '@/interfaces'
+import { MapSetting } from '@/interfaces'
 import store from '@/store'
 
 @Service()
@@ -13,20 +12,20 @@ export default class MapboxService {
   constructor(
     public map: Map,
     public mapStyle: string,
-    private _mapboxSettings: any,
+    private _mapSettings: any,
     private _store: Store<any>
   ) {
-    this._mapboxSettings = mapbox_settings
+    this._mapSettings = map_settings
     this._store = store
   }
 
   loadMapbox(): void {
     const {
       navigationControl: { position, visualizePitch },
-      settings: { container, doubleClickZoom, maxZoom, minZoom, style }
-    } = this._mapboxSettings
-    const { mapSettings } = cloneDeep(this._store.getters['mapSettings/getMapSettings'])
-    const mapOptions: MapOptions = {
+      options: { container, doubleClickZoom, maxZoom, minZoom, style }
+    } = this._mapSettings
+    const { mapSettings } = this._store.getters['mapSettings/getMapSettings']
+    const options: MapboxOptions = {
       container,
       doubleClickZoom,
       maxZoom,
@@ -34,8 +33,8 @@ export default class MapboxService {
       ...mapSettings
     }
 
-    this.map = new Map(mapOptions)
-      .addControl(new NavigationControl({ visualizePitch }), position as any)
+    this.map = new Map(options)
+      .addControl(new NavigationControl({ visualizePitch }), position)
       .on('idle', (): void => {
         this.setMapSettings()
       })
@@ -46,7 +45,7 @@ export default class MapboxService {
     const lat: number = parseFloat(this.map.getCenter().lat.toFixed(6))
     const lng: number = parseFloat(this.map.getCenter().lng.toFixed(6))
     const center: LngLatLike = { lng, lat }
-    const mapSettings: MapSettings = {
+    const mapSettings: MapSetting = {
       bearing: parseFloat(this.map.getBearing().toFixed(2)),
       bounds: this.map.getBounds(),
       center,
