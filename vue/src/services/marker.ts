@@ -40,17 +40,18 @@ export default class MarkerService {
 
         switch (id) {
           case 'office':
-          case 'places':
+          case 'places': {
+            /* prettier-ignore */
+            const { geometry } = feature
             return markers.push(
-              new Marker(el).setLngLat((feature.geometry as Point).coordinates as LngLatLike)
+              new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
             )
-          case 'trails':
-            return markers.push(
-              new Marker(el).setLngLat([
-                feature.properties.lng,
-                feature.properties.lat
-              ] as LngLatLike)
-            )
+          }
+          case 'trails': {
+            /* prettier-ignore */
+            const { properties: { lat, lng } } = feature
+            return markers.push(new Marker(el).setLngLat({ lat, lng }))
+          }
           default:
             throw new Error('Marker ID error')
         }

@@ -7,31 +7,31 @@ body {
   overflow: hidden;
   padding: 0;
   width: 100%;
-}
 
-.office-marker {
-  background-image: url('@/assets/office.png');
-  height: 25px;
-  width: 22px;
-}
+  .office-marker {
+    background-image: url('@/assets/office.png');
+    height: 25px;
+    width: 22px;
+  }
 
-.places-marker {
-  background-image: url('@/assets/places.png');
-  height: 25px;
-  width: 22px;
-}
+  .places-marker {
+    background-image: url('@/assets/places.png');
+    height: 25px;
+    width: 22px;
+  }
 
-.trails-marker {
-  background-image: url('@/assets/trails.png');
-  height: 25px;
-  width: 22px;
-}
+  .trails-marker {
+    background-image: url('@/assets/trails.png');
+    height: 25px;
+    width: 22px;
+  }
 
-/* mapboxgl style modifications */
-.mapboxgl-popup {
-  max-width: 250px;
-}
+  /* mapboxgl style modifications */
+  .mapboxgl-popup {
+    max-width: 250px;
+  }
 
-.mapboxgl-popup-content .bold {
-  font-weight: bold;
+  .mapboxgl-popup-content .bold {
+    font-weight: bold;
+  }
 }

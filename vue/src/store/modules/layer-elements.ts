@@ -79,9 +79,7 @@ type Getters = {
 }
 
 const getters: GetterTree<LayerElements, LayerElements['layerElements']> & Getters = {
-  getLayerElements(state) {
-    return state.layerElements
-  }
+  getLayerElements: (state) => state.layerElements
 }
 
 export default {

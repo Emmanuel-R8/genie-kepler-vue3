@@ -10,32 +10,35 @@ export default class PopupService {
     this._mapService = Container.get(MapService)
     this._popup = new Popup({
       closeButton: false,
-      offset: 12
+      offset: 14
     })
   }
 
   addLayerPopup(evt: MapLayerMouseEvent): void {
-    if (evt.features && evt.features.length && evt.features[0].properties) {
+    const { features, lngLat } = evt
+    if (features && features.length && features[0].properties) {
       this._popup
         .setHTML(
-          `<div class="bold">${evt.features[0].properties.name}</div>
-           <div>${evt.features[0].properties.description}</div>`
+          `<div class="bold">${features[0].properties.name}</div>
+           <div>${features[0].properties.description}</div>`
         )
-        .setLngLat(evt.lngLat)
+        .setLngLat(lngLat)
         .addTo(this._mapService.map)
     }
   }
 
   addMarkerPopup(layer: string, feature: Feature): void {
+    /* prettier-ignore */
     if (feature?.properties) {
+      const { geometry, properties: { description, lat, lng, name } } = feature
       layer === 'trails'
-        ? this._popup.setLngLat([feature.properties.lng, feature.properties.lat] as LngLatLike)
-        : this._popup.setLngLat((feature.geometry as Point).coordinates as LngLatLike)
+        ? this._popup.setLngLat({ lat, lng })
+        : this._popup.setLngLat((geometry as Point).coordinates as LngLatLike)
 
       this._popup
         .setHTML(
-          `<div class="bold">${feature.properties.name}</div>
-         <div>${feature.properties.description}</div>`
+          `<div class="bold">${name}</div>
+         <div>${description}</div>`
         )
         .addTo(this._mapService.map)
     }

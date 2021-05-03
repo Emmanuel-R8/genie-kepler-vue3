@@ -23,7 +23,7 @@ type Mutations = {
 
 const mutations: MutationTree<StyleLayers> & Mutations = {
   [StoreMutations.SET_STYLE_LAYERS_VISIBILITY](state, styleLayers) {
-    state.styleLayers = { ...styleLayers }
+    state.styleLayers = styleLayers
   }
 }
 
@@ -54,9 +54,7 @@ type Getters = {
 }
 
 const getters: GetterTree<StyleLayers, StyleLayers> & Getters = {
-  getStyleLayersVisibility(state) {
-    return { ...state }
-  }
+  getStyleLayersVisibility: (state) => state
 }
 
 export default {

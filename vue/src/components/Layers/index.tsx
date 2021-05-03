@@ -1,8 +1,8 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent, watchEffect } from 'vue'
+import { computed, ComputedRef, defineComponent, reactive, toRefs, watchEffect } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
-import { layer_icons } from '@/config'
+import { layer_elements, layer_icons } from '@/config'
 import { StoreActions } from '@/enums'
 import { MapService, MarkerService } from '@/services'
 import router from '@/router'
@@ -69,15 +69,22 @@ export default defineComponent({
     const layerElements: ComputedRef<any> = computed(
       () => store.getters['layerElements/getLayerElements']
     )
+
+    // const layerElements: any = { ...toRefs(reactive(store.getters['layerElements/getState'])) }
+    // Object.values(layerElements).map((el: any) => {
+    //   console.log(el.value.active, el.value.id, el.value.name)
+    // })
+
     watchEffect(() => {
-      console.log(layerElements.value)
+      console.log(layerElements)
     })
     return () => (
       <>
         <ul class={scss.elements}>
-          {layerElements.value.map((el: Record<string, any>) => (
+          {/* {Object.values(layerElements).map((el: any) => ( */}
+          {layer_elements.map((el: any, i: number) => (
             <LayerElement
-              active={el.active}
+              active={layerElements.value[i].active}
               click={onDisplayLayerHandler}
               id={el.id}
               key={el.id}

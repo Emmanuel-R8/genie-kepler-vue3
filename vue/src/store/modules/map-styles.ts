@@ -28,7 +28,7 @@ type Mutations = {
 
 const mutations: MutationTree<MapStyles> & Mutations = {
   [StoreMutations.SET_MAP_STYLES](state, mapStyles) {
-    state.mapStyles = { ...mapStyles }
+    state.mapStyles = mapStyles
   }
 }
 
@@ -62,9 +62,7 @@ type Getters = {
 }
 
 const getters: GetterTree<MapStyles, MapStyles> & Getters = {
-  getMapStyles(state) {
-    return { ...state }
-  }
+  getMapStyles: (state) => state
 }
 
 export default {

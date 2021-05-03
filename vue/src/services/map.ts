@@ -33,17 +33,11 @@ export default class MapService {
     el.addTo(this.map)
   }
 
-  addStyleLayer(layer: FillLayer | LineLayer): void {
-    const { id } = layer
-    this.map.addLayer(layer)
-    this.setStyleLayerVisibility(id)
-  }
-
-  setStyleLayerVisibility(id: string): void {
-    const { styleLayers } = this._store.getters['styleLayers/getStyleLayersVisibility']
-    styleLayers[id].visible
-      ? this.map.setLayoutProperty(id, 'visibility', 'visible')
-      : this.map.setLayoutProperty(id, 'visibility', 'none')
+  flyTo(trail: any): void {
+    this.map.flyTo({
+      center: trail.center,
+      zoom: trail.zoom
+    })
   }
 
   setMapStyle(): void {
@@ -59,11 +53,11 @@ export default class MapService {
     setTimeout((): void => this.addLayers(), 1000)
   }
 
-  flyTo(trail: any): void {
-    this.map.flyTo({
-      center: trail.center,
-      zoom: trail.zoom
-    })
+  setStyleLayerVisibility(id: string): void {
+    const { styleLayers } = this._store.getters['styleLayers/getStyleLayersVisibility']
+    styleLayers[id].visible
+      ? this.map.setLayoutProperty(id, 'visibility', 'visible')
+      : this.map.setLayoutProperty(id, 'visibility', 'none')
   }
 
   private addLayers(): void {
@@ -71,5 +65,11 @@ export default class MapService {
     for (const layer of this._styleLayerService.styleLayers) {
       this.addStyleLayer(layer)
     }
+  }
+
+  private addStyleLayer(layer: FillLayer | LineLayer): void {
+    const { id } = layer
+    this.map.addLayer(layer)
+    this.setStyleLayerVisibility(id)
   }
 }
