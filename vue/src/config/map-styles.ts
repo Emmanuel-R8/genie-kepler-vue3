@@ -1,4 +1,5 @@
 export default {
+  active: 'outdoors',
   outdoors: {
     id: 'outdoors',
     url: 'mapbox://styles/mapbox/outdoors-v11',

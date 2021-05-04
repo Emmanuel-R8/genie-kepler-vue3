@@ -4,18 +4,20 @@ export default {
     visualizePitch: true
   },
   options: {
-    bearing: 0,
-    bounds: undefined,
-    center: { lng: -76.3, lat: 44.5 },
     container: 'mapbox',
     doubleClickZoom: false,
     maxZoom: 18,
-    minZoom: 2,
+    minZoom: 2
+  },
+  settings: {
+    bearing: 0,
+    bounds: undefined,
+    center: { lng: -76.3, lat: 44.5 },
     pitch: 0,
     style: 'mapbox://styles/mapbox/outdoors-v11',
     zoom: 9.5
   },
-  sky: {
+  skyLayer: {
     id: 'sky',
     type: 'sky',
     paint: {

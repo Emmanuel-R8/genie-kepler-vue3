@@ -3,7 +3,6 @@ import { defineComponent, onMounted } from 'vue'
 
 import { Layers, Trails } from '@/components'
 import { AppService } from '@/services'
-
 import scss from './index.module.scss'
 
 const loadMap = (): void => {

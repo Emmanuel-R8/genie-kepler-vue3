@@ -1,25 +1,11 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import { map_styles } from '@/config'
+import { mapStyles } from '@/config'
 import { MapStyle, MapStyles } from '@/interfaces'
 import { StoreActions, StoreMutations } from '@/enums'
 
-const { outdoors, satellite } = map_styles
-
 const state: MapStyles = {
-  mapStyles: {
-    active: outdoors.id,
-    outdoors: {
-      id: outdoors.id,
-      url: outdoors.url,
-      visible: outdoors.visible
-    },
-    satellite: {
-      id: satellite.id,
-      url: satellite.url,
-      visible: satellite.visible
-    }
-  }
+  mapStyles
 }
 
 type Mutations = {
@@ -40,7 +26,7 @@ type AugmentedActionContext = Omit<ActionContext<MapStyles, MapStyles>, 'commit'
 }
 
 type Actions = {
-  [StoreActions.SET_MAP_STYLES](context: AugmentedActionContext, id: string): void
+  [StoreActions.SET_MAP_STYLES](context: AugmentedActionContext): void
 }
 
 const actions: ActionTree<MapStyles, MapStyles> & Actions = {
@@ -58,11 +44,11 @@ const actions: ActionTree<MapStyles, MapStyles> & Actions = {
 }
 
 type Getters = {
-  getMapStyles(state: MapStyles): MapStyles
+  getMapStyles(state: MapStyles): MapStyles['mapStyles']
 }
 
-const getters: GetterTree<MapStyles, MapStyles> & Getters = {
-  getMapStyles: (state) => state
+const getters: GetterTree<MapStyles, MapStyles['mapStyles']> & Getters = {
+  getMapStyles: (state) => state.mapStyles
 }
 
 export default {

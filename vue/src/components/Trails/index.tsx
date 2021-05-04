@@ -3,11 +3,11 @@ import { defineComponent } from 'vue'
 
 import { trails } from '@/config'
 import { MapService } from '@/services'
-
 import scss from './index.module.scss'
 
+const mapService: MapService = Container.get(MapService)
+
 const selectTrail = (trailName: string) => {
-  const mapService: MapService = Container.get(MapService)
   const i = trails.findIndex((trail: any) => trail.name === trailName)
 
   if (i > 0) {
@@ -27,7 +27,7 @@ const onSelectTrailHandler = (evt: any) => {
 export default defineComponent({
   setup() {
     return () => (
-      <select id="trails" class={scss.trails} onChange={onSelectTrailHandler}>
+      <select class={scss.trails} onChange={onSelectTrailHandler}>
         {trails.map((trail: any) => (
           <option key={trail.name}>{trail.name}</option>
         ))}

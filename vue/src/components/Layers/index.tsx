@@ -1,27 +1,26 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent, reactive, toRefs, watchEffect } from 'vue'
+import { computed, ComputedRef, defineComponent, watchEffect } from 'vue'
+import { Store, useStore } from 'vuex'
 
 import { LayerElement, LayerIcon } from '@/components'
-import { layer_elements, layer_icons } from '@/config'
+import { layerIcons } from '@/config'
 import { StoreActions } from '@/enums'
 import { MapService, MarkerService } from '@/services'
-import router from '@/router'
+// import router from '@/router'
 import store from '@/store'
-
 import scss from './index.module.scss'
 
 type Layer = 'biosphere' | 'charts' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
 
-const displayLayer = (layer: Layer): void => {
-  const mapService: MapService = Container.get(MapService)
-  const markerService: MarkerService = Container.get(MarkerService)
+const mapService: MapService = Container.get(MapService)
+const markerService: MarkerService = Container.get(MarkerService)
 
+const displayLayer = (layer: Layer): void => {
   switch (layer) {
     case 'satellite':
       /* hide visible markers when changing map styles for aesthetic purposes */
       markerService.showMarkers()
       /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       store.dispatch(`mapStyles/${StoreActions.SET_MAP_STYLES}`)
       mapService.setMapStyle()
       /* show hidden markers when changing map styles for aesthetic purposes */
@@ -29,7 +28,6 @@ const displayLayer = (layer: Layer): void => {
       break
     case 'biosphere':
     case 'trails':
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       store.dispatch(`styleLayers/${StoreActions.SET_STYLE_LAYERS_VISIBILITY}`, layer)
       mapService.setStyleLayerVisibility(layer)
 
@@ -42,16 +40,16 @@ const displayLayer = (layer: Layer): void => {
       break
     case 'office':
     case 'places':
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
       markerService.toggleMarkers(layer)
       break
     case 'deckgl':
-      router.push('deckgl')
+      // router.push('deckgl')
       break
     case 'charts':
-      router.push('charts')
+      // router.push('charts')
       break
   }
+  store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
 }
 
 const onDisplayLayerHandler = (evt: any): void => {
@@ -66,25 +64,20 @@ const onDisplayLayerHandler = (evt: any): void => {
 
 export default defineComponent({
   setup() {
+    const store: Store<any> = useStore()
     const layerElements: ComputedRef<any> = computed(
       () => store.getters['layerElements/getLayerElements']
     )
 
-    // const layerElements: any = { ...toRefs(reactive(store.getters['layerElements/getState'])) }
-    // Object.values(layerElements).map((el: any) => {
-    //   console.log(el.value.active, el.value.id, el.value.name)
-    // })
-
     watchEffect(() => {
-      console.log(layerElements)
+      console.log(layerElements.value)
     })
     return () => (
       <>
         <ul class={scss.elements}>
-          {/* {Object.values(layerElements).map((el: any) => ( */}
-          {layer_elements.map((el: any, i: number) => (
+          {layerElements.value.map((el: Record<string, any>) => (
             <LayerElement
-              active={layerElements.value[i].active}
+              active={el.active}
               click={onDisplayLayerHandler}
               id={el.id}
               key={el.id}
@@ -93,7 +86,7 @@ export default defineComponent({
           ))}
         </ul>
         <ul class={scss.icons}>
-          {layer_icons.map((icon: Record<string, any>) => (
+          {layerIcons.map((icon: Record<string, any>) => (
             <LayerIcon
               alt={icon.name}
               click={onDisplayLayerHandler}

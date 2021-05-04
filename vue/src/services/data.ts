@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl'
 import { FeatureCollection } from 'geojson'
 import { Container, Service } from 'typedi'
 
-import { markers, style_layers } from '@/config'
+import { markers, styleLayers } from '@/config'
 import { EndPoints, Urls } from '@/enums'
 import { HttpParams, Marker, StyleLayer } from '@/interfaces'
 import { HttpService, MarkerService, StyleLayerService } from '@/services'
@@ -24,7 +24,7 @@ export default class DataService {
     this._http = Container.get(HttpService)
     this._markerService = Container.get(MarkerService)
     this._markers = markers
-    this._styleLayers = style_layers
+    this._styleLayers = styleLayers
     this._styleLayerService = Container.get(StyleLayerService)
     this._urls = Urls
   }
@@ -46,7 +46,7 @@ export default class DataService {
   }
 
   loadData(): void {
-    this.getHeatmapData()
+    // this.getHeatmapData()
     this.getMapboxData()
   }
 

@@ -166,7 +166,7 @@ INSERT into places (name, description, geom)
 values
   (
     'South Frontenac',
-    'You guessed it! Located just below the southern expanse of the majestic Frontenac Provincial Park in the heart of Frontenac County. Close to the Frontenac Challenge trailheads...',
+    'You guessed it! Located just below the southern expanse of the majestic Frontenac Provincial Park in the heart of majestic Frontenac County. Close to the Frontenac Challenge trailheads...',
     ST_GeomFromText('POINT(-76.516628 44.517936)')
   );
 INSERT into places (name, description, geom)

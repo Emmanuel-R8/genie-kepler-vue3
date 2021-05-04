@@ -2,15 +2,14 @@ import { Feature, Point } from 'geojson'
 import { LngLatLike, MapLayerMouseEvent, Popup } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { MapService } from '@/services'
+import { MapboxService } from '@/services'
 
 @Service()
 export default class PopupService {
-  constructor(private _mapService: MapService, private _popup: Popup) {
-    this._mapService = Container.get(MapService)
+  constructor(private _mapboxService: MapboxService, private _popup: Popup) {
+    this._mapboxService = Container.get(MapboxService)
     this._popup = new Popup({
-      closeButton: false,
-      offset: 14
+      closeButton: false
     })
   }
 
@@ -22,8 +21,9 @@ export default class PopupService {
           `<div class="bold">${features[0].properties.name}</div>
            <div>${features[0].properties.description}</div>`
         )
+        .setOffset(4)
         .setLngLat(lngLat)
-        .addTo(this._mapService.map)
+        .addTo(this._mapboxService.map)
     }
   }
 
@@ -40,7 +40,8 @@ export default class PopupService {
           `<div class="bold">${name}</div>
          <div>${description}</div>`
         )
-        .addTo(this._mapService.map)
+        .setOffset(14)
+        .addTo(this._mapboxService.map)
     }
   }
 

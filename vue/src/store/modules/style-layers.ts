@@ -50,11 +50,11 @@ const actions: ActionTree<StyleLayers, StyleLayers> & Actions = {
 }
 
 type Getters = {
-  getStyleLayersVisibility(state: StyleLayers): StyleLayers
+  getStyleLayersVisibility(state: StyleLayers): StyleLayers['styleLayers']
 }
 
-const getters: GetterTree<StyleLayers, StyleLayers> & Getters = {
-  getStyleLayersVisibility: (state) => state
+const getters: GetterTree<StyleLayers, StyleLayers['styleLayers']> & Getters = {
+  getStyleLayersVisibility: (state) => state.styleLayers
 }
 
 export default {

@@ -1,9 +1,11 @@
-import { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
+import cloneDeep from 'lodash/cloneDeep'
+import { Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Service } from 'typedi'
 import { Store } from 'vuex'
 
-import { map_settings } from '@/config'
+import { mapSettings } from '@/config'
 import { StoreMutations } from '@/enums'
+import { MapSetting } from '@/interfaces'
 import store from '@/store'
 
 @Service()
@@ -13,53 +15,42 @@ export default class MapboxService {
     public mapStyle: string,
     private _mapOptions: any,
     private _mapSettings: any,
+    private _navigationControl: any,
     private _store: Store<any>
   ) {
-    this._mapOptions = map_settings
-    this._mapSettings = {}
+    this._mapOptions = mapSettings.options
+    this._navigationControl = mapSettings.navigationControl
     this._store = store
   }
 
   loadMapbox(): void {
-    const {
-      navigationControl: { position, visualizePitch },
-      options: { container, doubleClickZoom, maxZoom, minZoom, style }
-    } = this._mapOptions
-    const { mapSettings } = this._store.getters['mapSettings/getMapSettings']
-    const options: MapboxOptions = {
-      container,
-      doubleClickZoom,
-      maxZoom,
-      minZoom,
-      ...mapSettings
-    }
-
+    const { position, visualizePitch } = this._navigationControl
+    this._mapSettings = cloneDeep(this._store.getters['mapSettings/getMapSettings'])
+    const options: MapboxOptions = { ...this._mapOptions, ...this._mapSettings }
+    const { style } = this._mapSettings
+    this.mapStyle = style
     this.map = new Map(options)
       .addControl(new NavigationControl({ visualizePitch }), position)
       .on('idle', (): void => {
-        this.setMapSettings()
+        if (
+          this.map.getCenter().lat !== this._mapSettings.center.lat ||
+          this.map.getCenter().lng !== this._mapSettings.center.lng
+        ) {
+          this.setMapboxSettings()
+        }
       })
-    this.mapStyle = style
-    this._mapSettings = { ...mapSettings }
   }
 
-  private setMapSettings(): void {
-    const lat: number = parseFloat(this.map.getCenter().lat.toFixed(6))
-    const lng: number = parseFloat(this.map.getCenter().lng.toFixed(6))
-    const center: LngLatLike = { lng, lat }
-    const settings: Record<string, any> = {
-      bearing: parseFloat(this.map.getBearing().toFixed(2)),
+  setMapboxSettings(): void {
+    const settings: MapSetting = {
+      bearing: this.map.getBearing(),
       bounds: this.map.getBounds(),
-      center,
-      pitch: parseFloat(this.map.getPitch().toFixed(2)),
+      center: this.map.getCenter(),
+      pitch: this.map.getPitch(),
       style: this.mapStyle,
-      zoom: parseFloat(this.map.getZoom().toFixed(2))
+      zoom: this.map.getZoom()
     }
-
-    if (this._mapSettings.bounds && this._mapSettings.bounds._ne.lat !== settings.bounds._ne.lat) {
-      this._store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, settings)
-    }
-
     this._mapSettings = { ...settings }
+    this._store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, settings)
   }
 }

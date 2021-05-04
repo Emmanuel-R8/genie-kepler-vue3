@@ -1,47 +1,11 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import { layer_elements } from '@/config'
+import { layerElements } from '@/config'
 import { StoreActions, StoreMutations } from '@/enums'
 import { LayerElement, LayerElements } from '@/interfaces'
 
 const state: LayerElements = {
-  layerElements: [
-    {
-      active: layer_elements[0].active,
-      id: layer_elements[0].id,
-      name: layer_elements[0].name
-    },
-    {
-      active: layer_elements[1].active,
-      id: layer_elements[1].id,
-      name: layer_elements[1].name
-    },
-    {
-      active: layer_elements[2].active,
-      id: layer_elements[2].id,
-      name: layer_elements[2].name
-    },
-    {
-      active: layer_elements[3].active,
-      id: layer_elements[3].id,
-      name: layer_elements[3].name
-    },
-    {
-      active: layer_elements[4].active,
-      id: layer_elements[4].id,
-      name: layer_elements[4].name
-    },
-    {
-      active: layer_elements[5].active,
-      id: layer_elements[5].id,
-      name: layer_elements[5].name
-    },
-    {
-      active: layer_elements[6].active,
-      id: layer_elements[6].id,
-      name: layer_elements[6].name
-    }
-  ]
+  layerElements
 }
 
 type Mutations = {

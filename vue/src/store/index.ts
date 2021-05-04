@@ -11,3 +11,7 @@ export default createStore<any>({
     styleLayers
   }
 })
+
+/* Vuex 4 boilerplate using Vue3 and typed modules with TypeScript - credit Lucas Koury
+ * https://gist.github.com/lucaska3/ad3e2a2a62533aa590784a0eff2bef17
+ */

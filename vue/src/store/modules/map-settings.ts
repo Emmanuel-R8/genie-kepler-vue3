@@ -1,22 +1,13 @@
 import { GetterTree, MutationTree } from 'vuex'
 
-import { map_settings } from '@/config'
+import { mapSettings } from '@/config'
 import { StoreMutations } from '@/enums'
 import { MapSetting, MapSettings } from '@/interfaces'
 
-const {
-  options: { bearing, bounds, center, pitch, style, zoom }
-} = map_settings
+const { settings } = mapSettings
 
 const state: MapSettings = {
-  mapSettings: {
-    bearing,
-    bounds,
-    center,
-    pitch,
-    style,
-    zoom
-  }
+  mapSettings: settings
 }
 
 type Mutations = {
@@ -30,11 +21,11 @@ const mutations: MutationTree<MapSettings> & Mutations = {
 }
 
 type Getters = {
-  getMapSettings(state: MapSettings): MapSettings
+  getMapSettings(state: MapSettings): MapSettings['mapSettings']
 }
 
-const getters: GetterTree<MapSettings, MapSettings> & Getters = {
-  getMapSettings: (state) => state
+const getters: GetterTree<MapSettings, MapSettings['mapSettings']> & Getters = {
+  getMapSettings: (state) => state.mapSettings
 }
 
 export default {

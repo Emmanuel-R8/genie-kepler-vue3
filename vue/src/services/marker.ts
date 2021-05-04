@@ -3,17 +3,17 @@ import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { HTMLMarkerElement } from '@/interfaces'
-import { MapService, PopupService } from '@/services'
+import { MapboxService, PopupService } from '@/services'
 
 @Service()
 export default class MarkerService {
   constructor(
-    private _mapService: MapService,
+    private _mapboxService: MapboxService,
     private _popupService: PopupService,
     private _markers: any[],
     private _markersHash: Record<string, number>
   ) {
-    this._mapService = Container.get(MapService)
+    this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
     this._markers = []
     this._markersHash = {
@@ -78,7 +78,7 @@ export default class MarkerService {
           marker.remove()
         }
         if (el.visible) {
-          marker.addTo(this._mapService.map)
+          marker.addTo(this._mapboxService.map)
         }
       }
     }
@@ -88,7 +88,7 @@ export default class MarkerService {
     for (const marker of this._markers[this._markersHash[id]]) {
       const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
-      el.visible ? marker.addTo(this._mapService.map) : marker.remove()
+      el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()
     }
   }
 }
