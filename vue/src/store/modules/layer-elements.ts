@@ -31,8 +31,8 @@ type Actions = {
 
 const actions: ActionTree<LayerElements, LayerElements> & Actions = {
   [StoreActions.SET_LAYER_ELEMENTS]({ commit }, id) {
-    const layerElements: LayerElement[] = state.layerElements
-    const i: number = layerElements.findIndex((obj: LayerElement) => obj.id === id)
+    const layerElements: LayerElement[] = [...state.layerElements]
+    const i: number = layerElements.findIndex((el: LayerElement) => el.id === id)
     layerElements[i].active = !layerElements[i].active
     commit(StoreMutations.SET_LAYER_ELEMENTS, layerElements)
   }
@@ -42,8 +42,10 @@ type Getters = {
   getLayerElements(state: LayerElements): LayerElements['layerElements']
 }
 
-const getters: GetterTree<LayerElements, LayerElements['layerElements']> & Getters = {
-  getLayerElements: (state) => state.layerElements
+const getters: GetterTree<LayerElements, LayerElements> & Getters = {
+  getLayerElements: (state) => {
+    return [...state.layerElements]
+  }
 }
 
 export default {
