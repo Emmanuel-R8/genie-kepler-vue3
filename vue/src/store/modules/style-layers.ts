@@ -53,8 +53,10 @@ type Getters = {
   getStyleLayersVisibility(state: StyleLayers): StyleLayers['styleLayers']
 }
 
-const getters: GetterTree<StyleLayers, StyleLayers['styleLayers']> & Getters = {
-  getStyleLayersVisibility: (state) => state.styleLayers
+const getters: GetterTree<StyleLayers, StyleLayers> & Getters = {
+  getStyleLayersVisibility: (state) => {
+    return { ...state.styleLayers }
+  }
 }
 
 export default {

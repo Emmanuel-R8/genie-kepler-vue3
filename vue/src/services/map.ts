@@ -42,8 +42,8 @@ export default class MapService {
 
   setMapStyle(): void {
     const mapStyles: MapStyle = cloneDeep(this._store.getters['mapStyles/getMapStyles'])
-    const mapStyle: any[] = Object.entries(mapStyles).filter(
-      (mapStyle: any[]) => mapStyle[1].visible
+    const mapStyle: [string, any][] = Object.entries(mapStyles).filter(
+      (mapStyle: [string, any]) => mapStyle[1].visible
     )
     const { url } = mapStyle[0][1]
 
