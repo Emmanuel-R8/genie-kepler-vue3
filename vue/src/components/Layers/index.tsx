@@ -9,7 +9,7 @@ import router from '@/router'
 import store from '@/store'
 import scss from './index.module.scss'
 
-type Layer = 'biosphere' | 'charts' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
+type Layer = 'biosphere' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
 
 const mapService: MapService = Container.get(MapService)
 const markerService: MarkerService = Container.get(MarkerService)
@@ -46,9 +46,6 @@ const displayLayer = (layer: Layer): void => {
       break
     case 'deckgl':
       router.push('deckgl')
-      break
-    case 'charts':
-      // router.push('charts')
       break
   }
 }

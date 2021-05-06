@@ -28,10 +28,5 @@ export default [
     id: 'deckgl',
     active: false,
     name: 'Deck.GL'
-  },
-  {
-    id: 'charts',
-    active: false,
-    name: 'Charts'
   }
 ]

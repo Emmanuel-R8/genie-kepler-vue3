@@ -51,6 +51,6 @@ export default class MapboxService {
       zoom: this.map.getZoom()
     }
     this._mapSettings = { ...settings }
-    this._store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, settings)
+    this._store.commit(`mapSettings/${StoreMutations.SET_MAP_SETTINGS}`, this._mapSettings)
   }
 }

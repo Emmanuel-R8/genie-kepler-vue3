@@ -7,13 +7,6 @@ export default [
     width: 16
   },
   {
-    id: 'charts-icon',
-    name: 'Charts',
-    src: 'assets/charts.png',
-    height: 18,
-    width: 18
-  },
-  {
     id: 'deckgl-icon',
     name: 'Deck.GL',
     src: 'assets/uber.png',
