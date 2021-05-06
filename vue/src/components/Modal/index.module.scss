@@ -1,0 +1,18 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.active {
+  display: block;
+}
+
+.inactive {
+  display: none;
+}
