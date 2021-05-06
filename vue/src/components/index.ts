@@ -1,6 +1,8 @@
 export { default as Header } from './Header'
+export { default as Hexagon } from './Hexagon'
 export { default as LayerElement } from './LayerElement'
 export { default as LayerIcon } from './LayerIcon'
 export { default as Layers } from './Layers'
 export { default as Map } from './Map'
+export { default as Modal } from './Modal'
 export { default as Trails } from './Trails'

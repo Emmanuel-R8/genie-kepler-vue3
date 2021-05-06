@@ -48,9 +48,7 @@ type Getters = {
 }
 
 const getters: GetterTree<MapStyles, MapStyles> & Getters = {
-  getMapStyles: (state) => {
-    return { ...state.mapStyles }
-  }
+  getMapStyles: (state) => state.mapStyles
 }
 
 export default {

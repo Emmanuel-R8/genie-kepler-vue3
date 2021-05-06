@@ -1,24 +1,20 @@
 import { Container } from 'typedi'
-import { defineComponent, onBeforeMount } from 'vue'
+import { defineComponent } from 'vue'
 
 import { Header } from '@/components'
 import { AppService } from '@/services'
 
-const loadData = (): void => {
-  const appService: AppService = Container.get(AppService)
-  appService.loadData()
-}
+const appService: AppService = Container.get(AppService)
+const html = (): JSX.Element => (
+  <div>
+    <Header />
+    <router-view />
+  </div>
+)
 
 export default defineComponent({
   setup() {
-    onBeforeMount(() => {
-      loadData()
-    })
-    return () => (
-      <div>
-        <Header />
-        <router-view />
-      </div>
-    )
+    appService.loadData()
+    return () => html()
   }
 })

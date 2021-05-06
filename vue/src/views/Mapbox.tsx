@@ -4,10 +4,6 @@ import { Map } from '@/components'
 
 export default defineComponent({
   setup() {
-    return () => (
-      <>
-        <Map />
-      </>
-    )
+    return () => <Map />
   }
 })
