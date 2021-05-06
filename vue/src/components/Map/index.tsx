@@ -10,11 +10,12 @@ const state: Record<string, any> = reactive({
   modal: 'active',
   show: false
 })
-const setState = (state: Record<string, any>): void => {
+// const getState = (): Record<string, any> => state
+const setState = (): void => {
   state.modal = 'inactive'
   state.show = !state.show
 }
-const html = (state: Record<string, any>): JSX.Element => (
+const html = (): JSX.Element => (
   <div id="mapbox" class={scss.mapbox}>
     {<Modal class={state.modal} />}
     {state.show && <Layers />}
@@ -25,7 +26,7 @@ const html = (state: Record<string, any>): JSX.Element => (
 export default defineComponent({
   setup() {
     appService.loadMap()
-    setTimeout((): void => setState(state), 2400)
-    return () => html(state)
+    setTimeout((): void => setState(), 2100)
+    return () => html()
   }
 })

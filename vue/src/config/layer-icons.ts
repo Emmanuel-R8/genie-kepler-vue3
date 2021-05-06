@@ -9,7 +9,7 @@ export default [
   {
     id: 'deckgl-icon',
     name: 'Deck.GL',
-    src: 'assets/uber.png',
+    src: 'assets/deckgl.png',
     height: 17,
     width: 18
   },

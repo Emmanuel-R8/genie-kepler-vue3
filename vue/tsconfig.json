@@ -16,7 +16,8 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "types": ["vite/client", "node", "@types/jest"],
+    // "types": ["vite/client", node, "@types/jest"],
+    "types": ["vite/client", "@types/jest"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
       "@/*": ["src/*"]

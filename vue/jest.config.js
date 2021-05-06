@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 module.exports = {
-  moduleFileExtensions: ['js', 'ts', 'json', 'vue'],
+  moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
-    '^.+\\.vue$': 'vue-jest'
+    '^.+\\.tsx$': 'ts-jest'
   }
 }

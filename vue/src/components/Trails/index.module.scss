@@ -1,7 +1,10 @@
 .trails {
   animation: slide-in 1s ease-out forwards;
   border-style: solid;
-  font-size: 1.2em;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.25em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   left: 10px;
   position: absolute;
   top: 320px;
