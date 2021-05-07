@@ -41,7 +41,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
-    return (props: Record<string, any>) => html(props)
+  setup(props: Record<string, any>) {
+    return (): JSX.Element => html(props)
   }
 })

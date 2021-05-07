@@ -1,26 +1,22 @@
 import { FeatureCollection } from 'geojson'
 import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
 
-export interface HTMLMarkerElement extends HTMLDivElement {
+export interface IHTMLMarkerElement extends HTMLDivElement {
   visible: boolean
 }
 
-export interface HttpParams {
+export interface IHttpParams {
   fields: string | undefined
   table: string | undefined
 }
 
-export interface LayerElement {
+export interface ILayerElement {
   active: boolean
   id: string
   name: string
 }
 
-export interface LayerElements {
-  layerElements: LayerElement[]
-}
-
-export interface MapSetting {
+export interface IMapSetting {
   bearing: number
   bounds: LngLatBoundsLike | undefined
   center: LngLatLike
@@ -29,36 +25,34 @@ export interface MapSetting {
   zoom: number
 }
 
-export interface MapSettings {
-  mapSettings: MapSetting
-}
-
-export interface MapStyle {
+export interface IMapStyle {
   active: string
-  outdoors: {
-    id: string
-    url: string
-    visible: boolean
-  }
-  satellite: {
-    id: string
-    url: string
-    visible: boolean
-  }
+  id: string
+  outdoors: any
+  satellite: any
+  url: string
+  visible: boolean
 }
 
-export interface MapStyles {
-  mapStyles: MapStyle
-}
-
-export interface Marker {
+export interface IMarker {
   fields: string
   table: string
 }
 
-export interface StyleLayer {
-  biosphere?: Record<string, boolean>
-  'biosphere-border'?: Record<string, boolean>
+export interface IModal {
+  class: string
+  show: boolean
+}
+
+export interface IStore {
+  getters: any
+  setters: any
+  state: Record<string, any>
+}
+
+export interface IStyleLayer {
+  biosphere?: any
+  'biosphere-border'?: any
   fields?: string
   data?: Record<string, never> | FeatureCollection
   'fill-color'?: string
@@ -72,12 +66,8 @@ export interface StyleLayer {
   paint?: Record<string, string>
   source?: any
   table?: string
-  trails?: Record<string, boolean>
+  trails?: any
   type?: string
   visible?: boolean
   visibility?: string
-}
-
-export interface StyleLayers {
-  styleLayers: StyleLayer
 }

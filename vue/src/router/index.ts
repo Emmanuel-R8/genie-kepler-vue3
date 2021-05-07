@@ -15,5 +15,4 @@ const routes: any[] = [
     component: Deckgl
   }
 ]
-
 export default createRouter({ history, routes })

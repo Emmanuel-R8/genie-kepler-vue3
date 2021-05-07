@@ -1,14 +1,9 @@
-export enum StoreActions {
-  SET_LAYER_ELEMENTS = 'SET_LAYER_ELEMENTS',
-  SET_MAP_STYLES = 'SET_MAP_STYLES',
-  SET_STYLE_LAYERS_VISIBILITY = 'SET_STYLE_LAYERS_VISIBILITY'
-}
-
-export enum StoreMutations {
-  SET_LAYER_ELEMENTS = 'SET_LAYER_ELEMENTS',
-  SET_MAP_SETTINGS = 'SET_MAP_SETTINGS',
-  SET_MAP_STYLES = 'SET_MAP_STYLES',
-  SET_STYLE_LAYERS_VISIBILITY = 'SET_STYLE_LAYERS_VISIBILITY'
+export enum State {
+  LAYER_ELEMENTS = 'layerElements',
+  MODAL = 'modal',
+  MAP_SETTINGS = 'mapSettings',
+  MAP_STYLES = 'mapStyles',
+  STYLE_LAYERS = 'styleLayers'
 }
 
 export enum EndPoints {

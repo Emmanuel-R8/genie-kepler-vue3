@@ -34,7 +34,6 @@ export default class PopupService {
       layer === 'trails'
         ? this._popup.setLngLat({ lat, lng })
         : this._popup.setLngLat((geometry as Point).coordinates as LngLatLike)
-
       this._popup
         .setHTML(
           `<div class="bold">${name}</div>

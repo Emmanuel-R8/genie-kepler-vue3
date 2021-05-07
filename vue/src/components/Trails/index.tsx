@@ -30,6 +30,6 @@ const html = (): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    return () => html()
+    return (): JSX.Element => html()
   }
 })

@@ -5,7 +5,5 @@ module.exports = {
   rules: {
     'prettier/prettier': true,
     'max-nesting-depth': [2, { ignore: ['pseudo-classes'] }]
-    // 'selector-max-id': 1,
-    // 'selector-no-qualifying-type': 'ignore:'['class']
   }
 }

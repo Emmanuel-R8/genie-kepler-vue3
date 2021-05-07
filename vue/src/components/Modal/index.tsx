@@ -2,7 +2,7 @@ import { defineComponent } from 'vue'
 
 import scss from './index.module.scss'
 
-const html = (props: Record<string, any>): JSX.Element => (
+const html = (props: Record<string, string>): JSX.Element => (
   <div class={`${scss.modal} ${scss[props.class]}`}></div>
 )
 
@@ -13,7 +13,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
-    return (props: Record<string, any>) => html(props)
+  setup(props: Record<string, string>) {
+    return (): JSX.Element => html(props)
   }
 })

@@ -6,7 +6,7 @@ const html = (): JSX.Element => (
   <div class={scss.header}>
     <img src="assets/logo.png" alt="Geospatial Web" />
     <div class={scss.name}>Geospatial Web</div>
-    <div class={scss.title}>Go | Vue 3 Composition API & TSX | Mapbox GL | Deck.gl | PostGIS 3</div>
+    <div class={scss.title}>Go | Vue 3 Composition API | TSX | Mapbox GL | Deck.gl | PostGIS 3</div>
     <a
       href="https://gitlab.com/geospatialweb/go-vue3-tsx"
       rel="noopener noreferrer"
@@ -19,6 +19,6 @@ const html = (): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    return () => html()
+    return (): JSX.Element => html()
   }
 })

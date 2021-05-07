@@ -2,7 +2,7 @@ import { Feature, FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { HTMLMarkerElement } from '@/interfaces'
+import { IHTMLMarkerElement } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 
 @Service()
@@ -25,10 +25,9 @@ export default class MarkerService {
   /* create individual html marker elements & add mouse event handlers */
   setMarkers(fc: FeatureCollection, id: string): void {
     const markers: Marker[] = []
-
     fc.features.forEach((feature: Feature): any => {
       if (feature?.properties) {
-        const el: HTMLMarkerElement = <HTMLMarkerElement>document.createElement('div')
+        const el: IHTMLMarkerElement = <IHTMLMarkerElement>document.createElement('div')
         el.className = `${id}-marker`
         el.visible = false
         el.addEventListener('mouseenter', (): void => {
@@ -57,7 +56,6 @@ export default class MarkerService {
         }
       }
     })
-
     this._markers.push(markers)
     this._markersHash[id] = this._markers.length - 1
   }
@@ -65,15 +63,13 @@ export default class MarkerService {
   showMarkers(): void {
     for (const markers of this._markers) {
       for (const marker of markers) {
-        const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
-
+        const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
         if (!el.hidden && !el.visible) {
           return
         }
 
         el.hidden = !el.hidden
         el.visible = !el.visible
-
         if (el.hidden) {
           marker.remove()
         }
@@ -86,7 +82,7 @@ export default class MarkerService {
 
   toggleMarkers(id: string): void {
     for (const marker of this._markers[this._markersHash[id]]) {
-      const el: HTMLMarkerElement = <HTMLMarkerElement>marker.getElement()
+      const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
       el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()
     }

@@ -4,6 +4,6 @@ import { Hexagon } from '@/components'
 
 export default defineComponent({
   setup() {
-    return () => <Hexagon />
+    return (): JSX.Element => <Hexagon />
   }
 })

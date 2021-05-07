@@ -5,7 +5,7 @@ import { Container, Service } from 'typedi'
 
 import { markers, styleLayers } from '@/config'
 import { EndPoints, Urls } from '@/enums'
-import { HttpParams, Marker, StyleLayer } from '@/interfaces'
+import { IHttpParams, IMarker, IStyleLayer } from '@/interfaces'
 import { HttpService, MarkerService, StyleLayerService } from '@/services'
 
 @Service()
@@ -16,7 +16,7 @@ export default class DataService {
     private _http: HttpService,
     private _markerService: MarkerService,
     private _markers: any[],
-    private _styleLayers: any[],
+    private _styleLayers: IStyleLayer[],
     private _styleLayerService: StyleLayerService,
     private _urls: Record<string, string>
   ) {
@@ -46,7 +46,7 @@ export default class DataService {
   }
 
   loadData(): void {
-    // this.getHeatmapData()
+    this.getHeatmapData()
     this.getMapboxData()
   }
 
@@ -63,22 +63,22 @@ export default class DataService {
   }
 
   private getMapboxData(): void {
-    this._styleLayers.forEach((layer: StyleLayer, i: number): void => {
+    this._styleLayers.forEach((layer: IStyleLayer, i: number): void => {
       this.getStyleLayers(layer, i)
     })
-    this._markers.forEach((marker: Marker): void => {
+    this._markers.forEach((marker: IMarker): void => {
       this.getMarkers(marker)
     })
   }
 
-  private async getStyleLayers(layer: StyleLayer, i: number): Promise<void> {
+  private async getStyleLayers(layer: IStyleLayer, i: number): Promise<void> {
     try {
       /* prettier-ignore */
       const { layer: { id } } = layer
       const fc: FeatureCollection = await this.getFeatureCollection(layer)
 
       if (fc?.features?.length) {
-        const layer: StyleLayer = this._styleLayers[i].layer
+        const layer: IStyleLayer = this._styleLayers[i].layer
         layer.source.data = fc
         return this._styleLayerService.setStyleLayers(layer)
       }
@@ -88,7 +88,7 @@ export default class DataService {
     }
   }
 
-  private async getMarkers(marker: Marker): Promise<void> {
+  private async getMarkers(marker: IMarker): Promise<void> {
     try {
       const { table } = marker
       const markers: FeatureCollection = await this.getFeatureCollection(marker)
@@ -102,10 +102,10 @@ export default class DataService {
     }
   }
 
-  private async getFeatureCollection(feature: Marker | StyleLayer): Promise<FeatureCollection> {
+  private async getFeatureCollection(feature: IMarker | IStyleLayer): Promise<FeatureCollection> {
     /* prettier-ignore */
     const { fields, table } = feature
-    const params: HttpParams = { fields, table }
+    const params: IHttpParams = { fields, table }
     const { GEOJSON_ENDPOINT } = this._endPoints
     const { data } = await this._http.get(GEOJSON_ENDPOINT, { params })
     return data

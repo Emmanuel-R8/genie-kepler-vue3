@@ -12,7 +12,6 @@ export default class AppService {
   loadData(): void {
     this._dataService.loadData()
   }
-
   async loadMap(): Promise<void> {
     await this._dataService.getMapboxAccessToken()
     this._mapService.loadMap()

@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 
-import { StyleLayer } from '@/interfaces'
+import { IStyleLayer } from '@/interfaces'
 
 @Service()
 export default class StyleLayerService {
@@ -8,7 +8,7 @@ export default class StyleLayerService {
     this.styleLayers = []
   }
 
-  setStyleLayers(layer: StyleLayer): void {
+  setStyleLayers(layer: IStyleLayer): void {
     this.styleLayers.push(layer)
   }
 }

@@ -10,6 +10,6 @@ const html = (): JSX.Element => <div id="hexagon" class={scss.deckgl}></div>
 export default defineComponent({
   setup() {
     appService.loadMap()
-    return () => html()
+    return (): JSX.Element => html()
   }
 })
