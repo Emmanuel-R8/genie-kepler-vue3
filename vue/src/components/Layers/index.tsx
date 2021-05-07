@@ -3,9 +3,9 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
-import { StoreActions } from '@/enums'
+import { ILayerElement } from '@/interfaces'
 import { MapService, MarkerService } from '@/services'
-import router from '@/router'
+// import router from '@/router'
 import store from '@/store'
 import scss from './index.module.scss'
 
@@ -20,16 +20,16 @@ const displayLayer = (layer: Layer): void => {
       /* hide visible markers when changing map styles for aesthetic purposes */
       markerService.showMarkers()
       /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
-      store.dispatch(`mapStyles/${StoreActions.SET_MAP_STYLES}`)
+      store.setters.setLayerElementsState(layer)
+      store.setters.setMapStylesState()
       mapService.setMapStyle()
       /* show hidden markers when changing map styles for aesthetic purposes */
       setTimeout((): void => markerService.showMarkers(), 1200)
       break
     case 'biosphere':
     case 'trails':
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
-      store.dispatch(`styleLayers/${StoreActions.SET_STYLE_LAYERS_VISIBILITY}`, layer)
+      store.setters.setLayerElementsState(layer)
+      store.setters.setStyleLayersVisibilityState(layer)
       mapService.setStyleLayerVisibility(layer)
 
       if (layer === 'biosphere') {
@@ -41,11 +41,11 @@ const displayLayer = (layer: Layer): void => {
       break
     case 'office':
     case 'places':
-      store.dispatch(`layerElements/${StoreActions.SET_LAYER_ELEMENTS}`, layer)
+      store.setters.setLayerElementsState(layer)
       markerService.toggleMarkers(layer)
       break
     case 'deckgl':
-      router.push('deckgl')
+      // router.push('deckgl')
       break
   }
 }
@@ -60,7 +60,7 @@ const onDisplayLayerHandler = (evt: any): void => {
   }
 }
 
-const html = (layerElements: any[]): JSX.Element => (
+const html = (layerElements: ILayerElement[]): JSX.Element => (
   <>
     <ul class={scss.elements}>
       {layerElements.map((el: Record<string, any>) => (
@@ -91,9 +91,9 @@ const html = (layerElements: any[]): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const layerElements: ComputedRef<any> = computed(
-      () => store.getters['layerElements/getLayerElements']
+    const layerElements: ComputedRef<ILayerElement[]> = computed(() =>
+      store.getters.getLayerElementsState()
     )
-    return () => html(layerElements.value)
+    return (): JSX.Element => html(layerElements.value)
   }
 })
