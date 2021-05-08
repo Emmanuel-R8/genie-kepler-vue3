@@ -5,7 +5,7 @@ import { Container, Service } from 'typedi'
 import { mapSettings } from '@/config'
 import { IMapStyle, IStore, IStyleLayer } from '@/interfaces'
 import { MapboxService, PopupService, StyleLayerService } from '@/services'
-import store from '@/store'
+import { store } from '@/store'
 
 @Service()
 export default class MapService {
