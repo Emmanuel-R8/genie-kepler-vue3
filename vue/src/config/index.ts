@@ -1,3 +1,4 @@
+export { default as hexagon } from './hexagon'
 export { default as layerElements } from './layer-elements'
 export { default as layerIcons } from './layer-icons'
 export { default as markers } from './markers'
