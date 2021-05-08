@@ -4,7 +4,7 @@ import { computed, ComputedRef, defineComponent, onUnmounted } from 'vue'
 import { Modal, Layers, Trails } from '@/components'
 import { IModal } from '@/interfaces'
 import { AppService, MapService, MapboxService, PopupService } from '@/services'
-import store from '@/store'
+import { store } from '@/store'
 import scss from './index.module.scss'
 
 const appService: AppService = Container.get(AppService)

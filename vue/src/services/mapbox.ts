@@ -4,7 +4,7 @@ import { Service } from 'typedi'
 
 import { mapSettings } from '@/config'
 import { IMapSetting, IStore } from '@/interfaces'
-import store from '@/store'
+import { store } from '@/store'
 
 @Service()
 export default class MapboxService {

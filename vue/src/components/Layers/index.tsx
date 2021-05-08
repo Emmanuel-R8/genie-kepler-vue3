@@ -6,7 +6,7 @@ import { layerIcons } from '@/config'
 import { ILayerElement } from '@/interfaces'
 import { MapService, MarkerService } from '@/services'
 // import router from '@/router'
-import store from '@/store'
+import { store } from '@/store'
 import scss from './index.module.scss'
 
 type Layer = 'biosphere' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
