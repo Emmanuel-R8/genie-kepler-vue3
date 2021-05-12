@@ -29,6 +29,23 @@ export default class DataService {
     this._urls = Urls
   }
 
+  loadData(): void {
+    this.getHexagonData()
+    this.getMapData()
+  }
+
+  private getHexagonData(): void {
+    const { HEATMAP_DATA_URL } = this._urls
+    fetch
+      .csv(HEATMAP_DATA_URL)
+      .then((data: any[]): void => {
+        data?.length ? (this.hexagonData = data) : console.error('Data Error:\n', data)
+      })
+      .catch((err: Error): void => {
+        console.error('getHeatmapData Failed:\n', err)
+      })
+  }
+
   async getMapboxAccessToken(): Promise<void> {
     try {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
@@ -45,24 +62,7 @@ export default class DataService {
     }
   }
 
-  loadData(): void {
-    // this.getHeatmapData()
-    this.getMapboxData()
-  }
-
-  private getHeatmapData(): void {
-    const { HEATMAP_DATA_URL } = this._urls
-    fetch
-      .csv(HEATMAP_DATA_URL)
-      .then((data: any[]) => {
-        data?.length ? (this.hexagonData = data) : console.error('Data Error:\n', data)
-      })
-      .catch((err: Error) => {
-        console.error('getHeatmapData Failed:\n', err)
-      })
-  }
-
-  private getMapboxData(): void {
+  private getMapData(): void {
     this._styleLayers.forEach((layer: IStyleLayer, i: number): void => {
       this.getStyleLayers(layer, i)
     })

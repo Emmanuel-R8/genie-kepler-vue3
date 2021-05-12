@@ -1,6 +1,6 @@
-export { default as AppService } from './app'
 export { default as AxiosService } from './axios'
 export { default as DataService } from './data'
+export { default as HexagonService } from './hexagon'
 export { default as HttpService } from './http'
 export { default as MapService } from './map'
 export { default as MapboxService } from './mapbox'

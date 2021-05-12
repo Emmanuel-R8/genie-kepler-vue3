@@ -14,18 +14,16 @@ const selectTrail = (trailName: string) => {
 }
 const onSelectTrailHandler = (evt: any) => {
   evt.stopPropagation()
-  /* prettier-ignore */
-  if (evt?.target?.value) {
-    const { target: { value } } = evt
-    selectTrail(value)
-  }
+  evt?.target?.value && selectTrail(evt.target.value)
 }
 const html = (): JSX.Element => (
-  <select class={scss.trails} onChange={onSelectTrailHandler}>
-    {trails.map((trail: any) => (
-      <option key={trail.name}>{trail.name}</option>
-    ))}
-  </select>
+  <div>
+    <select class={scss.trails} onChange={onSelectTrailHandler}>
+      {trails.map((trail: any) => (
+        <option key={trail.name}>{trail.name}</option>
+      ))}
+    </select>
+  </div>
 )
 
 export default defineComponent({

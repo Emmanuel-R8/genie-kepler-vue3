@@ -1,4 +1,4 @@
 export default {
   class: 'active',
-  show: false
+  show: true
 }

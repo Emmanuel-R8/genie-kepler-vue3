@@ -10,23 +10,20 @@ $primary-text-color: rgb(60, 75, 90);
 }
 
 .elements {
+  @include border-radius(4px);
   animation: fade-in 2s ease-out forwards;
-  font-size: 1.25em;
+  border: 2px solid rgb(187, 187, 187);
+  cursor: pointer;
+  font-size: 0.95em;
   left: 10px;
   list-style-type: none;
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 125px;
-  z-index: 1;
+  top: 175px;
 
   li {
-    &:first-child div {
-      @include border-radius(5px 5px 0 0);
-    }
-
     &:last-child div {
-      @include border-radius(0 0 5px 5px);
       border-bottom-width: 1px;
     }
 
@@ -35,10 +32,9 @@ $primary-text-color: rgb(60, 75, 90);
       border: 1px solid rgb(187, 187, 187);
       border-bottom-width: 0;
       color: $primary-text-color;
-      cursor: pointer;
       line-height: 1.1;
       padding: 7px 0 6px 40px;
-      width: 95px;
+      width: 90px;
 
       &:hover {
         background-color: $hover-background-color;
@@ -56,49 +52,42 @@ $primary-text-color: rgb(60, 75, 90);
   animation: slide-in 1s ease-out forwards;
   cursor: pointer;
   position: absolute;
-  top: 119px;
-  z-index: 1;
+  top: 120px;
+
+  .satellite-icon {
+    left: 22px;
+    position: absolute;
+    top: 48px;
+  }
 
   .biosphere-icon {
     left: 23px;
     position: absolute;
-    top: 32px;
-  }
-
-  .charts-icon {
-    left: 22px;
-    position: absolute;
-    top: 180px;
-  }
-
-  .deckgl-icon {
-    left: 22px;
-    position: absolute;
-    top: 151px;
+    top: 80px;
   }
 
   .office-icon {
     left: 22px;
     position: absolute;
-    top: 60px;
+    top: 108px;
   }
 
   .places-icon {
     left: 22px;
     position: absolute;
-    top: 90px;
-  }
-
-  .satellite-icon {
-    left: 22px;
-    position: absolute;
-    top: 0;
+    top: 138px;
   }
 
   .trails-icon {
     left: 22px;
     position: absolute;
-    top: 120px;
+    top: 168px;
+  }
+
+  .deckgl-icon {
+    left: 22px;
+    position: absolute;
+    top: 199px;
   }
 }
 

@@ -1,4 +1,11 @@
+export enum Routes {
+  DECKGL = 'deckgl',
+  MAPBOX = 'mapbox'
+}
+
 export enum State {
+  HEXAGON_PARAMS = 'hexagonParams',
+  HEXAGON_SETTINGS = 'hexagonSettings',
   LAYER_ELEMENTS = 'layerElements',
   MODAL = 'modal',
   MAP_SETTINGS = 'mapSettings',

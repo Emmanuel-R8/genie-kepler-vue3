@@ -1,5 +1,28 @@
 import { FeatureCollection } from 'geojson'
-import { LngLatBoundsLike, LngLatLike } from 'mapbox-gl'
+import { LngLatLike } from 'mapbox-gl'
+
+export interface IHexagonParams {
+  coverage: number
+  elevationScale: number
+  radius: number
+  upperPercentile: number
+}
+
+export interface IHexagonProps {
+  colorRange: number[][]
+  elevationRange: number[]
+  extruded: boolean
+  id: string
+  material: Record<string, any>
+  opacity: number
+}
+
+export interface IHexagonSettings {
+  bearing: number
+  center: LngLatLike
+  pitch: number
+  zoom: number
+}
 
 export interface IHTMLMarkerElement extends HTMLDivElement {
   visible: boolean
@@ -10,19 +33,31 @@ export interface IHttpParams {
   table: string | undefined
 }
 
+export interface ILayer {
+  biosphere?: string
+  deckgl?: string
+  office?: string
+  places?: string
+  satellite?: string
+  trails?: string
+}
+
 export interface ILayerElement {
   active: boolean
   id: string
   name: string
 }
 
-export interface IMapSetting {
-  bearing: number
-  bounds: LngLatBoundsLike | undefined
-  center: LngLatLike
-  pitch: number
+export interface IMapOptions {
+  container: string
+  doubleClickZoom: boolean
+  maxZoom: number
+  minZoom: number
+  style?: string
+}
+
+export interface IMapSettings extends IHexagonSettings {
   style: string
-  zoom: number
 }
 
 export interface IMapStyle {

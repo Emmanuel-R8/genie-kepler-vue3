@@ -3,18 +3,16 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
-import { ILayerElement } from '@/interfaces'
+import { ILayer, ILayerElement } from '@/interfaces'
 import { MapService, MarkerService } from '@/services'
-// import router from '@/router'
+import { router } from '@/router'
 import { store } from '@/store'
 import scss from './index.module.scss'
-
-type Layer = 'biosphere' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
 
 const mapService: MapService = Container.get(MapService)
 const markerService: MarkerService = Container.get(MarkerService)
 
-const displayLayer = (layer: Layer): void => {
+const displayLayer = (layer: ILayer): void => {
   switch (layer) {
     case 'satellite':
       /* hide visible markers when changing map styles for aesthetic purposes */
@@ -30,7 +28,7 @@ const displayLayer = (layer: Layer): void => {
     case 'trails':
       store.setters.setLayerElementsState(layer)
       store.setters.setStyleLayersVisibilityState(layer)
-      mapService.setStyleLayerVisibility(layer)
+      mapService.setStyleLayerVisibility(layer as string)
 
       if (layer === 'biosphere') {
         mapService.setStyleLayerVisibility('biosphere-border')
@@ -45,23 +43,19 @@ const displayLayer = (layer: Layer): void => {
       markerService.toggleMarkers(layer)
       break
     case 'deckgl':
-      // router.push('deckgl')
+      store.setters.setModalState()
+      router.push('deckgl')
       break
   }
 }
 
 const onDisplayLayerHandler = (evt: any): void => {
   evt.stopPropagation()
-  /* prettier-ignore */
-  if (evt?.target?.id) {
-    const { target: { id } } = evt
-    const layer: Layer = id.split('-')[0]
-    displayLayer(layer)
-  }
+  evt?.target?.id && displayLayer(evt.target.id.split('-')[0])
 }
 
 const html = (layerElements: ILayerElement[]): JSX.Element => (
-  <>
+  <div>
     <ul class={scss.elements}>
       {layerElements.map((el: Record<string, any>) => (
         <LayerElement
@@ -86,12 +80,12 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
         />
       ))}
     </ul>
-  </>
+  </div>
 )
 
 export default defineComponent({
   setup() {
-    const layerElements: ComputedRef<ILayerElement[]> = computed(() =>
+    const layerElements: ComputedRef<ILayerElement[]> = computed((): ILayerElement[] =>
       store.getters.getLayerElementsState()
     )
     return (): JSX.Element => html(layerElements.value)

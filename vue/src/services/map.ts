@@ -1,30 +1,35 @@
 import cloneDeep from 'lodash/cloneDeep'
-import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
+import mapboxgl, { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { mapSettings } from '@/config'
-import { IMapStyle, IStore, IStyleLayer } from '@/interfaces'
-import { MapboxService, PopupService, StyleLayerService } from '@/services'
+import { mapbox } from '@/config'
+import { IMapStyle, IModal, IStore, IStyleLayer } from '@/interfaces'
+import { DataService, MapboxService, PopupService, StyleLayerService } from '@/services'
 import { store } from '@/store'
 
 @Service()
 export default class MapService {
   constructor(
     public map: Map,
+    private _dataService: DataService,
     private _mapboxService: MapboxService,
     private _popupService: PopupService,
     private _styleLayerService: StyleLayerService,
     private _skyLayer: SkyLayer,
     private _store: IStore
   ) {
+    this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
     this._styleLayerService = Container.get(StyleLayerService)
-    this._skyLayer = mapSettings.skyLayer as SkyLayer
+    this._skyLayer = mapbox.skyLayer as SkyLayer
     this._store = store
   }
 
-  loadMap(): void {
+  async loadMap(): Promise<void> {
+    if (!mapboxgl.accessToken) {
+      await this._dataService.getMapboxAccessToken()
+    }
     this._mapboxService.loadMapbox()
     this.map = this._mapboxService.map
     this.map.on('load', (): void => {
@@ -36,6 +41,10 @@ export default class MapService {
     this.map.addLayer(this._skyLayer)
     for (const layer of this._styleLayerService.styleLayers) {
       this.addStyleLayer(layer)
+    }
+    const modal: IModal = cloneDeep(store.getters.getModalState())
+    if (modal.show) {
+      setTimeout((): void => this._store.setters.setModalState(), 0.5)
     }
   }
 
@@ -55,7 +64,7 @@ export default class MapService {
     const { url } = mapStyle[0][1]
     this.map.setStyle(url)
     this._mapboxService.mapStyle = url
-    this._mapboxService.setMapboxSettings()
+    this._mapboxService.setMapSettings()
     /* add layers after 1 sec delay to set basemap style */
     setTimeout((): void => this.addLayers(), 1000)
   }

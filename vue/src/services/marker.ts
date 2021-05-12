@@ -2,7 +2,7 @@ import { Feature, FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { IHTMLMarkerElement } from '@/interfaces'
+import { IHTMLMarkerElement, ILayer } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 
 @Service()
@@ -80,8 +80,8 @@ export default class MarkerService {
     }
   }
 
-  toggleMarkers(id: string): void {
-    for (const marker of this._markers[this._markersHash[id]]) {
+  toggleMarkers(id: ILayer): void {
+    for (const marker of this._markers[this._markersHash[id as string]]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
       el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()
