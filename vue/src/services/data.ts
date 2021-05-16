@@ -11,11 +11,11 @@ import { HttpService, MarkerService, StyleLayerService } from '@/services'
 @Service()
 export default class DataService {
   constructor(
-    public hexagonData: any[],
+    public hexagonData: number[][],
     private _endPoints: Record<string, string>,
     private _http: HttpService,
     private _markerService: MarkerService,
-    private _markers: any[],
+    private _markers: IMarker[],
     private _styleLayers: IStyleLayer[],
     private _styleLayerService: StyleLayerService,
     private _urls: Record<string, string>
@@ -35,11 +35,13 @@ export default class DataService {
   }
 
   private getHexagonData(): void {
-    const { HEATMAP_DATA_URL } = this._urls
+    const { HEXAGON_DATA_URL } = this._urls
     fetch
-      .csv(HEATMAP_DATA_URL)
+      .csv(HEXAGON_DATA_URL)
       .then((data: any[]): void => {
-        data?.length ? (this.hexagonData = data) : console.error('Data Error:\n', data)
+        data?.length
+          ? (this.hexagonData = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat]))
+          : console.error('Data Error:\n', data)
       })
       .catch((err: Error): void => {
         console.error('getHeatmapData Failed:\n', err)
@@ -102,9 +104,10 @@ export default class DataService {
     }
   }
 
-  private async getFeatureCollection(feature: IMarker | IStyleLayer): Promise<FeatureCollection> {
-    /* prettier-ignore */
-    const { fields, table } = feature
+  private async getFeatureCollection({
+    fields,
+    table
+  }: IMarker | IStyleLayer): Promise<FeatureCollection> {
     const params: IHttpParams = { fields, table }
     const { GEOJSON_ENDPOINT } = this._endPoints
     const { data } = await this._http.get(GEOJSON_ENDPOINT, { params })

@@ -1,8 +1,10 @@
 export default {
-  id: 'hexagon',
   hexagonOptions: {
+    canvas: 'hexagon',
     container: 'deckgl',
-    doubleClickZoom: true,
+    controller: true,
+    // doubleClickZoom: true,
+    interactive: false,
     maxZoom: 18,
     minZoom: 2,
     style: 'mapbox://styles/mapbox/dark-v10'
@@ -26,7 +28,7 @@ export default {
     elevationRange: [0, 2500],
     elevationScale: 100,
     extruded: true,
-    id: 'hexagon',
+    id: 'heatmap',
     material: {
       ambient: 0.6,
       diffuse: 0.6,
@@ -34,16 +36,16 @@ export default {
       specularColor: [200, 200, 200]
     },
     opacity: 1,
+    pickable: true,
     radius: 1000,
     upperPercentile: 100
   },
   hexagonSettings: {
     bearing: -30,
-    center: { lng: -1.8, lat: 52.0 },
+    center: { lng: -3.0, lat: 53.0 },
+    latitude: 53.0,
+    longitude: -3.0,
     pitch: 50,
     zoom: 6.5
-  },
-  navigationControl: {
-    position: 'top-left'
   }
 }

@@ -1,5 +1,4 @@
 export default {
-  id: 'mapbox',
   mapOptions: {
     container: 'mapbox',
     doubleClickZoom: false,
@@ -11,7 +10,7 @@ export default {
     center: { lng: -76.3, lat: 44.5 },
     pitch: 0,
     style: 'mapbox://styles/mapbox/outdoors-v11',
-    zoom: 9.5
+    zoom: 10
   },
   mapStyles: {
     active: 'outdoors',

@@ -10,7 +10,7 @@ export enum State {
   MODAL = 'modal',
   MAP_SETTINGS = 'mapSettings',
   MAP_STYLES = 'mapStyles',
-  STYLE_LAYERS = 'styleLayers'
+  STYLE_LAYERS_VISIBILITY = 'styleLayersVisibility'
 }
 
 export enum EndPoints {
@@ -19,5 +19,5 @@ export enum EndPoints {
 }
 
 export enum Urls {
-  HEATMAP_DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
+  HEXAGON_DATA_URL = 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
 }

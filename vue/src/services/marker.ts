@@ -29,6 +29,7 @@ export default class MarkerService {
       if (feature?.properties) {
         const el: IHTMLMarkerElement = <IHTMLMarkerElement>document.createElement('div')
         el.className = `${id}-marker`
+        el.hidden = false
         el.visible = false
         el.addEventListener('mouseenter', (): void => {
           this._popupService.addMarkerPopup(id, feature)
@@ -40,7 +41,6 @@ export default class MarkerService {
         switch (id) {
           case 'office':
           case 'places': {
-            /* prettier-ignore */
             const { geometry } = feature
             return markers.push(
               new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
@@ -65,17 +65,13 @@ export default class MarkerService {
       for (const marker of markers) {
         const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
         if (!el.hidden && !el.visible) {
-          return
+          break
         }
 
         el.hidden = !el.hidden
+        el.hidden && marker.remove()
         el.visible = !el.visible
-        if (el.hidden) {
-          marker.remove()
-        }
-        if (el.visible) {
-          marker.addTo(this._mapboxService.map)
-        }
+        el.visible && marker.addTo(this._mapboxService.map)
       }
     }
   }

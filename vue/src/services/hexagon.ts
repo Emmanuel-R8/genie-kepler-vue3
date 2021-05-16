@@ -7,159 +7,233 @@
  */
 import cloneDeep from 'lodash/cloneDeep'
 /* @ts-ignore */
-// import { HexagonLayer } from '@deck.gl/aggregation-layers'
+import { HexagonLayer } from '@deck.gl/aggregation-layers'
 /* @ts-ignore */
-// import { MapboxLayer } from '@deck.gl/mapbox'
-import mapboxgl, { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
+import { Deck, ViewState } from '@deck.gl/core'
+import mapboxgl, { Map, MapboxOptions } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { deckgl } from '@/config'
 import {
+  IHexagonOptions,
   IHexagonParams,
   IHexagonProps,
   IHexagonSettings,
-  IMapOptions,
   IModal,
   IStore
 } from '@/interfaces'
-import { DataService } from '@/services'
+import { DataService, MarkerService } from '@/services'
 import { store } from '@/store'
+import { deckgl } from '@/config'
+const { hexagonOptions, hexagonParams, hexagonProps, hexagonSettings } = deckgl
 
 @Service()
 export default class HexagonService {
+  private _hexagonOptions: IHexagonOptions = hexagonOptions
+  private _hexagonInitialParams: IHexagonParams = hexagonParams
+  private _hexagonParams: IHexagonParams = hexagonParams
+  private _hexagonProps: IHexagonProps = hexagonProps
+  private _hexagonSettings: IHexagonSettings = hexagonSettings
+  private _store: IStore = store
+
   constructor(
     public map: Map,
-    // private _data: any[],
+    private _data: number[][],
     private _dataService: DataService,
-    // private _HexagonLayer: HexagonLayer,
-    private _hexagonInitialSettings: IHexagonSettings,
-    // private _hexagonLayer: MapboxLayer,
-    private _hexagonOptions: IMapOptions,
-    private _hexagonParams: IHexagonParams,
-    private _hexagonProps: IHexagonProps,
-    private _hexagonSettings: IHexagonSettings,
-    private _navigationControl: Record<string, any>,
-    private _store: IStore
+    private _markerService: MarkerService,
+    private _hexagonLayer: HexagonLayer,
+    private _deck: Deck
   ) {
     this._dataService = Container.get(DataService)
-    // this._HexagonLayer = HexagonLayer
-    this._hexagonInitialSettings = deckgl.hexagonSettings
-    this._hexagonParams = deckgl.hexagonParams
-    this._hexagonProps = deckgl.hexagonProps
-    this._hexagonOptions = deckgl.hexagonOptions
-    this._navigationControl = deckgl.navigationControl
-    this._store = store
+    this._markerService = Container.get(MarkerService)
+    // this._hexagonInitialSettings = hexagonSettings
+    // this._hexagonOptions = hexagonOptions
+    // this._hexagonInitialParams = hexagonParams
+    // this._hexagonParams = hexagonParams
+    // this._hexagonProps = hexagonProps
+    // this._hexagonSettings = hexagonSettings
+    // this._store = store
   }
 
   async loadMap(): Promise<void> {
-    if (!mapboxgl.accessToken) {
-      await this._dataService.getMapboxAccessToken()
-    }
+    !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
 
-    const { position, visualizePitch } = this._navigationControl
-    this._hexagonSettings = cloneDeep(this._store.getters.getHexagonSettingsState())
+    // this._hexagonSettings = cloneDeep(this._store.getters.getHexagonSettingsState())
     const options: MapboxOptions = { ...this._hexagonOptions, ...this._hexagonSettings }
-    this.map = new Map(options)
-      .addControl(new NavigationControl({ visualizePitch }), position)
-      .on('load', (): void => {
-        const modal: IModal = cloneDeep(store.getters.getModalState())
-        if (modal.show) {
-          setTimeout((): void => this._store.setters.setModalState(), 0.5)
-        }
-        // this.setHexagonLayer()
-      })
-      .on('idle', (): void => {
-        this.setHexagonSettings()
-      })
+    this.map = new Map(options).on('load', (): void => {
+      this._data = this._dataService.hexagonData
+      this.showMarkers()
+      this.setHexagonLayer()
+    })
   }
 
-  // setHexagonLayer(): void {
-  //   const {
-  //     coverage,
-  //     elevationScale,
-  //     radius,
-  //     upperPercentile
-  //   }: IHexagonParams = this._hexagonParams
-  //   const { colorRange, elevationRange, extruded, id, material, opacity } = this._hexagonProps
-  //   const data: any[] = this._dataService.hexagonData
-  //   this._hexagonLayer = new MapboxLayer({
-  //     id,
-  //     type: this._HexagonLayer,
-  //     colorRange,
-  //     coverage,
-  //     data,
-  //     elevationRange,
-  //     elevationScale,
-  //     extruded,
-  //     getPosition: (d: Record<string, string>): number[] => [+d.lng, +d.lat],
-  //     material,
-  //     opacity,
-  //     radius,
-  //     upperPercentile
-  //   })
+  setHexagonLayer(): void {
+    const { canvas, maxZoom, minZoom } = this._hexagonOptions
+    this._hexagonLayer = new HexagonLayer({
+      // id,
+      // colorRange,
+      // coverage,
+      data: this._data,
+      // elevationRange,
+      // elevationScale,
+      // extruded,
+      getPosition: (d: Record<string, number>): Record<string, number> => d,
+      // material,
+      // opacity,
+      // pickable: true,
+      // radius,
+      // upperPercentile
+      ...this._hexagonParams,
+      ...this._hexagonProps
+      // Interactive props
+      // autoHighlight: true,
+      // onClick: (info: any) =>
+      //   info.object &&
+      //   alert(`${info.object.properties.name} (${info.object.properties.abbrev})`)
+    })
+    this._deck = new Deck({
+      canvas,
+      controller: { inertia: true, touchRotate: true },
+      initialViewState: { ...this._hexagonSettings, maxZoom, minZoom },
+      onViewStateChange: ({
+        // viewState,
+        viewState: { bearing, latitude, longitude, pitch, zoom }
+      }: ViewState): void => {
+        // const { bearing, latitude, longitude, pitch, zoom } = viewState
+        // this.setHexagonSettings(viewState)
+        this.map.jumpTo({
+          bearing,
+          center: { lng: longitude, lat: latitude },
+          pitch,
+          zoom
+        })
+      },
+      layers: [this._hexagonLayer]
+    })
 
-  //   // this.setHexagonParams()
-  //   this.addHexagonLayer()
-  //   // this.map.addLayer(this._hexagonLayer)
-  // }
-
-  // setHexagonParams(evt: any): void {
-  //   Reflect.ownKeys(this.state.heatmap.params).forEach((param): void => {
-  //     document.getElementById(param as string).oninput = (evt: any): void => {
-  //       this.eventEmitter.emit(['setHeatmapParams', param, +evt.target.value])
-  //       this._hexagonLayer.setProps({ [param]: this.state.heatmap.params[param] })
-  //     }
-  //   })
-  // }
-
-  setHexagonSettings(): void {
-    const lat: number = +this.map.getCenter().lat.toFixed(6)
-    const lng: number = +this.map.getCenter().lng.toFixed(6)
-    const center: LngLatLike = { lng, lat }
-    const settings: IHexagonSettings = {
-      bearing: +this.map.getBearing().toFixed(2),
-      center,
-      pitch: +this.map.getPitch().toFixed(2),
-      zoom: +this.map.getZoom().toFixed(2)
-    }
-    this.setHexagonSettingsState(settings)
+    // deck.setProps({
+    //   layers: [this._hexagonLayer]
+    // })
+    this.showModal()
   }
 
-  // resetHexagonParams(): void {
-  //   Reflect.ownKeys(this.state.heatmap.params).forEach((param): void => {
-  //     this.eventEmitter.emit(['setHeatmapParams', param, this.state.heatmap.props[param]])
-  //     this._hexagonLayer.setProps({ [param]: this.state.heatmap.props[param] })
+  // const { canvas, controller, maxZoom, minZoom } = this._hexagonOptions
+  // const { coverage, elevationScale, radius, upperPercentile } = this._hexagonParams
+  // const { colorRange, elevationRange, extruded, id, material, opacity } = this._hexagonProps
+  // const { bearing, latitude, longitude, pitch, zoom } = this._hexagonSettings
+  // const data: number[][] = this._dataService.hexagonData
+  // this._hexagonLayer = new Deck({
+  //   canvas,
+  //   controller,
+  //   initialViewState: { ...this._hexagonSettings, maxZoom, minZoom },
+  //   onViewStateChange: ({
+  //     viewState,
+  //     viewState: { bearing, latitude, longitude, pitch, zoom }
+  //   }: ViewState): void => {
+  //     // const { bearing, latitude, longitude, pitch, zoom } = viewState
+  //     // this.setHexagonSettings(viewState)
+  //     this.map.jumpTo({
+  //       bearing,
+  //       center: { lng: longitude, lat: latitude },
+  //       pitch,
+  //       zoom
+  //     })
+  //   },
+  //   layers: [
+  //     new this._HexagonLayer({
+  //       // id,
+  //       // colorRange,
+  //       // coverage,
+  //       data: this._data,
+  //       // elevationRange,
+  //       // elevationScale,
+  //       // extruded,
+  //       getPosition: (d: Record<string, number>): Record<string, number> => d,
+  //       // material,
+  //       // opacity,
+  //       // pickable: true,
+  //       // radius,
+  //       // upperPercentile
+
+  //       ...this._hexagonParams,
+  //       ...this._hexagonProps
+  //       // Interactive props
+
+  //       // autoHighlight: true,
+  //       // onClick: (info: any) =>
+  //       //   info.object &&
+  //       //   alert(`${info.object.properties.name} (${info.object.properties.abbrev})`)
+  //     })
+  //   ]
+  // })
+  // this.showModal()
+  // }
+
+  setHexagonParams({ id, value }: HTMLInputElement): void {
+    this._store.setters.setHexagonParamsState(id, +value)
+    // Object.keys(this._hexagonParams).forEach((param: string): void => {
+    /* @ts-ignore */
+    // document.getElementById(param).oninput = (evt: any): void => {
+    // evt?.target?.value && this._store.setters.setHexagonParamsState(param, +evt.target.value)
+    // this._hexagonLayer.setProps({ [param]: +evt.target.value })
+    // this._deck.setProps({ layers: [this._hexagonLayer], [param]: +evt.target.value })
+  }
   //   })
   // }
+
+  resetHexagonParams(): void {
+    Object.keys(this._hexagonParams).forEach((param: string): void => {
+      this._store.setters.setHexagonParamsState(
+        param,
+        this._hexagonInitialParams[param as keyof IHexagonParams]
+      )
+      this._hexagonLayer.setProps({
+        [param]: this._hexagonInitialParams[param as keyof IHexagonParams]
+      })
+    })
+  }
 
   resetHexagonSettings(): void {
-    const { bearing, center, pitch, zoom } = this._hexagonInitialSettings
-    // const settings: IHexagonSettings = {
-    //   bearing,
-    //   center,
-    //   pitch,
-    //   zoom
-    // }
+    const { bearing, center, pitch, zoom } = this._hexagonSettings
     this.map.setBearing(bearing)
     this.map.setCenter(center)
     this.map.setPitch(pitch)
     this.map.setZoom(zoom)
-    this.setHexagonSettingsState(this._hexagonInitialSettings)
+    this.setHexagonSettingsState(this._hexagonSettings)
   }
 
-  private addHexagonLayer(): void {
-    // this.map.addLayer(this._hexagonLayer)
-    // this.setLayerVisibility()
-  }
-
-  // private setLayerVisibility() {
-  //   this.eventEmitter.emit(['setSplashScreenActive'])
-  //   this.map.setLayoutProperty(this.state.heatmap.id, 'visibility', 'visible')
-  //   this._store.setters.setModalState()
+  // private setHexagonSettings({ bearing, latitude, longitude, pitch, zoom }: ViewState): void {
+  //   const lat: number = +latitude.toFixed(6)
+  //   const lng: number = +longitude.toFixed(6)
+  //   const center: LngLatLike = { lng, lat }
+  //   const settings: IHexagonSettings = {
+  //     bearing: +bearing.toFixed(1),
+  //     center,
+  //     latitude: lat,
+  //     longitude: lng,
+  //     pitch: +pitch.toFixed(1),
+  //     zoom: +zoom.toFixed(1)
+  //   }
+  //   this.setHexagonSettingsState(settings)
   // }
 
   private setHexagonSettingsState(settings: IHexagonSettings): void {
     this._hexagonSettings = { ...settings }
     this._store.setters.setHexagonSettingsState(this._hexagonSettings)
   }
+
+  private showMarkers(): void {
+    setTimeout((): void => this._markerService.showMarkers(), 0.5)
+  }
+
+  private showModal(): void {
+    const modal: IModal = cloneDeep(store.getters.getModalState())
+    modal.show && setTimeout((): void => this._store.setters.setModalState(), 0.5)
+  }
 }
+
+// private _hexagonInitialSettings: IHexagonSettings,
+// private _hexagonInitialParams: IHexagonParams,
+// private _hexagonOptions: IHexagonOptions, // private _hexagonParams: IHexagonParams,
+// private _hexagonProps: IHexagonProps,
+// private _hexagonSettings: IHexagonSettings,
+// private _store: IStore

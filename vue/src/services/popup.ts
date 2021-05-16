@@ -13,8 +13,7 @@ export default class PopupService {
     })
   }
 
-  addLayerPopup(evt: MapLayerMouseEvent): void {
-    const { features, lngLat } = evt
+  addLayerPopup({ features, lngLat }: MapLayerMouseEvent): void {
     if (features && features.length && features[0].properties) {
       this._popup
         .setHTML(

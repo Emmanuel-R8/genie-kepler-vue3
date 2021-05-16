@@ -4,8 +4,8 @@ import { reactive, readonly } from 'vue'
 import { State } from '@/enums'
 import { deckgl, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import {
-  IHexagonParams,
   IHexagonSettings,
+  IHexagonParams,
   ILayer,
   ILayerElement,
   IMapSettings,
@@ -15,6 +15,15 @@ import {
   IStyleLayer
 } from '@/interfaces'
 
+const {
+  HEXAGON_PARAMS,
+  HEXAGON_SETTINGS,
+  LAYER_ELEMENTS,
+  MAP_SETTINGS,
+  MAP_STYLES,
+  MODAL,
+  STYLE_LAYERS_VISIBILITY
+} = State
 const { hexagonSettings, hexagonParams } = deckgl
 const { mapSettings, mapStyles } = mapbox
 const state: Record<string, any> = reactive({
@@ -24,8 +33,9 @@ const state: Record<string, any> = reactive({
   mapSettings,
   mapStyles,
   modal,
-  styleLayers: styleLayersVisibility
+  styleLayersVisibility
 })
+
 const getState = (key: string) => {
   return state[key]
 }
@@ -40,25 +50,25 @@ const logState = (state: string, key: string, value?: Record<string, any>): void
 }
 
 const getters: Record<string, any> = {
-  getHexagonParamsState: (): void => getState(State.HEXAGON_PARAMS),
-  getHexagonSettingsState: (): void => getState(State.HEXAGON_SETTINGS),
-  getLayerElementsState: (): void => getState(State.LAYER_ELEMENTS),
-  getMapSettingsState: (): void => getState(State.MAP_SETTINGS),
-  getMapStylesState: (): void => getState(State.MAP_STYLES),
-  getModalState: (): void => getState(State.MODAL),
-  getStyleLayersVisibilityState: (): void => getState(State.STYLE_LAYERS)
+  getHexagonParamsState: (): void => getState(HEXAGON_PARAMS),
+  getHexagonSettingsState: (): void => getState(HEXAGON_SETTINGS),
+  getLayerElementsState: (): void => getState(LAYER_ELEMENTS),
+  getMapSettingsState: (): void => getState(MAP_SETTINGS),
+  getMapStylesState: (): void => getState(MAP_STYLES),
+  getModalState: (): void => getState(MODAL),
+  getStyleLayersVisibilityState: (): void => getState(STYLE_LAYERS_VISIBILITY)
 }
 const setters: Record<string, any> = {
-  setHexagonParamsState(params: IHexagonParams): void {
-    const key: string = State.HEXAGON_PARAMS
-    let hexagonParams: IHexagonParams = { ...getState(key) }
+  setHexagonParamsState(param: string, value: number): void {
+    const key: string = HEXAGON_PARAMS
+    const hexagonParams: IHexagonParams = { ...getState(key) }
     logState('old', key, hexagonParams)
-    hexagonParams = params
+    hexagonParams[param as keyof IHexagonParams] = value
     setState(key, hexagonParams)
     logState('new', key)
   },
   setHexagonSettingsState(settings: IHexagonSettings): void {
-    const key: string = State.HEXAGON_SETTINGS
+    const key: string = HEXAGON_SETTINGS
     let hexagonSettings: IHexagonSettings = { ...getState(key) }
     logState('old', key, hexagonSettings)
     hexagonSettings = settings
@@ -66,7 +76,7 @@ const setters: Record<string, any> = {
     logState('new', key)
   },
   setLayerElementsState(id: ILayer): void {
-    const key: string = State.LAYER_ELEMENTS
+    const key: string = LAYER_ELEMENTS
     const layerElements: ILayerElement[] = [...getState(key)]
     // logState('old', key, layerElements)
     const i: number = layerElements.findIndex((el: ILayerElement) => el.id === id)
@@ -75,16 +85,16 @@ const setters: Record<string, any> = {
     // logState('new', key)
   },
   setMapSettingsState(settings: IMapSettings): void {
-    const key: string = State.MAP_SETTINGS
+    const key: string = MAP_SETTINGS
     let mapSettings: IMapSettings = { ...getState(key) }
-    // logState('old', key, mapSettings)
+    logState('old', key, mapSettings)
     mapSettings = settings
     setState(key, mapSettings)
-    // logState('new', key)
+    logState('new', key)
   },
   setMapStylesState(): void {
     let id: string
-    const key: string = State.MAP_STYLES
+    const key: string = MAP_STYLES
     const mapStyles: IMapStyle = { ...getState(key) }
     // logState('old', key, mapStyles)
     mapStyles[mapStyles.active as keyof IMapStyle].visible =
@@ -98,7 +108,7 @@ const setters: Record<string, any> = {
     // logState('new', key)
   },
   setModalState(): void {
-    const key: string = State.MODAL
+    const key: string = MODAL
     const modal: IModal = { ...getState(key) }
     // logState('old', key, modal)
     modal.show = !modal.show
@@ -107,7 +117,7 @@ const setters: Record<string, any> = {
     // logState('new', key)
   },
   setStyleLayersVisibilityState(id: ILayer): void {
-    const key: string = State.STYLE_LAYERS
+    const key: string = STYLE_LAYERS_VISIBILITY
     const styleLayers: IStyleLayer = { ...getState(key) }
     // logState('old', key, styleLayers)
     styleLayers[id as keyof IStyleLayer].visible = !styleLayers[id as keyof IStyleLayer].visible

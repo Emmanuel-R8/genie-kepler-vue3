@@ -11,7 +11,7 @@ $primary-text-color: rgb(60, 75, 90);
 
 .elements {
   @include border-radius(4px);
-  animation: fade-in 2s ease-out forwards;
+  animation: fade-in 1.5s ease-out forwards;
   border: 2px solid rgb(187, 187, 187);
   cursor: pointer;
   font-size: 0.95em;

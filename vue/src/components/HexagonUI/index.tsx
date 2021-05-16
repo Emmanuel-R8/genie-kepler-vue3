@@ -88,14 +88,14 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    // onChangeInputValue: {
-    //   type: Function,
-    //   required: true
-    // },
-    // resetHexagonParams: {
-    //   type: Function,
-    //   required: true
-    // },
+    onChangeInputValue: {
+      type: Function,
+      required: true
+    },
+    resetHexagonParams: {
+      type: Function,
+      required: true
+    },
     resetHexagonSettings: {
       type: Function,
       required: true

@@ -1,10 +1,11 @@
 .modal {
   background-color: rgba(0, 0, 0, 0.3);
   bottom: 0;
+  height: 100%;
   left: 0;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 45px;
   width: 100%;
   z-index: 2;
 }

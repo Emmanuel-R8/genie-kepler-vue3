@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import scss from '@/components/Layers/index.module.scss'
+import scss from '@/components/LayerElements/index.module.scss'
 
 const html = (props: Record<string, any>): JSX.Element => (
   <li>

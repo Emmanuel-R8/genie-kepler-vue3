@@ -15,9 +15,7 @@ const html = (modal: IModal): JSX.Element => (
 export default defineComponent({
   setup() {
     const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
-    if (!modal.value.show) {
-      store.setters.setModalState()
-    }
+    !modal.value.show && store.setters.setModalState()
     return (): JSX.Element => html(modal.value)
   }
 })

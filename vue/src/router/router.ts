@@ -14,6 +14,11 @@ const routes: any[] = [
     path: '/deckgl',
     name: Routes.DECKGL,
     component: Deckgl
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: Routes.MAPBOX,
+    component: Mapbox
   }
 ]
 export default createRouter({ history, routes })

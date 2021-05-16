@@ -39,11 +39,11 @@ export default class MapboxService {
     const lng: number = +this.map.getCenter().lng.toFixed(6)
     const center: LngLatLike = { lng, lat }
     const settings: IMapSettings = {
-      bearing: +this.map.getBearing().toFixed(2),
+      bearing: +this.map.getBearing().toFixed(1),
       center,
-      pitch: +this.map.getPitch().toFixed(2),
+      pitch: +this.map.getPitch().toFixed(1),
       style: this.mapStyle,
-      zoom: +this.map.getZoom().toFixed(2)
+      zoom: +this.map.getZoom().toFixed(1)
     }
     this._mapSettings = { ...settings }
     this._store.setters.setMapSettingsState(this._mapSettings)

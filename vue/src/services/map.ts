@@ -1,10 +1,23 @@
 import cloneDeep from 'lodash/cloneDeep'
-import mapboxgl, { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
+import mapboxgl, {
+  FillLayer,
+  LineLayer,
+  LngLatLike,
+  Map,
+  MapLayerMouseEvent,
+  SkyLayer
+} from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { IMapStyle, IModal, IStore, IStyleLayer } from '@/interfaces'
-import { DataService, MapboxService, PopupService, StyleLayerService } from '@/services'
+import { IMapStyle, IModal, IStore, IStyleLayer, ITrail } from '@/interfaces'
+import {
+  DataService,
+  MapboxService,
+  MarkerService,
+  PopupService,
+  StyleLayerService
+} from '@/services'
 import { store } from '@/store'
 
 @Service()
@@ -13,6 +26,7 @@ export default class MapService {
     public map: Map,
     private _dataService: DataService,
     private _mapboxService: MapboxService,
+    private _markerService: MarkerService,
     private _popupService: PopupService,
     private _styleLayerService: StyleLayerService,
     private _skyLayer: SkyLayer,
@@ -20,6 +34,7 @@ export default class MapService {
   ) {
     this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
+    this._markerService = Container.get(MarkerService)
     this._popupService = Container.get(PopupService)
     this._styleLayerService = Container.get(StyleLayerService)
     this._skyLayer = mapbox.skyLayer as SkyLayer
@@ -27,12 +42,12 @@ export default class MapService {
   }
 
   async loadMap(): Promise<void> {
-    if (!mapboxgl.accessToken) {
-      await this._dataService.getMapboxAccessToken()
-    }
+    !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
+
     this._mapboxService.loadMapbox()
     this.map = this._mapboxService.map
     this.map.on('load', (): void => {
+      this.showMarkers()
       this.addLayers()
     })
   }
@@ -42,16 +57,12 @@ export default class MapService {
     for (const layer of this._styleLayerService.styleLayers) {
       this.addStyleLayer(layer)
     }
-    const modal: IModal = cloneDeep(store.getters.getModalState())
-    if (modal.show) {
-      setTimeout((): void => this._store.setters.setModalState(), 0.5)
-    }
+    this.showModal()
   }
 
-  flyTo(trail: any): void {
-    const { center, zoom } = trail
+  flyTo({ center, zoom }: ITrail): void {
     this.map.flyTo({
-      center,
+      center: center as LngLatLike,
       zoom
     })
   }
@@ -79,6 +90,12 @@ export default class MapService {
     }
   }
 
+  private addStyleLayer(layer: FillLayer | LineLayer): void {
+    const { id } = layer
+    this.map.addLayer(layer)
+    this.setStyleLayerVisibility(id)
+  }
+
   private setStyleLayerEventHandlers(id: string): void {
     this.map
       .on('click', id, (evt: MapLayerMouseEvent): void => {
@@ -93,9 +110,12 @@ export default class MapService {
       })
   }
 
-  private addStyleLayer(layer: FillLayer | LineLayer): void {
-    const { id } = layer
-    this.map.addLayer(layer)
-    this.setStyleLayerVisibility(id)
+  private showMarkers(): void {
+    setTimeout((): void => this._markerService.showMarkers(), 0.5)
+  }
+
+  private showModal(): void {
+    const modal: IModal = cloneDeep(store.getters.getModalState())
+    modal.show && setTimeout((): void => this._store.setters.setModalState(), 0.5)
   }
 }
