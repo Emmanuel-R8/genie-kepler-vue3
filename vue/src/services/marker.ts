@@ -7,20 +7,16 @@ import { MapboxService, PopupService } from '@/services'
 
 @Service()
 export default class MarkerService {
-  constructor(
-    private _mapboxService: MapboxService,
-    private _popupService: PopupService,
-    private _markers: any[],
-    private _markersHash: Record<string, number>
-  ) {
+  private _markers: Marker[][] = []
+  private _markersHash: Record<string, number> = {
+    office: 0,
+    places: 0,
+    trails: 0
+  }
+
+  constructor(private _mapboxService: MapboxService, private _popupService: PopupService) {
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
-    this._markers = []
-    this._markersHash = {
-      office: 0,
-      places: 0,
-      trails: 0
-    }
   }
   /* create individual html marker elements & add mouse event handlers */
   setMarkers(fc: FeatureCollection, id: string): void {

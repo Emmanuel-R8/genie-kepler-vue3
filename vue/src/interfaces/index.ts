@@ -119,7 +119,7 @@ export interface IStyleLayer {
   layout?: Record<string, string>
   'line-color'?: string
   'line-width'?: number
-  paint?: Record<string, string>
+  paint?: any
   source?: any
   table?: string
   trails?: any

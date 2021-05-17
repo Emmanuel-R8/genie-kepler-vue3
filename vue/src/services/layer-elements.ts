@@ -9,18 +9,13 @@ import { store } from '@/store'
 
 @Service()
 export default class LayerElementsService {
-  constructor(
-    private _mapService: MapService,
-    private _markerService: MarkerService,
-    private _router: Router,
-    private _routes: Record<string, string>,
-    private _store: IStore
-  ) {
+  private _router: Router = router
+  private _routes: Record<string, string> = Routes
+  private _store: IStore = store
+
+  constructor(private _mapService: MapService, private _markerService: MarkerService) {
     this._mapService = Container.get(MapService)
     this._markerService = Container.get(MarkerService)
-    this._router = router
-    this._routes = Routes
-    this._store = store
   }
 
   displayLayerElements(layer: ILayer): void {

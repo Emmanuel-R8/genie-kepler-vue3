@@ -87,10 +87,10 @@ const setters: Record<string, any> = {
   setMapSettingsState(settings: IMapSettings): void {
     const key: string = MAP_SETTINGS
     let mapSettings: IMapSettings = { ...getState(key) }
-    logState('old', key, mapSettings)
+    // logState('old', key, mapSettings)
     mapSettings = settings
     setState(key, mapSettings)
-    logState('new', key)
+    // logState('new', key)
   },
   setMapStylesState(): void {
     let id: string

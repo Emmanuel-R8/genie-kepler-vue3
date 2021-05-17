@@ -14,14 +14,12 @@ export default class ModalService {
     this._modalState = this.getModalState()
     this._modalState.active && this.setModalState(timeout)
   }
-
   showModal = (timeout?: number): void => {
     this._modalState = this.getModalState()
     !this._modalState.active && this.setModalState(timeout)
   }
 
   private getModalState = (): IModal => cloneDeep(this._storeService.getModalState())
-
   private setModalState = (timeout?: number): number | void =>
     timeout
       ? setTimeout((): void => this._storeService.setModalState(), timeout)

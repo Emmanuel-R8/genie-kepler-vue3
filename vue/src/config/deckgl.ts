@@ -9,7 +9,6 @@ export default {
     canvas: 'hexagon',
     container: 'deckgl',
     controller: true,
-    // doubleClickZoom: true,
     interactive: false,
     maxZoom: 18,
     minZoom: 2,

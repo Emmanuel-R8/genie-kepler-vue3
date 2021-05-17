@@ -10,23 +10,20 @@ import { HttpService, MarkerService, StyleLayerService } from '@/services'
 
 @Service()
 export default class DataService {
+  private _endPoints: Record<string, string> = EndPoints
+  private _markers: IMarker[] = markers
+  private _styleLayers: IStyleLayer[] = styleLayers
+  private _urls: Record<string, string> = Urls
+
   constructor(
     public hexagonData: number[][],
-    private _endPoints: Record<string, string>,
     private _http: HttpService,
     private _markerService: MarkerService,
-    private _markers: IMarker[],
-    private _styleLayers: IStyleLayer[],
-    private _styleLayerService: StyleLayerService,
-    private _urls: Record<string, string>
+    private _styleLayerService: StyleLayerService
   ) {
-    this._endPoints = EndPoints
     this._http = Container.get(HttpService)
     this._markerService = Container.get(MarkerService)
-    this._markers = markers
-    this._styleLayers = styleLayers
     this._styleLayerService = Container.get(StyleLayerService)
-    this._urls = Urls
   }
 
   loadData(): void {

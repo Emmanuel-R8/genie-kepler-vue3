@@ -20,8 +20,6 @@ export default defineComponent({
     const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
     const modalService: ModalService = Container.get(ModalService)
     modalService.showModal()
-    // const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
-    // !modal.value.show && store.setters.setModalState()
     return (): JSX.Element => html(modal.value)
   }
 })

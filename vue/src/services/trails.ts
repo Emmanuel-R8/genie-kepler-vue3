@@ -6,9 +6,10 @@ import { MapService } from '@/services'
 
 @Service()
 export default class TrailsService {
-  constructor(private _mapService: MapService, private _trails: ITrail[]) {
+  private _trails: ITrail[] = trails
+
+  constructor(private _mapService: MapService) {
     this._mapService = Container.get(MapService)
-    this._trails = trails
   }
 
   selectTrail = (trailName: string): void => {

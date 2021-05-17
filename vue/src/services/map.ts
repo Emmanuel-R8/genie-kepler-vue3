@@ -23,6 +23,9 @@ import { store } from '@/store'
 
 @Service()
 export default class MapService {
+  private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
+  private _store: IStore = store
+
   constructor(
     public map: Map,
     private _dataService: DataService,
@@ -30,9 +33,7 @@ export default class MapService {
     private _markerService: MarkerService,
     private _modalService: ModalService,
     private _popupService: PopupService,
-    private _styleLayerService: StyleLayerService,
-    private _skyLayer: SkyLayer,
-    private _store: IStore
+    private _styleLayerService: StyleLayerService
   ) {
     this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
@@ -40,8 +41,6 @@ export default class MapService {
     this._modalService = Container.get(ModalService)
     this._popupService = Container.get(PopupService)
     this._styleLayerService = Container.get(StyleLayerService)
-    this._skyLayer = mapbox.skyLayer as SkyLayer
-    this._store = store
   }
 
   async loadMap(): Promise<void> {
@@ -119,7 +118,5 @@ export default class MapService {
 
   private hideModal(): void {
     this._modalService.hideModal(0.5)
-    // const modal: IModal = cloneDeep(store.getters.getModalState())
-    // modal.show && setTimeout((): void => this._store.setters.setModalState(), 0.5)
   }
 }
