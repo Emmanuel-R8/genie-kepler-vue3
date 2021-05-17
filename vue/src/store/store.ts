@@ -4,8 +4,8 @@ import { reactive, readonly } from 'vue'
 import { State } from '@/enums'
 import { deckgl, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import {
+  IHexagonAttributes,
   IHexagonSettings,
-  IHexagonParams,
   ILayer,
   ILayerElement,
   IMapSettings,
@@ -16,7 +16,7 @@ import {
 } from '@/interfaces'
 
 const {
-  HEXAGON_PARAMS,
+  HEXAGON_ATTRIBUTES,
   HEXAGON_SETTINGS,
   LAYER_ELEMENTS,
   MAP_SETTINGS,
@@ -24,10 +24,10 @@ const {
   MODAL,
   STYLE_LAYERS_VISIBILITY
 } = State
-const { hexagonSettings, hexagonParams } = deckgl
+const { hexagonAttributes, hexagonSettings } = deckgl
 const { mapSettings, mapStyles } = mapbox
 const state: Record<string, any> = reactive({
-  hexagonParams,
+  hexagonAttributes,
   hexagonSettings,
   layerElements,
   mapSettings,
@@ -50,7 +50,7 @@ const logState = (state: string, key: string, value?: Record<string, any>): void
 }
 
 const getters: Record<string, any> = {
-  getHexagonParamsState: (): void => getState(HEXAGON_PARAMS),
+  getHexagonAttributesState: (): void => getState(HEXAGON_ATTRIBUTES),
   getHexagonSettingsState: (): void => getState(HEXAGON_SETTINGS),
   getLayerElementsState: (): void => getState(LAYER_ELEMENTS),
   getMapSettingsState: (): void => getState(MAP_SETTINGS),
@@ -59,21 +59,21 @@ const getters: Record<string, any> = {
   getStyleLayersVisibilityState: (): void => getState(STYLE_LAYERS_VISIBILITY)
 }
 const setters: Record<string, any> = {
-  setHexagonParamsState(param: string, value: number): void {
-    const key: string = HEXAGON_PARAMS
-    const hexagonParams: IHexagonParams = { ...getState(key) }
-    logState('old', key, hexagonParams)
-    hexagonParams[param as keyof IHexagonParams] = value
-    setState(key, hexagonParams)
-    logState('new', key)
+  setHexagonAttributesState(attribute: string, value: number): void {
+    const key: string = HEXAGON_ATTRIBUTES
+    const hexagonAttributes: IHexagonAttributes = { ...getState(key) }
+    // logState('old', key, hexagonAttributes)
+    hexagonAttributes[attribute as keyof IHexagonAttributes] = value
+    setState(key, hexagonAttributes)
+    // logState('new', key)
   },
   setHexagonSettingsState(settings: IHexagonSettings): void {
     const key: string = HEXAGON_SETTINGS
     let hexagonSettings: IHexagonSettings = { ...getState(key) }
-    logState('old', key, hexagonSettings)
+    // logState('old', key, hexagonSettings)
     hexagonSettings = settings
     setState(key, hexagonSettings)
-    logState('new', key)
+    // logState('new', key)
   },
   setLayerElementsState(id: ILayer): void {
     const key: string = LAYER_ELEMENTS
@@ -111,8 +111,8 @@ const setters: Record<string, any> = {
     const key: string = MODAL
     const modal: IModal = { ...getState(key) }
     // logState('old', key, modal)
-    modal.show = !modal.show
-    modal.show ? (modal.class = 'active') : (modal.class = 'inactive')
+    modal.active = !modal.active
+    modal.active ? (modal.class = 'active') : (modal.class = 'inactive')
     setState(key, modal)
     // logState('new', key)
   },

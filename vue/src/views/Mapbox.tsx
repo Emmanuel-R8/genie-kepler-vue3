@@ -1,7 +1,9 @@
+import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElements, Mapbox, Modal, Trails } from '@/components'
 import { IModal } from '@/interfaces'
+import { ModalService } from '@/services'
 import { store } from '@/store'
 
 const html = (modal: IModal): JSX.Element => (
@@ -16,7 +18,10 @@ const html = (modal: IModal): JSX.Element => (
 export default defineComponent({
   setup() {
     const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
-    !modal.value.show && store.setters.setModalState()
+    const modalService: ModalService = Container.get(ModalService)
+    modalService.showModal()
+    // const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
+    // !modal.value.show && store.setters.setModalState()
     return (): JSX.Element => html(modal.value)
   }
 })

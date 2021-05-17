@@ -63,7 +63,7 @@ const html = (props: Record<string, any>): JSX.Element => (
     </div>
     <div class={scss.spacer}></div>
     <button onClick={props.resetHexagonSettings}>Reset Coordinates</button>
-    <button onClick={props.resetHexagonParams}>Reset Parameters</button>
+    <button onClick={props.resetHexagonAttributes}>Reset Parameters</button>
     <div class={scss.spacer}></div>
     <button onClick={props.returnToTrails}>Return to Trails</button>
     <div class={scss.spacer}></div>
@@ -92,7 +92,7 @@ export default defineComponent({
       type: Function,
       required: true
     },
-    resetHexagonParams: {
+    resetHexagonAttributes: {
       type: Function,
       required: true
     },

@@ -4,7 +4,7 @@ export enum Routes {
 }
 
 export enum State {
-  HEXAGON_PARAMS = 'hexagonParams',
+  HEXAGON_ATTRIBUTES = 'hexagonAttributes',
   HEXAGON_SETTINGS = 'hexagonSettings',
   LAYER_ELEMENTS = 'layerElements',
   MODAL = 'modal',

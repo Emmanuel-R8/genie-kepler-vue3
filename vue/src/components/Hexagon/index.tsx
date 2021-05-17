@@ -3,7 +3,7 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
-import { IHexagonParams } from '@/interfaces'
+import { IHexagonAttributes } from '@/interfaces'
 import { HexagonService } from '@/services'
 import { router } from '@/router'
 import { store } from '@/store'
@@ -13,12 +13,12 @@ const onChangeInputValueHandler = (evt: Event) => {
   evt.stopPropagation()
   const { target } = evt
   const hexagonService: HexagonService = Container.get(HexagonService)
-  target && hexagonService.setHexagonParams(target as HTMLInputElement)
+  target && hexagonService.setHexagonAttributes(target as HTMLInputElement)
 }
-const resetHexagonParamsHandler = (evt: Event): void => {
+const resetHexagonAttributesHandler = (evt: Event): void => {
   evt.stopPropagation()
   const hexagonService: HexagonService = Container.get(HexagonService)
-  hexagonService.resetHexagonParams()
+  hexagonService.resetHexagonAttributes()
 }
 const resetHexagonSettingsHandler = (evt: Event): void => {
   evt.stopPropagation()
@@ -30,15 +30,15 @@ const returnToTrailsHandler = (evt: Event): void => {
   const name: string = Routes.MAPBOX
   router.push({ name })
 }
-const html = (params: IHexagonParams): JSX.Element => (
+const html = (attributes: IHexagonAttributes): JSX.Element => (
   <HexagonUI
     class={scss.hexagon}
-    coverage={params.coverage}
-    elevationScale={params.elevationScale}
-    radius={params.radius}
-    upperPercentile={params.upperPercentile}
+    coverage={attributes.coverage}
+    elevationScale={attributes.elevationScale}
+    radius={attributes.radius}
+    upperPercentile={attributes.upperPercentile}
     onChangeInputValue={onChangeInputValueHandler}
-    resetHexagonParams={resetHexagonParamsHandler}
+    resetHexagonAttributes={resetHexagonAttributesHandler}
     resetHexagonSettings={resetHexagonSettingsHandler}
     returnToTrails={returnToTrailsHandler}
   />
@@ -46,9 +46,9 @@ const html = (params: IHexagonParams): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const params: ComputedRef<IHexagonParams> = computed(
-      (): IHexagonParams => store.getters.getHexagonParamsState()
+    const attributes: ComputedRef<IHexagonAttributes> = computed(
+      (): IHexagonAttributes => store.getters.getHexagonAttributesState()
     )
-    return (): JSX.Element => html(params.value)
+    return (): JSX.Element => html(attributes.value)
   }
 })

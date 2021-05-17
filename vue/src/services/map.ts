@@ -10,11 +10,12 @@ import mapboxgl, {
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { IMapStyle, IModal, IStore, IStyleLayer, ITrail } from '@/interfaces'
+import { IMapStyle, IStore, IStyleLayer, ITrail } from '@/interfaces'
 import {
   DataService,
   MapboxService,
   MarkerService,
+  ModalService,
   PopupService,
   StyleLayerService
 } from '@/services'
@@ -27,6 +28,7 @@ export default class MapService {
     private _dataService: DataService,
     private _mapboxService: MapboxService,
     private _markerService: MarkerService,
+    private _modalService: ModalService,
     private _popupService: PopupService,
     private _styleLayerService: StyleLayerService,
     private _skyLayer: SkyLayer,
@@ -35,6 +37,7 @@ export default class MapService {
     this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
     this._markerService = Container.get(MarkerService)
+    this._modalService = Container.get(ModalService)
     this._popupService = Container.get(PopupService)
     this._styleLayerService = Container.get(StyleLayerService)
     this._skyLayer = mapbox.skyLayer as SkyLayer
@@ -57,7 +60,7 @@ export default class MapService {
     for (const layer of this._styleLayerService.styleLayers) {
       this.addStyleLayer(layer)
     }
-    this.showModal()
+    this.hideModal()
   }
 
   flyTo({ center, zoom }: ITrail): void {
@@ -114,8 +117,9 @@ export default class MapService {
     setTimeout((): void => this._markerService.showMarkers(), 0.5)
   }
 
-  private showModal(): void {
-    const modal: IModal = cloneDeep(store.getters.getModalState())
-    modal.show && setTimeout((): void => this._store.setters.setModalState(), 0.5)
+  private hideModal(): void {
+    this._modalService.hideModal(0.5)
+    // const modal: IModal = cloneDeep(store.getters.getModalState())
+    // modal.show && setTimeout((): void => this._store.setters.setModalState(), 0.5)
   }
 }

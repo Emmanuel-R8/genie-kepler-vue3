@@ -1,4 +1,10 @@
 export default {
+  hexagonAttributes: {
+    coverage: 1,
+    elevationScale: 100,
+    radius: 1000,
+    upperPercentile: 100
+  },
   hexagonOptions: {
     canvas: 'hexagon',
     container: 'deckgl',
@@ -8,12 +14,6 @@ export default {
     maxZoom: 18,
     minZoom: 2,
     style: 'mapbox://styles/mapbox/dark-v10'
-  },
-  hexagonParams: {
-    coverage: 1,
-    elevationScale: 100,
-    radius: 1000,
-    upperPercentile: 100
   },
   hexagonProps: {
     coverage: 1,

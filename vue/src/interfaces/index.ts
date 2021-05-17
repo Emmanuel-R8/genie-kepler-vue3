@@ -1,18 +1,18 @@
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
+export interface IHexagonAttributes {
+  coverage: number
+  elevationScale: number
+  radius: number
+  upperPercentile: number
+}
+
 export interface IHexagonOptions extends IMapOptions {
   canvas: string
   controller: boolean
   interactive: boolean
   style: string
-}
-
-export interface IHexagonParams {
-  coverage: number
-  elevationScale: number
-  radius: number
-  upperPercentile: number
 }
 
 export interface IHexagonProps {
@@ -96,8 +96,8 @@ export interface IMarker {
 }
 
 export interface IModal {
+  active: boolean
   class: string
-  show: boolean
 }
 
 export interface IStore {
