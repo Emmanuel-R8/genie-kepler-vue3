@@ -4,7 +4,7 @@ import { IStyleLayer } from '@/interfaces'
 
 @Service()
 export default class StyleLayerService {
-  styleLayers: IStyleLayer[] = []
+  styleLayers: any[] = []
 
   setStyleLayers(layer: IStyleLayer): void {
     this.styleLayers.push(layer)
