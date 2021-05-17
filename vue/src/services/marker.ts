@@ -73,7 +73,7 @@ export default class MarkerService {
   }
 
   toggleMarkers(id: ILayer): void {
-    for (const marker of this._markers[this._markersHash[id as string]]) {
+    for (const marker of this._markers[this._markersHash[id as keyof ILayer]]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
       el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()

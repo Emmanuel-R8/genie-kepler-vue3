@@ -6,10 +6,12 @@ import { ITrail } from '@/interfaces'
 import { TrailsService } from '@/services'
 import scss from './index.module.scss'
 
-const onSelectTrailHandler = (evt: any) => {
+const onSelectTrailHandler = (evt: any): void => {
   evt.stopPropagation()
+  /* prettier-ignore */
+  const { target: { value } } = evt
   const trailsService: TrailsService = Container.get(TrailsService)
-  evt?.target?.value && trailsService.selectTrail(evt.target.value)
+  value && trailsService.selectTrail(value)
 }
 const html = (): JSX.Element => (
   <div>

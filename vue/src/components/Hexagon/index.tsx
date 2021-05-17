@@ -4,11 +4,11 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
 import { IHexagonAttributes } from '@/interfaces'
-import { HexagonService, StoreService } from '@/services'
 import { router } from '@/router'
+import { HexagonService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const onChangeInputValueHandler = (evt: Event) => {
+const onChangeInputValueHandler = (evt: Event): void => {
   evt.stopPropagation()
   const { target } = evt
   const hexagonService: HexagonService = Container.get(HexagonService)

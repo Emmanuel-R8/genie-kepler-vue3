@@ -36,10 +36,10 @@ const state: Record<string, any> = reactive({
   styleLayersVisibility
 })
 
-const getState = (key: string) => {
+const getState = (key: string): any => {
   return state[key]
 }
-const setState = (key: string, value: Record<string, any>) => {
+const setState = (key: string, value: Record<string, any>): void => {
   state[key] = value
 }
 /* debugging tool */

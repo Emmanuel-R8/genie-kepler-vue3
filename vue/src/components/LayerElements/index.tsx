@@ -9,8 +9,10 @@ import scss from './index.module.scss'
 
 const onDisplayLayerHandler = (evt: any): void => {
   evt.stopPropagation()
+  /* prettier-ignore */
+  const { target: { id } } = evt
   const layerElementsService: LayerElementsService = Container.get(LayerElementsService)
-  evt?.target?.id && layerElementsService.displayLayerElements(evt.target.id.split('-')[0])
+  id && layerElementsService.displayLayerElements(id.split('-')[0])
 }
 const html = (layerElements: ILayerElement[]): JSX.Element => (
   <div>

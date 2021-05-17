@@ -69,7 +69,7 @@ export default class LayerElementsService {
   }
 
   private setStyleLayerVisibility(layer: ILayer): void {
-    this._mapService.setStyleLayerVisibility(layer as string)
+    this._mapService.setStyleLayerVisibility(layer as keyof ILayer)
   }
 
   private setStyleLayersVisibilityState(layer: ILayer): void {
