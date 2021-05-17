@@ -1,29 +1,28 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
-import { Service } from 'typedi'
+import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { IMapOptions, IMapSettings, IStore } from '@/interfaces'
-import { store } from '@/store'
+import { IMapOptions, IMapSettings } from '@/interfaces'
+import { StoreService } from '@/services'
 
 @Service()
 export default class MapboxService {
+  private _mapOptions: IMapOptions = mapbox.mapOptions
+  private _navigationControl: Record<string, any> = mapbox.navigationControl
+
   constructor(
     public map: Map,
     public mapStyle: string,
-    private _mapOptions: IMapOptions,
     private _mapSettings: IMapSettings,
-    private _navigationControl: Record<string, any>,
-    private _store: IStore
+    private _storeService: StoreService
   ) {
-    this._mapOptions = mapbox.mapOptions
-    this._navigationControl = mapbox.navigationControl
-    this._store = store
+    this._storeService = Container.get(StoreService)
   }
 
   loadMapbox(): void {
     const { position, visualizePitch } = this._navigationControl
-    this._mapSettings = cloneDeep(this._store.getters.getMapSettingsState())
+    this._mapSettings = cloneDeep(this._storeService.getMapSettingsState())
     const options: MapboxOptions = { ...this._mapOptions, ...this._mapSettings }
     const { style } = this._mapSettings
     this.mapStyle = style
@@ -46,6 +45,6 @@ export default class MapboxService {
       zoom: +this.map.getZoom().toFixed(1)
     }
     this._mapSettings = { ...settings }
-    this._store.setters.setMapSettingsState(this._mapSettings)
+    this._storeService.setMapSettingsState(this._mapSettings)
   }
 }

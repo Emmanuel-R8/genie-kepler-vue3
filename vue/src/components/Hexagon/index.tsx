@@ -4,9 +4,8 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
 import { IHexagonAttributes } from '@/interfaces'
-import { HexagonService } from '@/services'
+import { HexagonService, StoreService } from '@/services'
 import { router } from '@/router'
-import { store } from '@/store'
 import scss from './index.module.scss'
 
 const onChangeInputValueHandler = (evt: Event) => {
@@ -46,8 +45,9 @@ const html = (attributes: IHexagonAttributes): JSX.Element => (
 
 export default defineComponent({
   setup() {
+    const storeService: StoreService = Container.get(StoreService)
     const attributes: ComputedRef<IHexagonAttributes> = computed(
-      (): IHexagonAttributes => store.getters.getHexagonAttributesState()
+      (): IHexagonAttributes => storeService.getHexagonAttributesState()
     )
     return (): JSX.Element => html(attributes.value)
   }

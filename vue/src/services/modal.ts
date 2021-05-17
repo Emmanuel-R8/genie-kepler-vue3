@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep'
 import { Container, Service } from 'typedi'
 
 import { IModal } from '@/interfaces'
@@ -19,7 +18,8 @@ export default class ModalService {
     !this._modalState.active && this.setModalState(timeout)
   }
 
-  private getModalState = (): IModal => cloneDeep(this._storeService.getModalState())
+  getModalState = (): IModal => this._storeService.getModalState()
+
   private setModalState = (timeout?: number): number | void =>
     timeout
       ? setTimeout((): void => this._storeService.setModalState(), timeout)

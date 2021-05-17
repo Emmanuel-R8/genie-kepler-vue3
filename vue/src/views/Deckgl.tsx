@@ -4,7 +4,6 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 import { Deckgl, Hexagon, Modal } from '@/components'
 import { IModal } from '@/interfaces'
 import { ModalService } from '@/services'
-import { store } from '@/store'
 
 const html = (modal: IModal): JSX.Element => (
   <div>
@@ -16,8 +15,8 @@ const html = (modal: IModal): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const modal: ComputedRef<IModal> = computed((): IModal => store.getters.getModalState())
     const modalService: ModalService = Container.get(ModalService)
+    const modal: ComputedRef<IModal> = computed((): IModal => modalService.getModalState())
     modalService.showModal()
     return (): JSX.Element => html(modal.value)
   }

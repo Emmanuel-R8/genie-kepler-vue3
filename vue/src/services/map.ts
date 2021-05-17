@@ -10,21 +10,20 @@ import mapboxgl, {
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { IMapStyle, IStore, IStyleLayer, ITrail } from '@/interfaces'
+import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
 import {
   DataService,
   MapboxService,
   MarkerService,
   ModalService,
   PopupService,
+  StoreService,
   StyleLayerService
 } from '@/services'
-import { store } from '@/store'
 
 @Service()
 export default class MapService {
   private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
-  private _store: IStore = store
 
   constructor(
     public map: Map,
@@ -33,6 +32,7 @@ export default class MapService {
     private _markerService: MarkerService,
     private _modalService: ModalService,
     private _popupService: PopupService,
+    private _storeService: StoreService,
     private _styleLayerService: StyleLayerService
   ) {
     this._dataService = Container.get(DataService)
@@ -40,6 +40,7 @@ export default class MapService {
     this._markerService = Container.get(MarkerService)
     this._modalService = Container.get(ModalService)
     this._popupService = Container.get(PopupService)
+    this._storeService = Container.get(StoreService)
     this._styleLayerService = Container.get(StyleLayerService)
   }
 
@@ -70,7 +71,7 @@ export default class MapService {
   }
 
   setMapStyle(): void {
-    const mapStyles: IMapStyle = cloneDeep(this._store.getters.getMapStylesState())
+    const mapStyles: IMapStyle = cloneDeep(this._storeService.getMapStylesState())
     const mapStyle: [string, any][] = Object.entries(mapStyles).filter(
       (mapStyle: [string, any]) => mapStyle[1].visible
     )
@@ -83,7 +84,7 @@ export default class MapService {
   }
 
   setStyleLayerVisibility(id: string): void {
-    const styleLayers: IStyleLayer = cloneDeep(this._store.getters.getStyleLayersVisibilityState())
+    const styleLayers: IStyleLayer = cloneDeep(this._storeService.getStyleLayersVisibilityState())
     styleLayers[id as keyof IStyleLayer].visible
       ? this.map.setLayoutProperty(id, 'visibility', 'visible')
       : this.map.setLayoutProperty(id, 'visibility', 'none')

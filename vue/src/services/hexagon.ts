@@ -1,8 +1,7 @@
 /*
- * URL: https://gist.github.com/Pessimistress/1a4f3f5eb3b882ab4dd29f8ac122a7be
- * Title: deck.gl + Mapbox HexagonLayer Example
- * Author: Xiaoji Chen (@pessimistress)
- * Data URL: https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv
+ * URL: https://deck.gl/gallery/hexagon-layer
+ * Title: deck.gl HexagonLayer Example
+ * Data URL: https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv
  * Data Source: https://data.gov.uk
  */
 import cloneDeep from 'lodash/cloneDeep'
@@ -13,16 +12,10 @@ import { Deck, ViewState } from '@deck.gl/core'
 import mapboxgl, { LngLatLike, Map, MapboxOptions } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import {
-  IHexagonAttributes,
-  IHexagonOptions,
-  IHexagonProps,
-  IHexagonSettings,
-  IStore
-} from '@/interfaces'
-import { DataService, MarkerService, ModalService } from '@/services'
-import { store } from '@/store'
 import { deckgl } from '@/config'
+import { IHexagonAttributes, IHexagonOptions, IHexagonProps, IHexagonSettings } from '@/interfaces'
+import { DataService, MarkerService, ModalService, StoreService } from '@/services'
+
 const { hexagonAttributes, hexagonOptions, hexagonProps, hexagonSettings } = deckgl
 
 @Service()
@@ -32,7 +25,6 @@ export default class HexagonService {
   private _hexagonOptions: IHexagonOptions = hexagonOptions
   private _hexagonProps: IHexagonProps = hexagonProps
   private _hexagonSettings: IHexagonSettings = hexagonSettings
-  private _store: IStore = store
 
   constructor(
     public map: Map,
@@ -41,17 +33,19 @@ export default class HexagonService {
     private _hexagonLayer: HexagonLayer,
     private _dataService: DataService,
     private _markerService: MarkerService,
-    private _modalService: ModalService
+    private _modalService: ModalService,
+    private _storeService: StoreService
   ) {
     this._dataService = Container.get(DataService)
     this._markerService = Container.get(MarkerService)
     this._modalService = Container.get(ModalService)
+    this._storeService = Container.get(StoreService)
   }
 
   async loadMap(): Promise<void> {
     !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
 
-    this._hexagonSettings = cloneDeep(this._store.getters.getHexagonSettingsState())
+    this._hexagonSettings = cloneDeep(this._storeService.getHexagonSettingsState())
     const options: MapboxOptions = { ...this._hexagonOptions, ...this._hexagonSettings }
     this.map = new Map(options).on('load', (): void => {
       this._data = this._dataService.hexagonData
@@ -61,7 +55,7 @@ export default class HexagonService {
   }
 
   setHexagonLayer(): void {
-    const { canvas, maxZoom, minZoom } = this._hexagonOptions
+    const { canvas, controller, maxZoom, minZoom } = this._hexagonOptions
     this._hexagonLayer = new HexagonLayer({
       // id,
       // colorRange,
@@ -86,7 +80,7 @@ export default class HexagonService {
     })
     this._deck = new Deck({
       canvas,
-      controller: { inertia: true, touchRotate: true },
+      controller,
       initialViewState: { ...this._hexagonSettings, maxZoom, minZoom },
       onViewStateChange: ({
         viewState,
@@ -162,7 +156,7 @@ export default class HexagonService {
   // }
 
   setHexagonAttributes({ id, value }: HTMLInputElement): void {
-    this._store.setters.setHexagonAttributesState(id, +value)
+    this._storeService.setHexagonAttributesState(id, +value)
     // Object.keys(this._hexagonAttributes).forEach((param: string): void => {
     /* @ts-ignore */
     // document.getElementById(param).oninput = (evt: any): void => {
@@ -174,13 +168,13 @@ export default class HexagonService {
   // }
 
   resetHexagonAttributes(): void {
-    Object.keys(this._hexagonAttributes).forEach((param: string): void => {
-      this._store.setters.setHexagonAttributesState(
-        param,
-        this._hexagonInitialParams[param as keyof IHexagonAttributes]
+    Object.keys(this._hexagonAttributes).forEach((attribute: string): void => {
+      this._storeService.setHexagonAttributesState(
+        attribute,
+        this._hexagonInitialParams[attribute as keyof IHexagonAttributes]
       )
       this._hexagonLayer.setProps({
-        [param]: this._hexagonInitialParams[param as keyof IHexagonAttributes]
+        [attribute]: this._hexagonInitialParams[attribute as keyof IHexagonAttributes]
       })
     })
   }
@@ -211,7 +205,7 @@ export default class HexagonService {
 
   private setHexagonSettingsState(settings: IHexagonSettings): void {
     this._hexagonSettings = { ...settings }
-    this._store.setters.setHexagonSettingsState(this._hexagonSettings)
+    this._storeService.setHexagonSettingsState(this._hexagonSettings)
   }
 
   private showMarkers(): void {

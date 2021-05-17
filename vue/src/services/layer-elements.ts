@@ -2,20 +2,23 @@ import { Container, Service } from 'typedi'
 import { Router } from 'vue-router'
 
 import { Routes } from '@/enums'
-import { ILayer, IStore } from '@/interfaces'
-import { MapService, MarkerService } from '@/services'
+import { ILayer } from '@/interfaces'
+import { MapService, MarkerService, StoreService } from '@/services'
 import { router } from '@/router'
-import { store } from '@/store'
 
 @Service()
 export default class LayerElementsService {
   private _router: Router = router
   private _routes: Record<string, string> = Routes
-  private _store: IStore = store
 
-  constructor(private _mapService: MapService, private _markerService: MarkerService) {
+  constructor(
+    private _mapService: MapService,
+    private _markerService: MarkerService,
+    private _storeService: StoreService
+  ) {
     this._mapService = Container.get(MapService)
     this._markerService = Container.get(MarkerService)
+    this._storeService = Container.get(StoreService)
   }
 
   displayLayerElements(layer: ILayer): void {
@@ -50,7 +53,7 @@ export default class LayerElementsService {
   }
 
   private setLayerElementsState(layer: ILayer): void {
-    this._store.setters.setLayerElementsState(layer)
+    this._storeService.setLayerElementsState(layer)
   }
 
   private setMapStyle(): void {
@@ -58,7 +61,7 @@ export default class LayerElementsService {
   }
 
   private setMapStylesState(): void {
-    this._store.setters.setMapStylesState()
+    this._storeService.setMapStylesState()
   }
 
   private setRoute(name: string): void {
@@ -70,7 +73,7 @@ export default class LayerElementsService {
   }
 
   private setStyleLayersVisibilityState(layer: ILayer): void {
-    this._store.setters.setStyleLayersVisibilityState(layer)
+    this._storeService.setStyleLayersVisibilityState(layer)
   }
 
   private showMarkers(timeout?: number): void {

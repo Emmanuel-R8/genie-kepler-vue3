@@ -4,8 +4,7 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
 import { ILayerElement, ILayerIcon } from '@/interfaces'
-import { LayerElementsService } from '@/services'
-import { store } from '@/store'
+import { LayerElementsService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
 const onDisplayLayerHandler = (evt: any): void => {
@@ -44,8 +43,9 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
 
 export default defineComponent({
   setup() {
+    const storeService: StoreService = Container.get(StoreService)
     const layerElements: ComputedRef<ILayerElement[]> = computed((): ILayerElement[] =>
-      store.getters.getLayerElementsState()
+      storeService.getLayerElementsState()
     )
     return (): JSX.Element => html(layerElements.value)
   }
