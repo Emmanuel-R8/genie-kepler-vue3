@@ -1,37 +1,40 @@
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
-export interface IHexagonAttributes {
-  coverage: number
-  elevationScale: number
-  radius: number
-  upperPercentile: number
-}
-
-export interface IHexagonOptions extends IMapOptions {
+export interface IDeckglOptions {
   canvas: string
+  container: string
   controller: boolean
   interactive: boolean
+  maxZoom?: number
+  minZoom?: number
   style: string
 }
 
-export interface IHexagonProps {
-  colorRange: number[][]
-  elevationRange: number[]
-  extruded: boolean
-  id: string
-  material: Record<string, any>
-  opacity: number
-  pickable: boolean
-}
-
-export interface IHexagonSettings {
+export interface IDeckglSettings {
   bearing: number
   center: LngLatLike
   latitude: number
   longitude: number
   pitch: number
   zoom: number
+}
+
+export interface IHexagonLayerDynamicProps {
+  coverage: number
+  elevationScale: number
+  radius: number
+  upperPercentile: number
+}
+
+export interface IHexagonLayerStaticProps {
+  colorRange: number[][]
+  elevationRange: number[]
+  extruded: boolean
+  id: string
+  material: Record<string, any>
+  pickable: boolean
+  transitions: Record<string, number>
 }
 
 export interface IHTMLMarkerElement extends HTMLDivElement {
@@ -66,14 +69,14 @@ export interface ILayerIcon {
   width: number
 }
 
-export interface IMapOptions {
+export interface IMapboxOptions {
   container: string
-  doubleClickZoom?: boolean
+  doubleClickZoom: boolean
   maxZoom: number
   minZoom: number
 }
 
-export interface IMapSettings {
+export interface IMapboxSettings {
   bearing: number
   center: LngLatLike
   pitch: number

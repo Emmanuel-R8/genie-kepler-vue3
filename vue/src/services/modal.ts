@@ -5,7 +5,9 @@ import { StoreService } from '@/services'
 
 @Service()
 export default class ModalService {
-  constructor(private _modalState: IModal, private _storeService: StoreService) {
+  private _modalState: IModal | Record<string, any> = {}
+
+  constructor(private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
   }
 

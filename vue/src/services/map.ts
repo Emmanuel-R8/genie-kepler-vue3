@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep'
 import mapboxgl, {
   FillLayer,
   LineLayer,
@@ -26,7 +25,7 @@ export default class MapService {
   private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
 
   constructor(
-    public map: Map,
+    private _map: Map,
     private _dataService: DataService,
     private _mapboxService: MapboxService,
     private _markerService: MarkerService,
@@ -44,50 +43,53 @@ export default class MapService {
     this._styleLayerService = Container.get(StyleLayerService)
   }
 
-  async loadMap(): Promise<void> {
+  get map(): Map {
+    return this._map
+  }
+
+  async loadMapLayer(): Promise<void> {
     !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
 
     this._mapboxService.loadMapbox()
-    this.map = this._mapboxService.map
-    this.map.on('load', (): void => {
+    this._map = this._mapboxService.map
+    this._map.on('load', (): void => {
+      this.hideModal()
       this.showMarkers()
       this.addLayers()
     })
   }
 
   addLayers(): void {
-    this.map.addLayer(this._skyLayer)
+    this._map.addLayer(this._skyLayer)
     for (const layer of this._styleLayerService.styleLayers) {
       this.addStyleLayer(layer)
     }
-    this.hideModal()
   }
 
   flyTo({ center, zoom }: ITrail): void {
-    this.map.flyTo({
+    this._map.flyTo({
       center: center as LngLatLike,
       zoom
     })
   }
 
   setMapStyle(): void {
-    const mapStyles: IMapStyle = cloneDeep(this._storeService.getMapStylesState())
-    const mapStyle: [string, any][] = Object.entries(mapStyles).filter(
-      (mapStyle: [string, any]) => mapStyle[1].visible
+    const mapStyles: IMapStyle = this._storeService.getMapStylesState()
+    const { url: style } = Object.values(mapStyles).find(
+      (mapStyle: IMapStyle): boolean => mapStyle.visible
     )
-    const { url } = mapStyle[0][1]
-    this.map.setStyle(url)
-    this._mapboxService.mapStyle = url
-    this._mapboxService.setMapSettings()
+    this._map.setStyle(style)
+    this._mapboxService.mapStyle = style
+    this._mapboxService.setMapboxSettings()
     /* add layers after 1 sec delay to set basemap style */
     setTimeout((): void => this.addLayers(), 1000)
   }
 
   setStyleLayerVisibility(id: string): void {
-    const styleLayers: IStyleLayer = cloneDeep(this._storeService.getStyleLayersVisibilityState())
+    const styleLayers: IStyleLayer = this._storeService.getStyleLayersVisibilityState()
     styleLayers[id as keyof IStyleLayer].visible
-      ? this.map.setLayoutProperty(id, 'visibility', 'visible')
-      : this.map.setLayoutProperty(id, 'visibility', 'none')
+      ? this._map.setLayoutProperty(id, 'visibility', 'visible')
+      : this._map.setLayoutProperty(id, 'visibility', 'none')
     if (styleLayers[id as keyof IStyleLayer].visible && id === 'biosphere') {
       this.setStyleLayerEventHandlers(id)
     }
@@ -95,29 +97,29 @@ export default class MapService {
 
   private addStyleLayer(layer: FillLayer | LineLayer): void {
     const { id } = layer
-    this.map.addLayer(layer)
+    this._map.addLayer(layer)
     this.setStyleLayerVisibility(id)
   }
 
   private setStyleLayerEventHandlers(id: string): void {
-    this.map
+    this._map
       .on('click', id, (evt: MapLayerMouseEvent): void => {
         this._popupService.addLayerPopup(evt)
       })
       .on('mouseenter', id, (): void => {
-        this.map.getCanvas().style.cursor = 'pointer'
+        this._map.getCanvas().style.cursor = 'pointer'
       })
       .on('mouseleave', id, (): void => {
-        this.map.getCanvas().style.cursor = ''
+        this._map.getCanvas().style.cursor = ''
         this._popupService.removePopup()
       })
   }
 
-  private showMarkers(): void {
-    setTimeout((): void => this._markerService.showMarkers(), 0.5)
-  }
-
   private hideModal(): void {
     this._modalService.hideModal(0.5)
+  }
+
+  private showMarkers(): void {
+    setTimeout((): void => this._markerService.showMarkers(), 0.5)
   }
 }

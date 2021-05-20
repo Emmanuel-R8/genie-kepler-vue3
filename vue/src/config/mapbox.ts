@@ -1,18 +1,31 @@
 export default {
-  mapOptions: {
+  navigationControl: {
+    position: 'top-left',
+    visualizePitch: true
+  },
+  options: {
     container: 'mapbox',
     doubleClickZoom: false,
     maxZoom: 18,
     minZoom: 2
   },
-  mapSettings: {
+  settings: {
     bearing: 0,
     center: { lng: -76.3, lat: 44.5 },
     pitch: 0,
     style: 'mapbox://styles/mapbox/outdoors-v11',
-    zoom: 10
+    zoom: 9.75
   },
-  mapStyles: {
+  skyLayer: {
+    id: 'sky',
+    type: 'sky',
+    paint: {
+      'sky-type': 'atmosphere',
+      'sky-atmosphere-sun': [0.0, 0.0],
+      'sky-atmosphere-sun-intensity': 25
+    }
+  },
+  styles: {
     active: 'outdoors',
     outdoors: {
       id: 'outdoors',
@@ -23,19 +36,6 @@ export default {
       id: 'satellite',
       url: 'mapbox://styles/mapbox/satellite-v9',
       visible: false
-    }
-  },
-  navigationControl: {
-    position: 'top-left',
-    visualizePitch: true
-  },
-  skyLayer: {
-    id: 'sky',
-    type: 'sky',
-    paint: {
-      'sky-type': 'atmosphere',
-      'sky-atmosphere-sun': [0.0, 0.0],
-      'sky-atmosphere-sun-intensity': 25
     }
   }
 }

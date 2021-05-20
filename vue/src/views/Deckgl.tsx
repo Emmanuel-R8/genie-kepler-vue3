@@ -1,23 +1,26 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { Deckgl, Hexagon, Modal } from '@/components'
-import { IModal } from '@/interfaces'
+import { Deckgl, Footer, Hexagon, Modal } from '@/components'
+import { deckgl } from '@/config'
+import { IDeckglOptions, IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
-const html = (modal: IModal): JSX.Element => (
+const html = (modal: IModal, { canvas, container }: IDeckglOptions): JSX.Element => (
   <div>
-    <Deckgl />
+    <Deckgl canvas={canvas} container={container} />
     <Modal class={modal.class} />
     <Hexagon />
+    <Footer />
   </div>
 )
 
 export default defineComponent({
   setup() {
+    const { options } = deckgl
     const modalService: ModalService = Container.get(ModalService)
     const modal: ComputedRef<IModal> = computed((): IModal => modalService.getModalState())
     modalService.showModal()
-    return (): JSX.Element => html(modal.value)
+    return (): JSX.Element => html(modal.value, options)
   }
 })

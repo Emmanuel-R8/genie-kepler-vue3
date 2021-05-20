@@ -1,11 +1,11 @@
 import { Service } from 'typedi'
 
 import {
-  IHexagonAttributes,
-  IHexagonSettings,
+  IDeckglSettings,
+  IHexagonLayerDynamicProps,
   ILayer,
   ILayerElement,
-  IMapSettings,
+  IMapboxSettings,
   IMapStyle,
   IModal,
   IStore,
@@ -17,21 +17,23 @@ import { store } from '@/store'
 export default class StoreService {
   private _store: IStore = store
 
-  getHexagonAttributesState = (): IHexagonAttributes =>
-    this._store.getters.getHexagonAttributesState()
-  setHexagonAttributesState = (attribute: string, value: number): void =>
-    this._store.setters.setHexagonAttributesState(attribute, value)
+  getDeckglViewState = (): IDeckglSettings => this._store.getters.getDeckglViewState()
+  setDeckglViewState = (settings: IDeckglSettings): void =>
+    this._store.setters.setDeckglViewState(settings)
 
-  getHexagonSettingsState = (): IHexagonSettings => this._store.getters.getHexagonSettingsState()
-  setHexagonSettingsState = (settings: IHexagonSettings): void =>
-    this._store.setters.setHexagonSettingsState(settings)
+  getHexagonLayerPropsState = (): IHexagonLayerDynamicProps =>
+    this._store.getters.getHexagonLayerPropsState()
+  setHexagonLayerPropsState = (prop: string, value: number): void =>
+    this._store.setters.setHexagonLayerPropsState(prop, value)
+  resetHexagonLayerPropsState = (props: IHexagonLayerDynamicProps): void =>
+    this._store.setters.resetHexagonLayerPropsState(props)
 
   getLayerElementsState = (): ILayerElement[] => this._store.getters.getLayerElementsState()
   setLayerElementsState = (layer: ILayer): void => this._store.setters.setLayerElementsState(layer)
 
-  getMapSettingsState = (): IMapSettings => this._store.getters.getMapSettingsState()
-  setMapSettingsState = (settings: IMapSettings): void =>
-    this._store.setters.setMapSettingsState(settings)
+  getMapboxSettingsState = (): IMapboxSettings => this._store.getters.getMapboxSettingsState()
+  setMapboxSettingsState = (settings: IMapboxSettings): void =>
+    this._store.setters.setMapboxSettingsState(settings)
 
   getMapStylesState = (): IMapStyle => this._store.getters.getMapStylesState()
   setMapStylesState = (): void => this._store.setters.setMapStylesState()

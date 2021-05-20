@@ -10,13 +10,13 @@ import { HttpService, MarkerService, StyleLayerService } from '@/services'
 
 @Service()
 export default class DataService {
+  private _data: number[][] = []
   private _endPoints: Record<string, string> = EndPoints
   private _markers: IMarker[] = markers
   private _styleLayers: IStyleLayer[] = styleLayers
   private _urls: Record<string, string> = Urls
 
   constructor(
-    public hexagonData: number[][],
     private _http: HttpService,
     private _markerService: MarkerService,
     private _styleLayerService: StyleLayerService
@@ -24,6 +24,10 @@ export default class DataService {
     this._http = Container.get(HttpService)
     this._markerService = Container.get(MarkerService)
     this._styleLayerService = Container.get(StyleLayerService)
+  }
+
+  get hexagonLayerData(): number[][] {
+    return this._data
   }
 
   loadData(): void {
@@ -37,7 +41,7 @@ export default class DataService {
       .csv(HEXAGON_DATA_URL)
       .then((data: any[]): void => {
         data?.length
-          ? (this.hexagonData = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat]))
+          ? (this._data = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat]))
           : console.error('Data Error:\n', data)
       })
       .catch((err: Error): void => {
@@ -48,40 +52,39 @@ export default class DataService {
   async getMapboxAccessToken(): Promise<void> {
     try {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
-      const { data } = await this._http.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
+      /* prettier-ignore */
+      const { data: { token } } = await this._http.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
 
-      if (data && <Record<string, string>>data) {
-        const { token } = data
-        mapboxgl.accessToken = token
-        return
+      if (token && <Record<string, string>>token) {
+        return (mapboxgl.accessToken = token)
       }
-      console.log(`No Mapbox Access Token Found:\n`, data)
+      console.log(`No Mapbox Access Token Found:\n`, token)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
   }
 
   private getMapData(): void {
-    this._styleLayers.forEach((layer: IStyleLayer, i: number): void => {
-      this.getStyleLayers(layer, i)
+    this._styleLayers.forEach((styleLayer: IStyleLayer, i: number): void => {
+      this.getStyleLayers(styleLayer, i)
     })
     this._markers.forEach((marker: IMarker): void => {
       this.getMarkers(marker)
     })
   }
 
-  private async getStyleLayers(layer: IStyleLayer, i: number): Promise<void> {
+  private async getStyleLayers(styleLayer: IStyleLayer, i: number): Promise<void> {
     try {
       /* prettier-ignore */
-      const { layer: { id } } = layer
-      const fc: FeatureCollection = await this.getFeatureCollection(layer)
+      const { layer: { id } } = styleLayer
+      const layer: FeatureCollection = await this.getFeatureCollection(styleLayer)
 
-      if (fc?.features?.length) {
-        const layer: IStyleLayer = this._styleLayers[i].layer
-        layer.source.data = fc
-        return this._styleLayerService.setStyleLayers(layer)
+      if (layer?.features?.length) {
+        const styleLayer: IStyleLayer = this._styleLayers[i].layer
+        styleLayer.source.data = layer
+        return this._styleLayerService.setStyleLayers(styleLayer)
       }
-      console.log(`No ${id.toUpperCase()} Layer Found:\n`, fc)
+      console.log(`No ${id.toUpperCase()} Layer Found:\n`, layer)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
@@ -89,13 +92,13 @@ export default class DataService {
 
   private async getMarkers(marker: IMarker): Promise<void> {
     try {
-      const { table } = marker
+      const { table: id } = marker
       const markers: FeatureCollection = await this.getFeatureCollection(marker)
 
       if (markers?.features?.length) {
-        return this._markerService.setMarkers(markers, table)
+        return this._markerService.setMarkers(markers, id)
       }
-      console.log(`No ${table.toUpperCase()} Markers Found:\n`, marker)
+      console.log(`No ${id.toUpperCase()} Markers Found:\n`, marker)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }

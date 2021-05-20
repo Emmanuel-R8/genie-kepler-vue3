@@ -4,11 +4,11 @@ export enum Routes {
 }
 
 export enum State {
-  HEXAGON_ATTRIBUTES = 'hexagonAttributes',
-  HEXAGON_SETTINGS = 'hexagonSettings',
+  DECKGL_SETTINGS = 'deckglSettings',
+  HEXAGON_LAYER_PROPS = 'hexagonLayerProps',
   LAYER_ELEMENTS = 'layerElements',
   MODAL = 'modal',
-  MAP_SETTINGS = 'mapSettings',
+  MAPBOX_SETTINGS = 'mapboxSettings',
   MAP_STYLES = 'mapStyles',
   STYLE_LAYERS_VISIBILITY = 'styleLayersVisibility'
 }

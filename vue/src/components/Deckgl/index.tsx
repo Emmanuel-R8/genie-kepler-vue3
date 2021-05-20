@@ -1,28 +1,35 @@
 import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted } from 'vue'
 
-import { deckgl } from '@/config'
 import { HexagonService } from '@/services'
 import scss from './index.module.scss'
 
-const html = (canvas: string, container: string): JSX.Element => (
+const html = (props: Record<string, string>): JSX.Element => (
   <div>
-    <div id={container} class={scss[container]}></div>
-    <canvas id={canvas} class={scss[container]}></canvas>
+    <div id={props.container} class={scss[props.container]}></div>
+    <canvas id={props.canvas} class={scss[props.container]}></canvas>
   </div>
 )
 
 export default defineComponent({
-  setup() {
-    /* prettier-ignore */
-    const { hexagonOptions: { canvas, container } } = deckgl
+  props: {
+    canvas: {
+      type: String,
+      required: true
+    },
+    container: {
+      type: String,
+      required: true
+    }
+  },
+  setup(props: Record<string, string>) {
     const hexagonService: HexagonService = Container.get(HexagonService)
     onMounted((): void => {
-      hexagonService.loadMap()
+      hexagonService.loadHexagonLayer()
     })
     onUnmounted((): void => {
-      hexagonService.map.off('load', hexagonService.setHexagonLayer)
+      hexagonService.map.off('load', hexagonService.renderHexagonLayer)
     })
-    return (): JSX.Element => html(canvas, container)
+    return (): JSX.Element => html(props)
   }
 })

@@ -1,27 +1,30 @@
 import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted } from 'vue'
 
-import { mapbox } from '@/config'
 import { MapService, MapboxService, PopupService } from '@/services'
 import scss from './index.module.scss'
 
 export default defineComponent({
-  setup() {
-    /* prettier-ignore */
-    const { mapOptions: { container } } = mapbox
+  props: {
+    container: {
+      type: String,
+      required: true
+    }
+  },
+  setup(props: Record<string, string>) {
     const mapService: MapService = Container.get(MapService)
     const mapboxService: MapboxService = Container.get(MapboxService)
     const popupService: PopupService = Container.get(PopupService)
     onMounted((): void => {
-      mapService.loadMap()
+      mapService.loadMapLayer()
     })
     onUnmounted((): void => {
       mapService.map.off('click', popupService.addLayerPopup)
       mapService.map.off('load', mapService.addLayers)
       mapService.map.off('mouseenter', mapService.map.getCanvas)
       mapService.map.off('mouseleave', popupService.removePopup)
-      mapboxService.map.off('idle', mapboxService.setMapSettings)
+      mapboxService.map.off('idle', mapboxService.setMapboxSettings)
     })
-    return (): JSX.Element => <div id={container} class={scss[container]}></div>
+    return (): JSX.Element => <div id={props.container} class={scss[props.container]}></div>
   }
 })

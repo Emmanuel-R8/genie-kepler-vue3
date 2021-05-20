@@ -4,8 +4,9 @@ import scss from './index.module.scss'
 
 const html = (props: Record<string, any>): JSX.Element => (
   <div class={scss.Hexagon}>
-    <p class={scss.header}>UK Road Accidents</p>
     <div class={scss.spacer}></div>
+    <div class={scss.header}>GB Road Accidents</div>
+    <hr />
     <div>
       <label>Coverage</label>
       <input
@@ -15,11 +16,11 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="1"
         step="0.1"
         value={props.coverage}
-        onChange={props.onChangeInputValue}
+        onChange={props.setHexagonLayerProps}
       />
-      <span class="coverage">{props.coverage}</span>
+      <span>{props.coverage}</span>
     </div>
-    <div class={scss.spacer}></div>
+    <hr />
     <div>
       <label>Elevation Scale</label>
       <input
@@ -27,13 +28,13 @@ const html = (props: Record<string, any>): JSX.Element => (
         type="range"
         min="0"
         max="100"
-        step="10"
+        step="20"
         value={props.elevationScale}
-        onChange={props.onChangeInputValue}
+        onChange={props.setHexagonLayerProps}
       />
-      <span class="elevationScale">{props.elevationScale}</span>
+      <span>{props.elevationScale}</span>
     </div>
-    <div class={scss.spacer}></div>
+    <hr />
     <div>
       <label>Radius</label>
       <input
@@ -43,11 +44,11 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="5000"
         step="500"
         value={props.radius}
-        onChange={props.onChangeInputValue}
+        onChange={props.setHexagonLayerProps}
       />
-      <span class="radius">{props.radius}</span>
+      <span>{props.radius}</span>
     </div>
-    <div class={scss.spacer}></div>
+    <hr />
     <div>
       <label>Upper Percentile</label>
       <input
@@ -57,15 +58,16 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="100"
         step="1"
         value={props.upperPercentile}
-        onChange={props.onChangeInputValue}
+        onChange={props.setHexagonLayerProps}
       />
-      <span class="upperPercentile">{props.upperPercentile}</span>
+      <span>{props.upperPercentile}</span>
     </div>
+    <hr />
     <div class={scss.spacer}></div>
-    <button onClick={props.resetHexagonSettings}>Reset Coordinates</button>
-    <button onClick={props.resetHexagonAttributes}>Reset Parameters</button>
+    <button onClick={props.resetHexagonLayerProps}>Reset Parameters</button>
     <div class={scss.spacer}></div>
     <button onClick={props.returnToTrails}>Return to Trails</button>
+    <div class={scss.spacer}></div>
     <div class={scss.spacer}></div>
   </div>
 )
@@ -88,15 +90,11 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    onChangeInputValue: {
+    setHexagonLayerProps: {
       type: Function,
       required: true
     },
-    resetHexagonAttributes: {
-      type: Function,
-      required: true
-    },
-    resetHexagonSettings: {
+    resetHexagonLayerProps: {
       type: Function,
       required: true
     },

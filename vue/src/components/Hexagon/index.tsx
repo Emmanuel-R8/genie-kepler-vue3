@@ -3,42 +3,39 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
-import { IHexagonAttributes } from '@/interfaces'
+import { IHexagonLayerDynamicProps } from '@/interfaces'
 import { router } from '@/router'
 import { HexagonService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const onChangeInputValueHandler = (evt: Event): void => {
+const setHexagonLayerPropsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const { target } = evt
+  /* prettier-ignore */
+  const { target: { id: prop, value } } = evt as any
   const hexagonService: HexagonService = Container.get(HexagonService)
-  target && hexagonService.setHexagonAttributes(target as HTMLInputElement)
+  const storeService: StoreService = Container.get(StoreService)
+  storeService.setHexagonLayerPropsState(prop, +value)
+  hexagonService.renderHexagonLayer()
 }
-const resetHexagonAttributesHandler = (evt: Event): void => {
+const resetHexagonLayerPropsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const hexagonService: HexagonService = Container.get(HexagonService)
-  hexagonService.resetHexagonAttributes()
-}
-const resetHexagonSettingsHandler = (evt: Event): void => {
-  evt.stopPropagation()
-  const hexagonService: HexagonService = Container.get(HexagonService)
-  hexagonService.resetHexagonSettings()
+  hexagonService.resetHexagonLayerProps()
 }
 const returnToTrailsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const name: string = Routes.MAPBOX
   router.push({ name })
 }
-const html = (attributes: IHexagonAttributes): JSX.Element => (
+const html = (props: IHexagonLayerDynamicProps): JSX.Element => (
   <HexagonUI
     class={scss.hexagon}
-    coverage={attributes.coverage}
-    elevationScale={attributes.elevationScale}
-    radius={attributes.radius}
-    upperPercentile={attributes.upperPercentile}
-    onChangeInputValue={onChangeInputValueHandler}
-    resetHexagonAttributes={resetHexagonAttributesHandler}
-    resetHexagonSettings={resetHexagonSettingsHandler}
+    coverage={props.coverage}
+    elevationScale={props.elevationScale}
+    radius={props.radius}
+    upperPercentile={props.upperPercentile}
+    setHexagonLayerProps={setHexagonLayerPropsHandler}
+    resetHexagonLayerProps={resetHexagonLayerPropsHandler}
     returnToTrails={returnToTrailsHandler}
   />
 )
@@ -46,9 +43,9 @@ const html = (attributes: IHexagonAttributes): JSX.Element => (
 export default defineComponent({
   setup() {
     const storeService: StoreService = Container.get(StoreService)
-    const attributes: ComputedRef<IHexagonAttributes> = computed(
-      (): IHexagonAttributes => storeService.getHexagonAttributesState()
+    const dynamicProps: ComputedRef<IHexagonLayerDynamicProps> = computed(
+      (): IHexagonLayerDynamicProps => storeService.getHexagonLayerPropsState()
     )
-    return (): JSX.Element => html(attributes.value)
+    return (): JSX.Element => html(dynamicProps.value)
   }
 })

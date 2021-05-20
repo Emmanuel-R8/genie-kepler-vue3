@@ -1,4 +1,5 @@
 export { default as deckgl } from './deckgl'
+export { default as hexagonLayer } from './hexagon-layer'
 export { default as layerElements } from './layer-elements'
 export { default as layerIcons } from './layer-icons'
 export { default as markers } from './markers'

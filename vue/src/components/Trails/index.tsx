@@ -9,9 +9,9 @@ import scss from './index.module.scss'
 const onSelectTrailHandler = (evt: any): void => {
   evt.stopPropagation()
   /* prettier-ignore */
-  const { target: { value } } = evt
+  const { target: { value: trailName } } = evt
   const trailsService: TrailsService = Container.get(TrailsService)
-  value && trailsService.selectTrail(value)
+  trailName && trailsService.selectTrail(trailName)
 }
 const html = (): JSX.Element => (
   <div>

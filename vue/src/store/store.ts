@@ -1,14 +1,13 @@
-import cloneDeep from 'lodash/cloneDeep'
 import { reactive, readonly } from 'vue'
 
 import { State } from '@/enums'
-import { deckgl, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
+import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import {
-  IHexagonAttributes,
-  IHexagonSettings,
+  IDeckglSettings,
+  IHexagonLayerDynamicProps,
   ILayer,
   ILayerElement,
-  IMapSettings,
+  IMapboxSettings,
   IMapStyle,
   IModal,
   IStore,
@@ -16,21 +15,22 @@ import {
 } from '@/interfaces'
 
 const {
-  HEXAGON_ATTRIBUTES,
-  HEXAGON_SETTINGS,
+  DECKGL_SETTINGS,
+  HEXAGON_LAYER_PROPS,
   LAYER_ELEMENTS,
-  MAP_SETTINGS,
+  MAPBOX_SETTINGS,
   MAP_STYLES,
   MODAL,
   STYLE_LAYERS_VISIBILITY
 } = State
-const { hexagonAttributes, hexagonSettings } = deckgl
-const { mapSettings, mapStyles } = mapbox
+const { settings: deckglSettings } = deckgl
+const { dynamicProps: hexagonLayerProps } = hexagonLayer
+const { settings: mapboxSettings, styles: mapStyles } = mapbox
 const state: Record<string, any> = reactive({
-  hexagonAttributes,
-  hexagonSettings,
+  deckglSettings,
+  hexagonLayerProps,
   layerElements,
-  mapSettings,
+  mapboxSettings,
   mapStyles,
   modal,
   styleLayersVisibility
@@ -42,37 +42,45 @@ const getState = (key: string): any => {
 const setState = (key: string, value: Record<string, any>): void => {
   state[key] = value
 }
-/* debugging tool */
+/* state debugging tool
 const logState = (state: string, key: string, value?: Record<string, any>): void => {
   state === 'old'
-    ? console.log(`${key} ${state} state:`, cloneDeep(value))
-    : console.log(`${key} ${state} state:`, cloneDeep(getState(key)))
+    ? console.log(`${key} ${state} state:`, value)
+    : console.log(`${key} ${state} state:`, getState(key))
 }
-
+*/
 const getters: Record<string, any> = {
-  getHexagonAttributesState: (): void => getState(HEXAGON_ATTRIBUTES),
-  getHexagonSettingsState: (): void => getState(HEXAGON_SETTINGS),
+  getDeckglViewState: (): void => getState(DECKGL_SETTINGS),
+  getHexagonLayerPropsState: (): void => getState(HEXAGON_LAYER_PROPS),
   getLayerElementsState: (): void => getState(LAYER_ELEMENTS),
-  getMapSettingsState: (): void => getState(MAP_SETTINGS),
+  getMapboxSettingsState: (): void => getState(MAPBOX_SETTINGS),
   getMapStylesState: (): void => getState(MAP_STYLES),
   getModalState: (): void => getState(MODAL),
   getStyleLayersVisibilityState: (): void => getState(STYLE_LAYERS_VISIBILITY)
 }
 const setters: Record<string, any> = {
-  setHexagonAttributesState(attribute: string, value: number): void {
-    const key: string = HEXAGON_ATTRIBUTES
-    const hexagonAttributes: IHexagonAttributes = { ...getState(key) }
-    // logState('old', key, hexagonAttributes)
-    hexagonAttributes[attribute as keyof IHexagonAttributes] = value
-    setState(key, hexagonAttributes)
+  setDeckglViewState(settings: IDeckglSettings): void {
+    const key: string = DECKGL_SETTINGS
+    let deckglSettings: IDeckglSettings = { ...getState(key) }
+    // logState('old', key, deckglSettings)
+    deckglSettings = { ...settings }
+    setState(key, deckglSettings)
     // logState('new', key)
   },
-  setHexagonSettingsState(settings: IHexagonSettings): void {
-    const key: string = HEXAGON_SETTINGS
-    let hexagonSettings: IHexagonSettings = { ...getState(key) }
-    // logState('old', key, hexagonSettings)
-    hexagonSettings = settings
-    setState(key, hexagonSettings)
+  setHexagonLayerPropsState(prop: string, value: number): void {
+    const key: string = HEXAGON_LAYER_PROPS
+    const dynamicProps: IHexagonLayerDynamicProps = { ...getState(key) }
+    // logState('old', key, dynamicProps)
+    dynamicProps[prop as keyof IHexagonLayerDynamicProps] = value
+    setState(key, dynamicProps)
+    // logState('new', key)
+  },
+  resetHexagonLayerPropsState(props: IHexagonLayerDynamicProps): void {
+    const key: string = HEXAGON_LAYER_PROPS
+    let dynamicProps: IHexagonLayerDynamicProps = { ...getState(key) }
+    // logState('old', key, dynamicProps)
+    dynamicProps = { ...props }
+    setState(key, dynamicProps)
     // logState('new', key)
   },
   setLayerElementsState(id: ILayer): void {
@@ -84,12 +92,12 @@ const setters: Record<string, any> = {
     setState(key, layerElements)
     // logState('new', key)
   },
-  setMapSettingsState(settings: IMapSettings): void {
-    const key: string = MAP_SETTINGS
-    let mapSettings: IMapSettings = { ...getState(key) }
-    // logState('old', key, mapSettings)
-    mapSettings = settings
-    setState(key, mapSettings)
+  setMapboxSettingsState(settings: IMapboxSettings): void {
+    const key: string = MAPBOX_SETTINGS
+    let mapboxSettings: IMapboxSettings = { ...getState(key) }
+    // logState('old', key, mapboxSettings)
+    mapboxSettings = { ...settings }
+    setState(key, mapboxSettings)
     // logState('new', key)
   },
   setMapStylesState(): void {
