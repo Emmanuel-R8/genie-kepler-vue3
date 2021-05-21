@@ -1,12 +1,12 @@
 import { reactive, readonly } from 'vue'
 
-import { State } from '@/enums'
+import { States } from '@/enums'
 import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import {
   IDeckglSettings,
   IHexagonLayerDynamicProps,
-  ILayer,
   ILayerElement,
+  ILayerElements,
   IMapboxSettings,
   IMapStyle,
   IModal,
@@ -22,7 +22,7 @@ const {
   MAP_STYLES,
   MODAL,
   STYLE_LAYERS_VISIBILITY
-} = State
+} = States
 const { settings: deckglSettings } = deckgl
 const { dynamicProps: hexagonLayerProps } = hexagonLayer
 const { settings: mapboxSettings, styles: mapStyles } = mapbox
@@ -83,11 +83,11 @@ const setters: Record<string, any> = {
     setState(key, dynamicProps)
     // logState('new', key)
   },
-  setLayerElementsState(id: ILayer): void {
+  setLayerElementsState(id: ILayerElement): void {
     const key: string = LAYER_ELEMENTS
-    const layerElements: ILayerElement[] = [...getState(key)]
+    const layerElements: ILayerElements[] = [...getState(key)]
     // logState('old', key, layerElements)
-    const i: number = layerElements.findIndex((el: ILayerElement) => el.id === id)
+    const i: number = layerElements.findIndex((el: ILayerElements) => el.id === id)
     layerElements[i].active = !layerElements[i].active
     setState(key, layerElements)
     // logState('new', key)
@@ -124,7 +124,7 @@ const setters: Record<string, any> = {
     setState(key, modal)
     // logState('new', key)
   },
-  setStyleLayersVisibilityState(id: ILayer): void {
+  setStyleLayersVisibilityState(id: ILayerElement): void {
     const key: string = STYLE_LAYERS_VISIBILITY
     const styleLayers: IStyleLayer = { ...getState(key) }
     // logState('old', key, styleLayers)

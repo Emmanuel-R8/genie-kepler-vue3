@@ -5,7 +5,7 @@ import { ITrail } from '@/interfaces'
 import { MapService } from '@/services'
 
 @Service()
-export default class TrailsService {
+export default class TrailService {
   private _trails: ITrail[] = trails
 
   constructor(private _mapService: MapService) {

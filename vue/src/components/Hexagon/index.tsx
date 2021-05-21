@@ -24,8 +24,8 @@ const resetHexagonLayerPropsHandler = (evt: Event): void => {
 }
 const returnToTrailsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const name: string = Routes.MAPBOX
-  router.push({ name })
+  const { MAPBOX } = Routes
+  router.push({ name: MAPBOX })
 }
 const html = (props: IHexagonLayerDynamicProps): JSX.Element => (
   <HexagonUI

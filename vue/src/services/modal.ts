@@ -22,8 +22,9 @@ export default class ModalService {
 
   getModalState = (): IModal => this._storeService.getModalState()
 
-  private setModalState = (timeout?: number): number | void =>
+  private setModalState = (timeout?: number): void => {
     timeout
       ? setTimeout((): void => this._storeService.setModalState(), timeout)
       : this._storeService.setModalState()
+  }
 }

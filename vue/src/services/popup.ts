@@ -2,10 +2,12 @@ import { Feature, Point } from 'geojson'
 import { LngLatLike, MapLayerMouseEvent, Popup } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
+import { LayerElements } from '@/enums'
 import { MapboxService } from '@/services'
 
 @Service()
 export default class PopupService {
+  private _layerElements = LayerElements
   private _popup = new Popup({
     closeButton: false
   })
@@ -30,8 +32,9 @@ export default class PopupService {
   addMarkerPopup(layer: string, feature: Feature): void {
     /* prettier-ignore */
     if (feature?.properties) {
+      const { TRAILS } = this._layerElements
       const { geometry, properties: { description, lat, lng, name } } = feature
-      layer === 'trails'
+      layer === TRAILS
         ? this._popup.setLngLat({ lat, lng })
         : this._popup.setLngLat((geometry as Point).coordinates as LngLatLike)
       this._popup

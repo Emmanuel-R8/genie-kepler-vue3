@@ -3,21 +3,21 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
-import { ILayerElement, ILayerIcon } from '@/interfaces'
-import { LayerElementsService, StoreService } from '@/services'
+import { ILayerElements, ILayerIcon } from '@/interfaces'
+import { LayerElementService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const onDisplayLayerHandler = (evt: any): void => {
+const onDisplayLayerHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
-  const { target: { id: layer } } = evt
-  const layerElementsService: LayerElementsService = Container.get(LayerElementsService)
-  layer && layerElementsService.displayLayerElements(layer.split('-')[0])
+  const { target: { id: layer } } = evt as any
+  const layerElementService: LayerElementService = Container.get(LayerElementService)
+  layer && layerElementService.displayLayerElements(layer.split('-')[0])
 }
-const html = (layerElements: ILayerElement[]): JSX.Element => (
+const html = (layerElements: ILayerElements[]): JSX.Element => (
   <div>
     <ul class={scss.elements}>
-      {layerElements.map((el: ILayerElement) => (
+      {layerElements.map((el: ILayerElements) => (
         <LayerElement
           active={el.active}
           click={onDisplayLayerHandler}
@@ -46,7 +46,7 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
 export default defineComponent({
   setup() {
     const storeService: StoreService = Container.get(StoreService)
-    const layerElements: ComputedRef<ILayerElement[]> = computed((): ILayerElement[] =>
+    const layerElements: ComputedRef<ILayerElements[]> = computed((): ILayerElements[] =>
       storeService.getLayerElementsState()
     )
     return (): JSX.Element => html(layerElements.value)

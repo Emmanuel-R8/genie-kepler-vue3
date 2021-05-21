@@ -3,15 +3,15 @@ import { defineComponent } from 'vue'
 
 import { trails } from '@/config'
 import { ITrail } from '@/interfaces'
-import { TrailsService } from '@/services'
+import { TrailService } from '@/services'
 import scss from './index.module.scss'
 
-const onSelectTrailHandler = (evt: any): void => {
+const onSelectTrailHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
-  const { target: { value: trailName } } = evt
-  const trailsService: TrailsService = Container.get(TrailsService)
-  trailName && trailsService.selectTrail(trailName)
+  const { target: { value: trailName } } = evt as any
+  const trailService: TrailService = Container.get(TrailService)
+  trailName && trailService.selectTrail(trailName)
 }
 const html = (): JSX.Element => (
   <div>

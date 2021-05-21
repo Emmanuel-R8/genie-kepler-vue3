@@ -9,6 +9,7 @@ import mapboxgl, {
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
+import { LayerElements } from '@/enums'
 import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
 import {
   DataService,
@@ -22,6 +23,7 @@ import {
 
 @Service()
 export default class MapService {
+  private _layerElements = LayerElements
   private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
 
   constructor(
@@ -90,7 +92,9 @@ export default class MapService {
     styleLayers[id as keyof IStyleLayer].visible
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')
-    if (styleLayers[id as keyof IStyleLayer].visible && id === 'biosphere') {
+
+    const { BIOSPHERE } = this._layerElements
+    if (styleLayers[id as keyof IStyleLayer].visible && id === BIOSPHERE) {
       this.setStyleLayerEventHandlers(id)
     }
   }

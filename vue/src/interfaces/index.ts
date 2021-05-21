@@ -46,7 +46,7 @@ export interface IHttpParams {
   table: string | undefined
 }
 
-export interface ILayer {
+export interface ILayerElement {
   biosphere?: string
   deckgl?: string
   office?: string
@@ -55,7 +55,7 @@ export interface ILayer {
   trails?: string
 }
 
-export interface ILayerElement {
+export interface ILayerElements {
   active: boolean
   id: string
   name: string

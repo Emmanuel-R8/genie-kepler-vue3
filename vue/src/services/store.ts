@@ -3,8 +3,8 @@ import { Service } from 'typedi'
 import {
   IDeckglSettings,
   IHexagonLayerDynamicProps,
-  ILayer,
   ILayerElement,
+  ILayerElements,
   IMapboxSettings,
   IMapStyle,
   IModal,
@@ -28,8 +28,9 @@ export default class StoreService {
   resetHexagonLayerPropsState = (props: IHexagonLayerDynamicProps): void =>
     this._store.setters.resetHexagonLayerPropsState(props)
 
-  getLayerElementsState = (): ILayerElement[] => this._store.getters.getLayerElementsState()
-  setLayerElementsState = (layer: ILayer): void => this._store.setters.setLayerElementsState(layer)
+  getLayerElementsState = (): ILayerElements[] => this._store.getters.getLayerElementsState()
+  setLayerElementsState = (layerElement: ILayerElement): void =>
+    this._store.setters.setLayerElementsState(layerElement)
 
   getMapboxSettingsState = (): IMapboxSettings => this._store.getters.getMapboxSettingsState()
   setMapboxSettingsState = (settings: IMapboxSettings): void =>
@@ -43,6 +44,6 @@ export default class StoreService {
 
   getStyleLayersVisibilityState = (): IStyleLayer =>
     this._store.getters.getStyleLayersVisibilityState()
-  setStyleLayersVisibilityState = (layer: ILayer): void =>
-    this._store.setters.setStyleLayersVisibilityState(layer)
+  setStyleLayersVisibilityState = (layerElement: ILayerElement): void =>
+    this._store.setters.setStyleLayersVisibilityState(layerElement)
 }

@@ -1,2 +1,5 @@
 import axios from 'axios'
-export default axios.create({ baseURL: 'http://localhost:8000/api/' })
+
+import { Urls } from '@/enums'
+
+export default axios.create({ baseURL: Urls.BASE_URL })

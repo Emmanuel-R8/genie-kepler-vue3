@@ -2,11 +2,13 @@ import { Feature, FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { IHTMLMarkerElement, ILayer } from '@/interfaces'
+import { LayerElements } from '@/enums'
+import { IHTMLMarkerElement, ILayerElement } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 
 @Service()
 export default class MarkerService {
+  private _layerElements = LayerElements
   private _markers: Marker[][] = []
   private _markersHash: Record<string, number> = {
     office: 0,
@@ -34,21 +36,16 @@ export default class MarkerService {
           this._popupService.removePopup()
         })
 
-        switch (id) {
-          case 'office':
-          case 'places': {
-            const { geometry } = feature
-            return markers.push(
-              new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
-            )
-          }
-          case 'trails': {
-            /* prettier-ignore */
-            const { properties: { lat, lng } } = feature
-            return markers.push(new Marker(el).setLngLat({ lat, lng }))
-          }
-          default:
-            throw new Error('Marker ID error')
+        const { OFFICE, PLACES, TRAILS } = this._layerElements
+        if (id === OFFICE || id === PLACES) {
+          const { geometry } = feature
+          return markers.push(
+            new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
+          )
+        } else if (id === TRAILS) {
+          /* prettier-ignore */
+          const { properties: { lat, lng } } = feature
+          return markers.push(new Marker(el).setLngLat({ lat, lng }))
         }
       }
     })
@@ -72,8 +69,8 @@ export default class MarkerService {
     }
   }
 
-  toggleMarkers(id: ILayer): void {
-    for (const marker of this._markers[this._markersHash[id as keyof ILayer]]) {
+  toggleMarkers(id: ILayerElement): void {
+    for (const marker of this._markers[this._markersHash[id as keyof ILayerElement]]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
       el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()
