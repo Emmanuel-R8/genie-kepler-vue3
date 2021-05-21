@@ -17,8 +17,8 @@ services:
 
   golang:
     container_name: golang
-    build: .
-    # image: geospatialweb/go-vue3-tsx:latest
+    # build: .
+    image: geospatialweb/go-vue3-tsx:latest
     command: /app/main
     restart: on-failure
     depends_on:
