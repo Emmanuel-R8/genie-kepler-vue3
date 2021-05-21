@@ -1,11 +1,11 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import scss from './index.module.scss'
 
 export default defineComponent({
   props: {
     class: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     }
   },

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import scss from './index.module.scss'
 
@@ -75,31 +75,31 @@ const html = (props: Record<string, any>): JSX.Element => (
 export default defineComponent({
   props: {
     coverage: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     },
     elevationScale: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     },
     radius: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     },
     upperPercentile: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     },
     setHexagonLayerProps: {
-      type: Function,
+      type: Function as PropType<(evt: Event) => void>,
       required: true
     },
     resetHexagonLayerProps: {
-      type: Function,
+      type: Function as PropType<(evt: Event) => void>,
       required: true
     },
     returnToTrails: {
-      type: Function,
+      type: Function as PropType<(evt: Event) => void>,
       required: true
     }
   },

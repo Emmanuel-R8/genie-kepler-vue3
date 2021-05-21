@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onMounted, onUnmounted, PropType } from 'vue'
 
 import { HexagonService } from '@/services'
 import scss from './index.module.scss'
@@ -14,11 +14,11 @@ const html = (props: Record<string, string>): JSX.Element => (
 export default defineComponent({
   props: {
     canvas: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     },
     container: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     }
   },

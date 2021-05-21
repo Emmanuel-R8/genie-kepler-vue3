@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import scss from '@/components/LayerElements/index.module.scss'
 
@@ -17,27 +17,27 @@ const html = (props: Record<string, any>): JSX.Element => (
 export default defineComponent({
   props: {
     alt: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     },
     click: {
-      type: Function,
+      type: Function as PropType<(evt: Event) => void>,
       required: true
     },
     height: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     },
     id: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     },
     src: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     },
     width: {
-      type: Number,
+      type: Number as PropType<number>,
       required: true
     }
   },

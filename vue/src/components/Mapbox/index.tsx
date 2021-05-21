@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onMounted, onUnmounted, PropType } from 'vue'
 
 import { MapService, MapboxService, PopupService } from '@/services'
 import scss from './index.module.scss'
@@ -7,7 +7,7 @@ import scss from './index.module.scss'
 export default defineComponent({
   props: {
     container: {
-      type: String,
+      type: String as PropType<string>,
       required: true
     }
   },
