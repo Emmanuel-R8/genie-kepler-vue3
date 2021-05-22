@@ -16,7 +16,7 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="1"
         step="0.1"
         value={props.coverage}
-        onChange={props.setHexagonLayerProps}
+        onChange={props.setHexagonLayerReactiveProps}
       />
       <span>{props.coverage}</span>
     </div>
@@ -30,7 +30,7 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="100"
         step="20"
         value={props.elevationScale}
-        onChange={props.setHexagonLayerProps}
+        onChange={props.setHexagonLayerReactiveProps}
       />
       <span>{props.elevationScale}</span>
     </div>
@@ -44,7 +44,7 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="5000"
         step="500"
         value={props.radius}
-        onChange={props.setHexagonLayerProps}
+        onChange={props.setHexagonLayerReactiveProps}
       />
       <span>{props.radius}</span>
     </div>
@@ -58,13 +58,13 @@ const html = (props: Record<string, any>): JSX.Element => (
         max="100"
         step="1"
         value={props.upperPercentile}
-        onChange={props.setHexagonLayerProps}
+        onChange={props.setHexagonLayerReactiveProps}
       />
       <span>{props.upperPercentile}</span>
     </div>
     <hr />
     <div class={scss.spacer}></div>
-    <button onClick={props.resetHexagonLayerProps}>Reset Parameters</button>
+    <button onClick={props.resetHexagonLayerReactiveProps}>Reset Parameters</button>
     <div class={scss.spacer}></div>
     <button onClick={props.returnToTrails}>Return to Trails</button>
     <div class={scss.spacer}></div>
@@ -90,11 +90,11 @@ export default defineComponent({
       type: Number as PropType<number>,
       required: true
     },
-    setHexagonLayerProps: {
+    setHexagonLayerReactiveProps: {
       type: Function as PropType<(evt: Event) => void>,
       required: true
     },
-    resetHexagonLayerProps: {
+    resetHexagonLayerReactiveProps: {
       type: Function as PropType<(evt: Event) => void>,
       required: true
     },

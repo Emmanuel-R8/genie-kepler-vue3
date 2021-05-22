@@ -2,7 +2,7 @@ import { Service } from 'typedi'
 
 import {
   IDeckglSettings,
-  IHexagonLayerDynamicProps,
+  IHexagonLayerReactiveProps,
   ILayerElement,
   ILayerElements,
   IMapboxSettings,
@@ -21,12 +21,12 @@ export default class StoreService {
   setDeckglViewState = (settings: IDeckglSettings): void =>
     this._store.setters.setDeckglViewState(settings)
 
-  getHexagonLayerPropsState = (): IHexagonLayerDynamicProps =>
-    this._store.getters.getHexagonLayerPropsState()
-  setHexagonLayerPropsState = (prop: string, value: number): void =>
-    this._store.setters.setHexagonLayerPropsState(prop, value)
-  resetHexagonLayerPropsState = (props: IHexagonLayerDynamicProps): void =>
-    this._store.setters.resetHexagonLayerPropsState(props)
+  getHexagonLayerReactivePropsState = (): IHexagonLayerReactiveProps =>
+    this._store.getters.getHexagonLayerReactivePropsState()
+  setHexagonLayerReactivePropsState = (prop: string, value: number): void =>
+    this._store.setters.setHexagonLayerReactivePropsState(prop, value)
+  resetHexagonLayerReactivePropsState = (props: IHexagonLayerReactiveProps): void =>
+    this._store.setters.resetHexagonLayerReactivePropsState(props)
 
   getLayerElementsState = (): ILayerElements[] => this._store.getters.getLayerElementsState()
   setLayerElementsState = (layerElement: ILayerElement): void =>

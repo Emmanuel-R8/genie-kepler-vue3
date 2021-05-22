@@ -46,6 +46,8 @@ export default class MarkerService {
           /* prettier-ignore */
           const { properties: { lat, lng } } = feature
           return markers.push(new Marker(el).setLngLat({ lat, lng }))
+        } else {
+          throw new Error('Invalid Marker ID')
         }
       }
     })

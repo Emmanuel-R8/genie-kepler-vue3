@@ -1,5 +1,5 @@
 export default {
-  dynamicProps: {
+  reactiveProps: {
     coverage: 1,
     elevationScale: 100,
     radius: 1000,

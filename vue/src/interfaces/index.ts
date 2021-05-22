@@ -20,7 +20,7 @@ export interface IDeckglSettings {
   zoom: number
 }
 
-export interface IHexagonLayerDynamicProps {
+export interface IHexagonLayerReactiveProps {
   coverage: number
   elevationScale: number
   radius: number

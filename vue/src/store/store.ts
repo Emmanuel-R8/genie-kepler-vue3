@@ -4,7 +4,7 @@ import { States } from '@/enums'
 import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import {
   IDeckglSettings,
-  IHexagonLayerDynamicProps,
+  IHexagonLayerReactiveProps,
   ILayerElement,
   ILayerElements,
   IMapboxSettings,
@@ -16,7 +16,7 @@ import {
 
 const {
   DECKGL_SETTINGS,
-  HEXAGON_LAYER_PROPS,
+  HEXAGON_LAYER_REACTIVE_PROPS,
   LAYER_ELEMENTS,
   MAPBOX_SETTINGS,
   MAP_STYLES,
@@ -24,11 +24,11 @@ const {
   STYLE_LAYERS_VISIBILITY
 } = States
 const { settings: deckglSettings } = deckgl
-const { dynamicProps: hexagonLayerProps } = hexagonLayer
+const { reactiveProps: hexagonLayerReactiveProps } = hexagonLayer
 const { settings: mapboxSettings, styles: mapStyles } = mapbox
 const state: Record<string, any> = reactive({
   deckglSettings,
-  hexagonLayerProps,
+  hexagonLayerReactiveProps,
   layerElements,
   mapboxSettings,
   mapStyles,
@@ -51,7 +51,7 @@ const logState = (state: string, key: string, value?: Record<string, any>): void
 */
 const getters: Record<string, any> = {
   getDeckglViewState: (): void => getState(DECKGL_SETTINGS),
-  getHexagonLayerPropsState: (): void => getState(HEXAGON_LAYER_PROPS),
+  getHexagonLayerReactivePropsState: (): void => getState(HEXAGON_LAYER_REACTIVE_PROPS),
   getLayerElementsState: (): void => getState(LAYER_ELEMENTS),
   getMapboxSettingsState: (): void => getState(MAPBOX_SETTINGS),
   getMapStylesState: (): void => getState(MAP_STYLES),
@@ -67,20 +67,20 @@ const setters: Record<string, any> = {
     setState(key, deckglSettings)
     // logState('new', key)
   },
-  setHexagonLayerPropsState(prop: string, value: number): void {
-    const key: string = HEXAGON_LAYER_PROPS
-    const dynamicProps: IHexagonLayerDynamicProps = { ...getState(key) }
-    // logState('old', key, dynamicProps)
-    dynamicProps[prop as keyof IHexagonLayerDynamicProps] = value
-    setState(key, dynamicProps)
+  setHexagonLayerReactivePropsState(prop: string, value: number): void {
+    const key: string = HEXAGON_LAYER_REACTIVE_PROPS
+    const reactiveProps: IHexagonLayerReactiveProps = { ...getState(key) }
+    // logState('old', key, reactiveProps)
+    reactiveProps[prop as keyof IHexagonLayerReactiveProps] = value
+    setState(key, reactiveProps)
     // logState('new', key)
   },
-  resetHexagonLayerPropsState(props: IHexagonLayerDynamicProps): void {
-    const key: string = HEXAGON_LAYER_PROPS
-    let dynamicProps: IHexagonLayerDynamicProps = { ...getState(key) }
-    // logState('old', key, dynamicProps)
-    dynamicProps = { ...props }
-    setState(key, dynamicProps)
+  resetHexagonLayerReactivePropsState(props: IHexagonLayerReactiveProps): void {
+    const key: string = HEXAGON_LAYER_REACTIVE_PROPS
+    let reactiveProps: IHexagonLayerReactiveProps = { ...getState(key) }
+    // logState('old', key, reactiveProps)
+    reactiveProps = { ...props }
+    setState(key, reactiveProps)
     // logState('new', key)
   },
   setLayerElementsState(id: ILayerElement): void {

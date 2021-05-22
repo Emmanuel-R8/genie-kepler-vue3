@@ -20,7 +20,7 @@ export enum Routes {
 
 export enum States {
   DECKGL_SETTINGS = 'deckglSettings',
-  HEXAGON_LAYER_PROPS = 'hexagonLayerProps',
+  HEXAGON_LAYER_REACTIVE_PROPS = 'hexagonLayerReactiveProps',
   LAYER_ELEMENTS = 'layerElements',
   MODAL = 'modal',
   MAPBOX_SETTINGS = 'mapboxSettings',
