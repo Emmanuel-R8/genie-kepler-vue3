@@ -9,7 +9,7 @@ import scss from './index.module.scss'
 const onSelectTrailHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
-  const { target: { value: trailName } } = evt as any
+  const { target: { value: trailName } }: Record<string, any> = evt
   const trailService: TrailService = Container.get(TrailService)
   trailName && trailService.selectTrail(trailName)
 }

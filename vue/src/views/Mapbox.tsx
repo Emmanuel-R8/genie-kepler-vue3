@@ -17,10 +17,10 @@ const html = (modal: IModal, { container }: IMapboxOptions): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const { options } = mapbox
+    const { options: mapboxOptions } = mapbox
     const modalService: ModalService = Container.get(ModalService)
     const modal: ComputedRef<IModal> = computed((): IModal => modalService.getModalState())
     modalService.showModal()
-    return (): JSX.Element => html(modal.value, options)
+    return (): JSX.Element => html(modal.value, mapboxOptions)
   }
 })

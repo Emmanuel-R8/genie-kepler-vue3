@@ -47,12 +47,12 @@ export interface IHttpParams {
 }
 
 export interface ILayerElement {
-  biosphere?: Record<string, any>
-  deckgl?: Record<string, any>
-  office?: Record<string, any>
-  places?: Record<string, any>
-  satellite?: Record<string, any>
-  trails?: Record<string, any>
+  biosphere?: string
+  deckgl?: string
+  office?: string
+  places?: string
+  satellite?: string
+  trails?: string
 }
 
 export interface ILayerElements {
@@ -107,16 +107,6 @@ export interface IStore {
   getState: (key: string) => any
   setState: (key: string, value: Record<string, any>) => void
   state: Record<string, any>
-}
-
-export interface IStoreState {
-  deckglViewSettings: IDeckglViewSettings
-  hexagonLayerReactiveProps: IHexagonLayerReactiveProps
-  layerElements: ILayerElements
-  mapStyles: IMapStyle
-  mapboxSettings: IMapboxSettings
-  modal: IModal
-  styleLayersVisibility: IStyleLayer
 }
 
 export interface IStyleLayer {
