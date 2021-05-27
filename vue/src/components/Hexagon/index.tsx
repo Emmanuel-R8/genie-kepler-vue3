@@ -2,24 +2,25 @@ import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
-import { Routes } from '@/enums'
+import { Routes, StoreStates } from '@/enums'
 import { IHexagonLayerReactiveProps } from '@/interfaces'
 import { router } from '@/router'
-import { HexagonService, StoreService } from '@/services'
+import { HexagonLayerService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
 const setHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const { target } = evt as any
-  const hexagonService: HexagonService = Container.get(HexagonService)
+  const { target }: Record<string, any> = evt
+  const { HEXAGON_LAYER_REACTIVE_PROPS } = StoreStates
+  const hexagonLayerService: HexagonLayerService = Container.get(HexagonLayerService)
   const storeService: StoreService = Container.get(StoreService)
-  target && storeService.setHexagonLayerReactivePropsState(target)
-  target && hexagonService.renderHexagonLayer()
+  target && storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, target)
+  target && hexagonLayerService.renderHexagonLayer()
 }
 const resetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const hexagonService: HexagonService = Container.get(HexagonService)
-  hexagonService.resetHexagonLayerReactiveProps()
+  const hexagonLayerService: HexagonLayerService = Container.get(HexagonLayerService)
+  hexagonLayerService.resetHexagonLayerReactiveProps()
 }
 const returnToTrailsHandler = (evt: Event): void => {
   evt.stopPropagation()
@@ -41,9 +42,10 @@ const html = (props: IHexagonLayerReactiveProps): JSX.Element => (
 
 export default defineComponent({
   setup() {
+    const { HEXAGON_LAYER_REACTIVE_PROPS } = StoreStates
     const storeService: StoreService = Container.get(StoreService)
     const reactiveProps: ComputedRef<IHexagonLayerReactiveProps> = computed(
-      (): IHexagonLayerReactiveProps => storeService.getHexagonLayerReactivePropsState()
+      (): IHexagonLayerReactiveProps => storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS)
     )
     return (): JSX.Element => html(reactiveProps.value)
   }

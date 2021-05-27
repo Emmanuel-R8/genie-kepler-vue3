@@ -1,7 +1,7 @@
 export { default as AxiosService } from './axios'
 export { default as DataService } from './data'
 export { default as DeckService } from './deck'
-export { default as HexagonService } from './hexagon'
+export { default as HexagonLayerService } from './hexagon-layer'
 export { default as HttpService } from './http'
 export { default as LayerElementService } from './layer-element'
 export { default as MapService } from './map'
