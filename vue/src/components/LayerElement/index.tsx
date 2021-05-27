@@ -1,10 +1,12 @@
 import { defineComponent, PropType } from 'vue'
 
+import { ActiveState } from '@/enums'
 import scss from '@/components/LayerElements/index.module.scss'
 
+const { ACTIVE } = ActiveState
 const html = (props: Record<string, any>): JSX.Element => (
   <li>
-    <div id={props.id} class={props.active ? scss['active'] : ''} onClick={props.click}>
+    <div id={props.id} class={props.active ? scss[ACTIVE] : ''} onClick={props.click}>
       {props.name}
     </div>
   </li>

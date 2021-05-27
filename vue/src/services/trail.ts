@@ -13,7 +13,8 @@ export default class TrailService {
   }
 
   selectTrail = (trailName: string): void => {
-    const i: number = this._trails.findIndex((trail: ITrail) => trail.name === trailName)
+    const trail = (trail: ITrail) => trail.name === trailName
+    const i: number = this._trails.findIndex(trail)
     i > 0 && this._mapService.flyTo(this._trails[i])
   }
 }

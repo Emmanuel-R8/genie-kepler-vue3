@@ -4,13 +4,13 @@ import { LngLatLike, Map, MapboxOptions } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { deckgl } from '@/config'
-import { IDeckglOptions, IDeckglSettings } from '@/interfaces'
+import { IDeckglOptions, IDeckglViewSettings } from '@/interfaces'
 import { StoreService } from '@/services'
 
 @Service()
 export default class DeckService {
   private _options: IDeckglOptions = deckgl.options
-  private _settings: IDeckglSettings = deckgl.settings
+  private _settings: IDeckglViewSettings = deckgl.settings
 
   constructor(private _deck: Deck, private _map: Map, private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
@@ -25,7 +25,7 @@ export default class DeckService {
   }
 
   loadMapbox(): void {
-    this._settings = this._storeService.getDeckglViewState()
+    this._settings = this._storeService.getDeckglViewSettingsState()
     const options: MapboxOptions = { ...this._options, ...this._settings }
     this._map = new Map(options)
   }
@@ -35,12 +35,12 @@ export default class DeckService {
     this._deck = new Deck({
       canvas,
       controller,
-      initialViewState: { ...this._storeService.getDeckglViewState() },
+      initialViewState: { ...this._storeService.getDeckglViewSettingsState() },
       onViewStateChange: ({
         viewState,
         viewState: { bearing, latitude, longitude, pitch, zoom }
       }: ViewState): void => {
-        this.setDeckglViewState(viewState)
+        this.setDeckglViewSettingsState(viewState)
         this._map.jumpTo({
           bearing,
           center: { lng: longitude, lat: latitude },
@@ -58,11 +58,17 @@ export default class DeckService {
     })
   }
 
-  private setDeckglViewState({ bearing, latitude, longitude, pitch, zoom }: ViewState): void {
+  private setDeckglViewSettingsState({
+    bearing,
+    latitude,
+    longitude,
+    pitch,
+    zoom
+  }: ViewState): void {
     latitude = +latitude.toFixed(6)
     longitude = +longitude.toFixed(6)
     const center: LngLatLike = { lng: longitude, lat: latitude }
-    const settings: IDeckglSettings = {
+    const settings: IDeckglViewSettings = {
       bearing: +bearing.toFixed(1),
       center,
       latitude,
@@ -70,6 +76,6 @@ export default class DeckService {
       pitch: +pitch.toFixed(1),
       zoom: +zoom.toFixed(2)
     }
-    this._storeService.setDeckglViewState({ ...settings })
+    this._storeService.setDeckglViewSettingsState({ ...settings })
   }
 }

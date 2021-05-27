@@ -11,7 +11,7 @@ export interface IDeckglOptions {
   style: string
 }
 
-export interface IDeckglSettings {
+export interface IDeckglViewSettings {
   bearing: number
   center: LngLatLike
   latitude: number
@@ -47,12 +47,12 @@ export interface IHttpParams {
 }
 
 export interface ILayerElement {
-  biosphere?: string
-  deckgl?: string
-  office?: string
-  places?: string
-  satellite?: string
-  trails?: string
+  biosphere?: Record<string, any>
+  deckgl?: Record<string, any>
+  office?: Record<string, any>
+  places?: Record<string, any>
+  satellite?: Record<string, any>
+  trails?: Record<string, any>
 }
 
 export interface ILayerElements {
@@ -67,6 +67,15 @@ export interface ILayerIcon {
   src: string
   height: number
   width: number
+}
+
+export interface IMapStyle {
+  active: string
+  id: string
+  outdoors: any
+  satellite: any
+  url: string
+  visible: boolean
 }
 
 export interface IMapboxOptions {
@@ -84,15 +93,6 @@ export interface IMapboxSettings {
   zoom: number
 }
 
-export interface IMapStyle {
-  active: string
-  id: string
-  outdoors: any
-  satellite: any
-  url: string
-  visible: boolean
-}
-
 export interface IMarker {
   fields: string
   table: string
@@ -104,9 +104,19 @@ export interface IModal {
 }
 
 export interface IStore {
-  getters: any
-  setters: any
+  getState: (key: string) => any
+  setState: (key: string, value: Record<string, any>) => void
   state: Record<string, any>
+}
+
+export interface IStoreState {
+  deckglViewSettings: IDeckglViewSettings
+  hexagonLayerReactiveProps: IHexagonLayerReactiveProps
+  layerElements: ILayerElements
+  mapStyles: IMapStyle
+  mapboxSettings: IMapboxSettings
+  modal: IModal
+  styleLayersVisibility: IStyleLayer
 }
 
 export interface IStyleLayer {

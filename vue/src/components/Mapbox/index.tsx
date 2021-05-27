@@ -23,7 +23,7 @@ export default defineComponent({
       mapService.map.off('load', mapService.addLayers)
       mapService.map.off('mouseenter', mapService.map.getCanvas)
       mapService.map.off('mouseleave', popupService.removePopup)
-      mapboxService.map.off('idle', mapboxService.setMapboxSettings)
+      mapboxService.map.off('idle', mapboxService.setMapboxSettingsState)
     })
     return (): JSX.Element => <div id={props.container} class={scss[props.container]}></div>
   }

@@ -7,20 +7,19 @@ import { ILayerElements, ILayerIcon } from '@/interfaces'
 import { LayerElementService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const onDisplayLayerHandler = (evt: Event): void => {
+const onDisplayLayerElementHandler = (evt: Event): void => {
   evt.stopPropagation()
-  /* prettier-ignore */
-  const { target: { id: layer } } = evt as any
+  const { target } = evt as any
   const layerElementService: LayerElementService = Container.get(LayerElementService)
-  layer && layerElementService.displayLayerElements(layer.split('-')[0])
+  target && layerElementService.displayLayerElement(target)
 }
-const html = (layerElements: ILayerElements[]): JSX.Element => (
+const html = (layerElements: ILayerElements): JSX.Element => (
   <div>
     <ul class={scss.elements}>
-      {layerElements.map((el: ILayerElements) => (
+      {Object.values(layerElements).map((el: ILayerElements) => (
         <LayerElement
           active={el.active}
-          click={onDisplayLayerHandler}
+          click={onDisplayLayerElementHandler}
           id={el.id}
           key={el.id}
           name={el.name}
@@ -31,7 +30,7 @@ const html = (layerElements: ILayerElements[]): JSX.Element => (
       {layerIcons.map((icon: ILayerIcon) => (
         <LayerIcon
           alt={icon.name}
-          click={onDisplayLayerHandler}
+          click={onDisplayLayerElementHandler}
           height={icon.height}
           id={icon.id}
           key={icon.id}
@@ -46,8 +45,8 @@ const html = (layerElements: ILayerElements[]): JSX.Element => (
 export default defineComponent({
   setup() {
     const storeService: StoreService = Container.get(StoreService)
-    const layerElements: ComputedRef<ILayerElements[]> = computed((): ILayerElements[] =>
-      storeService.getLayerElementsState()
+    const layerElements: ComputedRef<ILayerElements> = computed(
+      (): ILayerElements => storeService.getLayerElementsState()
     )
     return (): JSX.Element => html(layerElements.value)
   }

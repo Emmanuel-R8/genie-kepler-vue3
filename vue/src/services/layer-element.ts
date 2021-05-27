@@ -2,7 +2,7 @@ import { Container, Service } from 'typedi'
 import { Router } from 'vue-router'
 
 import { LayerElements } from '@/enums'
-import { ILayerElement } from '@/interfaces'
+import { ILayerElement, ILayerElements } from '@/interfaces'
 import { MapService, MarkerService, StoreService } from '@/services'
 import { router } from '@/router'
 
@@ -21,17 +21,18 @@ export default class LayerElementService {
     this._storeService = Container.get(StoreService)
   }
 
-  displayLayerElements(layerElement: ILayerElement): void {
+  displayLayerElement({ id }: ILayerElements): void {
+    const layerElement = id.replace(/-(.*)$/, '') as ILayerElement
     const { BIOSPHERE, BIOSPHERE_BORDER, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } =
       this._layerElements
-    const layers = (): void => {
+    const layer = (): void => {
       this.setLayerElementsState(layerElement)
       this.setStyleLayersVisibilityState(layerElement)
       this.setStyleLayerVisibility(layerElement)
       layerElement === BIOSPHERE && this._mapService.setStyleLayerVisibility(BIOSPHERE_BORDER)
       layerElement === TRAILS && this._markerService.toggleMarkers(layerElement)
     }
-    const markers = (): void => {
+    const marker = (): void => {
       this.setLayerElementsState(layerElement)
       this.toggleMarkers(layerElement)
     }
@@ -49,12 +50,12 @@ export default class LayerElementService {
       this.showMarkers(1200)
     }
     const layerElements: Record<string, any> = {
-      [BIOSPHERE]: layers,
+      [BIOSPHERE]: layer,
       [DECKGL]: route,
-      [OFFICE]: markers,
-      [PLACES]: markers,
+      [OFFICE]: marker,
+      [PLACES]: marker,
       [SATELLITE]: satellite,
-      [TRAILS]: layers
+      [TRAILS]: layer
     }
     return layerElements[layerElement as keyof ILayerElement]()
   }
@@ -76,7 +77,7 @@ export default class LayerElementService {
   }
 
   private setStyleLayerVisibility(layerElement: ILayerElement): void {
-    this._mapService.setStyleLayerVisibility(layerElement as string)
+    this._mapService.setStyleLayerVisibility(layerElement as keyof ILayerElement)
   }
 
   private setStyleLayersVisibilityState(layerElement: ILayerElement): void {

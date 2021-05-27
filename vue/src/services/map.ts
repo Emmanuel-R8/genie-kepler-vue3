@@ -77,12 +77,10 @@ export default class MapService {
 
   setMapStyle(): void {
     const mapStyles: IMapStyle = this._storeService.getMapStylesState()
-    const { url: style } = Object.values(mapStyles).find(
-      (mapStyle: IMapStyle): boolean => mapStyle.visible
-    )
-    this._map.setStyle(style)
-    this._mapboxService.mapStyle = style
-    this._mapboxService.setMapboxSettings()
+    const visible = (mapStyle: IMapStyle): boolean => mapStyle.visible
+    const { url: mapStyle } = Object.values(mapStyles).find(visible)
+    this._map.setStyle(mapStyle)
+    this._mapboxService.mapStyle = mapStyle
     /* add layers after 1 sec delay to set basemap style */
     setTimeout((): void => this.addLayers(), 1000)
   }

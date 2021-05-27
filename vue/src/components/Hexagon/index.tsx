@@ -10,12 +10,11 @@ import scss from './index.module.scss'
 
 const setHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  /* prettier-ignore */
-  const { target: { id: prop, value } } = evt as any
+  const { target } = evt as any
   const hexagonService: HexagonService = Container.get(HexagonService)
   const storeService: StoreService = Container.get(StoreService)
-  storeService.setHexagonLayerReactivePropsState(prop, +value)
-  hexagonService.renderHexagonLayer()
+  target && storeService.setHexagonLayerReactivePropsState(target)
+  target && hexagonService.renderHexagonLayer()
 }
 const resetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()

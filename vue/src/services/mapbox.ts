@@ -33,11 +33,11 @@ export default class MapboxService {
     this._map = new Map(options)
       .addControl(new NavigationControl({ visualizePitch }), position)
       .on('idle', (): void => {
-        this.setMapboxSettings()
+        this.setMapboxSettingsState()
       })
   }
 
-  setMapboxSettings(): void {
+  setMapboxSettingsState(): void {
     const lat: number = +this._map.getCenter().lat.toFixed(6)
     const lng: number = +this._map.getCenter().lng.toFixed(6)
     const center: LngLatLike = { lng, lat }
