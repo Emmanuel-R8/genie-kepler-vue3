@@ -4,11 +4,13 @@ import { LngLatLike, Map, MapboxOptions } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { deckgl } from '@/config'
+import { StoreStates } from '@/enums'
 import { IDeckglOptions, IDeckglViewSettings } from '@/interfaces'
 import { StoreService } from '@/services'
 
 @Service()
 export default class DeckService {
+  private _DECKGL_VIEW_SETTINGS = StoreStates.DECKGL_VIEW_SETTINGS
   private _options: IDeckglOptions = deckgl.options
   private _settings: IDeckglViewSettings = deckgl.settings
 
@@ -25,7 +27,7 @@ export default class DeckService {
   }
 
   loadMapbox(): void {
-    this._settings = this._storeService.getDeckglViewSettingsState()
+    this._storeService.getState(this._DECKGL_VIEW_SETTINGS)
     const options: MapboxOptions = { ...this._options, ...this._settings }
     this._map = new Map(options)
   }
@@ -35,7 +37,7 @@ export default class DeckService {
     this._deck = new Deck({
       canvas,
       controller,
-      initialViewState: { ...this._storeService.getDeckglViewSettingsState() },
+      initialViewState: this._storeService.getState(this._DECKGL_VIEW_SETTINGS),
       onViewStateChange: ({
         viewState,
         viewState: { bearing, latitude, longitude, pitch, zoom }
@@ -76,6 +78,6 @@ export default class DeckService {
       pitch: +pitch.toFixed(1),
       zoom: +zoom.toFixed(2)
     }
-    this._storeService.setDeckglViewSettingsState({ ...settings })
+    this._storeService.setState(this._DECKGL_VIEW_SETTINGS, settings)
   }
 }

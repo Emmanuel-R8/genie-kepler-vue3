@@ -3,13 +3,14 @@ import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
+import { StoreStates } from '@/enums'
 import { ILayerElements, ILayerIcon } from '@/interfaces'
 import { LayerElementService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
 const onDisplayLayerElementHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const { target } = evt as any
+  const { target }: Record<string, any> = evt
   const layerElementService: LayerElementService = Container.get(LayerElementService)
   target && layerElementService.displayLayerElement(target)
 }
@@ -44,9 +45,10 @@ const html = (layerElements: ILayerElements): JSX.Element => (
 
 export default defineComponent({
   setup() {
+    const { LAYER_ELEMENTS } = StoreStates
     const storeService: StoreService = Container.get(StoreService)
     const layerElements: ComputedRef<ILayerElements> = computed(
-      (): ILayerElements => storeService.getLayerElementsState()
+      (): ILayerElements => storeService.getState(LAYER_ELEMENTS)
     )
     return (): JSX.Element => html(layerElements.value)
   }

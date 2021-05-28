@@ -9,7 +9,7 @@ import mapboxgl, {
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { LayerElements } from '@/enums'
+import { LayerElements, StoreStates } from '@/enums'
 import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
 import {
   DataService,
@@ -23,7 +23,9 @@ import {
 
 @Service()
 export default class MapService {
-  private _layerElements = LayerElements
+  private _MAP_STYLES: string = StoreStates.MAP_STYLES
+  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
+  private _layerElements: Record<string, any> = LayerElements
   private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
 
   constructor(
@@ -76,7 +78,7 @@ export default class MapService {
   }
 
   setMapStyle(): void {
-    const mapStyles: IMapStyle = this._storeService.getMapStylesState()
+    const mapStyles: IMapStyle = this._storeService.getState(this._MAP_STYLES)
     const visible = (mapStyle: IMapStyle): boolean => mapStyle.visible
     const { url: mapStyle } = Object.values(mapStyles).find(visible)
     this._map.setStyle(mapStyle)
@@ -86,7 +88,7 @@ export default class MapService {
   }
 
   setStyleLayerVisibility(id: string): void {
-    const styleLayers: IStyleLayer = this._storeService.getStyleLayersVisibilityState()
+    const styleLayers: IStyleLayer = this._storeService.getState(this._STYLE_LAYERS_VISIBILITY)
     styleLayers[id as keyof IStyleLayer].visible
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')

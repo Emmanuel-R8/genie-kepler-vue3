@@ -4,8 +4,6 @@ import { ActiveState, LayerElements, StoreStates } from '@/enums'
 import {
   IDeckglViewSettings,
   IHexagonLayerReactiveProps,
-  ILayerElement,
-  ILayerElements,
   IMapStyle,
   IMapboxSettings,
   IModal,
@@ -16,76 +14,83 @@ import { store } from '@/store'
 
 @Service()
 export default class StoreService {
-  private _DECKGL_VIEW_SETTINGS = StoreStates.DECKGL_VIEW_SETTINGS
-  private _HEXAGON_LAYER_REACTIVE_PROPS = StoreStates.HEXAGON_LAYER_REACTIVE_PROPS
-  private _LAYER_ELEMENTS = StoreStates.LAYER_ELEMENTS
-  private _MAP_STYLES = StoreStates.MAP_STYLES
-  private _MAPBOX_SETTINGS = StoreStates.MAPBOX_SETTINGS
-  private _MODAL = StoreStates.MODAL
-  private _STYLE_LAYERS_VISIBILITY = StoreStates.STYLE_LAYERS_VISIBILITY
-  private _activeState = ActiveState
-  private _layerElements = LayerElements
+  private _DECKGL_VIEW_SETTINGS: string = StoreStates.DECKGL_VIEW_SETTINGS
+  private _HEXAGON_LAYER_REACTIVE_PROPS: string = StoreStates.HEXAGON_LAYER_REACTIVE_PROPS
+  private _LAYER_ELEMENTS: string = StoreStates.LAYER_ELEMENTS
+  private _MAP_STYLES: string = StoreStates.MAP_STYLES
+  private _MAPBOX_SETTINGS: string = StoreStates.MAPBOX_SETTINGS
+  private _MODAL: string = StoreStates.MODAL
+  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
+  private _activeState: Record<string, any> = ActiveState
+  private _layerElements: Record<string, any> = LayerElements
   private _store: IStore = store
 
-  getDeckglViewSettingsState = (): IDeckglViewSettings =>
-    this._store.getState(this._DECKGL_VIEW_SETTINGS)
-  setDeckglViewSettingsState = (settings: IDeckglViewSettings): void =>
-    this._store.setState(this._DECKGL_VIEW_SETTINGS, settings)
+  getState = (state: string): any => this._store.getState(state)
 
-  getHexagonLayerReactivePropsState = (): IHexagonLayerReactiveProps =>
-    this._store.getState(this._HEXAGON_LAYER_REACTIVE_PROPS)
-  setHexagonLayerReactivePropsState = ({ id: prop, value }: Record<string, string>): void => {
-    const props: IHexagonLayerReactiveProps = this.getHexagonLayerReactivePropsState()
-    props[prop as keyof IHexagonLayerReactiveProps] = +value
-    this._store.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, props)
-  }
-  resetHexagonLayerReactivePropsState = (props: IHexagonLayerReactiveProps): void =>
-    this._store.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, props)
+  setState = (state: string, payload?: Record<string, any> | undefined): any => {
+    const setDeckglViewSettingsState = (settings: IDeckglViewSettings): void =>
+      this._store.setState(this._DECKGL_VIEW_SETTINGS, settings)
 
-  getLayerElementsState = (): ILayerElements => this._store.getState(this._LAYER_ELEMENTS)
-  setLayerElementsState = (layerElement: ILayerElement): void => {
-    const layerElements: any = this.getLayerElementsState()
-    layerElements[layerElement as keyof ILayerElement].active =
-      !layerElements[layerElement as keyof ILayerElement].active
-    this._store.setState(this._LAYER_ELEMENTS, layerElements)
-  }
+    const setHexagonLayerReactivePropsState = (payload: any): void => {
+      if ('id' in payload && 'value' in payload) {
+        const { id, value } = payload
+        const props: IHexagonLayerReactiveProps = this.getState(this._HEXAGON_LAYER_REACTIVE_PROPS)
+        props[id as keyof IHexagonLayerReactiveProps] = +value
+        payload = { ...props }
+      }
+      this._store.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, payload)
+    }
 
-  getMapStylesState = (): IMapStyle => this._store.getState(this._MAP_STYLES)
-  setMapStylesState = (): void => {
-    let id: string
-    const mapStyles: IMapStyle = this.getMapStylesState()
-    mapStyles[mapStyles.active as keyof IMapStyle].visible =
-      !mapStyles[mapStyles.active as keyof IMapStyle].visible
-    mapStyles[mapStyles.active as keyof IMapStyle].id === mapStyles.outdoors.id
-      ? (id = mapStyles.satellite.id)
-      : (id = mapStyles.outdoors.id)
-    mapStyles.active = id
-    mapStyles[id as keyof IMapStyle].visible = !mapStyles[id as keyof IMapStyle].visible
-    this._store.setState(this._MAP_STYLES, mapStyles)
-  }
+    const setLayerElementsState = (layerElement: any): void => {
+      const layerElements: any = this.getState(this._LAYER_ELEMENTS)
+      layerElements[layerElement].active = !layerElements[layerElement].active
+      this._store.setState(this._LAYER_ELEMENTS, layerElements)
+    }
 
-  getMapboxSettingsState = (): IMapboxSettings => this._store.getState(this._MAPBOX_SETTINGS)
-  setMapboxSettingsState = (settings: IMapboxSettings): void =>
-    this._store.setState(this._MAPBOX_SETTINGS, settings)
+    const setMapStylesState = (): void => {
+      let id: string
+      const mapStyles: IMapStyle = this.getState(this._MAP_STYLES)
+      mapStyles[mapStyles.active as keyof IMapStyle].visible =
+        !mapStyles[mapStyles.active as keyof IMapStyle].visible
+      mapStyles[mapStyles.active as keyof IMapStyle].id === mapStyles.outdoors.id
+        ? (id = mapStyles.satellite.id)
+        : (id = mapStyles.outdoors.id)
+      mapStyles.active = id
+      mapStyles[id as keyof IMapStyle].visible = !mapStyles[id as keyof IMapStyle].visible
+      this._store.setState(this._MAP_STYLES, mapStyles)
+    }
 
-  getModalState = (): IModal => this._store.getState(this._MODAL)
-  setModalState = (): void => {
-    const { ACTIVE, INACTIVE } = this._activeState
-    const modal: IModal = this.getModalState()
-    modal.active = !modal.active
-    modal.active ? (modal.class = ACTIVE) : (modal.class = INACTIVE)
-    this._store.setState(this._MODAL, modal)
-  }
+    const setMapboxSettingsState = (settings: IMapboxSettings): void =>
+      this._store.setState(this._MAPBOX_SETTINGS, settings)
 
-  getStyleLayersVisibilityState = (): IStyleLayer =>
-    this._store.getState(this._STYLE_LAYERS_VISIBILITY)
-  setStyleLayersVisibilityState = (layerElement: ILayerElement): void => {
-    const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
-    const styleLayers: IStyleLayer = this.getStyleLayersVisibilityState()
-    styleLayers[layerElement as keyof IStyleLayer].visible =
-      !styleLayers[layerElement as keyof IStyleLayer].visible
-    layerElement === BIOSPHERE &&
-      (styleLayers[BIOSPHERE_BORDER].visible = !styleLayers[BIOSPHERE_BORDER].visible)
-    this._store.setState(this._STYLE_LAYERS_VISIBILITY, styleLayers)
+    const setModalState = (): void => {
+      const { ACTIVE, INACTIVE } = this._activeState
+      const modal: IModal = this.getState(this._MODAL)
+      modal.active = !modal.active
+      modal.active ? (modal.class = ACTIVE) : (modal.class = INACTIVE)
+      this._store.setState(this._MODAL, modal)
+    }
+
+    const setStyleLayersVisibilityState = (styleLayer: IStyleLayer): void => {
+      const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
+      const styleLayers: IStyleLayer = this.getState(this._STYLE_LAYERS_VISIBILITY)
+      styleLayers[styleLayer as keyof IStyleLayer].visible =
+        !styleLayers[styleLayer as keyof IStyleLayer].visible
+      styleLayer === BIOSPHERE &&
+        (styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].visible =
+          !styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].visible)
+      this._store.setState(this._STYLE_LAYERS_VISIBILITY, styleLayers)
+    }
+
+    const setState: Record<string, any> = {
+      [this._DECKGL_VIEW_SETTINGS]: payload && setDeckglViewSettingsState,
+      [this._HEXAGON_LAYER_REACTIVE_PROPS]: payload && setHexagonLayerReactivePropsState,
+      [this._LAYER_ELEMENTS]: payload && setLayerElementsState,
+      [this._MAP_STYLES]: setMapStylesState,
+      [this._MAPBOX_SETTINGS]: payload && setMapboxSettingsState,
+      [this._MODAL]: setModalState,
+      [this._STYLE_LAYERS_VISIBILITY]: payload && setStyleLayersVisibilityState
+    }
+    return setState[state](payload)
   }
 }

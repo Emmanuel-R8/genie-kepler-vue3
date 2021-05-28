@@ -1,13 +1,16 @@
 import { Container, Service } from 'typedi'
 import { Router } from 'vue-router'
 
-import { LayerElements } from '@/enums'
+import { LayerElements, StoreStates } from '@/enums'
 import { ILayerElement, ILayerElements } from '@/interfaces'
 import { MapService, MarkerService, StoreService } from '@/services'
 import { router } from '@/router'
 
 @Service()
 export default class LayerElementService {
+  private _LAYER_ELEMENTS: string = StoreStates.LAYER_ELEMENTS
+  private _MAP_STYLES: string = StoreStates.MAP_STYLES
+  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
   private _layerElements: Record<string, string> = LayerElements
   private _router: Router = router
 
@@ -61,7 +64,7 @@ export default class LayerElementService {
   }
 
   private setLayerElementsState(layerElement: ILayerElement): void {
-    this._storeService.setLayerElementsState(layerElement)
+    this._storeService.setState(this._LAYER_ELEMENTS, layerElement)
   }
 
   private setMapStyle(): void {
@@ -69,7 +72,7 @@ export default class LayerElementService {
   }
 
   private setMapStylesState(): void {
-    this._storeService.setMapStylesState()
+    this._storeService.setState(this._MAP_STYLES)
   }
 
   private setRoute(name: string): void {
@@ -81,7 +84,7 @@ export default class LayerElementService {
   }
 
   private setStyleLayersVisibilityState(layerElement: ILayerElement): void {
-    this._storeService.setStyleLayersVisibilityState(layerElement)
+    this._storeService.setState(this._STYLE_LAYERS_VISIBILITY, layerElement)
   }
 
   private showMarkers(timeout?: number): void {

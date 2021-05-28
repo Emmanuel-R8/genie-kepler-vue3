@@ -4,7 +4,7 @@ import { reactive, readonly } from 'vue'
 import { StoreStates } from '@/enums'
 // import { StoreStates, StoreStateStatus } from '@/enums'
 import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
-import { IStore, IStoreState } from '@/interfaces'
+import { IStore } from '@/interfaces'
 
 const {
   DECKGL_VIEW_SETTINGS,
@@ -34,12 +34,12 @@ const logState = (key: string, status: string): void => {
   console.log(`${key} ${status.toUpperCase()} state:`, getState(key))
 }
 */
-const getState = (key: string): IStoreState => {
+const getState = (key: string): Record<string, any> => {
   return cloneDeep(state[key])
 }
-const setState = (key: string, value: Record<string, any>): void => {
+const setState = (key: string, payload: Record<string, any>): void => {
   // logState(key, OLD)
-  state[key] = cloneDeep(value)
+  state[key] = cloneDeep(payload)
   // logState(key, NEW)
 }
 const store: IStore = {

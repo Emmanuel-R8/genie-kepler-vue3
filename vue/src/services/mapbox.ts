@@ -2,11 +2,13 @@ import { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
+import { StoreStates } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
 import { StoreService } from '@/services'
 
 @Service()
 export default class MapboxService {
+  private _MAPBOX_SETTINGS: string = StoreStates.MAPBOX_SETTINGS
   private _mapStyle = ''
   private _navigationControl: Record<string, any> = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
@@ -26,7 +28,7 @@ export default class MapboxService {
 
   loadMapbox(): void {
     const { position, visualizePitch } = this._navigationControl
-    this._settings = this._storeService.getMapboxSettingsState()
+    this._settings = this._storeService.getState(this._MAPBOX_SETTINGS)
     const options: MapboxOptions = { ...this._options, ...this._settings }
     const { style } = this._settings
     this._mapStyle = style
@@ -48,6 +50,6 @@ export default class MapboxService {
       style: this._mapStyle,
       zoom: +this._map.getZoom().toFixed(2)
     }
-    this._storeService.setMapboxSettingsState({ ...settings })
+    this._storeService.setState(this._MAPBOX_SETTINGS, settings)
   }
 }

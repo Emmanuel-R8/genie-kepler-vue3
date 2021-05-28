@@ -1,30 +1,28 @@
 import { Container, Service } from 'typedi'
 
+import { StoreStates } from '@/enums'
 import { IModal } from '@/interfaces'
 import { StoreService } from '@/services'
 
 @Service()
 export default class ModalService {
+  private _MODAL: string = StoreStates.MODAL
   private _modalState: IModal | Record<string, any> = {}
 
   constructor(private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
   }
 
-  hideModal = (timeout?: number): void => {
-    this._modalState = this.getModalState()
-    this._modalState.active && this.setModalState(timeout)
+  getModalState = (): IModal => {
+    return this._storeService.getState(this._MODAL)
   }
-  showModal = (timeout?: number): void => {
+  hideModal = (timeout: number): void => {
     this._modalState = this.getModalState()
-    !this._modalState.active && this.setModalState(timeout)
+    this._modalState.active &&
+      setTimeout((): void => this._storeService.setState(this._MODAL), timeout)
   }
-
-  getModalState = (): IModal => this._storeService.getModalState()
-
-  private setModalState = (timeout?: number): void => {
-    timeout
-      ? setTimeout((): void => this._storeService.setModalState(), timeout)
-      : this._storeService.setModalState()
+  showModal = (): void => {
+    this._modalState = this.getModalState()
+    !this._modalState.active && this._storeService.setState(this._MODAL)
   }
 }
