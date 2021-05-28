@@ -41,16 +41,20 @@ export default class DeckService {
   }
 
   loadDeckgl(): void {
-    const { canvas, controller } = this._options
+    const { canvas, controller, maxPitch, maxZoom, minZoom } = this._options
     this._deck = new Deck({
       canvas,
       controller,
-      initialViewState: this._storeService.getState(this._DECKGL_VIEW_SETTINGS),
+      initialViewState: {
+        maxPitch,
+        maxZoom,
+        minZoom,
+        ...this._storeService.getState(this._DECKGL_VIEW_SETTINGS)
+      },
       onViewStateChange: ({
-        viewState,
         viewState: { bearing, latitude, longitude, pitch, zoom }
       }: ViewState): void => {
-        this.setDeckglViewSettingsState(viewState)
+        this.setDeckglViewSettingsState({ bearing, latitude, longitude, pitch, zoom })
         this._map.jumpTo({
           bearing,
           center: { lng: longitude, lat: latitude },

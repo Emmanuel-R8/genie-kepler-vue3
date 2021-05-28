@@ -4,6 +4,9 @@ export default {
     container: 'deckgl',
     controller: true,
     interactive: false,
+    maxPitch: 85,
+    maxZoom: 12,
+    minZoom: 2,
     style: 'mapbox://styles/mapbox/dark-v10'
   },
   settings: {
@@ -11,8 +14,6 @@ export default {
     center: { lng: -3.0, lat: 53.0 },
     latitude: 53.0,
     longitude: -3.0,
-    maxZoom: 12,
-    minZoom: 2,
     pitch: 50,
     zoom: 6.5
   },
