@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Deck, ViewState } from '@deck.gl/core'
-import { LngLatLike, Map, MapboxOptions } from 'mapbox-gl'
+import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { deckgl } from '@/config'
@@ -13,6 +13,7 @@ export default class DeckService {
   private _DECKGL_VIEW_SETTINGS = StoreStates.DECKGL_VIEW_SETTINGS
   private _options: IDeckglOptions = deckgl.options
   private _settings: IDeckglViewSettings = deckgl.settings
+  private _skyLayer: SkyLayer = deckgl.skyLayer as SkyLayer
 
   constructor(private _deck: Deck, private _map: Map, private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
@@ -27,9 +28,16 @@ export default class DeckService {
   }
 
   loadMapbox(): void {
-    this._storeService.getState(this._DECKGL_VIEW_SETTINGS)
+    this._settings = this._storeService.getState(this._DECKGL_VIEW_SETTINGS)
     const options: MapboxOptions = { ...this._options, ...this._settings }
     this._map = new Map(options)
+    this._map.on('load', (): void => {
+      this.onMapLoadHandler()
+    })
+  }
+
+  onMapLoadHandler = (): void => {
+    this._map.addLayer(this._skyLayer)
   }
 
   loadDeckgl(): void {

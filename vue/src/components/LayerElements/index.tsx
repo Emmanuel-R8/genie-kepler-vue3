@@ -8,7 +8,7 @@ import { ILayerElements, ILayerIcon } from '@/interfaces'
 import { LayerElementService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const onDisplayLayerElementHandler = (evt: Event): void => {
+const onDisplayLayerElementClickHandler = (evt: Event): void => {
   evt.stopPropagation()
   const { target }: Record<string, any> = evt
   const layerElementService: LayerElementService = Container.get(LayerElementService)
@@ -20,7 +20,7 @@ const html = (layerElements: ILayerElements): JSX.Element => (
       {Object.values(layerElements).map((el: ILayerElements) => (
         <LayerElement
           active={el.active}
-          click={onDisplayLayerElementHandler}
+          click={onDisplayLayerElementClickHandler}
           id={el.id}
           key={el.id}
           name={el.name}
@@ -31,7 +31,7 @@ const html = (layerElements: ILayerElements): JSX.Element => (
       {layerIcons.map((icon: ILayerIcon) => (
         <LayerIcon
           alt={icon.name}
-          click={onDisplayLayerElementHandler}
+          click={onDisplayLayerElementClickHandler}
           height={icon.height}
           id={icon.id}
           key={icon.id}

@@ -24,6 +24,7 @@ export default class HexagonLayerService {
   private _staticProps: IHexagonLayerStaticProps = hexagonLayer.staticProps
 
   constructor(
+    private _data: number[][],
     private _deck: Deck,
     private _map: Map,
     private _dataService: DataService,
@@ -51,20 +52,24 @@ export default class HexagonLayerService {
     this._deck = this._deckService.deck
     this._map = this._deckService.map
     this._map.on('load', (): void => {
-      this.hideModal()
-      this.showMarkers()
-      this.renderHexagonLayer()
+      this.onMapLoadHandler()
     })
   }
 
+  onMapLoadHandler = (): void => {
+    this.hideModal()
+    this.showMarkers()
+    this.setHexagonLayerData()
+    this.renderHexagonLayer()
+  }
+
   renderHexagonLayer(): void {
-    const data: number[][] = this._dataService.hexagonLayerData
-    if (data) {
+    if (this._data) {
       const reactiveProps: IHexagonLayerReactiveProps = this._storeService.getState(
         this._HEXAGON_LAYER_REACTIVE_PROPS
       )
       const hexagonLayer: HexagonLayer = new HexagonLayer({
-        data,
+        data: this._data,
         getPosition: (d: Record<string, number>): Record<string, number> => d,
         ...this._staticProps,
         ...reactiveProps
@@ -80,6 +85,10 @@ export default class HexagonLayerService {
 
   private hideModal(): void {
     this._modalService.hideModal(0.5)
+  }
+
+  private setHexagonLayerData = (): void => {
+    this._data = this._dataService.hexagonLayerData
   }
 
   private showMarkers(): void {

@@ -1,4 +1,4 @@
-import { LngLatLike, Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
+import { LngLatLike, Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
@@ -13,6 +13,7 @@ export default class MapboxService {
   private _navigationControl: Record<string, any> = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
   private _settings: IMapboxSettings = mapbox.settings
+  private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
 
   constructor(private _map: Map, private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
@@ -34,12 +35,23 @@ export default class MapboxService {
     this._mapStyle = style
     this._map = new Map(options)
       .addControl(new NavigationControl({ visualizePitch }), position)
+      .on('load', (): void => {
+        this.onMapLoadHandler()
+      })
       .on('idle', (): void => {
-        this.setMapboxSettingsState()
+        this.onMapIdleHandler()
       })
   }
 
-  setMapboxSettingsState(): void {
+  onMapIdleHandler(): void {
+    this.setMapboxSettingsState()
+  }
+
+  onMapLoadHandler(): void {
+    this._map.addLayer(this._skyLayer)
+  }
+
+  private setMapboxSettingsState(): void {
     const lat: number = +this._map.getCenter().lat.toFixed(6)
     const lng: number = +this._map.getCenter().lng.toFixed(6)
     const center: LngLatLike = { lng, lat }

@@ -6,7 +6,7 @@ import { ITrail } from '@/interfaces'
 import { TrailService } from '@/services'
 import scss from './index.module.scss'
 
-const onSelectTrailHandler = (evt: Event): void => {
+const onSelectTrailChangeHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
   const { target: { value: trailName } }: Record<string, any> = evt
@@ -15,7 +15,7 @@ const onSelectTrailHandler = (evt: Event): void => {
 }
 const html = (): JSX.Element => (
   <div>
-    <select class={scss.trails} onChange={onSelectTrailHandler}>
+    <select class={scss.trails} onChange={onSelectTrailChangeHandler}>
       {trails.map((trail: ITrail) => (
         <option key={trail.name}>{trail.name}</option>
       ))}

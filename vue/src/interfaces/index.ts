@@ -6,8 +6,6 @@ export interface IDeckglOptions {
   container: string
   controller: boolean
   interactive: boolean
-  maxZoom?: number
-  minZoom?: number
   style: string
 }
 
@@ -16,6 +14,8 @@ export interface IDeckglViewSettings {
   center: LngLatLike
   latitude: number
   longitude: number
+  maxZoom?: number
+  minZoom?: number
   pitch: number
   zoom: number
 }

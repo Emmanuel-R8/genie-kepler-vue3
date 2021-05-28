@@ -1,7 +1,7 @@
 import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted, PropType } from 'vue'
 
-import { MapService, MapboxService, PopupService } from '@/services'
+import { MapService, MapboxService } from '@/services'
 import scss from './index.module.scss'
 
 export default defineComponent({
@@ -14,16 +14,16 @@ export default defineComponent({
   setup(props: Record<string, string>) {
     const mapService: MapService = Container.get(MapService)
     const mapboxService: MapboxService = Container.get(MapboxService)
-    const popupService: PopupService = Container.get(PopupService)
     onMounted((): void => {
       mapService.loadMapLayer()
     })
     onUnmounted((): void => {
-      mapService.map.off('click', popupService.addLayerPopup)
-      mapService.map.off('load', mapService.addLayers)
-      mapService.map.off('mouseenter', mapService.map.getCanvas)
-      mapService.map.off('mouseleave', popupService.removePopup)
-      mapboxService.map.off('idle', mapboxService.setMapboxSettingsState)
+      mapService.map.off('click', mapService.onMapClickHandler)
+      mapService.map.off('load', mapService.onMapLoadHandler)
+      mapService.map.off('mouseenter', mapService.onMapMouseEnterHandler)
+      mapService.map.off('mouseleave', mapService.onMapMouseLeaveHandler)
+      mapboxService.map.off('idle', mapboxService.onMapIdleHandler)
+      mapboxService.map.off('load', mapboxService.onMapLoadHandler)
     })
     return (): JSX.Element => <div id={props.container} class={scss[props.container]}></div>
   }

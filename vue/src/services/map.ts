@@ -1,14 +1,6 @@
-import mapboxgl, {
-  FillLayer,
-  LineLayer,
-  LngLatLike,
-  Map,
-  MapLayerMouseEvent,
-  SkyLayer
-} from 'mapbox-gl'
+import mapboxgl, { LngLatLike, Map, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { mapbox } from '@/config'
 import { LayerElements, StoreStates } from '@/enums'
 import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
 import {
@@ -26,7 +18,6 @@ export default class MapService {
   private _MAP_STYLES: string = StoreStates.MAP_STYLES
   private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
   private _layerElements: Record<string, any> = LayerElements
-  private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
 
   constructor(
     private _map: Map,
@@ -57,17 +48,27 @@ export default class MapService {
     this._mapboxService.loadMapbox()
     this._map = this._mapboxService.map
     this._map.on('load', (): void => {
-      this.hideModal()
-      this.showMarkers()
-      this.addLayers()
+      this.onMapLoadHandler()
     })
   }
 
-  addLayers(): void {
-    this._map.addLayer(this._skyLayer)
-    for (const layer of this._styleLayerService.styleLayers) {
-      this.addStyleLayer(layer)
-    }
+  onMapLoadHandler = (): void => {
+    this.hideModal()
+    this.showMarkers()
+    this.addStyleLayers()
+  }
+
+  onMapClickHandler(evt: MapLayerMouseEvent): void {
+    this._popupService.addLayerPopup(evt)
+  }
+
+  onMapMouseEnterHandler(): void {
+    this._map.getCanvas().style.cursor = 'pointer'
+  }
+
+  onMapMouseLeaveHandler(): void {
+    this._map.getCanvas().style.cursor = ''
+    this._popupService.removePopup()
   }
 
   flyTo({ center, zoom }: ITrail): void {
@@ -84,7 +85,7 @@ export default class MapService {
     this._map.setStyle(mapStyle)
     this._mapboxService.mapStyle = mapStyle
     /* add layers after 1 sec delay to set basemap style */
-    setTimeout((): void => this.addLayers(), 1000)
+    setTimeout((): void => this.addStyleLayers(), 1200)
   }
 
   setStyleLayerVisibility(id: string): void {
@@ -94,28 +95,29 @@ export default class MapService {
       : this._map.setLayoutProperty(id, 'visibility', 'none')
 
     const { BIOSPHERE } = this._layerElements
-    if (styleLayers[id as keyof IStyleLayer].visible && id === BIOSPHERE) {
+    styleLayers[id as keyof IStyleLayer].visible &&
+      id === BIOSPHERE &&
       this.setStyleLayerEventHandlers(id)
-    }
   }
 
-  private addStyleLayer(layer: FillLayer | LineLayer): void {
-    const { id } = layer
-    this._map.addLayer(layer)
-    this.setStyleLayerVisibility(id)
+  private addStyleLayers(): void {
+    for (const layer of this._styleLayerService.styleLayers) {
+      const { id } = layer
+      this._map.addLayer(layer)
+      this.setStyleLayerVisibility(id)
+    }
   }
 
   private setStyleLayerEventHandlers(id: string): void {
     this._map
       .on('click', id, (evt: MapLayerMouseEvent): void => {
-        this._popupService.addLayerPopup(evt)
+        this.onMapClickHandler(evt)
       })
       .on('mouseenter', id, (): void => {
-        this._map.getCanvas().style.cursor = 'pointer'
+        this.onMapMouseEnterHandler()
       })
       .on('mouseleave', id, (): void => {
-        this._map.getCanvas().style.cursor = ''
-        this._popupService.removePopup()
+        this.onMapMouseLeaveHandler()
       })
   }
 

@@ -8,7 +8,7 @@ import { router } from '@/router'
 import { HexagonLayerService, StoreService } from '@/services'
 import scss from './index.module.scss'
 
-const setHexagonLayerReactivePropsHandler = (evt: Event): void => {
+const onSetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const { target }: Record<string, any> = evt
   const { HEXAGON_LAYER_REACTIVE_PROPS } = StoreStates
@@ -17,12 +17,12 @@ const setHexagonLayerReactivePropsHandler = (evt: Event): void => {
   target && storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, target)
   target && hexagonLayerService.renderHexagonLayer()
 }
-const resetHexagonLayerReactivePropsHandler = (evt: Event): void => {
+const onResetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const hexagonLayerService: HexagonLayerService = Container.get(HexagonLayerService)
   hexagonLayerService.resetHexagonLayerReactiveProps()
 }
-const returnToTrailsHandler = (evt: Event): void => {
+const onReturnToTrailsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const { MAPBOX } = Routes
   router.push({ name: MAPBOX })
@@ -34,9 +34,9 @@ const html = (props: IHexagonLayerReactiveProps): JSX.Element => (
     elevationScale={props.elevationScale}
     radius={props.radius}
     upperPercentile={props.upperPercentile}
-    setHexagonLayerReactiveProps={setHexagonLayerReactivePropsHandler}
-    resetHexagonLayerReactiveProps={resetHexagonLayerReactivePropsHandler}
-    returnToTrails={returnToTrailsHandler}
+    setHexagonLayerReactiveProps={onSetHexagonLayerReactivePropsHandler}
+    resetHexagonLayerReactiveProps={onResetHexagonLayerReactivePropsHandler}
+    returnToTrails={onReturnToTrailsHandler}
   />
 )
 

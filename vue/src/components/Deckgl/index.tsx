@@ -1,7 +1,7 @@
 import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted, PropType } from 'vue'
 
-import { HexagonLayerService } from '@/services'
+import { DeckService, HexagonLayerService } from '@/services'
 import scss from './index.module.scss'
 
 const html = (props: Record<string, string>): JSX.Element => (
@@ -23,12 +23,14 @@ export default defineComponent({
     }
   },
   setup(props: Record<string, string>) {
+    const deckService: DeckService = Container.get(DeckService)
     const hexagonLayerService: HexagonLayerService = Container.get(HexagonLayerService)
     onMounted((): void => {
       hexagonLayerService.loadHexagonLayer()
     })
     onUnmounted((): void => {
-      hexagonLayerService.map.off('load', hexagonLayerService.renderHexagonLayer)
+      deckService.map.off('load', deckService.onMapLoadHandler)
+      hexagonLayerService.map.off('load', hexagonLayerService.onMapLoadHandler)
     })
     return (): JSX.Element => html(props)
   }
