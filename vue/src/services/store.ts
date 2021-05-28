@@ -50,11 +50,11 @@ export default class StoreService {
     const setMapStylesState = (): void => {
       let id: string
       const mapStyles: IMapStyle = this.getState(this._MAP_STYLES)
-      mapStyles[mapStyles.active as keyof IMapStyle].visible =
-        !mapStyles[mapStyles.active as keyof IMapStyle].visible
-      mapStyles[mapStyles.active as keyof IMapStyle].id === mapStyles.outdoors.id
-        ? (id = mapStyles.satellite.id)
-        : (id = mapStyles.outdoors.id)
+      const { active, outdoors, satellite } = mapStyles
+      mapStyles[active as keyof IMapStyle].visible = !mapStyles[active as keyof IMapStyle].visible
+      mapStyles[active as keyof IMapStyle].id === outdoors.id
+        ? (id = satellite.id)
+        : (id = outdoors.id)
       mapStyles.active = id
       mapStyles[id as keyof IMapStyle].visible = !mapStyles[id as keyof IMapStyle].visible
       this._store.setState(this._MAP_STYLES, mapStyles)
