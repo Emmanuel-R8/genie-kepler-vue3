@@ -7,7 +7,7 @@ import scss from './index.module.scss'
 const html = (props: Record<string, string>): JSX.Element => (
   <div>
     <div id={props.container} class={scss[props.container]}></div>
-    <canvas id={props.canvas} class={scss[props.container]}></canvas>
+    <canvas id={props.canvas} class={scss[props.canvas]}></canvas>
   </div>
 )
 
