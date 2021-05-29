@@ -13,7 +13,7 @@ export default class DataService {
   private _data: number[][] = []
   private _endPoints: Record<string, string> = EndPoints
   private _markers: IMarker[] = markers
-  private _styleLayers: IStyleLayer[] = styleLayers
+  private _styleLayers: any[] = styleLayers
   private _urls: Record<string, string> = Urls
 
   constructor(

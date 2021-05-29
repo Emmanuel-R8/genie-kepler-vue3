@@ -110,26 +110,10 @@ export interface IStore {
   state: Record<string, any>
 }
 
-export interface IStyleLayer {
-  biosphere?: any
-  'biosphere-border'?: any
-  fields?: string
-  data?: Record<string, never> | FeatureCollection
-  'fill-color'?: string
-  'fill-opacity'?: number
-  'fill-outline-color'?: string
-  id?: string
-  layer?: any
-  layout?: Record<string, string>
-  'line-color'?: string
-  'line-width'?: number
-  paint?: any
-  source?: any
-  table?: string
-  trails?: any
-  type?: string
-  visible?: boolean
-  visibility?: string
+export interface IStyleLayer extends IMarker {
+  data: Record<string, never> | FeatureCollection
+  layer: Record<string, any>
+  source: any
 }
 
 export interface ITrail {

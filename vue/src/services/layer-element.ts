@@ -50,7 +50,7 @@ export default class LayerElementService {
       this.setMapStylesState()
       this.setMapStyle()
       /* show hidden markers when changing map styles for aesthetic purposes */
-      this.showMarkers(1200)
+      this.showMarkers(1000)
     }
     const layerElements: Record<string, any> = {
       [BIOSPHERE]: layer,

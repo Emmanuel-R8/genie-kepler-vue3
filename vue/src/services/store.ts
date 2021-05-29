@@ -4,6 +4,7 @@ import { ActiveState, LayerElements, StoreStates } from '@/enums'
 import {
   IDeckglViewSettings,
   IHexagonLayerReactiveProps,
+  ILayerElement,
   IMapStyle,
   IMapboxSettings,
   IModal,
@@ -27,7 +28,7 @@ export default class StoreService {
 
   getState = (state: string): any => this._store.getState(state)
 
-  setState = (state: string, payload?: Record<string, any> | undefined): any => {
+  setState = (state: string, payload?: Record<string, any> | undefined): void => {
     const setDeckglViewSettingsState = (settings: IDeckglViewSettings): void =>
       this._store.setState(this._DECKGL_VIEW_SETTINGS, settings)
 
@@ -71,12 +72,12 @@ export default class StoreService {
       this._store.setState(this._MODAL, modal)
     }
 
-    const setStyleLayersVisibilityState = (styleLayer: IStyleLayer): void => {
+    const setStyleLayersVisibilityState = (layerElement: ILayerElement): void => {
       const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
       const styleLayers: IStyleLayer = this.getState(this._STYLE_LAYERS_VISIBILITY)
-      styleLayers[styleLayer as keyof IStyleLayer].visible =
-        !styleLayers[styleLayer as keyof IStyleLayer].visible
-      styleLayer === BIOSPHERE &&
+      styleLayers[layerElement as keyof IStyleLayer].visible =
+        !styleLayers[layerElement as keyof IStyleLayer].visible
+      layerElement === BIOSPHERE &&
         (styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].visible =
           !styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].visible)
       this._store.setState(this._STYLE_LAYERS_VISIBILITY, styleLayers)
