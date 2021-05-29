@@ -1,4 +1,4 @@
-import { LngLatLike, Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
+import { Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
@@ -54,11 +54,10 @@ export default class MapboxService {
   private setMapboxSettingsState(): void {
     const lat: number = +this._map.getCenter().lat.toFixed(6)
     const lng: number = +this._map.getCenter().lng.toFixed(6)
-    const center: LngLatLike = { lng, lat }
     const settings: IMapboxSettings = {
-      bearing: +this._map.getBearing().toFixed(1),
-      center,
-      pitch: +this._map.getPitch().toFixed(1),
+      bearing: +this._map.getBearing().toFixed(2),
+      center: { lng, lat },
+      pitch: +this._map.getPitch().toFixed(2),
       style: this._mapStyle,
       zoom: +this._map.getZoom().toFixed(2)
     }

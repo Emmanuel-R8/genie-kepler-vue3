@@ -4,9 +4,9 @@ export default {
     container: 'deckgl',
     controller: true,
     interactive: false,
-    maxPitch: 85,
+    maxPitch: 80,
     maxZoom: 12,
-    minZoom: 2,
+    minZoom: 5,
     style: 'mapbox://styles/mapbox/dark-v10'
   },
   settings: {
