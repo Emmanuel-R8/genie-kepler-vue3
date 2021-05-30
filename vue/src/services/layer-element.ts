@@ -52,15 +52,15 @@ export default class LayerElementService {
       /* show hidden markers when changing map styles for aesthetic purposes */
       this.showMarkers(1000)
     }
-    const layerElements: Record<string, any> = {
-      [BIOSPHERE]: layer,
-      [DECKGL]: route,
-      [OFFICE]: marker,
-      [PLACES]: marker,
-      [SATELLITE]: satellite,
-      [TRAILS]: layer
-    }
-    return layerElements[layerElement as keyof ILayerElement]()
+    const layerElements: Record<string, any> = new Map([
+      [BIOSPHERE, layer],
+      [DECKGL, route],
+      [OFFICE, marker],
+      [PLACES, marker],
+      [SATELLITE, satellite],
+      [TRAILS, layer]
+    ])
+    return layerElements.get(layerElement)()
   }
 
   private setLayerElementsState(layerElement: ILayerElement): void {

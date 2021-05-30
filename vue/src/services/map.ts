@@ -84,8 +84,8 @@ export default class MapService {
     const { url: mapStyle } = Object.values(mapStyles).find(visible)
     this._map.setStyle(mapStyle)
     this._mapboxService.mapStyle = mapStyle
-    /* add layers after 1 sec delay to set basemap style */
-    setTimeout((): void => this.addStyleLayers(), 1000)
+    /* add layers after 1/2 sec delay to set basemap style */
+    setTimeout((): void => this.addStyleLayers(), 500)
   }
 
   setStyleLayerVisibility(id: string): void {
