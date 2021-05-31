@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
@@ -11,7 +11,7 @@ import scss from './index.module.scss'
 const onDisplayLayerElementClickHandler = (evt: Event): void => {
   evt.stopPropagation()
   const { target }: Record<string, any> = evt
-  const layerElementService: LayerElementService = Container.get(LayerElementService)
+  const layerElementService = Container.get(LayerElementService)
   target && layerElementService.displayLayerElement(target)
 }
 const html = (layerElements: ILayerElements): JSX.Element => (
@@ -46,10 +46,8 @@ const html = (layerElements: ILayerElements): JSX.Element => (
 export default defineComponent({
   setup() {
     const { LAYER_ELEMENTS } = StoreStates
-    const storeService: StoreService = Container.get(StoreService)
-    const layerElements: ComputedRef<ILayerElements> = computed(
-      (): ILayerElements => storeService.getState(LAYER_ELEMENTS)
-    )
+    const storeService = Container.get(StoreService)
+    const layerElements = computed((): ILayerElements => storeService.getState(LAYER_ELEMENTS))
     return (): JSX.Element => html(layerElements.value)
   }
 })

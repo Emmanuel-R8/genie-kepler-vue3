@@ -10,7 +10,7 @@ const onSelectTrailChangeHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
   const { target: { value: trailName } }: Record<string, any> = evt
-  const trailService: TrailService = Container.get(TrailService)
+  const trailService = Container.get(TrailService)
   trailName && trailService.selectTrail(trailName)
 }
 const html = (): JSX.Element => (

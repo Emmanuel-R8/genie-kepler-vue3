@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import { LayerElements, Mapbox, Modal, Trails } from '@/components'
 import { mapbox } from '@/config'
@@ -18,8 +18,8 @@ const html = (modal: IModal, { container }: IMapboxOptions): JSX.Element => (
 export default defineComponent({
   setup() {
     const { options: mapboxOptions } = mapbox
-    const modalService: ModalService = Container.get(ModalService)
-    const modal: ComputedRef<IModal> = computed((): IModal => modalService.getModalState())
+    const modalService = Container.get(ModalService)
+    const modal = computed((): IModal => modalService.modalState)
     modalService.showModal()
     return (): JSX.Element => html(modal.value, mapboxOptions)
   }

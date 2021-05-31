@@ -13,7 +13,7 @@ const html = (): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const dataService: DataService = Container.get(DataService)
+    const dataService = Container.get(DataService)
     dataService.loadData()
     return (): JSX.Element => html()
   }

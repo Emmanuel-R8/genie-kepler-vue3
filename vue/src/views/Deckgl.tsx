@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import { Deckgl, Footer, Hexagon, Modal } from '@/components'
 import { deckgl } from '@/config'
@@ -18,8 +18,8 @@ const html = (modal: IModal, { canvas, container }: IDeckglOptions): JSX.Element
 export default defineComponent({
   setup() {
     const { options: deckglOptions } = deckgl
-    const modalService: ModalService = Container.get(ModalService)
-    const modal: ComputedRef<IModal> = computed((): IModal => modalService.getModalState())
+    const modalService = Container.get(ModalService)
+    const modal = computed((): IModal => modalService.modalState)
     modalService.showModal()
     return (): JSX.Element => html(modal.value, deckglOptions)
   }

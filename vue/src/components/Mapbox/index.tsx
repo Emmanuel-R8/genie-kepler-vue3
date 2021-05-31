@@ -12,8 +12,8 @@ export default defineComponent({
     }
   },
   setup(props: Record<string, string>) {
-    const mapService: MapService = Container.get(MapService)
-    const mapboxService: MapboxService = Container.get(MapboxService)
+    const mapService = Container.get(MapService)
+    const mapboxService = Container.get(MapboxService)
     onMounted((): void => {
       mapService.loadMapLayer()
     })

@@ -4,7 +4,7 @@ import { defineComponent, onMounted, onUnmounted, PropType } from 'vue'
 import { DeckService, HexagonLayerService } from '@/services'
 import scss from './index.module.scss'
 
-const html = (props: Record<string, string>): JSX.Element => (
+const html = (props: Record<string, any>): JSX.Element => (
   <div>
     <div id={props.container} class={scss[props.container]}></div>
     <canvas id={props.canvas} class={scss[props.canvas]}></canvas>
@@ -22,9 +22,9 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, string>) {
-    const deckService: DeckService = Container.get(DeckService)
-    const hexagonLayerService: HexagonLayerService = Container.get(HexagonLayerService)
+  setup(props) {
+    const deckService = Container.get(DeckService)
+    const hexagonLayerService = Container.get(HexagonLayerService)
     onMounted((): void => {
       hexagonLayerService.loadHexagonLayer()
     })

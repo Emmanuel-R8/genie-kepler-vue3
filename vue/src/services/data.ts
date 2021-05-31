@@ -65,19 +65,17 @@ export default class DataService {
   }
 
   private getMapData(): void {
-    this._styleLayers.forEach((styleLayer: IStyleLayer, i: number): void => {
-      this.getStyleLayers(styleLayer, i)
-    })
-    this._markers.forEach((marker: IMarker): void => {
-      this.getMarkers(marker)
-    })
+    this._styleLayers.forEach(
+      (styleLayer: IStyleLayer, i): Promise<void> => this.getStyleLayers(styleLayer, i)
+    )
+    this._markers.forEach((marker): Promise<void> => this.getMarkers(marker))
   }
 
   private async getStyleLayers(styleLayer: IStyleLayer, i: number): Promise<void> {
     try {
       /* prettier-ignore */
       const { layer: { id } } = styleLayer
-      const layer: FeatureCollection = await this.getFeatureCollection(styleLayer)
+      const layer = await this.getFeatureCollection(styleLayer)
 
       if (layer?.features?.length) {
         const styleLayer: IStyleLayer = this._styleLayers[i].layer
@@ -93,7 +91,7 @@ export default class DataService {
   private async getMarkers(marker: IMarker): Promise<void> {
     try {
       const { table: id } = marker
-      const markers: FeatureCollection = await this.getFeatureCollection(marker)
+      const markers = await this.getFeatureCollection(marker)
 
       if (markers?.features?.length) {
         return this._markerService.setMarkers(markers, id)

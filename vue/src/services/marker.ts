@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection, Point } from 'geojson'
+import { FeatureCollection, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
@@ -23,7 +23,7 @@ export default class MarkerService {
   /* create individual html marker elements & add mouse event handlers */
   setMarkers(fc: FeatureCollection, id: string): void {
     const markers: Marker[] = []
-    fc.features.forEach((feature: Feature): any => {
+    fc.features.forEach((feature): any => {
       if (feature?.properties) {
         const el: IHTMLMarkerElement = <IHTMLMarkerElement>document.createElement('div')
         el.className = `${id}-marker`
@@ -71,8 +71,8 @@ export default class MarkerService {
     }
   }
 
-  toggleMarkers(id: ILayerElement): void {
-    for (const marker of this._markers[this._markersHash[id as keyof ILayerElement]]) {
+  toggleMarkers(layerElement: ILayerElement): void {
+    for (const marker of this._markers[this._markersHash[layerElement as keyof ILayerElement]]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.visible = !el.visible
       el.visible ? marker.addTo(this._mapboxService.map) : marker.remove()

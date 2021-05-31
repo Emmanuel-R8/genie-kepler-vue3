@@ -22,7 +22,6 @@ export default class MapboxService {
   get map(): Map {
     return this._map
   }
-
   set mapStyle(style: string) {
     this._mapStyle = style
   }
@@ -52,8 +51,8 @@ export default class MapboxService {
   }
 
   private setMapboxSettingsState(): void {
-    const lat: number = +this._map.getCenter().lat.toFixed(6)
-    const lng: number = +this._map.getCenter().lng.toFixed(6)
+    const lat = +this._map.getCenter().lat.toFixed(6)
+    const lng = +this._map.getCenter().lng.toFixed(6)
     const settings: IMapboxSettings = {
       bearing: +this._map.getBearing().toFixed(2),
       center: { lng, lat },
