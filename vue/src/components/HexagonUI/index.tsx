@@ -103,7 +103,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, any>) {
+  setup(props) {
     return (): JSX.Element => html(props)
   }
 })

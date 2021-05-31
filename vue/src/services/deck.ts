@@ -21,7 +21,6 @@ export default class DeckService {
   get deck(): Deck {
     return this._deck
   }
-
   get map(): Map {
     return this._map
   }

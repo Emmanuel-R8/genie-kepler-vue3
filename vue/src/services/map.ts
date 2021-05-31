@@ -1,4 +1,4 @@
-import mapboxgl, { LngLatLike, Map, MapLayerMouseEvent } from 'mapbox-gl'
+import mapboxgl, { Map, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { LayerElements, StoreStates } from '@/enums'
@@ -73,7 +73,7 @@ export default class MapService {
 
   flyTo({ center, zoom }: ITrail): void {
     this._map.flyTo({
-      center: center as LngLatLike,
+      center,
       zoom
     })
   }
@@ -84,7 +84,7 @@ export default class MapService {
     const { url: mapStyle } = Object.values(mapStyles).find(visible)
     this._map.setStyle(mapStyle)
     this._mapboxService.mapStyle = mapStyle
-    /* add layers after 1/2 sec delay to set basemap style */
+    /* add style layers after 1/2 sec delay to set basemap style */
     setTimeout((): void => this.addStyleLayers(), 500)
   }
 

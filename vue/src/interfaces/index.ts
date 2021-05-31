@@ -117,7 +117,7 @@ export interface IStyleLayer extends IMarker {
 }
 
 export interface ITrail {
-  center?: number[]
+  center?: LngLatLike
   name: string
   zoom?: number
 }

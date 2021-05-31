@@ -9,7 +9,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, string>) {
+  setup(props) {
     return (): JSX.Element => <div class={`${scss.modal} ${scss[props.class]}`}></div>
   }
 })
