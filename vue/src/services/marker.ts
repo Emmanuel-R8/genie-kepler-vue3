@@ -9,7 +9,6 @@ import { MapboxService, PopupService } from '@/services'
 @Service()
 export default class MarkerService {
   private _layerElements = LayerElements
-  private _marker: Marker[] = []
   private _markers: Marker[][] = []
   private _markersHash: Record<string, number> = {
     office: 0,
@@ -23,11 +22,11 @@ export default class MarkerService {
   }
 
   setMarkers(id: string, features: Feature[]): void {
-    this._marker = []
+    const marker: Marker[] = []
     for (const feature of features) {
-      this._marker = this.createMarker(id, feature)
+      marker.push(this.createMarker(id, feature))
     }
-    this._markers.push(this._marker)
+    this._markers.push(marker)
     this._markersHash[id] = this._markers.length - 1
   }
 
@@ -69,20 +68,18 @@ export default class MarkerService {
     return el
   }
 
-  private createMarker(id: string, feature: Feature): Marker[] {
+  private createMarker(id: string, feature: Feature): Marker {
     const { OFFICE, PLACES, TRAILS } = this._layerElements
     const el: IHTMLMarkerElement = this.createHTMLMarkerElement(id, feature)
 
-    const marker = (feature: Feature): Marker[] => {
+    const marker = (feature: Feature): Marker => {
       const { geometry } = feature
-      this._marker.push(new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike))
-      return this._marker
+      return new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
     }
-    const layerMarker = (feature: Feature): Marker[] => {
+    const layerMarker = (feature: Feature): Marker => {
       /* prettier-ignore */
       const { properties: { lng, lat } } = feature as any
-      this._marker.push(new Marker(el).setLngLat({ lng, lat }))
-      return this._marker
+      return new Marker(el).setLngLat({ lng, lat })
     }
     const markers: Record<string, any> = new Map([
       [OFFICE, marker],
