@@ -52,7 +52,7 @@ export default class MapService {
     })
   }
 
-  onMapLoadHandler = (): void => {
+  onMapLoadHandler(): void {
     this.hideModal()
     this.showMarkers()
     this.addStyleLayers()
@@ -122,10 +122,10 @@ export default class MapService {
   }
 
   private hideModal(): void {
-    this._modalService.hideModal(0.5)
+    this._modalService.hideModal(100)
   }
 
   private showMarkers(): void {
-    setTimeout((): void => this._markerService.showMarkers(), 0.5)
+    setTimeout((): void => this._markerService.showMarkers(), 100)
   }
 }

@@ -26,9 +26,11 @@ export default class StoreService {
   private _layerElements: Record<string, any> = LayerElements
   private _store: IStore = store
 
-  getState = (state: string): any => this._store.getState(state)
+  getState(state: string): any {
+    return this._store.getState(state)
+  }
 
-  setState = (state: string, payload?: Record<string, any> | undefined): void => {
+  setState(state: string, payload?: Record<string, any> | undefined): void {
     const setDeckglViewSettingsState = (settings: IDeckglViewSettings): void =>
       this._store.setState(this._DECKGL_VIEW_SETTINGS, settings)
 
@@ -92,6 +94,7 @@ export default class StoreService {
       [this._MODAL]: setModalState,
       [this._STYLE_LAYERS_VISIBILITY]: payload && setStyleLayersVisibilityState
     }
-    return setState[state](payload)
+
+    setState[state](payload)
   }
 }

@@ -56,7 +56,7 @@ export default class HexagonLayerService {
     })
   }
 
-  onMapLoadHandler = (): void => {
+  onMapLoadHandler(): void {
     this.hideModal()
     this.showMarkers()
     this.setHexagonLayerData()
@@ -84,14 +84,14 @@ export default class HexagonLayerService {
   }
 
   private hideModal(): void {
-    this._modalService.hideModal(0.5)
+    this._modalService.hideModal(400)
   }
 
-  private setHexagonLayerData = (): void => {
+  private setHexagonLayerData(): void {
     this._data = this._dataService.hexagonLayerData
   }
 
   private showMarkers(): void {
-    setTimeout((): void => this._markerService.showMarkers(), 0.5)
+    this._markerService.showMarkers()
   }
 }

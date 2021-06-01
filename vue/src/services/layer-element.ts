@@ -28,6 +28,7 @@ export default class LayerElementService {
     const layerElement = id.replace(/-(.*)$/, '') as ILayerElement
     const { BIOSPHERE, BIOSPHERE_BORDER, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } =
       this._layerElements
+
     const layer = (): void => {
       this.setLayerElementsState(layerElement)
       this.setStyleLayersVisibilityState(layerElement)
@@ -60,7 +61,8 @@ export default class LayerElementService {
       [SATELLITE, satellite],
       [TRAILS, layer]
     ])
-    return layerElements.get(layerElement)()
+
+    layerElements.get(layerElement)()
   }
 
   private setLayerElementsState(layerElement: ILayerElement): void {

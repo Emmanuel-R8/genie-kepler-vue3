@@ -40,7 +40,7 @@ export default class DeckService {
     })
   }
 
-  onMapLoadHandler = (): void => {
+  onMapLoadHandler(): void {
     this._map.addLayer(this._skyLayer)
   }
 
@@ -60,7 +60,8 @@ export default class DeckService {
         viewState: { bearing, latitude, longitude, pitch, zoom }
       }: ViewState): void => {
         const center: LngLatLike = { lng: longitude, lat: latitude }
-        this.setDeckglViewSettingsState({ bearing, center, latitude, longitude, pitch, zoom })
+        const settings: IDeckglViewSettings = { bearing, center, latitude, longitude, pitch, zoom }
+        this.setDeckglViewSettingsState(settings)
         this._map.jumpTo({
           bearing,
           center,

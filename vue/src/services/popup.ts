@@ -29,13 +29,13 @@ export default class PopupService {
     }
   }
 
-  addMarkerPopup(layer: string, feature: Feature): void {
-    /* prettier-ignore */
+  addMarkerPopup(id: string, feature: Feature): void {
     if (feature?.properties) {
       const { TRAILS } = this._layerElements
+      /* prettier-ignore */
       const { geometry, properties: { description, lat, lng, name } } = feature
-      layer === TRAILS
-        ? this._popup.setLngLat({ lat, lng })
+      id === TRAILS
+        ? this._popup.setLngLat({ lng, lat })
         : this._popup.setLngLat((geometry as Point).coordinates as LngLatLike)
       this._popup
         .setHTML(

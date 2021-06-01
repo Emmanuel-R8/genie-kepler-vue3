@@ -43,8 +43,8 @@ export interface IHTMLMarkerElement extends HTMLDivElement {
 }
 
 export interface IHttpParams {
-  fields: string | undefined
-  table: string | undefined
+  fields: string
+  table: string
 }
 
 export interface ILayerElement {
