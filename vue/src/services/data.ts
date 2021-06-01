@@ -30,25 +30,6 @@ export default class DataService {
     return this._data
   }
 
-  loadData(): void {
-    this.getHexagonData()
-    this.getMapData()
-  }
-
-  private getHexagonData(): void {
-    const { HEXAGON_DATA_URL } = this._urls
-    fetch
-      .csv(HEXAGON_DATA_URL)
-      .then((data: any[]): void => {
-        data?.length
-          ? (this._data = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat]))
-          : console.error('Data Error:\n', data)
-      })
-      .catch((err: Error): void => {
-        console.error('getHeatmapData Failed:\n', err)
-      })
-  }
-
   async getMapboxAccessToken(): Promise<void> {
     try {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
@@ -64,25 +45,46 @@ export default class DataService {
     }
   }
 
-  private getMapData(): void {
-    this._styleLayers.forEach(
-      (styleLayer: IStyleLayer, i): Promise<void> => this.getStyleLayers(styleLayer, i)
-    )
-    this._markers.forEach((marker): Promise<void> => this.getMarkers(marker))
+  loadData(): void {
+    this.getHexagonLayerData()
+    this.getMapLayerData()
   }
 
-  private async getStyleLayers(styleLayer: IStyleLayer, i: number): Promise<void> {
+  private getHexagonLayerData(): void {
+    const { HEXAGON_DATA_URL } = this._urls
+    fetch
+      .csv(HEXAGON_DATA_URL)
+      .then((data: any[]): void => {
+        data?.length
+          ? (this._data = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat]))
+          : console.error('Data Error:\n', data)
+      })
+      .catch((err: Error): void => {
+        console.error('getHeatmapData Failed:\n', err)
+      })
+  }
+
+  private getMapLayerData(): void {
+    for (const styleLayer of this._styleLayers) {
+      this.getStyleLayers(styleLayer)
+    }
+    for (const marker of this._markers) {
+      this.getMarkers(marker)
+    }
+  }
+
+  private async getStyleLayers(styleLayer: IStyleLayer): Promise<void> {
     try {
       /* prettier-ignore */
-      const { layer: { id } } = styleLayer
-      const layer = await this.getFeatureCollection(styleLayer)
+      const { fields, layer, layer: { id }, table } = styleLayer
+      const fc = await this.getFeatureCollection({ fields, table })
 
-      if (layer?.features?.length) {
-        const styleLayer: IStyleLayer = this._styleLayers[i].layer
-        styleLayer.source.data = layer
+      if (fc?.features?.length) {
+        const styleLayer: any = layer
+        styleLayer.source.data = fc
         return this._styleLayerService.setStyleLayers(styleLayer)
       }
-      console.log(`No ${id.toUpperCase()} Layer Found:\n`, layer)
+      console.log(`No ${id.toUpperCase()} Layer Found:\n`, fc)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
@@ -90,13 +92,13 @@ export default class DataService {
 
   private async getMarkers(marker: IMarker): Promise<void> {
     try {
-      const { table: id } = marker
-      const markers = await this.getFeatureCollection(marker)
+      const { fields, table: id, table } = marker
+      const { features } = await this.getFeatureCollection({ fields, table })
 
-      if (markers?.features?.length) {
-        return this._markerService.setMarkers(markers, id)
+      if (features?.length) {
+        return this._markerService.setMarkers(id, features)
       }
-      console.log(`No ${id.toUpperCase()} Markers Found:\n`, marker)
+      console.log(`No ${id.toUpperCase()} Markers Found:\n`, features)
     } catch (err: any) {
       console.error('Http Failed:\n', err)
     }
@@ -106,9 +108,9 @@ export default class DataService {
     fields,
     table
   }: IMarker | IStyleLayer): Promise<FeatureCollection> {
-    const params: IHttpParams = { fields, table }
     const { GEOJSON_ENDPOINT } = this._endPoints
-    const { data } = await this._http.get(GEOJSON_ENDPOINT, { params })
-    return data
+    const params: IHttpParams = { fields, table }
+    const { data: fc } = await this._http.get(GEOJSON_ENDPOINT, { params })
+    return fc
   }
 }
