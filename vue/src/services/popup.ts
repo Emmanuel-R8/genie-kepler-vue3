@@ -17,11 +17,13 @@ export default class PopupService {
   }
 
   addLayerPopup({ features, lngLat }: MapLayerMouseEvent): void {
-    if (features && features.length && features[0].properties) {
+    if (features?.length && features[0].properties) {
+      /* prettier-ignore */
+      const { properties: { description, name } } = features[0]
       this._popup
         .setHTML(
-          `<div class="bold">${features[0].properties.name}</div>
-           <div>${features[0].properties.description}</div>`
+          `<div class="bold">${name}</div>
+           <div>${description}</div>`
         )
         .setOffset(4)
         .setLngLat(lngLat)
@@ -40,7 +42,7 @@ export default class PopupService {
       this._popup
         .setHTML(
           `<div class="bold">${name}</div>
-         <div>${description}</div>`
+           <div>${description}</div>`
         )
         .setOffset(14)
         .addTo(this._mapboxService.map)

@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import { Routes } from '@/enums'
 import { Deckgl, Mapbox } from '@/views'
 
 const history = createWebHistory()
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: Routes.MAPBOX,

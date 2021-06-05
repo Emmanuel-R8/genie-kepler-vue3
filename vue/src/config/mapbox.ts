@@ -30,12 +30,12 @@ export default {
     outdoors: {
       id: 'outdoors',
       url: 'mapbox://styles/mapbox/outdoors-v11',
-      visible: true
+      isActive: true
     },
     satellite: {
       id: 'satellite',
       url: 'mapbox://styles/mapbox/satellite-v9',
-      visible: false
+      isActive: false
     }
   }
 }

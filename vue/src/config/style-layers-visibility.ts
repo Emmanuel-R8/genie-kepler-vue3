@@ -1,11 +1,11 @@
 export default {
   biosphere: {
-    visible: true
+    isActive: true
   },
   'biosphere-border': {
-    visible: true
+    isActive: true
   },
   trails: {
-    visible: false
+    isActive: false
   }
 }

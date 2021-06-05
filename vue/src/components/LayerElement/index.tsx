@@ -6,7 +6,7 @@ import scss from '@/components/LayerElements/index.module.scss'
 const { ACTIVE } = ActiveState
 const html = (props: Record<string, any>): JSX.Element => (
   <li>
-    <div id={props.id} class={props.active ? scss[ACTIVE] : ''} onClick={props.click}>
+    <div id={props.id} class={props.isActive ? scss[ACTIVE] : ''} onClick={props.click}>
       {props.name}
     </div>
   </li>
@@ -14,16 +14,16 @@ const html = (props: Record<string, any>): JSX.Element => (
 
 export default defineComponent({
   props: {
-    active: {
-      type: Boolean as PropType<boolean>,
-      required: true
-    },
     click: {
       type: Function as PropType<(evt: Event) => void>,
       required: true
     },
     id: {
       type: String as PropType<string>,
+      required: true
+    },
+    isActive: {
+      type: Boolean as PropType<boolean>,
       required: true
     },
     name: {

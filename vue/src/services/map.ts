@@ -80,8 +80,8 @@ export default class MapService {
 
   setMapStyle(): void {
     const mapStyles: IMapStyle = this._storeService.getState(this._MAP_STYLES)
-    const visible = (mapStyle: IMapStyle): boolean => mapStyle.visible
-    const { url: mapStyle } = Object.values(mapStyles).find(visible)
+    const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
+    const { url: mapStyle } = Object.values(mapStyles).find(isActive)
     this._map.setStyle(mapStyle)
     this._mapboxService.mapStyle = mapStyle
     /* add style layers after 1/2 sec delay to set basemap style */
@@ -89,21 +89,20 @@ export default class MapService {
   }
 
   setStyleLayerVisibility(id: string): void {
+    const { BIOSPHERE } = this._layerElements
     const styleLayers: IStyleLayer = this._storeService.getState(this._STYLE_LAYERS_VISIBILITY)
-    styleLayers[id as keyof IStyleLayer].visible
+    styleLayers[id as keyof IStyleLayer].isActive
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')
-
-    const { BIOSPHERE } = this._layerElements
-    styleLayers[id as keyof IStyleLayer].visible &&
+    styleLayers[id as keyof IStyleLayer].isActive &&
       id === BIOSPHERE &&
       this.setStyleLayerEventHandlers(id)
   }
 
   private addStyleLayers(): void {
-    for (const layer of this._styleLayerService.styleLayers) {
-      const { id } = layer
-      this._map.addLayer(layer)
+    for (const styleLayer of this._styleLayerService.styleLayers) {
+      const { id } = styleLayer
+      this._map.addLayer(styleLayer)
       this.setStyleLayerVisibility(id)
     }
   }

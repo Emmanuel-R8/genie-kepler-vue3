@@ -1,4 +1,4 @@
 export default {
-  active: false,
-  class: 'inactive'
+  class: 'inactive',
+  isActive: false
 }

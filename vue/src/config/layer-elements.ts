@@ -1,32 +1,32 @@
 export default {
   satellite: {
     id: 'satellite',
-    active: false,
-    name: 'Satellite'
+    name: 'Satellite',
+    isActive: false
   },
   biosphere: {
     id: 'biosphere',
-    active: true,
-    name: 'Biosphere'
+    name: 'Biosphere',
+    isActive: true
   },
   office: {
     id: 'office',
-    active: false,
-    name: 'Office'
+    name: 'Office',
+    isActive: false
   },
   places: {
     id: 'places',
-    active: false,
-    name: 'Places'
+    name: 'Places',
+    isActive: false
   },
   trails: {
     id: 'trails',
-    active: false,
-    name: 'Trails'
+    name: 'Trails',
+    isActive: false
   },
   deckgl: {
     id: 'deckgl',
-    active: false,
-    name: 'Deck.GL'
+    name: 'Deck.GL',
+    isActive: false
   }
 }

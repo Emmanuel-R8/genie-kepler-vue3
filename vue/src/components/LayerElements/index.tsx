@@ -19,9 +19,9 @@ const html = (layerElements: ILayerElements): JSX.Element => (
     <ul class={scss.elements}>
       {Object.values(layerElements).map((el: ILayerElements) => (
         <LayerElement
-          active={el.active}
           click={onDisplayLayerElementClickHandler}
           id={el.id}
+          isActive={el.isActive}
           key={el.id}
           name={el.name}
         />

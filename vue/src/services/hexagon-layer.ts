@@ -47,9 +47,10 @@ export default class HexagonLayerService {
   async loadHexagonLayer(): Promise<void> {
     !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
 
-    this._deckService.loadMapbox()
     this._deckService.loadDeckgl()
     this._deck = this._deckService.deck
+
+    this._deckService.loadMapbox()
     this._map = this._deckService.map
     this._map.on('load', (): void => {
       this.onMapLoadHandler()

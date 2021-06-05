@@ -39,6 +39,6 @@ export enum StoreStateStatus {
 }
 
 export enum Urls {
-  BASE_URL = 'http://localhost:8000/api/',
-  HEXAGON_DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
+  API_BASE_URL = 'http://localhost:8000/api/',
+  HEXAGON_LAYER_DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
 }

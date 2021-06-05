@@ -39,7 +39,8 @@ export interface IHexagonLayerStaticProps {
 }
 
 export interface IHTMLMarkerElement extends HTMLDivElement {
-  visible: boolean
+  isActive: boolean
+  isHidden: boolean
 }
 
 export interface IHttpParams {
@@ -57,26 +58,26 @@ export interface ILayerElement {
 }
 
 export interface ILayerElements {
-  active: boolean
   id: string
+  isActive: boolean
   name: string
 }
 
 export interface ILayerIcon {
+  height: number
   id: string
   name: string
   src: string
-  height: number
   width: number
 }
 
 export interface IMapStyle {
   active: string
   id: string
+  isActive: boolean
   outdoors: any
   satellite: any
   url: string
-  visible: boolean
 }
 
 export interface IMapboxOptions {
@@ -96,23 +97,22 @@ export interface IMapboxSettings {
 
 export interface IMarker {
   fields: string
-  table: string
+  id: string
 }
 
 export interface IModal {
-  active: boolean
   class: string
+  isActive: boolean
 }
 
 export interface IStore {
-  getState: (key: string) => any
-  setState: (key: string, value: Record<string, any>) => void
+  getState: (key: string) => Record<string, any>
+  setState: (key: string, payload: Record<string, any>) => void
   state: Record<string, any>
 }
 
 export interface IStyleLayer extends IMarker {
   data: Record<string, never> | FeatureCollection
-  layer: Record<string, any>
   source: any
 }
 

@@ -17,10 +17,10 @@ export default class ModalService {
   }
 
   hideModal(timeout: number): void {
-    this.modalState.active &&
+    this.modalState.isActive &&
       setTimeout((): void => this._storeService.setState(this._MODAL), timeout)
   }
   showModal(): void {
-    !this.modalState.active && this._storeService.setState(this._MODAL)
+    !this.modalState.isActive && this._storeService.setState(this._MODAL)
   }
 }
