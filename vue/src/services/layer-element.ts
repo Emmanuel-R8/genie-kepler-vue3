@@ -26,43 +26,44 @@ export default class LayerElementService {
 
   displayLayerElement({ id }: ILayerElements): void {
     const layerElement = id.replace(/-(.*)$/, '') as ILayerElement
-    const { BIOSPHERE, BIOSPHERE_BORDER, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } =
-      this._layerElements
-
-    const layer = (): void => {
-      this.setLayerElementsState(layerElement)
-      this.setStyleLayersVisibilityState(layerElement)
-      this.setStyleLayerVisibility(layerElement)
-      layerElement === BIOSPHERE && this._mapService.setStyleLayerVisibility(BIOSPHERE_BORDER)
-      layerElement === TRAILS && this._markerService.toggleMarkers(layerElement)
-    }
-    const marker = (): void => {
-      this.setLayerElementsState(layerElement)
-      this.toggleMarkers(layerElement)
-    }
-    const route = (): void => {
-      this.setRoute(DECKGL)
-    }
-    const satellite = (): void => {
-      /* hide visible markers when changing map styles for aesthetic purposes */
-      this.showMarkers()
-      /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-      this.setLayerElementsState(layerElement)
-      this.setMapStylesState()
-      this.setMapStyle()
-      /* show hidden markers when changing map styles for aesthetic purposes */
-      this.showMarkers(1000)
-    }
+    const { BIOSPHERE, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } = this._layerElements
     const layerElements: Record<string, any> = new Map([
-      [BIOSPHERE, layer],
-      [DECKGL, route],
-      [OFFICE, marker],
-      [PLACES, marker],
-      [SATELLITE, satellite],
-      [TRAILS, layer]
+      [BIOSPHERE, this.layer],
+      [DECKGL, this.route],
+      [OFFICE, this.marker],
+      [PLACES, this.marker],
+      [SATELLITE, this.satellite],
+      [TRAILS, this.layer]
     ])
+    layerElements.get(layerElement)(layerElement)
+  }
 
-    layerElements.get(layerElement)()
+  private layer = (layerElement: ILayerElement): void => {
+    const { BIOSPHERE, BIOSPHERE_BORDER, TRAILS } = this._layerElements
+    this.setLayerElementsState(layerElement)
+    this.setStyleLayersVisibilityState(layerElement)
+    this.setStyleLayerVisibility(layerElement)
+    layerElement === BIOSPHERE && this._mapService.setStyleLayerVisibility(BIOSPHERE_BORDER)
+    layerElement === TRAILS && this._markerService.toggleMarkers(layerElement)
+  }
+
+  private marker = (layerElement: ILayerElement): void => {
+    this.setLayerElementsState(layerElement)
+    this.toggleMarkers(layerElement)
+  }
+  private route = (): void => {
+    const { DECKGL } = this._layerElements
+    this.setRoute(DECKGL)
+  }
+  private satellite = (layerElement: ILayerElement): void => {
+    /* hide active markers when changing map styles for aesthetic purposes */
+    this.showMarkers()
+    /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
+    this.setLayerElementsState(layerElement)
+    this.setMapStylesState()
+    this.setMapStyle()
+    /* show hidden markers when changing map styles for aesthetic purposes */
+    this.showMarkers(1000)
   }
 
   private setLayerElementsState(layerElement: ILayerElement): void {
