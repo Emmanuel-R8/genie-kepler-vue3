@@ -1,3 +1,4 @@
+export { default as AppService } from './app'
 export { default as AxiosService } from './axios'
 export { default as DataService } from './data'
 export { default as DeckService } from './deck'

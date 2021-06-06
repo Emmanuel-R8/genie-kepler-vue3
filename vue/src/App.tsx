@@ -2,7 +2,7 @@ import { Container } from 'typedi'
 import { defineComponent } from 'vue'
 
 import { Header } from '@/components'
-import { DataService } from '@/services'
+import { AppService } from '@/services'
 
 const html = (): JSX.Element => (
   <div>
@@ -13,8 +13,8 @@ const html = (): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const dataService = Container.get(DataService)
-    dataService.loadData()
+    const appService = Container.get(AppService)
+    appService.loadApp()
     return (): JSX.Element => html()
   }
 })
