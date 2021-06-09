@@ -9,8 +9,12 @@ export default class AppService {
     this._dataService = Container.get(DataService)
   }
 
-  loadApp(): void {
-    this._axiosService.createInstance()
+  loadData(): void {
+    this.createAxiosInstance()
     this._dataService.loadData()
+  }
+
+  private createAxiosInstance(): void {
+    this._axiosService.createInstance()
   }
 }

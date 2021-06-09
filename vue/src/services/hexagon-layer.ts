@@ -13,13 +13,13 @@ import mapboxgl, { Map } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { hexagonLayer } from '@/config'
-import { StoreStates } from '@/enums'
+import { States } from '@/enums'
 import { IHexagonLayerReactiveProps, IHexagonLayerStaticProps } from '@/interfaces'
 import { DataService, DeckService, MarkerService, ModalService, StoreService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
-  private _HEXAGON_LAYER_REACTIVE_PROPS: string = StoreStates.HEXAGON_LAYER_REACTIVE_PROPS
+  private _HEXAGON_LAYER_REACTIVE_PROPS: string = States.HEXAGON_LAYER_REACTIVE_PROPS
   private _reactiveProps: IHexagonLayerReactiveProps = hexagonLayer.reactiveProps
   private _staticProps: IHexagonLayerStaticProps = hexagonLayer.staticProps
 
@@ -42,6 +42,12 @@ export default class HexagonLayerService {
 
   get map(): Map {
     return this._map
+  }
+  get state(): Record<string, any> {
+    return this._storeService.getState(this._HEXAGON_LAYER_REACTIVE_PROPS)
+  }
+  set state(payload: Record<string, any>) {
+    this._storeService.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, payload)
   }
 
   async loadHexagonLayer(): Promise<void> {
@@ -66,21 +72,18 @@ export default class HexagonLayerService {
 
   renderHexagonLayer(): void {
     if (this._data) {
-      const reactiveProps: IHexagonLayerReactiveProps = this._storeService.getState(
-        this._HEXAGON_LAYER_REACTIVE_PROPS
-      )
       const hexagonLayer: HexagonLayer = new HexagonLayer({
         data: this._data,
         getPosition: (d: Record<string, number>): Record<string, number> => d,
         ...this._staticProps,
-        ...reactiveProps
+        ...this.state
       })
       this._deck.setProps({ layers: [hexagonLayer] })
     }
   }
 
   resetHexagonLayerReactiveProps(): void {
-    this._storeService.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, this._reactiveProps)
+    this.state = this._reactiveProps
     this.renderHexagonLayer()
   }
 

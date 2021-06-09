@@ -54,40 +54,40 @@ $primary-text-color: rgb(60, 75, 90);
   position: absolute;
   top: 120px;
 
-  .satellite-icon {
-    left: 22px;
-    position: absolute;
-    top: 48px;
-  }
-
-  .biosphere-icon {
+  .biosphere {
     left: 23px;
     position: absolute;
     top: 80px;
   }
 
-  .office-icon {
+  .deckgl {
+    left: 22px;
+    position: absolute;
+    top: 199px;
+  }
+
+  .office {
     left: 22px;
     position: absolute;
     top: 108px;
   }
 
-  .places-icon {
+  .places {
     left: 22px;
     position: absolute;
     top: 138px;
   }
 
-  .trails-icon {
+  .satellite {
+    left: 22px;
+    position: absolute;
+    top: 48px;
+  }
+
+  .trails {
     left: 22px;
     position: absolute;
     top: 168px;
-  }
-
-  .deckgl-icon {
-    left: 22px;
-    position: absolute;
-    top: 199px;
   }
 }
 

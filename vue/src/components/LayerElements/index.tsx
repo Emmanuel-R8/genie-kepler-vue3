@@ -3,21 +3,21 @@ import { computed, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
-import { StoreStates } from '@/enums'
-import { ILayerElements, ILayerIcon } from '@/interfaces'
-import { LayerElementService, StoreService } from '@/services'
+import { ILayerElement, ILayerIcon } from '@/interfaces'
+import { LayerElementService } from '@/services'
 import scss from './index.module.scss'
 
 const onDisplayLayerElementClickHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const { target }: Record<string, any> = evt
+  /* prettier-ignore */
+  const { target: { id: layerElement } }: Record<string, any> = evt
   const layerElementService = Container.get(LayerElementService)
-  target && layerElementService.displayLayerElement(target)
+  layerElement && layerElementService.displayLayerElement(layerElement)
 }
-const html = (layerElements: ILayerElements): JSX.Element => (
+const html = (layerElements: ILayerElement[]): JSX.Element => (
   <div>
     <ul class={scss.elements}>
-      {Object.values(layerElements).map((el: ILayerElements) => (
+      {layerElements.map((el: ILayerElement) => (
         <LayerElement
           click={onDisplayLayerElementClickHandler}
           id={el.id}
@@ -45,9 +45,8 @@ const html = (layerElements: ILayerElements): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const { LAYER_ELEMENTS } = StoreStates
-    const storeService = Container.get(StoreService)
-    const layerElements = computed((): ILayerElements => storeService.getState(LAYER_ELEMENTS))
+    const layerElementService = Container.get(LayerElementService)
+    const layerElements = computed((): ILayerElement[] => layerElementService.state)
     return (): JSX.Element => html(layerElements.value)
   }
 })

@@ -11,7 +11,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, string>) {
+  setup(props) {
     const mapService = Container.get(MapService)
     const mapboxService = Container.get(MapboxService)
     onMounted((): void => {

@@ -14,7 +14,7 @@ const html = (): JSX.Element => (
 export default defineComponent({
   setup() {
     const appService = Container.get(AppService)
-    appService.loadApp()
+    appService.loadData()
     return (): JSX.Element => html()
   }
 })

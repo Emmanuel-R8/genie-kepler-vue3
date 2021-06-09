@@ -1,7 +1,7 @@
-import mapboxgl, { Map, MapLayerMouseEvent } from 'mapbox-gl'
+import mapboxgl, { FillLayer, LineLayer, Map, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { LayerElements, StoreStates } from '@/enums'
+import { States } from '@/enums'
 import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
 import {
   DataService,
@@ -15,9 +15,8 @@ import {
 
 @Service()
 export default class MapService {
-  private _MAP_STYLES: string = StoreStates.MAP_STYLES
-  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
-  private _layerElements: Record<string, any> = LayerElements
+  private _MAP_STYLES: string = States.MAP_STYLES
+  private _STYLE_LAYERS: string = States.STYLE_LAYERS
 
   constructor(
     private _map: Map,
@@ -89,35 +88,43 @@ export default class MapService {
   }
 
   setStyleLayerVisibility(id: string): void {
-    const { BIOSPHERE } = this._layerElements
-    const styleLayers: IStyleLayer = this._storeService.getState(this._STYLE_LAYERS_VISIBILITY)
+    const styleLayers: IStyleLayer = this._storeService.getState(this._STYLE_LAYERS)
     styleLayers[id as keyof IStyleLayer].isActive
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')
-    styleLayers[id as keyof IStyleLayer].isActive &&
-      id === BIOSPHERE &&
-      this.setStyleLayerEventHandlers(id)
+    this.setStyleLayerVisibilityEventHandlers(id, styleLayers)
   }
 
   private addStyleLayers(): void {
     for (const styleLayer of this._styleLayerService.styleLayers) {
       const { id } = styleLayer
-      this._map.addLayer(styleLayer)
+      this._map.addLayer(styleLayer as FillLayer | LineLayer)
       this.setStyleLayerVisibility(id)
     }
   }
 
-  private setStyleLayerEventHandlers(id: string): void {
-    this._map
-      .on('click', id, (evt: MapLayerMouseEvent): void => {
-        this.onMapClickHandler(evt)
-      })
-      .on('mouseenter', id, (): void => {
-        this.onMapMouseEnterHandler()
-      })
-      .on('mouseleave', id, (): void => {
-        this.onMapMouseLeaveHandler()
-      })
+  private setStyleLayerVisibilityEventHandlers(id: string, styleLayers: IStyleLayer): void {
+    styleLayers[id as keyof IStyleLayer].isActive
+      ? this._map
+          .on('click', id, (evt: MapLayerMouseEvent): void => {
+            this.onMapClickHandler(evt)
+          })
+          .on('mouseenter', id, (): void => {
+            this.onMapMouseEnterHandler()
+          })
+          .on('mouseleave', id, (): void => {
+            this.onMapMouseLeaveHandler()
+          })
+      : this._map
+          .off('click', id, (evt: MapLayerMouseEvent): void => {
+            this.onMapClickHandler(evt)
+          })
+          .off('mouseenter', id, (): void => {
+            this.onMapMouseEnterHandler()
+          })
+          .off('mouseleave', id, (): void => {
+            this.onMapMouseLeaveHandler()
+          })
   }
 
   private hideModal(): void {

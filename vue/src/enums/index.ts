@@ -1,8 +1,3 @@
-export enum ActiveState {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive'
-}
-
 export enum EndPoints {
   GEOJSON_ENDPOINT = '/geojson',
   MAPBOX_ACCESS_TOKEN_ENDPOINT = '/mapbox-access-token'
@@ -23,17 +18,19 @@ export enum Routes {
   MAPBOX = 'mapbox'
 }
 
-export enum StoreStates {
+export enum States {
   DECKGL_VIEW_SETTINGS = 'deckglViewSettings',
   HEXAGON_LAYER_REACTIVE_PROPS = 'hexagonLayerReactiveProps',
   LAYER_ELEMENTS = 'layerElements',
   MAP_STYLES = 'mapStyles',
   MAPBOX_SETTINGS = 'mapboxSettings',
   MODAL = 'modal',
-  STYLE_LAYERS_VISIBILITY = 'styleLayersVisibility'
+  STYLE_LAYERS = 'styleLayers'
 }
 
-export enum StoreStateStatus {
+export enum StateStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
   NEW = 'new',
   OLD = 'old'
 }

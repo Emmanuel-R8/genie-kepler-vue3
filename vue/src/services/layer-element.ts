@@ -1,16 +1,25 @@
 import { Container, Service } from 'typedi'
 import { Router } from 'vue-router'
 
-import { LayerElements, StoreStates } from '@/enums'
-import { ILayerElement, ILayerElements } from '@/interfaces'
+import { LayerElements, States } from '@/enums'
+import { ILayerElement } from '@/interfaces'
 import { MapService, MarkerService, StoreService } from '@/services'
 import { router } from '@/router'
 
+type LayerElement =
+  | 'biosphere'
+  | 'biosphere-border'
+  | 'deckgl'
+  | 'office'
+  | 'places'
+  | 'satellite'
+  | 'trails'
+
 @Service()
 export default class LayerElementService {
-  private _LAYER_ELEMENTS: string = StoreStates.LAYER_ELEMENTS
-  private _MAP_STYLES: string = StoreStates.MAP_STYLES
-  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
+  private _LAYER_ELEMENTS: string = States.LAYER_ELEMENTS
+  private _MAP_STYLES: string = States.MAP_STYLES
+  private _STYLE_LAYERS: string = States.STYLE_LAYERS
   private _layerElements: Record<string, string> = LayerElements
   private _router: Router = router
 
@@ -24,8 +33,14 @@ export default class LayerElementService {
     this._storeService = Container.get(StoreService)
   }
 
-  displayLayerElement({ id }: ILayerElements): void {
-    const layerElement = id.replace(/-(.*)$/, '') as ILayerElement
+  get state(): ILayerElement[] {
+    return this._storeService.getState(this._LAYER_ELEMENTS)
+  }
+  private set _state(layerElement: LayerElement) {
+    this._storeService.setState(this._LAYER_ELEMENTS, { layerElement })
+  }
+
+  displayLayerElement(layerElement: LayerElement): void {
     const { BIOSPHERE, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } = this._layerElements
     const layerElements: Record<string, any> = new Map([
       [BIOSPHERE, this.layer],
@@ -38,36 +53,32 @@ export default class LayerElementService {
     layerElements.get(layerElement)(layerElement)
   }
 
-  private layer = (layerElement: ILayerElement): void => {
+  private layer = (layerElement: LayerElement): void => {
     const { BIOSPHERE, BIOSPHERE_BORDER, TRAILS } = this._layerElements
-    this.setLayerElementsState(layerElement)
-    this.setStyleLayersVisibilityState(layerElement)
+    this._state = layerElement
+    this.setStyleLayersState(layerElement)
     this.setStyleLayerVisibility(layerElement)
-    layerElement === BIOSPHERE && this._mapService.setStyleLayerVisibility(BIOSPHERE_BORDER)
-    layerElement === TRAILS && this._markerService.toggleMarkers(layerElement)
+    layerElement === BIOSPHERE && this.setStyleLayerVisibility(BIOSPHERE_BORDER as LayerElement)
+    layerElement === TRAILS && this.toggleMarkers(layerElement)
   }
 
-  private marker = (layerElement: ILayerElement): void => {
-    this.setLayerElementsState(layerElement)
+  private marker = (layerElement: LayerElement): void => {
+    this._state = layerElement
     this.toggleMarkers(layerElement)
   }
   private route = (): void => {
     const { DECKGL } = this._layerElements
     this.setRoute(DECKGL)
   }
-  private satellite = (layerElement: ILayerElement): void => {
+  private satellite = (layerElement: LayerElement): void => {
     /* hide active markers when changing map styles for aesthetic purposes */
     this.showMarkers()
     /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-    this.setLayerElementsState(layerElement)
+    this._state = layerElement
     this.setMapStylesState()
     this.setMapStyle()
     /* show hidden markers when changing map styles for aesthetic purposes */
     this.showMarkers(1000)
-  }
-
-  private setLayerElementsState(layerElement: ILayerElement): void {
-    this._storeService.setState(this._LAYER_ELEMENTS, layerElement)
   }
 
   private setMapStyle(): void {
@@ -82,12 +93,12 @@ export default class LayerElementService {
     this._router.push({ name })
   }
 
-  private setStyleLayerVisibility(layerElement: ILayerElement): void {
-    this._mapService.setStyleLayerVisibility(layerElement as keyof ILayerElement)
+  private setStyleLayerVisibility(layerElement: LayerElement): void {
+    this._mapService.setStyleLayerVisibility(layerElement)
   }
 
-  private setStyleLayersVisibilityState(layerElement: ILayerElement): void {
-    this._storeService.setState(this._STYLE_LAYERS_VISIBILITY, layerElement)
+  private setStyleLayersState(layerElement: LayerElement): void {
+    this._storeService.setState(this._STYLE_LAYERS, { layerElement })
   }
 
   private showMarkers(timeout?: number): void {
@@ -96,7 +107,7 @@ export default class LayerElementService {
       : this._markerService.showMarkers()
   }
 
-  private toggleMarkers(layerElement: ILayerElement): void {
+  private toggleMarkers(layerElement: LayerElement): void {
     this._markerService.toggleMarkers(layerElement)
   }
 }

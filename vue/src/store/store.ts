@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { reactive, readonly } from 'vue'
 
-import { StoreStates } from '@/enums'
-// import { StoreStates, StoreStateStatus } from '@/enums'
+import { States } from '@/enums'
+// import { States, StateStatus } from '@/enums'
 import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
 import { IStore } from '@/interfaces'
 
@@ -13,9 +13,9 @@ const {
   MAP_STYLES,
   MAPBOX_SETTINGS,
   MODAL,
-  STYLE_LAYERS_VISIBILITY
-} = StoreStates
-// const { NEW, OLD } = StoreStateStatus
+  STYLE_LAYERS
+} = States
+// const { NEW, OLD } = StateStatus
 const { settings: deckglViewSettings } = deckgl
 const { settings: mapboxSettings, styles: mapStyles } = mapbox
 const { reactiveProps: hexagonLayerReactiveProps } = hexagonLayer
@@ -27,7 +27,7 @@ const state: Record<string, any> = reactive({
   [MAP_STYLES]: cloneDeep(mapStyles),
   [MAPBOX_SETTINGS]: cloneDeep(mapboxSettings),
   [MODAL]: cloneDeep(modal),
-  [STYLE_LAYERS_VISIBILITY]: cloneDeep(styleLayersVisibility)
+  [STYLE_LAYERS]: cloneDeep(styleLayersVisibility)
 })
 /* state debugging tool
 const logState = (key: string, status: string): void => {

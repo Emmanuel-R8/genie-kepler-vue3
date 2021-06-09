@@ -2,20 +2,18 @@ import { Container } from 'typedi'
 import { computed, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
-import { Routes, StoreStates } from '@/enums'
-import { IHexagonLayerReactiveProps } from '@/interfaces'
+import { Routes } from '@/enums'
 import { router } from '@/router'
-import { HexagonLayerService, StoreService } from '@/services'
+import { HexagonLayerService } from '@/services'
 import scss from './index.module.scss'
 
 const onSetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
-  const { target }: Record<string, any> = evt
-  const { HEXAGON_LAYER_REACTIVE_PROPS } = StoreStates
+  /* prettier-ignore */
+  const { target: { id: prop, value } }: Record<string, any> = evt
   const hexagonLayerService = Container.get(HexagonLayerService)
-  const storeService = Container.get(StoreService)
-  target && storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, target)
-  target && hexagonLayerService.renderHexagonLayer()
+  hexagonLayerService.state = { prop, value }
+  hexagonLayerService.renderHexagonLayer()
 }
 const onResetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
@@ -27,13 +25,13 @@ const onReturnToTrailsHandler = (evt: Event): void => {
   const { MAPBOX } = Routes
   router.push({ name: MAPBOX })
 }
-const html = (props: IHexagonLayerReactiveProps): JSX.Element => (
+const html = (reactiveProps: Record<string, any>): JSX.Element => (
   <HexagonUI
     class={scss.hexagon}
-    coverage={props.coverage}
-    elevationScale={props.elevationScale}
-    radius={props.radius}
-    upperPercentile={props.upperPercentile}
+    coverage={reactiveProps.coverage}
+    elevationScale={reactiveProps.elevationScale}
+    radius={reactiveProps.radius}
+    upperPercentile={reactiveProps.upperPercentile}
     setHexagonLayerReactiveProps={onSetHexagonLayerReactivePropsHandler}
     resetHexagonLayerReactiveProps={onResetHexagonLayerReactivePropsHandler}
     returnToTrails={onReturnToTrailsHandler}
@@ -42,11 +40,8 @@ const html = (props: IHexagonLayerReactiveProps): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const { HEXAGON_LAYER_REACTIVE_PROPS } = StoreStates
-    const storeService = Container.get(StoreService)
-    const reactiveProps = computed(
-      (): IHexagonLayerReactiveProps => storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS)
-    )
+    const hexagonLayerService = Container.get(HexagonLayerService)
+    const reactiveProps = computed((): Record<string, any> => hexagonLayerService.state)
     return (): JSX.Element => html(reactiveProps.value)
   }
 })

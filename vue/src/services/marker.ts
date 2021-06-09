@@ -3,7 +3,7 @@ import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { LayerElements } from '@/enums'
-import { IHTMLMarkerElement, ILayerElement } from '@/interfaces'
+import { IHTMLMarkerElement } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 
 @Service()
@@ -45,8 +45,8 @@ export default class MarkerService {
     }
   }
 
-  toggleMarkers(layerElement: ILayerElement): void {
-    for (const marker of this._markers[this._markersHash[layerElement as keyof ILayerElement]]) {
+  toggleMarkers(id: string): void {
+    for (const marker of this._markers[this._markersHash[id]]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.isActive = !el.isActive
       el.isActive ? marker.addTo(this._mapboxService.map) : marker.remove()

@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 
-import { ActiveState, LayerElements, StoreStates } from '@/enums'
+import { LayerElements, States } from '@/enums'
 import {
   IDeckglViewSettings,
   IHexagonLayerReactiveProps,
@@ -15,14 +15,13 @@ import { store } from '@/store'
 
 @Service()
 export default class StoreService {
-  private _DECKGL_VIEW_SETTINGS: string = StoreStates.DECKGL_VIEW_SETTINGS
-  private _HEXAGON_LAYER_REACTIVE_PROPS: string = StoreStates.HEXAGON_LAYER_REACTIVE_PROPS
-  private _LAYER_ELEMENTS: string = StoreStates.LAYER_ELEMENTS
-  private _MAP_STYLES: string = StoreStates.MAP_STYLES
-  private _MAPBOX_SETTINGS: string = StoreStates.MAPBOX_SETTINGS
-  private _MODAL: string = StoreStates.MODAL
-  private _STYLE_LAYERS_VISIBILITY: string = StoreStates.STYLE_LAYERS_VISIBILITY
-  private _activeState: Record<string, any> = ActiveState
+  private _DECKGL_VIEW_SETTINGS: string = States.DECKGL_VIEW_SETTINGS
+  private _HEXAGON_LAYER_REACTIVE_PROPS: string = States.HEXAGON_LAYER_REACTIVE_PROPS
+  private _LAYER_ELEMENTS: string = States.LAYER_ELEMENTS
+  private _MAP_STYLES: string = States.MAP_STYLES
+  private _MAPBOX_SETTINGS: string = States.MAPBOX_SETTINGS
+  private _MODAL: string = States.MODAL
+  private _STYLE_LAYERS: string = States.STYLE_LAYERS
   private _layerElements: Record<string, any> = LayerElements
   private _store: IStore = store
 
@@ -30,7 +29,7 @@ export default class StoreService {
     return this._store.getState(state)
   }
 
-  setState(state: string, payload?: Record<string, any> | undefined): void {
+  setState(state: string, payload: Record<string, any> = {}): void {
     const setState: Record<string, any> = {
       [this._DECKGL_VIEW_SETTINGS]: payload && this.setDeckglViewSettingsState,
       [this._HEXAGON_LAYER_REACTIVE_PROPS]: payload && this.setHexagonLayerReactivePropsState,
@@ -38,7 +37,7 @@ export default class StoreService {
       [this._MAP_STYLES]: this.setMapStylesState,
       [this._MAPBOX_SETTINGS]: payload && this.setMapboxSettingsState,
       [this._MODAL]: this.setModalState,
-      [this._STYLE_LAYERS_VISIBILITY]: payload && this.setStyleLayersVisibilityState
+      [this._STYLE_LAYERS]: payload && this.setStyleLayersState
     }
     setState[state](payload)
   }
@@ -46,19 +45,21 @@ export default class StoreService {
   private setDeckglViewSettingsState = (settings: IDeckglViewSettings): void =>
     this._store.setState(this._DECKGL_VIEW_SETTINGS, settings)
 
-  private setHexagonLayerReactivePropsState = (payload: any): void => {
-    if ('id' in payload && 'value' in payload) {
-      const { id, value } = payload
+  private setHexagonLayerReactivePropsState = (payload: Record<string, any>): void => {
+    if ('prop' in payload && 'value' in payload) {
+      const { prop, value } = payload
       const props: IHexagonLayerReactiveProps = this.getState(this._HEXAGON_LAYER_REACTIVE_PROPS)
-      props[id as keyof IHexagonLayerReactiveProps] = +value
+      props[prop as keyof IHexagonLayerReactiveProps] = +value
       payload = { ...props }
     }
     this._store.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, payload)
   }
 
-  private setLayerElementsState = (layerElement: string): void => {
-    const layerElements: any = this.getState(this._LAYER_ELEMENTS)
-    layerElements[layerElement].isActive = !layerElements[layerElement].isActive
+  private setLayerElementsState = ({ layerElement: id }: Record<string, string>): void => {
+    const layerElements: ILayerElement[] = this.getState(this._LAYER_ELEMENTS)
+    const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
+    const i = layerElements.findIndex(layerElement)
+    layerElements[i].isActive = !layerElements[i].isActive
     this._store.setState(this._LAYER_ELEMENTS, layerElements)
   }
 
@@ -79,21 +80,18 @@ export default class StoreService {
     this._store.setState(this._MAPBOX_SETTINGS, settings)
 
   private setModalState = (): void => {
-    const { ACTIVE, INACTIVE } = this._activeState
     const modal: IModal = this.getState(this._MODAL)
     modal.isActive = !modal.isActive
-    modal.isActive ? (modal.class = ACTIVE) : (modal.class = INACTIVE)
     this._store.setState(this._MODAL, modal)
   }
 
-  private setStyleLayersVisibilityState = (layerElement: ILayerElement): void => {
+  private setStyleLayersState = ({ layerElement: id }: Record<string, string>): void => {
     const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
-    const styleLayers: IStyleLayer = this.getState(this._STYLE_LAYERS_VISIBILITY)
-    styleLayers[layerElement as keyof IStyleLayer].isActive =
-      !styleLayers[layerElement as keyof IStyleLayer].isActive
-    layerElement === BIOSPHERE &&
+    const styleLayers: IStyleLayer = this.getState(this._STYLE_LAYERS)
+    styleLayers[id as keyof IStyleLayer].isActive = !styleLayers[id as keyof IStyleLayer].isActive
+    id === BIOSPHERE &&
       (styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].isActive =
         !styleLayers[BIOSPHERE_BORDER as keyof IStyleLayer].isActive)
-    this._store.setState(this._STYLE_LAYERS_VISIBILITY, styleLayers)
+    this._store.setState(this._STYLE_LAYERS, styleLayers)
   }
 }

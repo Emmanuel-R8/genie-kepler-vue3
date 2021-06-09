@@ -49,15 +49,6 @@ export interface IHttpParams {
 }
 
 export interface ILayerElement {
-  biosphere?: string
-  deckgl?: string
-  office?: string
-  places?: string
-  satellite?: string
-  trails?: string
-}
-
-export interface ILayerElements {
   id: string
   isActive: boolean
   name: string
@@ -101,7 +92,6 @@ export interface IMarker {
 }
 
 export interface IModal {
-  class: string
   isActive: boolean
 }
 
@@ -114,6 +104,7 @@ export interface IStore {
 export interface IStyleLayer extends IMarker {
   data: Record<string, never> | FeatureCollection
   source: any
+  type: string
 }
 
 export interface ITrail {
