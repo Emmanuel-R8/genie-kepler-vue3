@@ -11,7 +11,7 @@ export default {
   },
   settings: {
     bearing: 0,
-    center: { lng: -76.3, lat: 44.5 },
+    center: [-76.3, 44.5],
     pitch: 0,
     style: 'mapbox://styles/mapbox/outdoors-v11',
     zoom: 9.75
@@ -25,17 +25,14 @@ export default {
       'sky-atmosphere-sun-intensity': 25
     }
   },
-  styles: {
-    active: 'outdoors',
-    outdoors: {
-      id: 'outdoors',
-      url: 'mapbox://styles/mapbox/outdoors-v11',
-      isActive: true
+  styles: [
+    {
+      isActive: true,
+      url: 'mapbox://styles/mapbox/outdoors-v11'
     },
-    satellite: {
-      id: 'satellite',
-      url: 'mapbox://styles/mapbox/satellite-v9',
-      isActive: false
+    {
+      isActive: false,
+      url: 'mapbox://styles/mapbox/satellite-v9'
     }
-  }
+  ]
 }

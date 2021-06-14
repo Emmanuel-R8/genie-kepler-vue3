@@ -6,20 +6,23 @@ import { StoreService } from '@/services'
 
 @Service()
 export default class ModalService {
-  private _MODAL: string = States.MODAL
+  private _states: Record<string, string> = States
 
   constructor(private _storeService: StoreService) {
     this._storeService = Container.get(StoreService)
   }
 
   get state(): IModal {
-    return this._storeService.getState(this._MODAL)
+    const { MODAL } = this._states
+    return this._storeService.getState(MODAL) as IModal
   }
 
   hideModal(timeout: number): void {
-    this.state.isActive && setTimeout((): void => this._storeService.setState(this._MODAL), timeout)
+    const { MODAL } = this._states
+    this.state.isActive && setTimeout((): void => this._storeService.setState(MODAL), timeout)
   }
   showModal(): void {
-    !this.state.isActive && this._storeService.setState(this._MODAL)
+    const { MODAL } = this._states
+    !this.state.isActive && this._storeService.setState(MODAL)
   }
 }

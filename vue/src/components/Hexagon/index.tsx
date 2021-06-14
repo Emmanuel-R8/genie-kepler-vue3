@@ -3,6 +3,7 @@ import { computed, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
+import { IHexagonLayerReactiveProps } from '@/interfaces'
 import { router } from '@/router'
 import { HexagonLayerService } from '@/services'
 import scss from './index.module.scss'
@@ -12,20 +13,19 @@ const onSetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   /* prettier-ignore */
   const { target: { id: prop, value } }: Record<string, any> = evt
   const hexagonLayerService = Container.get(HexagonLayerService)
-  hexagonLayerService.state = { prop, value }
-  hexagonLayerService.renderHexagonLayer()
+  hexagonLayerService.setHexagonLayerReactiveProps(prop, value)
 }
 const onResetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
   const hexagonLayerService = Container.get(HexagonLayerService)
   hexagonLayerService.resetHexagonLayerReactiveProps()
 }
-const onReturnToTrailsHandler = (evt: Event): void => {
+const onReturnToTrailsHandler = async (evt: Event): Promise<void> => {
   evt.stopPropagation()
   const { MAPBOX } = Routes
-  router.push({ name: MAPBOX })
+  await router.push({ name: MAPBOX })
 }
-const html = (reactiveProps: Record<string, any>): JSX.Element => (
+const html = (reactiveProps: IHexagonLayerReactiveProps): JSX.Element => (
   <HexagonUI
     class={scss.hexagon}
     coverage={reactiveProps.coverage}
@@ -41,7 +41,7 @@ const html = (reactiveProps: Record<string, any>): JSX.Element => (
 export default defineComponent({
   setup() {
     const hexagonLayerService = Container.get(HexagonLayerService)
-    const reactiveProps = computed((): Record<string, any> => hexagonLayerService.state)
+    const reactiveProps = computed((): IHexagonLayerReactiveProps => hexagonLayerService.state)
     return (): JSX.Element => html(reactiveProps.value)
   }
 })

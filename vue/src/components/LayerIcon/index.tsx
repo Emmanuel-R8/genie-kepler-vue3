@@ -2,7 +2,16 @@ import { defineComponent, PropType } from 'vue'
 
 import scss from '@/components/LayerElements/index.module.scss'
 
-const html = (props: Record<string, any>): JSX.Element => (
+type Props = {
+  alt: string
+  click: (evt: Event) => void
+  height: number
+  id: string
+  src: string
+  width: number
+}
+
+const html = (props: Props): JSX.Element => (
   <img
     alt={props.alt}
     class={scss[props.id]}
@@ -17,7 +26,7 @@ const html = (props: Record<string, any>): JSX.Element => (
 export default defineComponent({
   props: {
     alt: {
-      type: String as PropType<string>,
+      type: String,
       required: true
     },
     click: {
@@ -25,23 +34,23 @@ export default defineComponent({
       required: true
     },
     height: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     },
     id: {
-      type: String as PropType<string>,
+      type: String,
       required: true
     },
     src: {
-      type: String as PropType<string>,
+      type: String,
       required: true
     },
     width: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     }
   },
-  setup(props) {
+  setup(props: Props) {
     return (): JSX.Element => html(props)
   }
 })

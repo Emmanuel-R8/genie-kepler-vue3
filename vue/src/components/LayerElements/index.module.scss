@@ -23,10 +23,6 @@ $primary-text-color: rgb(60, 75, 90);
   top: 175px;
 
   li {
-    &:last-child div {
-      border-bottom-width: 1px;
-    }
-
     div {
       background-color: $primary-background-color;
       border: 1px solid rgb(187, 187, 187);
@@ -39,6 +35,10 @@ $primary-text-color: rgb(60, 75, 90);
       &:hover {
         background-color: $hover-background-color;
       }
+    }
+
+    &:last-child div {
+      border-bottom-width: 1px;
     }
 
     .active {

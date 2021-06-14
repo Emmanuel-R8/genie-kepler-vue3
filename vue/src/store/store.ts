@@ -3,7 +3,7 @@ import { reactive, readonly } from 'vue'
 
 import { States } from '@/enums'
 // import { States, StateStatus } from '@/enums'
-import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayersVisibility } from '@/config'
+import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayers } from '@/config'
 import { IStore } from '@/interfaces'
 
 const {
@@ -27,7 +27,7 @@ const state: Record<string, any> = reactive({
   [MAP_STYLES]: cloneDeep(mapStyles),
   [MAPBOX_SETTINGS]: cloneDeep(mapboxSettings),
   [MODAL]: cloneDeep(modal),
-  [STYLE_LAYERS]: cloneDeep(styleLayersVisibility)
+  [STYLE_LAYERS]: cloneDeep(styleLayers)
 })
 /* state debugging tool
 const logState = (key: string, status: string): void => {
@@ -35,6 +35,7 @@ const logState = (key: string, status: string): void => {
 }
 */
 const getState = (key: string): Record<string, any> => {
+  /* eslint-disable-next-line @typescript-eslint/no-unsafe-return */
   return cloneDeep(state[key])
 }
 const setState = (key: string, payload: Record<string, any>): void => {

@@ -1,5 +1,4 @@
 import { Container, Service } from 'typedi'
-import { Router } from 'vue-router'
 
 import { LayerElements, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
@@ -17,11 +16,9 @@ type LayerElement =
 
 @Service()
 export default class LayerElementService {
-  private _LAYER_ELEMENTS: string = States.LAYER_ELEMENTS
-  private _MAP_STYLES: string = States.MAP_STYLES
-  private _STYLE_LAYERS: string = States.STYLE_LAYERS
   private _layerElements: Record<string, string> = LayerElements
-  private _router: Router = router
+  private _router = router
+  private _states: Record<string, string> = States
 
   constructor(
     private _mapService: MapService,
@@ -34,15 +31,17 @@ export default class LayerElementService {
   }
 
   get state(): ILayerElement[] {
-    return this._storeService.getState(this._LAYER_ELEMENTS)
+    const { LAYER_ELEMENTS } = this._states
+    return this._storeService.getState(LAYER_ELEMENTS) as ILayerElement[]
   }
   private set _state(layerElement: LayerElement) {
-    this._storeService.setState(this._LAYER_ELEMENTS, { layerElement })
+    const { LAYER_ELEMENTS } = this._states
+    this._storeService.setState(LAYER_ELEMENTS, { layerElement })
   }
 
   displayLayerElement(layerElement: LayerElement): void {
     const { BIOSPHERE, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } = this._layerElements
-    const layerElements: Record<string, any> = new Map([
+    const layerElementsMap = new Map([
       [BIOSPHERE, this.layer],
       [DECKGL, this.route],
       [OFFICE, this.marker],
@@ -50,7 +49,7 @@ export default class LayerElementService {
       [SATELLITE, this.satellite],
       [TRAILS, this.layer]
     ])
-    layerElements.get(layerElement)(layerElement)
+    return layerElementsMap.get(layerElement)(layerElement)
   }
 
   private layer = (layerElement: LayerElement): void => {
@@ -66,9 +65,9 @@ export default class LayerElementService {
     this._state = layerElement
     this.toggleMarkers(layerElement)
   }
-  private route = (): void => {
+  private route = async (): Promise<void> => {
     const { DECKGL } = this._layerElements
-    this.setRoute(DECKGL)
+    await this.setRoute(DECKGL)
   }
   private satellite = (layerElement: LayerElement): void => {
     /* hide active markers when changing map styles for aesthetic purposes */
@@ -86,11 +85,12 @@ export default class LayerElementService {
   }
 
   private setMapStylesState(): void {
-    this._storeService.setState(this._MAP_STYLES)
+    const { MAP_STYLES } = this._states
+    this._storeService.setState(MAP_STYLES)
   }
 
-  private setRoute(name: string): void {
-    this._router.push({ name })
+  private async setRoute(name: string): Promise<void> {
+    await this._router.push({ name })
   }
 
   private setStyleLayerVisibility(layerElement: LayerElement): void {
@@ -98,7 +98,8 @@ export default class LayerElementService {
   }
 
   private setStyleLayersState(layerElement: LayerElement): void {
-    this._storeService.setState(this._STYLE_LAYERS, { layerElement })
+    const { STYLE_LAYERS } = this._states
+    this._storeService.setState(STYLE_LAYERS, { layerElement })
   }
 
   private showMarkers(timeout?: number): void {

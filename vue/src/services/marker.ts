@@ -8,17 +8,14 @@ import { MapboxService, PopupService } from '@/services'
 
 @Service()
 export default class MarkerService {
-  private _layerElements = LayerElements
+  private _layerElements: Record<string, string> = LayerElements
   private _markers: Marker[][] = []
-  private _markersHash: Record<string, number> = {
-    office: 0,
-    places: 0,
-    trails: 0
-  }
+  private _markersHashmap: Map<string, number> = new Map()
 
   constructor(private _mapboxService: MapboxService, private _popupService: PopupService) {
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
+    this.createmarkersHashmap()
   }
 
   setMarkers(id: string, features: Feature[]): void {
@@ -26,7 +23,7 @@ export default class MarkerService {
       (feature: Feature): Marker => this.createMarker(id, feature)
     )
     this._markers = [...this._markers, markers]
-    this._markersHash[id] = this._markers.length - 1
+    this._markersHashmap.set(id, this._markers.length - 1)
   }
 
   showMarkers(): void {
@@ -46,10 +43,18 @@ export default class MarkerService {
   }
 
   toggleMarkers(id: string): void {
-    for (const marker of this._markers[this._markersHash[id]]) {
+    for (const marker of this._markers[this._markersHashmap.get(id)]) {
       const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
       el.isActive = !el.isActive
       el.isActive ? marker.addTo(this._mapboxService.map) : marker.remove()
+    }
+  }
+
+  private createmarkersHashmap(): void {
+    const { OFFICE, PLACES, TRAILS } = this._layerElements
+    const markers: string[] = [OFFICE, PLACES, TRAILS]
+    for (const marker of markers) {
+      this._markersHashmap.set(marker, 0)
     }
   }
 
@@ -62,17 +67,17 @@ export default class MarkerService {
     }
     const layerMarker = (feature: Feature): Marker => {
       /* prettier-ignore */
-      const { properties: { lng, lat } } = feature as any
-      return new Marker(el).setLngLat({ lng, lat })
+      const { properties: { lng, lat } } = feature
+      return new Marker(el).setLngLat([lng, lat])
     }
-    const markers: Record<string, any> = new Map([
+    const markersMap = new Map([
       [OFFICE, marker],
       [PLACES, marker],
       [TRAILS, layerMarker]
     ])
-    return markers.get(id)(feature)
+    return markersMap.get(id)(feature)
   }
-  /* create individual html marker elements & add mouse event handlers */
+
   private createHTMLMarkerElement(id: string, feature: Feature): IHTMLMarkerElement {
     const el: IHTMLMarkerElement = <IHTMLMarkerElement>document.createElement('div')
     el.className = `${id}-marker`

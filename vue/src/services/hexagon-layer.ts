@@ -5,6 +5,7 @@
  * Data Source: https://data.gov.uk
  */
 
+/* eslint-disable */
 /* @ts-ignore */
 import { HexagonLayer } from '@deck.gl/aggregation-layers'
 /* @ts-ignore */
@@ -15,39 +16,39 @@ import { Container, Service } from 'typedi'
 import { hexagonLayer } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerReactiveProps, IHexagonLayerStaticProps } from '@/interfaces'
-import { DataService, DeckService, MarkerService, ModalService, StoreService } from '@/services'
+import { DataService, DeckService, MarkerService, StoreService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
-  private _HEXAGON_LAYER_REACTIVE_PROPS: string = States.HEXAGON_LAYER_REACTIVE_PROPS
+  private _hexagonLayerData: number[][] = []
   private _reactiveProps: IHexagonLayerReactiveProps = hexagonLayer.reactiveProps
   private _staticProps: IHexagonLayerStaticProps = hexagonLayer.staticProps
+  private _states: Record<string, string> = States
 
   constructor(
-    private _data: number[][],
     private _deck: Deck,
     private _map: Map,
     private _dataService: DataService,
     private _deckService: DeckService,
     private _markerService: MarkerService,
-    private _modalService: ModalService,
     private _storeService: StoreService
   ) {
     this._dataService = Container.get(DataService)
     this._deckService = Container.get(DeckService)
     this._markerService = Container.get(MarkerService)
-    this._modalService = Container.get(ModalService)
     this._storeService = Container.get(StoreService)
   }
 
   get map(): Map {
     return this._map
   }
-  get state(): Record<string, any> {
-    return this._storeService.getState(this._HEXAGON_LAYER_REACTIVE_PROPS)
+  get state(): IHexagonLayerReactiveProps {
+    const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
+    return this._storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS) as IHexagonLayerReactiveProps
   }
-  set state(payload: Record<string, any>) {
-    this._storeService.setState(this._HEXAGON_LAYER_REACTIVE_PROPS, payload)
+  set state(payload: IHexagonLayerReactiveProps) {
+    const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
+    this._storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, payload)
   }
 
   async loadHexagonLayer(): Promise<void> {
@@ -64,22 +65,15 @@ export default class HexagonLayerService {
   }
 
   onMapLoadHandler(): void {
-    this.hideModal()
     this.showMarkers()
-    this.setHexagonLayerData()
     this.renderHexagonLayer()
   }
 
-  renderHexagonLayer(): void {
-    if (this._data) {
-      const hexagonLayer: HexagonLayer = new HexagonLayer({
-        data: this._data,
-        getPosition: (d: Record<string, number>): Record<string, number> => d,
-        ...this._staticProps,
-        ...this.state
-      })
-      this._deck.setProps({ layers: [hexagonLayer] })
-    }
+  setHexagonLayerReactiveProps(prop: string, value: string): void {
+    const state: IHexagonLayerReactiveProps = this.state
+    state[prop as keyof IHexagonLayerReactiveProps] = +value
+    this.state = state
+    this.renderHexagonLayer()
   }
 
   resetHexagonLayerReactiveProps(): void {
@@ -87,12 +81,19 @@ export default class HexagonLayerService {
     this.renderHexagonLayer()
   }
 
-  private hideModal(): void {
-    this._modalService.hideModal(400)
+  private renderHexagonLayer(): void {
+    !this._hexagonLayerData.length && this.setHexagonLayerData()
+    const hexagonLayer = new HexagonLayer({
+      data: this._hexagonLayerData,
+      getPosition: (d: number[]): number[] => d,
+      ...this._staticProps,
+      ...this.state
+    })
+    this._deck.setProps({ layers: [hexagonLayer] })
   }
 
   private setHexagonLayerData(): void {
-    this._data = this._dataService.hexagonLayerData
+    this._hexagonLayerData = this._dataService.hexagonLayerData
   }
 
   private showMarkers(): void {

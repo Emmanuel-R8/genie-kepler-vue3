@@ -4,17 +4,24 @@ import { Container, Service } from 'typedi'
 import { mapbox } from '@/config'
 import { States } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
-import { StoreService } from '@/services'
+import { ModalService, StoreService } from '@/services'
+
+type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 
 @Service()
 export default class MapboxService {
-  private _MAPBOX_SETTINGS: string = States.MAPBOX_SETTINGS
   private _mapStyle = mapbox.settings.style
-  private _navigationControl: Record<string, any> = mapbox.navigationControl
+  private _navigationControl = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
-  private _skyLayer: SkyLayer = mapbox.skyLayer as SkyLayer
+  private _skyLayer = mapbox.skyLayer as SkyLayer
+  private _states: Record<string, string> = States
 
-  constructor(private _map: Map, private _storeService: StoreService) {
+  constructor(
+    private _map: Map,
+    private _modalService: ModalService,
+    private _storeService: StoreService
+  ) {
+    this._modalService = Container.get(ModalService)
     this._storeService = Container.get(StoreService)
   }
 
@@ -25,10 +32,12 @@ export default class MapboxService {
     this._mapStyle = mapStyle
   }
   private get _state(): IMapboxSettings {
-    return this._storeService.getState(this._MAPBOX_SETTINGS)
+    const { MAPBOX_SETTINGS } = this._states
+    return this._storeService.getState(MAPBOX_SETTINGS) as IMapboxSettings
   }
   private set _state(settings: IMapboxSettings) {
-    this._storeService.setState(this._MAPBOX_SETTINGS, settings)
+    const { MAPBOX_SETTINGS } = this._states
+    this._storeService.setState(MAPBOX_SETTINGS, settings)
   }
 
   loadMapbox(): void {
@@ -37,7 +46,7 @@ export default class MapboxService {
     const { style } = this._state
     this._mapStyle = style
     this._map = new Map(options)
-      .addControl(new NavigationControl({ visualizePitch }), position)
+      .addControl(new NavigationControl({ visualizePitch }), position as Position)
       .on('load', (): void => {
         this.onMapLoadHandler()
       })
@@ -46,12 +55,13 @@ export default class MapboxService {
       })
   }
 
-  onMapIdleHandler(): void {
-    this.setMapboxSettingsState()
+  onMapLoadHandler(): void {
+    this.addSkyLayer()
+    this.hideModal()
   }
 
-  onMapLoadHandler(): void {
-    this._map.addLayer(this._skyLayer)
+  onMapIdleHandler(): void {
+    this.setMapboxSettingsState()
   }
 
   private setMapboxSettingsState(): void {
@@ -59,10 +69,18 @@ export default class MapboxService {
     const lng = +this._map.getCenter().lng.toFixed(6)
     this._state = {
       bearing: +this._map.getBearing().toFixed(2),
-      center: { lng, lat },
+      center: [lng, lat],
       pitch: +this._map.getPitch().toFixed(2),
       style: this._mapStyle,
       zoom: +this._map.getZoom().toFixed(2)
     }
+  }
+
+  private addSkyLayer(): void {
+    this._map.addLayer(this._skyLayer)
+  }
+
+  private hideModal(): void {
+    this._modalService.hideModal(100)
   }
 }

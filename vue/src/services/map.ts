@@ -2,12 +2,11 @@ import mapboxgl, { FillLayer, LineLayer, Map, MapLayerMouseEvent } from 'mapbox-
 import { Container, Service } from 'typedi'
 
 import { States } from '@/enums'
-import { IMapStyle, IStyleLayer, ITrail } from '@/interfaces'
+import { IMapStyle, IStyleLayers, ITrail } from '@/interfaces'
 import {
   DataService,
   MapboxService,
   MarkerService,
-  ModalService,
   PopupService,
   StoreService,
   StyleLayerService
@@ -15,15 +14,13 @@ import {
 
 @Service()
 export default class MapService {
-  private _MAP_STYLES: string = States.MAP_STYLES
-  private _STYLE_LAYERS: string = States.STYLE_LAYERS
+  private _states: Record<string, string> = States
 
   constructor(
     private _map: Map,
     private _dataService: DataService,
     private _mapboxService: MapboxService,
     private _markerService: MarkerService,
-    private _modalService: ModalService,
     private _popupService: PopupService,
     private _storeService: StoreService,
     private _styleLayerService: StyleLayerService
@@ -31,7 +28,6 @@ export default class MapService {
     this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
     this._markerService = Container.get(MarkerService)
-    this._modalService = Container.get(ModalService)
     this._popupService = Container.get(PopupService)
     this._storeService = Container.get(StoreService)
     this._styleLayerService = Container.get(StyleLayerService)
@@ -52,7 +48,6 @@ export default class MapService {
   }
 
   onMapLoadHandler(): void {
-    this.hideModal()
     this.showMarkers()
     this.addStyleLayers()
   }
@@ -78,18 +73,20 @@ export default class MapService {
   }
 
   setMapStyle(): void {
-    const mapStyles: IMapStyle = this._storeService.getState(this._MAP_STYLES)
+    const { MAP_STYLES } = this._states
+    const mapStyles: IMapStyle[] = this._storeService.getState(MAP_STYLES) as IMapStyle[]
     const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
-    const { url: mapStyle } = Object.values(mapStyles).find(isActive)
-    this._map.setStyle(mapStyle)
-    this._mapboxService.mapStyle = mapStyle
+    const { url: style }: IMapStyle = mapStyles.find(isActive)
+    this._map.setStyle(style)
+    this._mapboxService.mapStyle = style
     /* add style layers after 1/2 sec delay to set basemap style */
     setTimeout((): void => this.addStyleLayers(), 500)
   }
 
   setStyleLayerVisibility(id: string): void {
-    const styleLayers: IStyleLayer = this._storeService.getState(this._STYLE_LAYERS)
-    styleLayers[id as keyof IStyleLayer].isActive
+    const { STYLE_LAYERS } = this._states
+    const styleLayers: IStyleLayers = this._storeService.getState(STYLE_LAYERS) as IStyleLayers
+    styleLayers[id as keyof IStyleLayers].isActive
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')
     this.setStyleLayerVisibilityEventHandlers(id, styleLayers)
@@ -103,8 +100,8 @@ export default class MapService {
     }
   }
 
-  private setStyleLayerVisibilityEventHandlers(id: string, styleLayers: IStyleLayer): void {
-    styleLayers[id as keyof IStyleLayer].isActive
+  private setStyleLayerVisibilityEventHandlers(id: string, styleLayers: IStyleLayers): void {
+    styleLayers[id as keyof IStyleLayers].isActive
       ? this._map
           .on('click', id, (evt: MapLayerMouseEvent): void => {
             this.onMapClickHandler(evt)
@@ -116,19 +113,10 @@ export default class MapService {
             this.onMapMouseLeaveHandler()
           })
       : this._map
-          .off('click', id, (evt: MapLayerMouseEvent): void => {
-            this.onMapClickHandler(evt)
-          })
-          .off('mouseenter', id, (): void => {
-            this.onMapMouseEnterHandler()
-          })
-          .off('mouseleave', id, (): void => {
-            this.onMapMouseLeaveHandler()
-          })
-  }
-
-  private hideModal(): void {
-    this._modalService.hideModal(100)
+          /* eslint-disable @typescript-eslint/unbound-method */
+          .off('click', id, this.onMapClickHandler)
+          .off('mouseenter', id, this.onMapMouseEnterHandler)
+          .off('mouseleave', id, this.onMapMouseLeaveHandler)
   }
 
   private showMarkers(): void {

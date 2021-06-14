@@ -1,20 +1,27 @@
+/* eslint-disable */
 /* @ts-ignore */
 import { Deck, ViewState } from '@deck.gl/core'
-import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
+import { Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { deckgl } from '@/config'
 import { States } from '@/enums'
 import { IDeckglOptions, IDeckglViewSettings } from '@/interfaces'
-import { StoreService } from '@/services'
+import { ModalService, StoreService } from '@/services'
 
 @Service()
 export default class DeckService {
-  private _DECKGL_VIEW_SETTINGS = States.DECKGL_VIEW_SETTINGS
   private _options: IDeckglOptions = deckgl.options
-  private _skyLayer: SkyLayer = deckgl.skyLayer as SkyLayer
+  private _skyLayer = deckgl.skyLayer as SkyLayer
+  private _states: Record<string, string> = States
 
-  constructor(private _deck: Deck, private _map: Map, private _storeService: StoreService) {
+  constructor(
+    private _deck: Deck,
+    private _map: Map,
+    private _modalService: ModalService,
+    private _storeService: StoreService
+  ) {
+    this._modalService = Container.get(ModalService)
     this._storeService = Container.get(StoreService)
   }
 
@@ -25,10 +32,12 @@ export default class DeckService {
     return this._map
   }
   private get _state(): IDeckglViewSettings {
-    return this._storeService.getState(this._DECKGL_VIEW_SETTINGS)
+    const { DECKGL_VIEW_SETTINGS } = this._states
+    return this._storeService.getState(DECKGL_VIEW_SETTINGS) as IDeckglViewSettings
   }
   private set _state(settings: IDeckglViewSettings) {
-    this._storeService.setState(this._DECKGL_VIEW_SETTINGS, settings)
+    const { DECKGL_VIEW_SETTINGS } = this._states
+    this._storeService.setState(DECKGL_VIEW_SETTINGS, settings)
   }
 
   loadMapbox(): void {
@@ -41,7 +50,8 @@ export default class DeckService {
   }
 
   onMapLoadHandler(): void {
-    this._map.addLayer(this._skyLayer)
+    this.addSkyLayer()
+    this.hideModal()
   }
 
   loadDeckgl(): void {
@@ -55,42 +65,23 @@ export default class DeckService {
         minZoom,
         ...this._state
       },
-      onViewStateChange: ({
-        viewState: { bearing, latitude, longitude, pitch, zoom }
-      }: ViewState): void => {
-        const center: LngLatLike = { lng: longitude, lat: latitude }
-        const settings: IDeckglViewSettings = { bearing, center, latitude, longitude, pitch, zoom }
-        this.setDeckglViewSettingsState(settings)
-        this._map.jumpTo({ bearing, center, pitch, zoom })
+      onViewStateChange: ({ viewState, viewState: { latitude, longitude } }: ViewState): void => {
+        this._state = { ...viewState, center: [longitude, latitude] }
+        this._map.jumpTo(this._state)
       },
       getTooltip: ({ object }: Record<string, any>): string | null => {
-        if (!object) {
-          return null
-        }
+        if (!object) return null
         const { points } = object
         return `${points.length} Accidents`
       }
     })
   }
 
-  private setDeckglViewSettingsState({
-    bearing,
-    center,
-    latitude,
-    longitude,
-    pitch,
-    zoom
-  }: IDeckglViewSettings): void {
-    latitude = +latitude.toFixed(6)
-    longitude = +longitude.toFixed(6)
-    center = { lng: longitude, lat: latitude }
-    this._state = {
-      bearing: +bearing.toFixed(2),
-      center,
-      latitude,
-      longitude,
-      pitch: +pitch.toFixed(2),
-      zoom: +zoom.toFixed(2)
-    }
+  private addSkyLayer(): void {
+    this._map.addLayer(this._skyLayer)
+  }
+
+  private hideModal(): void {
+    this._modalService.hideModal(400)
   }
 }

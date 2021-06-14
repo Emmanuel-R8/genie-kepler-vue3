@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 module.exports = {
   root: true,
   env: {
@@ -8,9 +7,8 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:vue/vue3-recommended',
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -18,21 +16,14 @@ module.exports = {
     },
     ecmaVersion: 2021,
     parser: '@typescript-eslint/parser',
+    tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
     sourceType: 'module'
   },
-  plugins: ['vue', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   rules: {
-    'prettier/prettier': 'error',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-explicit-any': 'off'
-  },
-  overrides: [
-    {
-      files: ['index.html'],
-      rules: {
-        'vue/comment-directive': 0
-      }
-    }
-  ]
+  }
 }

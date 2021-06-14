@@ -2,7 +2,17 @@ import { defineComponent, PropType } from 'vue'
 
 import scss from './index.module.scss'
 
-const html = (props: Record<string, any>): JSX.Element => (
+type Props = {
+  coverage: number
+  elevationScale: number
+  radius: number
+  upperPercentile: number
+  setHexagonLayerReactiveProps: (evt: Event) => void
+  resetHexagonLayerReactiveProps: (evt: Event) => void
+  returnToTrails: (evt: Event) => void
+}
+
+const html = (props: Props): JSX.Element => (
   <div class={scss.Hexagon}>
     <div class={scss.spacer}></div>
     <div class={scss.header}>GB Road Accidents</div>
@@ -75,19 +85,19 @@ const html = (props: Record<string, any>): JSX.Element => (
 export default defineComponent({
   props: {
     coverage: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     },
     elevationScale: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     },
     radius: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     },
     upperPercentile: {
-      type: Number as PropType<number>,
+      type: Number,
       required: true
     },
     setHexagonLayerReactiveProps: {
@@ -103,7 +113,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  setup(props: Props) {
     return (): JSX.Element => html(props)
   }
 })

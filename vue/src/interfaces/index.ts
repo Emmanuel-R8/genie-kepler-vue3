@@ -33,9 +33,17 @@ export interface IHexagonLayerStaticProps {
   elevationRange: number[]
   extruded: boolean
   id: string
-  material: Record<string, any>
+  material: {
+    ambient: number
+    diffuse: number
+    shininess: number
+    specularColor: number[]
+  }
   pickable: boolean
-  transitions: Record<string, number>
+  transitions: {
+    coverage: number
+    elevationScale: number
+  }
 }
 
 export interface IHTMLMarkerElement extends HTMLDivElement {
@@ -63,11 +71,7 @@ export interface ILayerIcon {
 }
 
 export interface IMapStyle {
-  active: string
-  id: string
   isActive: boolean
-  outdoors: any
-  satellite: any
   url: string
 }
 
@@ -102,9 +106,33 @@ export interface IStore {
 }
 
 export interface IStyleLayer extends IMarker {
-  data: Record<string, never> | FeatureCollection
-  source: any
   type: string
+  source: {
+    type: string
+    data: Record<string, never> | FeatureCollection
+  }
+  layout: {
+    visibility: string
+  }
+  paint: {
+    'fill-color'?: string
+    'fill-opacity'?: number
+    'fill-outline-color'?: string
+    'line-color'?: string
+    'line-width'?: number
+  }
+}
+
+export interface IStyleLayers {
+  biosphere: {
+    isActive: boolean
+  }
+  'biosphere-border': {
+    isActive: boolean
+  }
+  trails: {
+    isActive: boolean
+  }
 }
 
 export interface ITrail {

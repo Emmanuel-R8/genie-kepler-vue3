@@ -3,8 +3,15 @@ import { defineComponent, PropType } from 'vue'
 import { StateStatus } from '@/enums'
 import scss from '@/components/LayerElements/index.module.scss'
 
+type Props = {
+  click: (evt: Event) => void
+  id: string
+  isActive: boolean
+  name: string
+}
+
 const { ACTIVE } = StateStatus
-const html = (props: Record<string, any>): JSX.Element => (
+const html = (props: Props): JSX.Element => (
   <li>
     <div id={props.id} class={props.isActive ? scss[ACTIVE] : ''} onClick={props.click}>
       {props.name}
@@ -19,19 +26,19 @@ export default defineComponent({
       required: true
     },
     id: {
-      type: String as PropType<string>,
+      type: String,
       required: true
     },
     isActive: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean,
       required: true
     },
     name: {
-      type: String as PropType<string>,
+      type: String,
       required: true
     }
   },
-  setup(props) {
+  setup(props: Props) {
     return (): JSX.Element => html(props)
   }
 })
