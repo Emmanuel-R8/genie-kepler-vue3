@@ -45,7 +45,7 @@ export default class StoreService {
       [MODAL]: this.setModalState,
       [STYLE_LAYERS]: this.setStyleLayersState
     }
-    return setState[state](payload)
+    setState[state](payload)
   }
 
   private setDeckglViewSettingsState = (settings: IDeckglViewSettings): void => {

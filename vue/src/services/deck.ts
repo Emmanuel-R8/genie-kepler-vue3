@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* @ts-ignore */
 import { Deck, ViewState } from '@deck.gl/core'
-import { Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
+import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { deckgl } from '@/config'
@@ -65,8 +65,11 @@ export default class DeckService {
         minZoom,
         ...this._state
       },
-      onViewStateChange: ({ viewState, viewState: { latitude, longitude } }: ViewState): void => {
-        this._state = { ...viewState, center: [longitude, latitude] }
+      onViewStateChange: ({
+        viewState: { bearing, latitude, longitude, pitch, zoom }
+      }: ViewState): void => {
+        const center: LngLatLike = [longitude, latitude]
+        this._state = { bearing, center, latitude, longitude, pitch, zoom }
         this._map.jumpTo(this._state)
       },
       getTooltip: ({ object }: Record<string, any>): string | null => {

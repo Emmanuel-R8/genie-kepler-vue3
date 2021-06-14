@@ -49,7 +49,7 @@ export default class LayerElementService {
       [SATELLITE, this.satellite],
       [TRAILS, this.layer]
     ])
-    return layerElementsMap.get(layerElement)(layerElement)
+    layerElementsMap.get(layerElement)(layerElement)
   }
 
   private layer = (layerElement: LayerElement): void => {
@@ -65,10 +65,12 @@ export default class LayerElementService {
     this._state = layerElement
     this.toggleMarkers(layerElement)
   }
+
   private route = async (): Promise<void> => {
     const { DECKGL } = this._layerElements
     await this.setRoute(DECKGL)
   }
+
   private satellite = (layerElement: LayerElement): void => {
     /* hide active markers when changing map styles for aesthetic purposes */
     this.showMarkers()
