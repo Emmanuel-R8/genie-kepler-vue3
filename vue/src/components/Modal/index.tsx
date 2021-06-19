@@ -1,11 +1,14 @@
 import { defineComponent } from 'vue'
 
-import { StateStatus } from '@/enums'
 import scss from './index.module.scss'
 
 type Props = {
   isActive: boolean
 }
+
+const html = ({ isActive }: Props): JSX.Element => (
+  <div class={`${scss.modal} ${scss[isActive ? 'active' : '']}`}></div>
+)
 
 export default defineComponent({
   props: {
@@ -15,9 +18,6 @@ export default defineComponent({
     }
   },
   setup(props: Props) {
-    const { ACTIVE, INACTIVE } = StateStatus
-    return (): JSX.Element => (
-      <div class={`${scss.modal} ${scss[props.isActive ? ACTIVE : INACTIVE]}`}></div>
-    )
+    return (): JSX.Element => html(props)
   }
 })

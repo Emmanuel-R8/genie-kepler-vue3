@@ -12,7 +12,7 @@ import { ModalService, StoreService } from '@/services'
 @Service()
 export default class DeckService {
   private _options: IDeckglOptions = deckgl.options
-  private _skyLayer = deckgl.skyLayer as SkyLayer
+  private _skyLayer = <SkyLayer>deckgl.skyLayer
   private _states: Record<string, string> = States
 
   constructor(
@@ -28,13 +28,16 @@ export default class DeckService {
   get deck(): Deck {
     return this._deck
   }
+
   get map(): Map {
     return this._map
   }
+
   private get _state(): IDeckglViewSettings {
     const { DECKGL_VIEW_SETTINGS } = this._states
-    return this._storeService.getState(DECKGL_VIEW_SETTINGS) as IDeckglViewSettings
+    return <IDeckglViewSettings>this._storeService.getState(DECKGL_VIEW_SETTINGS)
   }
+
   private set _state(settings: IDeckglViewSettings) {
     const { DECKGL_VIEW_SETTINGS } = this._states
     this._storeService.setState(DECKGL_VIEW_SETTINGS, settings)

@@ -13,7 +13,7 @@ const onSetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   /* prettier-ignore */
   const { target: { id: prop, value } }: Record<string, any> = evt
   const hexagonLayerService = Container.get(HexagonLayerService)
-  hexagonLayerService.setHexagonLayerReactiveProps(prop, value)
+  prop && value && hexagonLayerService.setHexagonLayerReactiveProps(prop, value)
 }
 const onResetHexagonLayerReactivePropsHandler = (evt: Event): void => {
   evt.stopPropagation()
@@ -25,13 +25,18 @@ const onReturnToTrailsHandler = async (evt: Event): Promise<void> => {
   const { MAPBOX } = Routes
   await router.push({ name: MAPBOX })
 }
-const html = (reactiveProps: IHexagonLayerReactiveProps): JSX.Element => (
+const html = ({
+  coverage,
+  elevationScale,
+  radius,
+  upperPercentile
+}: IHexagonLayerReactiveProps): JSX.Element => (
   <HexagonUI
     class={scss.hexagon}
-    coverage={reactiveProps.coverage}
-    elevationScale={reactiveProps.elevationScale}
-    radius={reactiveProps.radius}
-    upperPercentile={reactiveProps.upperPercentile}
+    coverage={coverage}
+    elevationScale={elevationScale}
+    radius={radius}
+    upperPercentile={upperPercentile}
     setHexagonLayerReactiveProps={onSetHexagonLayerReactivePropsHandler}
     resetHexagonLayerReactiveProps={onResetHexagonLayerReactivePropsHandler}
     returnToTrails={onReturnToTrailsHandler}
@@ -41,7 +46,7 @@ const html = (reactiveProps: IHexagonLayerReactiveProps): JSX.Element => (
 export default defineComponent({
   setup() {
     const hexagonLayerService = Container.get(HexagonLayerService)
-    const reactiveProps = computed((): IHexagonLayerReactiveProps => hexagonLayerService.state)
-    return (): JSX.Element => html(reactiveProps.value)
+    const state = computed((): IHexagonLayerReactiveProps => hexagonLayerService.state)
+    return (): JSX.Element => html(state.value)
   }
 })

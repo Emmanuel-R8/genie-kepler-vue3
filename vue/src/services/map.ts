@@ -1,35 +1,35 @@
 import mapboxgl, { FillLayer, LineLayer, Map, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { States } from '@/enums'
+import { LayerElements } from '@/enums'
 import { IMapStyle, IStyleLayers, ITrail } from '@/interfaces'
 import {
   DataService,
   MapboxService,
+  MapStylesService,
   MarkerService,
   PopupService,
-  StoreService,
   StyleLayerService
 } from '@/services'
 
 @Service()
 export default class MapService {
-  private _states: Record<string, string> = States
+  private _layerElements: Record<string, string> = LayerElements
 
   constructor(
     private _map: Map,
     private _dataService: DataService,
     private _mapboxService: MapboxService,
+    private _mapStylesService: MapStylesService,
     private _markerService: MarkerService,
     private _popupService: PopupService,
-    private _storeService: StoreService,
     private _styleLayerService: StyleLayerService
   ) {
     this._dataService = Container.get(DataService)
     this._mapboxService = Container.get(MapboxService)
+    this._mapStylesService = Container.get(MapStylesService)
     this._markerService = Container.get(MarkerService)
     this._popupService = Container.get(PopupService)
-    this._storeService = Container.get(StoreService)
     this._styleLayerService = Container.get(StyleLayerService)
   }
 
@@ -73,29 +73,29 @@ export default class MapService {
   }
 
   setMapStyle(): void {
-    const { MAP_STYLES } = this._states
-    const mapStyles: IMapStyle[] = this._storeService.getState(MAP_STYLES) as IMapStyle[]
+    const mapStyles: IMapStyle[] = this._mapStylesService.state
     const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
-    const { url: style }: IMapStyle = mapStyles.find(isActive)
+    const i = mapStyles.findIndex(isActive)
+    const { url: style } = mapStyles[i]
     this._map.setStyle(style)
     this._mapboxService.mapStyle = style
-    /* add style layers after 1/2 sec delay to set basemap style */
+    /* re-add style layers after 1/2 sec delay to set basemap style */
     setTimeout((): void => this.addStyleLayers(), 500)
   }
 
   setStyleLayerVisibility(id: string): void {
-    const { STYLE_LAYERS } = this._states
-    const styleLayers: IStyleLayers = this._storeService.getState(STYLE_LAYERS) as IStyleLayers
+    const { BIOSPHERE } = this._layerElements
+    const styleLayers: IStyleLayers = this._styleLayerService.state
     styleLayers[id as keyof IStyleLayers].isActive
       ? this._map.setLayoutProperty(id, 'visibility', 'visible')
       : this._map.setLayoutProperty(id, 'visibility', 'none')
-    this.setStyleLayerVisibilityEventHandlers(id, styleLayers)
+    id === BIOSPHERE && this.setStyleLayerVisibilityEventHandlers(id, styleLayers)
   }
 
   private addStyleLayers(): void {
     for (const styleLayer of this._styleLayerService.styleLayers) {
       const { id } = styleLayer
-      this._map.addLayer(styleLayer as FillLayer | LineLayer)
+      this._map.addLayer(<FillLayer | LineLayer>styleLayer)
       this.setStyleLayerVisibility(id)
     }
   }

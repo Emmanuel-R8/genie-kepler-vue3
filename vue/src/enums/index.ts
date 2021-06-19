@@ -28,13 +28,6 @@ export enum States {
   STYLE_LAYERS = 'styleLayers'
 }
 
-export enum StateStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  NEW = 'new',
-  OLD = 'old'
-}
-
 export enum Urls {
   API_BASE_URL = 'http://localhost:8000/api/',
   HEXAGON_LAYER_DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'

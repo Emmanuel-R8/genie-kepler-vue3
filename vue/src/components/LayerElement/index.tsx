@@ -1,6 +1,5 @@
 import { defineComponent, PropType } from 'vue'
 
-import { StateStatus } from '@/enums'
 import scss from '@/components/LayerElements/index.module.scss'
 
 type Props = {
@@ -10,11 +9,10 @@ type Props = {
   name: string
 }
 
-const { ACTIVE } = StateStatus
-const html = (props: Props): JSX.Element => (
+const html = ({ click, id, isActive, name }: Props): JSX.Element => (
   <li>
-    <div id={props.id} class={props.isActive ? scss[ACTIVE] : ''} onClick={props.click}>
-      {props.name}
+    <div id={id} class={scss[isActive ? 'active' : '']} onClick={click}>
+      {name}
     </div>
   </li>
 )

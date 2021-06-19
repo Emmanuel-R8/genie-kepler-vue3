@@ -42,13 +42,15 @@ export default class HexagonLayerService {
   get map(): Map {
     return this._map
   }
+
   get state(): IHexagonLayerReactiveProps {
     const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
-    return this._storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS) as IHexagonLayerReactiveProps
+    return <IHexagonLayerReactiveProps>this._storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS)
   }
-  set state(payload: IHexagonLayerReactiveProps) {
+
+  set state(props: IHexagonLayerReactiveProps) {
     const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
-    this._storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, payload)
+    this._storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, props)
   }
 
   async loadHexagonLayer(): Promise<void> {

@@ -9,10 +9,10 @@ type Props = {
   container: string
 }
 
-const html = (props: Props): JSX.Element => (
+const html = ({ canvas, container }: Props): JSX.Element => (
   <div>
-    <div id={props.container} class={scss[props.container]}></div>
-    <canvas id={props.canvas} class={scss[props.canvas]}></canvas>
+    <div id={container} class={scss[container]}></div>
+    <canvas id={canvas} class={scss[canvas]}></canvas>
   </div>
 )
 
@@ -28,12 +28,12 @@ export default defineComponent({
     }
   },
   setup(props: Props) {
-    const deckService = Container.get(DeckService)
     const hexagonLayerService = Container.get(HexagonLayerService)
     onMounted(async (): Promise<void> => {
       await hexagonLayerService.loadHexagonLayer()
     })
     onUnmounted((): void => {
+      const deckService = Container.get(DeckService)
       /* eslint-disable @typescript-eslint/unbound-method */
       deckService.map.off('load', () => deckService.onMapLoadHandler)
       hexagonLayerService.map.off('load', hexagonLayerService.onMapLoadHandler)

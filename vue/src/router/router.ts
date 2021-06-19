@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import { Routes } from '@/enums'
-import { Deckgl, Mapbox } from '@/views'
 
 const { DECKGL, MAPBOX } = Routes
-const history = createWebHistory()
+const Deckgl = () => import('@/views/Deckgl')
+const Mapbox = () => import('@/views/Mapbox')
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -22,4 +22,5 @@ const routes: RouteRecordRaw[] = [
     component: Mapbox
   }
 ]
+const history = createWebHistory()
 export default createRouter({ history, routes })

@@ -6,10 +6,14 @@ import { deckgl } from '@/config'
 import { IDeckglOptions, IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
-const html = (modal: IModal, { canvas, container }: IDeckglOptions): JSX.Element => (
+const showModal = (): void => {
+  const modalService = Container.get(ModalService)
+  modalService.showModal()
+}
+const html = ({ isActive }: IModal, { canvas, container }: IDeckglOptions): JSX.Element => (
   <div>
     <Deckgl canvas={canvas} container={container} />
-    <Modal isActive={modal.isActive} />
+    <Modal isActive={isActive} />
     <Hexagon />
     <Footer />
   </div>
@@ -17,10 +21,10 @@ const html = (modal: IModal, { canvas, container }: IDeckglOptions): JSX.Element
 
 export default defineComponent({
   setup() {
-    const { options: deckglOptions } = deckgl
+    const { options } = deckgl
     const modalService = Container.get(ModalService)
-    const modal = computed((): IModal => modalService.state)
-    modalService.showModal()
-    return (): JSX.Element => html(modal.value, deckglOptions)
+    const state = computed((): IModal => modalService.state)
+    showModal()
+    return (): JSX.Element => html(state.value, options)
   }
 })

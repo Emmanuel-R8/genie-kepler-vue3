@@ -56,7 +56,7 @@ export default class DataService {
   private getHexagonLayerData(): void {
     const { HEXAGON_LAYER_DATA_URL } = this._urls
     csv(HEXAGON_LAYER_DATA_URL)
-      .then((data: Record<string, string>[]): void => {
+      .then((data: any[]): void => {
         data?.length
           ? this.setHexagonLayerData(data)
           : this.printConsoleLog(`${this.getHexagonLayerData.name} No Data Error:\n`, data)
@@ -66,7 +66,7 @@ export default class DataService {
       })
   }
 
-  private setHexagonLayerData(data: Record<string, string>[]): void {
+  private setHexagonLayerData(data: any[]): void {
     this._hexagonLayerData = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat])
   }
 
@@ -120,8 +120,8 @@ export default class DataService {
     const { GEOJSON_ENDPOINT } = this._endPoints
     const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
     /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
-    const { data: fc } = await this._httpService.get(GEOJSON_ENDPOINT, { params })
-    return fc as FeatureCollection
+    const { data } = await this._httpService.get(GEOJSON_ENDPOINT, { params })
+    return <FeatureCollection>data
   }
 
   private printConsoleError(message: string, err: Error): void {

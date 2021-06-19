@@ -12,7 +12,15 @@ type Props = {
   returnToTrails: (evt: Event) => void
 }
 
-const html = (props: Props): JSX.Element => (
+const html = ({
+  coverage,
+  elevationScale,
+  radius,
+  upperPercentile,
+  setHexagonLayerReactiveProps,
+  resetHexagonLayerReactiveProps,
+  returnToTrails
+}: Props): JSX.Element => (
   <div class={scss.Hexagon}>
     <div class={scss.spacer}></div>
     <div class={scss.header}>GB Road Accidents</div>
@@ -25,10 +33,10 @@ const html = (props: Props): JSX.Element => (
         min="0"
         max="1"
         step="0.1"
-        value={props.coverage}
-        onChange={props.setHexagonLayerReactiveProps}
+        value={coverage}
+        onChange={setHexagonLayerReactiveProps}
       />
-      <span>{props.coverage}</span>
+      <span>{coverage}</span>
     </div>
     <hr />
     <div>
@@ -39,10 +47,10 @@ const html = (props: Props): JSX.Element => (
         min="0"
         max="100"
         step="20"
-        value={props.elevationScale}
-        onChange={props.setHexagonLayerReactiveProps}
+        value={elevationScale}
+        onChange={setHexagonLayerReactiveProps}
       />
-      <span>{props.elevationScale}</span>
+      <span>{elevationScale}</span>
     </div>
     <hr />
     <div>
@@ -53,10 +61,10 @@ const html = (props: Props): JSX.Element => (
         min="1000"
         max="5000"
         step="500"
-        value={props.radius}
-        onChange={props.setHexagonLayerReactiveProps}
+        value={radius}
+        onChange={setHexagonLayerReactiveProps}
       />
-      <span>{props.radius}</span>
+      <span>{radius}</span>
     </div>
     <hr />
     <div>
@@ -67,16 +75,16 @@ const html = (props: Props): JSX.Element => (
         min="80"
         max="100"
         step="1"
-        value={props.upperPercentile}
-        onChange={props.setHexagonLayerReactiveProps}
+        value={upperPercentile}
+        onChange={setHexagonLayerReactiveProps}
       />
-      <span>{props.upperPercentile}</span>
+      <span>{upperPercentile}</span>
     </div>
     <hr />
     <div class={scss.spacer}></div>
-    <button onClick={props.resetHexagonLayerReactiveProps}>Reset Parameters</button>
+    <button onClick={resetHexagonLayerReactiveProps}>Reset Parameters</button>
     <div class={scss.spacer}></div>
-    <button onClick={props.returnToTrails}>Return to Trails</button>
+    <button onClick={returnToTrails}>Return to Trails</button>
     <div class={scss.spacer}></div>
     <div class={scss.spacer}></div>
   </div>

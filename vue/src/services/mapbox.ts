@@ -13,7 +13,7 @@ export default class MapboxService {
   private _mapStyle = mapbox.settings.style
   private _navigationControl = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
-  private _skyLayer = mapbox.skyLayer as SkyLayer
+  private _skyLayer = <SkyLayer>mapbox.skyLayer
   private _states: Record<string, string> = States
 
   constructor(
@@ -28,13 +28,16 @@ export default class MapboxService {
   get map(): Map {
     return this._map
   }
-  set mapStyle(mapStyle: string) {
-    this._mapStyle = mapStyle
+
+  set mapStyle(style: string) {
+    this._mapStyle = style
   }
+
   private get _state(): IMapboxSettings {
     const { MAPBOX_SETTINGS } = this._states
-    return this._storeService.getState(MAPBOX_SETTINGS) as IMapboxSettings
+    return <IMapboxSettings>this._storeService.getState(MAPBOX_SETTINGS)
   }
+
   private set _state(settings: IMapboxSettings) {
     const { MAPBOX_SETTINGS } = this._states
     this._storeService.setState(MAPBOX_SETTINGS, settings)
@@ -46,7 +49,7 @@ export default class MapboxService {
     const { style } = this._state
     this._mapStyle = style
     this._map = new Map(options)
-      .addControl(new NavigationControl({ visualizePitch }), position as Position)
+      .addControl(new NavigationControl({ visualizePitch }), <Position>position)
       .on('load', (): void => {
         this.onMapLoadHandler()
       })
@@ -65,14 +68,12 @@ export default class MapboxService {
   }
 
   private setMapboxSettingsState(): void {
-    const lat = +this._map.getCenter().lat.toFixed(6)
-    const lng = +this._map.getCenter().lng.toFixed(6)
     this._state = {
-      bearing: +this._map.getBearing().toFixed(2),
-      center: [lng, lat],
-      pitch: +this._map.getPitch().toFixed(2),
+      bearing: this._map.getBearing(),
+      center: this._map.getCenter(),
+      pitch: this._map.getPitch(),
       style: this._mapStyle,
-      zoom: +this._map.getZoom().toFixed(2)
+      zoom: this._map.getZoom()
     }
   }
 

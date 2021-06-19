@@ -2,7 +2,6 @@ import { Container } from 'typedi'
 import { defineComponent } from 'vue'
 
 import { trails } from '@/config'
-import { ITrail } from '@/interfaces'
 import { TrailService } from '@/services'
 import scss from './index.module.scss'
 
@@ -16,8 +15,8 @@ const onSelectTrailChangeHandler = (evt: Event): void => {
 const html = (): JSX.Element => (
   <div>
     <select class={scss.trails} onChange={onSelectTrailChangeHandler}>
-      {trails.map((trail: ITrail) => (
-        <option key={trail.name}>{trail.name}</option>
+      {trails.map(({ name }) => (
+        <option key={name}>{name}</option>
       ))}
     </select>
   </div>

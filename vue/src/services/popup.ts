@@ -1,13 +1,11 @@
 import { Feature, Point } from 'geojson'
-import { LngLatLike, MapLayerMouseEvent, MapboxGeoJSONFeature, Popup } from 'mapbox-gl'
+import { LngLatLike, MapLayerMouseEvent, Popup } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { LayerElements } from '@/enums'
 import { MapboxService } from '@/services'
 
 @Service()
 export default class PopupService {
-  private _layerElements: Record<string, string> = LayerElements
   private _popup = new Popup({ closeButton: false })
 
   constructor(private _mapboxService: MapboxService) {
@@ -17,21 +15,20 @@ export default class PopupService {
   addLayerPopup({ features, lngLat }: MapLayerMouseEvent): void {
     if (features?.length && features[0].properties) {
       /* prettier-ignore */
-      const { properties: { description, name } }: MapboxGeoJSONFeature = features[0]
+      const { properties: { description, name } } = features[0]
       this.setPopupHTML(description, name)
-      this._popup.setOffset(4).setLngLat(lngLat).addTo(this._mapboxService.map)
+      this._popup.setLngLat(lngLat).setOffset(4).addTo(this._mapboxService.map)
     }
   }
 
-  addMarkerPopup(id: string, feature: Feature): void {
+  addMarkerPopup(feature: Feature): void {
     if (feature?.properties) {
-      const { TRAILS } = this._layerElements
       /* prettier-ignore */
       const { geometry, properties: { description, lat, lng, name } } = feature
-      this.setPopupHTML(description, name)
-      id === TRAILS
+      lat && lng
         ? this._popup.setLngLat([lng, lat])
-        : this._popup.setLngLat((geometry as Point).coordinates as LngLatLike)
+        : this._popup.setLngLat(<LngLatLike>(<Point>geometry).coordinates)
+      this.setPopupHTML(description, name)
       this._popup.setOffset(14).addTo(this._mapboxService.map)
     }
   }

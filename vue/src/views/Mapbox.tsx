@@ -6,10 +6,14 @@ import { mapbox } from '@/config'
 import { IMapboxOptions, IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
-const html = (modal: IModal, { container }: IMapboxOptions): JSX.Element => (
+const showModal = (): void => {
+  const modalService = Container.get(ModalService)
+  modalService.showModal()
+}
+const html = ({ isActive }: IModal, { container }: IMapboxOptions): JSX.Element => (
   <div>
     <Mapbox container={container} />
-    <Modal isActive={modal.isActive} />
+    <Modal isActive={isActive} />
     <LayerElements />
     <Trails />
   </div>
@@ -17,10 +21,10 @@ const html = (modal: IModal, { container }: IMapboxOptions): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const { options: mapboxOptions } = mapbox
+    const { options } = mapbox
     const modalService = Container.get(ModalService)
-    const modal = computed((): IModal => modalService.state)
-    modalService.showModal()
-    return (): JSX.Element => html(modal.value, mapboxOptions)
+    const state = computed((): IModal => modalService.state)
+    showModal()
+    return (): JSX.Element => html(state.value, options)
   }
 })

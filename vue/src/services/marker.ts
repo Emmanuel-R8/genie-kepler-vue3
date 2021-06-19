@@ -15,7 +15,7 @@ export default class MarkerService {
   constructor(private _mapboxService: MapboxService, private _popupService: PopupService) {
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
-    this.createmarkersHashmap()
+    this.createMarkersHashmap()
   }
 
   setMarkers(id: string, features: Feature[]): void {
@@ -29,7 +29,7 @@ export default class MarkerService {
   showMarkers(): void {
     for (const markers of this._markers) {
       for (const marker of markers) {
-        const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
+        const el = <IHTMLMarkerElement>marker.getElement()
         if (!el.isActive && !el.isHidden) {
           break
         }
@@ -43,52 +43,49 @@ export default class MarkerService {
   }
 
   toggleMarkers(id: string): void {
-    for (const marker of this._markers[this._markersHashmap.get(id)]) {
-      const el: IHTMLMarkerElement = <IHTMLMarkerElement>marker.getElement()
+    for (const marker of this._markers[this._markersHashmap.get(id)!]) {
+      const el = <IHTMLMarkerElement>marker.getElement()
       el.isActive = !el.isActive
       el.isActive ? marker.addTo(this._mapboxService.map) : marker.remove()
     }
   }
 
-  private createmarkersHashmap(): void {
+  private createMarkersHashmap(): void {
     const { OFFICE, PLACES, TRAILS } = this._layerElements
-    const markers: string[] = [OFFICE, PLACES, TRAILS]
-    for (const marker of markers) {
-      this._markersHashmap.set(marker, 0)
-    }
+    const ids: string[] = [OFFICE, PLACES, TRAILS]
+    ids.forEach((id): Map<string, number> => this._markersHashmap.set(id, 0))
   }
 
   private createMarker(id: string, feature: Feature): Marker {
-    const { OFFICE, PLACES, TRAILS } = this._layerElements
-    const el: IHTMLMarkerElement = this.createHTMLMarkerElement(id, feature)
-    const marker = (feature: Feature): Marker => {
-      const { geometry } = feature
-      return new Marker(el).setLngLat((geometry as Point).coordinates as LngLatLike)
-    }
-    const layerMarker = (feature: Feature): Marker => {
-      /* prettier-ignore */
-      const { properties: { lng, lat } } = feature
-      return new Marker(el).setLngLat([lng, lat])
-    }
-    const markersMap = new Map([
-      [OFFICE, marker],
-      [PLACES, marker],
-      [TRAILS, layerMarker]
-    ])
-    return markersMap.get(id)(feature)
+    /* prettier-ignore */
+    const { geometry, properties: { lng, lat } } = <Record<string, any>>feature
+    const el = this.createHTMLMarkerElement(id, feature)
+    let marker: Marker
+    lat && lng
+      ? (marker = new Marker(el).setLngLat([lng, lat]))
+      : (marker = new Marker(el).setLngLat(<LngLatLike>(<Point>geometry).coordinates))
+    return marker
   }
 
   private createHTMLMarkerElement(id: string, feature: Feature): IHTMLMarkerElement {
-    const el: IHTMLMarkerElement = <IHTMLMarkerElement>document.createElement('div')
+    const el = <IHTMLMarkerElement>document.createElement('div')
     el.className = `${id}-marker`
     el.isActive = false
     el.isHidden = false
     el.addEventListener('mouseenter', (): void => {
-      this._popupService.addMarkerPopup(id, feature)
+      this.addMarkerPopup(feature)
     })
     el.addEventListener('mouseleave', (): void => {
-      this._popupService.removePopup()
+      this.removeMarkerPopup()
     })
     return el
+  }
+
+  private addMarkerPopup(feature: Feature): void {
+    this._popupService.addMarkerPopup(feature)
+  }
+
+  private removeMarkerPopup(): void {
+    this._popupService.removePopup()
   }
 }

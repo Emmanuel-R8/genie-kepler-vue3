@@ -32,16 +32,17 @@ export default class LayerElementService {
 
   get state(): ILayerElement[] {
     const { LAYER_ELEMENTS } = this._states
-    return this._storeService.getState(LAYER_ELEMENTS) as ILayerElement[]
-  }
-  private set _state(layerElement: LayerElement) {
-    const { LAYER_ELEMENTS } = this._states
-    this._storeService.setState(LAYER_ELEMENTS, { layerElement })
+    return <ILayerElement[]>this._storeService.getState(LAYER_ELEMENTS)
   }
 
-  displayLayerElement(layerElement: LayerElement): void {
+  private set _state(id: LayerElement) {
+    const { LAYER_ELEMENTS } = this._states
+    this._storeService.setState(LAYER_ELEMENTS, { id })
+  }
+
+  displayLayerElement(id: LayerElement): void {
     const { BIOSPHERE, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } = this._layerElements
-    const layerElementsMap = new Map([
+    const layerElementsMap: Map<string, any> = new Map([
       [BIOSPHERE, this.layer],
       [DECKGL, this.route],
       [OFFICE, this.marker],
@@ -49,21 +50,22 @@ export default class LayerElementService {
       [SATELLITE, this.satellite],
       [TRAILS, this.layer]
     ])
-    layerElementsMap.get(layerElement)(layerElement)
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+    layerElementsMap.get(id)(id)
   }
 
-  private layer = (layerElement: LayerElement): void => {
+  private layer = (id: LayerElement): void => {
     const { BIOSPHERE, BIOSPHERE_BORDER, TRAILS } = this._layerElements
-    this._state = layerElement
-    this.setStyleLayersState(layerElement)
-    this.setStyleLayerVisibility(layerElement)
-    layerElement === BIOSPHERE && this.setStyleLayerVisibility(BIOSPHERE_BORDER as LayerElement)
-    layerElement === TRAILS && this.toggleMarkers(layerElement)
+    this.setLayerElementsState(id)
+    this.setStyleLayersState(id)
+    this.setStyleLayerVisibility(id)
+    id === BIOSPHERE && this.setStyleLayerVisibility(<LayerElement>BIOSPHERE_BORDER)
+    id === TRAILS && this.toggleMarkers(id)
   }
 
-  private marker = (layerElement: LayerElement): void => {
-    this._state = layerElement
-    this.toggleMarkers(layerElement)
+  private marker = (id: LayerElement): void => {
+    this.setLayerElementsState(id)
+    this.toggleMarkers(id)
   }
 
   private route = async (): Promise<void> => {
@@ -71,15 +73,19 @@ export default class LayerElementService {
     await this.setRoute(DECKGL)
   }
 
-  private satellite = (layerElement: LayerElement): void => {
+  private satellite = (id: LayerElement): void => {
     /* hide active markers when changing map styles for aesthetic purposes */
     this.showMarkers()
     /* toggle between 'outdoors' and 'satellite' map styles (basemaps) */
-    this._state = layerElement
+    this.setLayerElementsState(id)
     this.setMapStylesState()
     this.setMapStyle()
     /* show hidden markers when changing map styles for aesthetic purposes */
     this.showMarkers(1000)
+  }
+
+  private setLayerElementsState = (id: LayerElement): void => {
+    this._state = id
   }
 
   private setMapStyle(): void {
@@ -95,13 +101,13 @@ export default class LayerElementService {
     await this._router.push({ name })
   }
 
-  private setStyleLayerVisibility(layerElement: LayerElement): void {
-    this._mapService.setStyleLayerVisibility(layerElement)
+  private setStyleLayerVisibility(id: LayerElement): void {
+    this._mapService.setStyleLayerVisibility(id)
   }
 
-  private setStyleLayersState(layerElement: LayerElement): void {
+  private setStyleLayersState(id: LayerElement): void {
     const { STYLE_LAYERS } = this._states
-    this._storeService.setState(STYLE_LAYERS, { layerElement })
+    this._storeService.setState(STYLE_LAYERS, { id })
   }
 
   private showMarkers(timeout?: number): void {
@@ -110,7 +116,7 @@ export default class LayerElementService {
       : this._markerService.showMarkers()
   }
 
-  private toggleMarkers(layerElement: LayerElement): void {
-    this._markerService.toggleMarkers(layerElement)
+  private toggleMarkers(id: LayerElement): void {
+    this._markerService.toggleMarkers(id)
   }
 }

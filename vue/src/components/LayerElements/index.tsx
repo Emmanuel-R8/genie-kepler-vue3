@@ -3,40 +3,40 @@ import { computed, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
-import { ILayerElement, ILayerIcon } from '@/interfaces'
+import { ILayerElement } from '@/interfaces'
 import { LayerElementService } from '@/services'
 import scss from './index.module.scss'
 
 const onDisplayLayerElementClickHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
-  const { target: { id: layerElement } }: Record<string, any> = evt
+  const { target: { id } }: Record<string, any> = evt
   const layerElementService = Container.get(LayerElementService)
-  layerElement && layerElementService.displayLayerElement(layerElement)
+  id && layerElementService.displayLayerElement(id)
 }
 const html = (layerElements: ILayerElement[]): JSX.Element => (
   <div>
     <ul class={scss.elements}>
-      {layerElements.map((el: ILayerElement) => (
+      {layerElements.map(({ id, isActive, name }) => (
         <LayerElement
           click={onDisplayLayerElementClickHandler}
-          id={el.id}
-          isActive={el.isActive}
-          key={el.id}
-          name={el.name}
+          id={id}
+          isActive={isActive}
+          key={id}
+          name={name}
         />
       ))}
     </ul>
     <ul class={scss.icons}>
-      {layerIcons.map((icon: ILayerIcon) => (
+      {layerIcons.map(({ height, id, name, src, width }) => (
         <LayerIcon
-          alt={icon.name}
+          alt={name}
           click={onDisplayLayerElementClickHandler}
-          height={icon.height}
-          id={icon.id}
-          key={icon.id}
-          src={icon.src}
-          width={icon.width}
+          height={height}
+          id={id}
+          key={id}
+          src={src}
+          width={width}
         />
       ))}
     </ul>
@@ -46,7 +46,7 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
 export default defineComponent({
   setup() {
     const layerElementService = Container.get(LayerElementService)
-    const layerElements = computed((): ILayerElement[] => layerElementService.state)
-    return (): JSX.Element => html(layerElements.value)
+    const state = computed((): ILayerElement[] => layerElementService.state)
+    return (): JSX.Element => html(state.value)
   }
 })

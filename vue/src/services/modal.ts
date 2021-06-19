@@ -14,13 +14,14 @@ export default class ModalService {
 
   get state(): IModal {
     const { MODAL } = this._states
-    return this._storeService.getState(MODAL) as IModal
+    return <IModal>this._storeService.getState(MODAL)
   }
 
   hideModal(timeout: number): void {
     const { MODAL } = this._states
     this.state.isActive && setTimeout((): void => this._storeService.setState(MODAL), timeout)
   }
+
   showModal(): void {
     const { MODAL } = this._states
     !this.state.isActive && this._storeService.setState(MODAL)

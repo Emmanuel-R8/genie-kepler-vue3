@@ -11,16 +11,8 @@ type Props = {
   width: number
 }
 
-const html = (props: Props): JSX.Element => (
-  <img
-    alt={props.alt}
-    class={scss[props.id]}
-    height={props.height}
-    id={props.id}
-    onClick={props.click}
-    src={props.src}
-    width={props.width}
-  />
+const html = ({ alt, click, height, id, src, width }: Props): JSX.Element => (
+  <img alt={alt} class={scss[id]} height={height} id={id} onClick={click} src={src} width={width} />
 )
 
 export default defineComponent({

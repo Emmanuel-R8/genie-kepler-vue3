@@ -10,7 +10,6 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
-    "strictNullChecks": false,
     "target": "esnext",
     "types": ["vite/client", "@types/jest"],
     "typeRoots": ["node_modules/@types"],

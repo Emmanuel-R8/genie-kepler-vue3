@@ -62,14 +62,6 @@ export interface ILayerElement {
   name: string
 }
 
-export interface ILayerIcon {
-  height: number
-  id: string
-  name: string
-  src: string
-  width: number
-}
-
 export interface IMapStyle {
   isActive: boolean
   url: string
@@ -102,7 +94,6 @@ export interface IModal {
 export interface IStore {
   getState: (key: string) => Record<string, any>
   setState: (key: string, payload: Record<string, any>) => void
-  state: Record<string, any>
 }
 
 export interface IStyleLayer extends IMarker {

@@ -1,6 +1,7 @@
 .modal {
   background-color: rgba(0, 0, 0, 0.3);
   bottom: 0;
+  display: none;
   height: 100%;
   left: 0;
   position: absolute;
@@ -12,8 +13,4 @@
 
 .active {
   display: block;
-}
-
-.inactive {
-  display: none;
 }
