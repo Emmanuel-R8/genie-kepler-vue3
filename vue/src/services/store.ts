@@ -36,7 +36,7 @@ export default class StoreService {
       MODAL,
       STYLE_LAYERS
     } = this._states
-    const setState = {
+    const states = {
       [DECKGL_VIEW_SETTINGS]: this.setDeckglViewSettingsState,
       [HEXAGON_LAYER_REACTIVE_PROPS]: this.setHexagonLayerReactivePropsState,
       [LAYER_ELEMENTS]: this.setLayerElementsState,
@@ -45,7 +45,7 @@ export default class StoreService {
       [MODAL]: this.setModalState,
       [STYLE_LAYERS]: this.setStyleLayersState
     }
-    setState[state](payload)
+    states[state](payload)
   }
 
   private setDeckglViewSettingsState = (settings: IDeckglViewSettings): void => {
