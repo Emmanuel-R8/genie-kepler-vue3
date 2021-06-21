@@ -42,16 +42,15 @@ export default class LayerElementService {
 
   displayLayerElement(id: LayerElement): void {
     const { BIOSPHERE, DECKGL, OFFICE, PLACES, SATELLITE, TRAILS } = this._layerElements
-    const layerElementsMap: Map<string, any> = new Map([
-      [BIOSPHERE, this.layer],
-      [DECKGL, this.route],
-      [OFFICE, this.marker],
-      [PLACES, this.marker],
-      [SATELLITE, this.satellite],
-      [TRAILS, this.layer]
-    ])
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-    layerElementsMap.get(id)(id)
+    const layerElements = {
+      [BIOSPHERE]: this.layer,
+      [DECKGL]: this.route,
+      [OFFICE]: this.marker,
+      [PLACES]: this.marker,
+      [SATELLITE]: this.satellite,
+      [TRAILS]: this.layer
+    }
+    layerElements[id](id)
   }
 
   private layer = (id: LayerElement): void => {
