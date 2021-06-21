@@ -2,20 +2,17 @@ import { Feature, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { LayerElements } from '@/enums'
 import { IHTMLMarkerElement } from '@/interfaces'
 import { MapboxService, PopupService } from '@/services'
 
 @Service()
 export default class MarkerService {
-  private _layerElements: Record<string, string> = LayerElements
   private _markers: Marker[][] = []
   private _markersHashmap: Map<string, number> = new Map()
 
   constructor(private _mapboxService: MapboxService, private _popupService: PopupService) {
     this._mapboxService = Container.get(MapboxService)
     this._popupService = Container.get(PopupService)
-    this.createMarkersHashmap()
   }
 
   setMarkers(id: string, features: Feature[]): void {
@@ -48,12 +45,6 @@ export default class MarkerService {
       el.isActive = !el.isActive
       el.isActive ? marker.addTo(this._mapboxService.map) : marker.remove()
     }
-  }
-
-  private createMarkersHashmap(): void {
-    const { OFFICE, PLACES, TRAILS } = this._layerElements
-    const ids: string[] = [OFFICE, PLACES, TRAILS]
-    ids.forEach((id): Map<string, number> => this._markersHashmap.set(id, 0))
   }
 
   private createMarker(id: string, feature: Feature): Marker {
