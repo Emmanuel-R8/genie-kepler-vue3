@@ -20,7 +20,7 @@ export default class MarkerService {
       (feature: Feature): Marker => this.createMarker(id, feature)
     )
     this._markers = [...this._markers, markers]
-    this._markersHashmap.set(id, this._markers.length - 1)
+    this.setMarkersHashmap(id)
   }
 
   showMarkers(): void {
@@ -78,5 +78,9 @@ export default class MarkerService {
 
   private removeMarkerPopup(): void {
     this._popupService.removePopup()
+  }
+
+  private setMarkersHashmap(id: string) {
+    this._markersHashmap.set(id, this._markers.length - 1)
   }
 }
