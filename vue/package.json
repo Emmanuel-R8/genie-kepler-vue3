@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "author": "John Campbell <johncampbell@geospatialweb.ca> <http://www.linkedin.com/in/geospatialweb>",
-  "description": "Golang, Vue 3, Composition API, TypeScript, tsx, Vite, Mapbox GL, Deck.GL, PostGIS, Docker, Geospatial Web Mapping",
+  "description": "Golang, Vue 3, Composition API, TypeScript, tsx, Vite, Nginx, Mapbox GL, Deck.GL, PostGIS, Docker, Geospatial Web Mapping",
   "keywords": [
     "Golang",
     "Vue 3",
@@ -11,6 +11,7 @@
     "TypeScript",
     ".tsx",
     "Vite",
+    "Nginx",
     "Mapbox GL",
     "Deck.GL",
     "PostGIS",
@@ -25,7 +26,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build --emptyOutDir",
+    "build": "vite build --emptyOutDir",
     "preview": "vite preview",
     "format": "prettier --write 'src/**/*.ts*'",
     "lint": "eslint src --ext .ts,.tsx",
@@ -35,32 +36,31 @@
     "test": "jest src"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "^8.4.17",
-    "@deck.gl/core": "^8.4.17",
-    "@deck.gl/layers": "^8.4.17",
+    "@deck.gl/aggregation-layers": "^8.4.18",
+    "@deck.gl/core": "^8.4.18",
+    "@deck.gl/layers": "^8.4.18",
     "axios": "^0.21.1",
     "d3-fetch": "^3.0.1",
     "lodash.clonedeep": "^4.5.0",
-    "mapbox-gl": "^2.3.0",
+    "mapbox-gl": "^2.3.1",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
-    "vue": "^3.1.1",
-    "vue-router": "^4.0.9"
+    "vue": "^3.1.2",
+    "vue-router": "^4.0.10"
   },
   "devDependencies": {
-    "@types/d3-fetch": "^2.0.0",
+    "@types/d3-fetch": "^3.0.0",
     "@types/geojson": "^7946.0.7",
     "@types/jest": "^26.0.23",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/mapbox-gl": "^2.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
     "@vitejs/plugin-vue-jsx": "^1.1.5",
-    "@vue/test-utils": "^2.0.0-rc.6",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^6.0.0",
-    "jest": "^27.0.4",
+    "jest": "^27.0.5",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
     "sass": "^1.35.1",
@@ -70,8 +70,7 @@
     "stylelint-scss": "^3.19.0",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.4",
-    "vite": "^2.3.8",
-    "vue-tsc": "^0.0.24"
+    "vite": "^2.3.8"
   },
   "husky": {
     "hooks": {
