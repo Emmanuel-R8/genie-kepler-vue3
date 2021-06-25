@@ -1,6 +1,9 @@
-import { Service } from 'typedi'
+import cloneDeep from 'lodash.clonedeep'
+import { Container, Service } from 'typedi'
+import { reactive } from 'vue'
 
-import { LayerElements, States } from '@/enums'
+import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayers } from '@/config'
+import { States } from '@/enums'
 import {
   IDeckglViewSettings,
   IHexagonLayerReactiveProps,
@@ -8,25 +11,27 @@ import {
   IMapStyle,
   IMapboxSettings,
   IModal,
-  IStore,
   IStyleLayers
 } from '@/interfaces'
-import { store } from '@/store'
+import { LogService } from '@/services'
 
 @Service()
 export default class StoreService {
-  private _layerElements: Record<string, string> = LayerElements
+  private _deckglViewSettings: IDeckglViewSettings = deckgl.settings
+  private _hexagonLayerReactiveProps: IHexagonLayerReactiveProps = hexagonLayer.reactiveProps
+  private _layerElements: ILayerElement[] = layerElements
+  private _mapStyles: IMapStyle[] = mapbox.styles
+  private _mapboxSettings: IMapboxSettings = mapbox.settings
+  private _modal: IModal = modal
+  private _styleLayers: IStyleLayers = styleLayers
   private _states: Record<string, string> = States
 
-  constructor(private _store: IStore) {
-    this._store = store
+  constructor(private _logService: LogService, private _state: Record<string, any>) {
+    this._logService = Container.get(LogService)
+    this.createState()
   }
 
-  getState(state: string): Record<string, any> {
-    return this._store.getState(state)
-  }
-
-  setState(state: string, payload: any = {}): void {
+  createState(): void {
     const {
       DECKGL_VIEW_SETTINGS,
       HEXAGON_LAYER_REACTIVE_PROPS,
@@ -36,64 +41,29 @@ export default class StoreService {
       MODAL,
       STYLE_LAYERS
     } = this._states
-    const states = {
-      [DECKGL_VIEW_SETTINGS]: this.setDeckglViewSettingsState,
-      [HEXAGON_LAYER_REACTIVE_PROPS]: this.setHexagonLayerReactivePropsState,
-      [LAYER_ELEMENTS]: this.setLayerElementsState,
-      [MAP_STYLES]: this.setMapStylesState,
-      [MAPBOX_SETTINGS]: this.setMapboxSettingsState,
-      [MODAL]: this.setModalState,
-      [STYLE_LAYERS]: this.setStyleLayersState
-    }
-    states[state](payload)
+    this._state = reactive({
+      [DECKGL_VIEW_SETTINGS]: this._deckglViewSettings,
+      [HEXAGON_LAYER_REACTIVE_PROPS]: this._hexagonLayerReactiveProps,
+      [LAYER_ELEMENTS]: this._layerElements,
+      [MAP_STYLES]: this._mapStyles,
+      [MAPBOX_SETTINGS]: this._mapboxSettings,
+      [MODAL]: this._modal,
+      [STYLE_LAYERS]: this._styleLayers
+    })
   }
 
-  private setDeckglViewSettingsState = (settings: IDeckglViewSettings): void => {
-    const { DECKGL_VIEW_SETTINGS } = this._states
-    this._store.setState(DECKGL_VIEW_SETTINGS, settings)
+  getState(state: string): Record<string, any> {
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-return */
+    return cloneDeep(this._state[state])
   }
 
-  private setHexagonLayerReactivePropsState = (props: IHexagonLayerReactiveProps): void => {
-    const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
-    this._store.setState(HEXAGON_LAYER_REACTIVE_PROPS, props)
+  setState(state: string, payload: Record<string, any>): void {
+    // this.logState(state, 'OLD')
+    this._state[state] = cloneDeep(payload)
+    // this.logState(state, 'NEW')
   }
 
-  private setLayerElementsState = ({ id }: Record<string, string>): void => {
-    const { LAYER_ELEMENTS } = this._states
-    const layerElements: ILayerElement[] = <ILayerElement[]>this.getState(LAYER_ELEMENTS)
-    const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
-    const i = layerElements.findIndex(layerElement)
-    layerElements[i].isActive = !layerElements[i].isActive
-    this._store.setState(LAYER_ELEMENTS, layerElements)
-  }
-
-  private setMapStylesState = (): void => {
-    const { MAP_STYLES } = this._states
-    const mapStyles: IMapStyle[] = <IMapStyle[]>this.getState(MAP_STYLES)
-    mapStyles.forEach((mapStyle: IMapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
-    this._store.setState(MAP_STYLES, mapStyles)
-  }
-
-  private setMapboxSettingsState = (settings: IMapboxSettings): void => {
-    const { MAPBOX_SETTINGS } = this._states
-    this._store.setState(MAPBOX_SETTINGS, settings)
-  }
-
-  private setModalState = (): void => {
-    const { MODAL } = this._states
-    const modal: IModal = <IModal>this.getState(MODAL)
-    modal.isActive = !modal.isActive
-    this._store.setState(MODAL, modal)
-  }
-
-  private setStyleLayersState = ({ id }: Record<string, string>): void => {
-    const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
-    const { STYLE_LAYERS } = this._states
-    const styleLayers: IStyleLayers = <IStyleLayers>this.getState(STYLE_LAYERS)
-    styleLayers[id as keyof IStyleLayers].isActive = !styleLayers[id as keyof IStyleLayers].isActive
-    id === BIOSPHERE &&
-      (styleLayers[BIOSPHERE_BORDER as keyof IStyleLayers].isActive =
-        !styleLayers[BIOSPHERE_BORDER as keyof IStyleLayers].isActive)
-    this._store.setState(STYLE_LAYERS, styleLayers)
-  }
+  // logState(state: string, status: string): void {
+  //   this._logService.printConsoleLog(`${state} ${status} state:`, this.getState(state))
+  // }
 }
