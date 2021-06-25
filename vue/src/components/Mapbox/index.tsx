@@ -2,13 +2,10 @@ import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted } from 'vue'
 
 import { MapService, MapboxService } from '@/services'
+import { MapboxProps } from '@/types'
 import scss from './index.module.scss'
 
-type Props = {
-  container: string
-}
-
-const html = ({ container }: Props): JSX.Element => (
+const html = ({ container }: MapboxProps): JSX.Element => (
   <div id={container} class={scss[container]}></div>
 )
 
@@ -19,18 +16,19 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Props) {
-    const mapService = Container.get(MapService)
+  setup(props: MapboxProps) {
     onMounted(async (): Promise<void> => {
+      const mapService = Container.get(MapService)
       await mapService.loadMapLayer()
     })
     onUnmounted((): void => {
+      const mapService = Container.get(MapService)
       const mapboxService = Container.get(MapboxService)
       /* eslint-disable @typescript-eslint/unbound-method */
-      mapService.map.off('click', mapService.onMapClickHandler)
-      mapService.map.off('load', mapService.onMapLoadHandler)
-      mapService.map.off('mouseenter', mapService.onMapMouseEnterHandler)
-      mapService.map.off('mouseleave', mapService.onMapMouseLeaveHandler)
+      mapboxService.map.off('click', mapService.onMapClickHandler)
+      mapboxService.map.off('load', mapService.onMapLoadHandler)
+      mapboxService.map.off('mouseenter', mapService.onMapMouseEnterHandler)
+      mapboxService.map.off('mouseleave', mapService.onMapMouseLeaveHandler)
       mapboxService.map.off('idle', mapboxService.onMapIdleHandler)
       mapboxService.map.off('load', mapboxService.onMapLoadHandler)
     })

@@ -11,7 +11,7 @@ export default {
   },
   settings: {
     bearing: -30,
-    center: [-3.0, 53.0],
+    center: { lng: -3.0, lat: 53.0 },
     latitude: 53.0,
     longitude: -3.0,
     pitch: 50,

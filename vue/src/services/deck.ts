@@ -43,20 +43,6 @@ export default class DeckService {
     this._storeService.setState(DECKGL_VIEW_SETTINGS, settings)
   }
 
-  loadMapbox(): void {
-    const { container, interactive, style } = this._options
-    const options: MapboxOptions = { container, interactive, style, ...this._state }
-    this._map = new Map(options)
-    this._map.on('load', (): void => {
-      this.onMapLoadHandler()
-    })
-  }
-
-  onMapLoadHandler(): void {
-    this.addSkyLayer()
-    this.hideModal()
-  }
-
   loadDeckgl(): void {
     const { canvas, controller, maxPitch, maxZoom, minZoom } = this._options
     this._deck = new Deck({
@@ -71,7 +57,7 @@ export default class DeckService {
       onViewStateChange: ({
         viewState: { bearing, latitude, longitude, pitch, zoom }
       }: ViewState): void => {
-        const center: LngLatLike = [longitude, latitude]
+        const center: LngLatLike = { lng: longitude, lat: latitude }
         this._state = { bearing, center, latitude, longitude, pitch, zoom }
         this._map.jumpTo(this._state)
       },
@@ -81,6 +67,20 @@ export default class DeckService {
         return `${points.length} Accidents`
       }
     })
+  }
+
+  loadMapbox(): void {
+    const { container, interactive, style } = this._options
+    const options: MapboxOptions = { container, interactive, style, ...this._state }
+    this._map = new Map(options)
+    this._map.on('load', (): void => {
+      this.onMapLoadHandler()
+    })
+  }
+
+  onMapLoadHandler(): void {
+    this.addSkyLayer()
+    this.hideModal()
   }
 
   private addSkyLayer(): void {

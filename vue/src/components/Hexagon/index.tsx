@@ -4,26 +4,26 @@ import { computed, defineComponent } from 'vue'
 import { HexagonUI } from '@/components'
 import { Routes } from '@/enums'
 import { IHexagonLayerReactiveProps } from '@/interfaces'
-import { router } from '@/router'
-import { HexagonLayerService } from '@/services'
+import { HexagonLayerService, RouteService } from '@/services'
 import scss from './index.module.scss'
 
-const onSetHexagonLayerReactivePropsHandler = (evt: Event): void => {
+const onSetHexagonLayerReactivePropsChangeHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
   const { target: { id: prop, value } }: Record<string, any> = evt
   const hexagonLayerService = Container.get(HexagonLayerService)
   prop && value && hexagonLayerService.setHexagonLayerReactiveProps(prop, value)
 }
-const onResetHexagonLayerReactivePropsHandler = (evt: Event): void => {
+const onResetHexagonLayerReactivePropsClickHandler = (evt: Event): void => {
   evt.stopPropagation()
   const hexagonLayerService = Container.get(HexagonLayerService)
   hexagonLayerService.resetHexagonLayerReactiveProps()
 }
-const onReturnToTrailsHandler = async (evt: Event): Promise<void> => {
+const onReturnToTrailsClickHandler = async (evt: Event): Promise<void> => {
   evt.stopPropagation()
   const { MAPBOX } = Routes
-  await router.push({ name: MAPBOX })
+  const routeService = Container.get(RouteService)
+  await routeService.setRoute(MAPBOX)
 }
 const html = ({
   coverage,
@@ -37,9 +37,9 @@ const html = ({
     elevationScale={elevationScale}
     radius={radius}
     upperPercentile={upperPercentile}
-    setHexagonLayerReactiveProps={onSetHexagonLayerReactivePropsHandler}
-    resetHexagonLayerReactiveProps={onResetHexagonLayerReactivePropsHandler}
-    returnToTrails={onReturnToTrailsHandler}
+    setHexagonLayerReactiveProps={onSetHexagonLayerReactivePropsChangeHandler}
+    resetHexagonLayerReactiveProps={onResetHexagonLayerReactivePropsClickHandler}
+    returnToTrails={onReturnToTrailsClickHandler}
   />
 )
 

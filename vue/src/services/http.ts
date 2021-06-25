@@ -9,7 +9,7 @@ export default class HttpService {
     this._axiosService = Container.get(AxiosService)
   }
 
-  async get(url: string, params: AxiosRequestConfig = {}): Promise<AxiosResponse> {
+  async get(url: string, params?: AxiosRequestConfig): Promise<AxiosResponse> {
     return await this._axiosService.instance.get(url, params)
   }
 }

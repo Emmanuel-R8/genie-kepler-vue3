@@ -1,12 +1,11 @@
 import { csv } from 'd3-fetch'
-import mapboxgl from 'mapbox-gl'
 import { Feature, FeatureCollection } from 'geojson'
 import { Container, Service } from 'typedi'
 
 import { markers, styleLayer } from '@/config'
 import { EndPoints, Urls } from '@/enums'
 import { IHttpParams, IMarker, IStyleLayer } from '@/interfaces'
-import { HttpService, MarkerService, StyleLayerService } from '@/services'
+import { HttpService, LogService, MarkerService, StyleLayerService } from '@/services'
 
 @Service()
 export default class DataService {
@@ -18,10 +17,12 @@ export default class DataService {
 
   constructor(
     private _httpService: HttpService,
+    private _logService: LogService,
     private _markerService: MarkerService,
     private _styleLayerService: StyleLayerService
   ) {
     this._httpService = Container.get(HttpService)
+    this._logService = Container.get(LogService)
     this._markerService = Container.get(MarkerService)
     this._styleLayerService = Container.get(StyleLayerService)
   }
@@ -30,53 +31,33 @@ export default class DataService {
     return this._hexagonLayerData
   }
 
-  loadData(): void {
-    this.getHexagonLayerData()
-    this.getMapLayerData()
+  async loadData(): Promise<void> {
+    await this.getHexagonLayerData()
+    await this.getMapLayerData()
   }
 
-  async getMapboxAccessToken(): Promise<void> {
+  private async getHexagonLayerData(): Promise<void> {
     try {
-      const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
-      /* prettier-ignore */
-      /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
-      const { data: { token } } = await this._httpService.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
-      token
-        ? this.setMapboxAccessToken(token)
-        : this.printConsoleLog(`No Mapbox Access Token Found:\n`, token)
+      const { HEXAGON_LAYER_DATA_URL } = this._urls
+      const data = await csv(HEXAGON_LAYER_DATA_URL)
+      data?.length
+        ? this.setHexagonLayerData(data)
+        : this._logService.printConsoleLog(`No ${this.getHexagonLayerData.name} Found:\n`, data)
     } catch (err) {
-      this.printConsoleError(`${this.getMapboxAccessToken.name} Http Failed:\n`, err)
+      this._logService.printConsoleError(`${this.getHexagonLayerData.name} Fetch Failed:\n`, err)
     }
   }
 
-  private setMapboxAccessToken(token: string): void {
-    mapboxgl.accessToken = token
-  }
-
-  private getHexagonLayerData(): void {
-    const { HEXAGON_LAYER_DATA_URL } = this._urls
-    csv(HEXAGON_LAYER_DATA_URL)
-      .then((data: any[]): void => {
-        data?.length
-          ? this.setHexagonLayerData(data)
-          : this.printConsoleLog(`${this.getHexagonLayerData.name} No Data Error:\n`, data)
-      })
-      .catch((err: Error): void => {
-        this.printConsoleError(`${this.getHexagonLayerData.name} Fetch Failed:\n`, err)
-      })
-  }
-
-  private setHexagonLayerData(data: any[]): void {
+  private setHexagonLayerData(data: Record<string, any>[]): void {
     this._hexagonLayerData = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat])
   }
 
-  /* eslint-disable @typescript-eslint/no-floating-promises */
-  private getMapLayerData(): void {
+  private async getMapLayerData(): Promise<void> {
     for (const styleLayer of this._styleLayers) {
-      this.getStyleLayers(styleLayer)
+      await this.getStyleLayers(styleLayer)
     }
     for (const marker of this._markers) {
-      this.getMarkers(marker)
+      await this.getMarkers(marker)
     }
   }
 
@@ -86,9 +67,9 @@ export default class DataService {
       const fc = await this.getGeoJsonFeatureCollection(styleLayer)
       fc?.features?.length
         ? this.setStyleLayers(fc, styleLayer)
-        : this.printConsoleLog(`No ${id.toUpperCase()} Layer Found:\n`, fc)
+        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Layer Found:\n`, fc)
     } catch (err) {
-      this.printConsoleError(`${this.getStyleLayers.name} Http Failed:\n`, err)
+      this._logService.printConsoleError(`${this.getStyleLayers.name} Http Failed:\n`, err)
     }
   }
 
@@ -103,9 +84,9 @@ export default class DataService {
       const { features } = await this.getGeoJsonFeatureCollection(marker)
       features?.length
         ? this.setMarkers(id, features)
-        : this.printConsoleLog(`No ${id.toUpperCase()} Markers Found:\n`, features)
+        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Markers Found:\n`, features)
     } catch (err) {
-      this.printConsoleError(`${this.getMarkers.name} Http Failed:\n`, err)
+      this._logService.printConsoleError(`${this.getMarkers.name} Http Failed:\n`, err)
     }
   }
 
@@ -122,13 +103,5 @@ export default class DataService {
     /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
     const { data } = await this._httpService.get(GEOJSON_ENDPOINT, { params })
     return <FeatureCollection>data
-  }
-
-  private printConsoleError(message: string, err: Error): void {
-    console.error(message, err)
-  }
-
-  private printConsoleLog(message: string, data: any): void {
-    console.log(message, data)
   }
 }

@@ -9,9 +9,9 @@ export default class AppService {
     this._dataService = Container.get(DataService)
   }
 
-  loadData(): void {
+  async loadData(): Promise<void> {
     this.createAxiosInstance()
-    this._dataService.loadData()
+    await this._dataService.loadData()
   }
 
   private createAxiosInstance(): void {

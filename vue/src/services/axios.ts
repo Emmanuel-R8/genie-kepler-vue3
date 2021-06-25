@@ -5,15 +5,17 @@ import { Urls } from '@/enums'
 
 @Service()
 export default class AxiosService {
-  constructor(private _axios: AxiosStatic, private _instance: AxiosInstance) {
-    this._axios = axios
-  }
+  private _axios: AxiosStatic = axios
+  private _urls: Record<string, string> = Urls
+
+  constructor(private _instance: AxiosInstance) {}
 
   get instance(): AxiosInstance {
     return this._instance
   }
 
   createInstance(): void {
-    this._instance = this._axios.create({ baseURL: Urls.API_BASE_URL })
+    const { API_BASE_URL } = this._urls
+    this._instance = this._axios.create({ baseURL: API_BASE_URL })
   }
 }

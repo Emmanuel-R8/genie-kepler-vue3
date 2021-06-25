@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount } from 'vue'
 
 import { Header } from '@/components'
 import { AppService } from '@/services'
@@ -13,8 +13,10 @@ const html = (): JSX.Element => (
 
 export default defineComponent({
   setup() {
-    const appService = Container.get(AppService)
-    appService.loadData()
+    onBeforeMount(async (): Promise<void> => {
+      const appService = Container.get(AppService)
+      await appService.loadData()
+    })
     return (): JSX.Element => html()
   }
 })

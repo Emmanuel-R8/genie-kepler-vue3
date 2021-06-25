@@ -1,16 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 
+import { HexagonUIProps } from '@/types'
 import scss from './index.module.scss'
-
-type Props = {
-  coverage: number
-  elevationScale: number
-  radius: number
-  upperPercentile: number
-  setHexagonLayerReactiveProps: (evt: Event) => void
-  resetHexagonLayerReactiveProps: (evt: Event) => void
-  returnToTrails: (evt: Event) => void
-}
 
 const html = ({
   coverage,
@@ -20,7 +11,7 @@ const html = ({
   setHexagonLayerReactiveProps,
   resetHexagonLayerReactiveProps,
   returnToTrails
-}: Props): JSX.Element => (
+}: HexagonUIProps): JSX.Element => (
   <div class={scss.Hexagon}>
     <div class={scss.spacer}></div>
     <div class={scss.header}>GB Road Accidents</div>
@@ -121,7 +112,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Props) {
+  setup(props: HexagonUIProps) {
     return (): JSX.Element => html(props)
   }
 })

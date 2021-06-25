@@ -1,15 +1,11 @@
 import { Container } from 'typedi'
 import { defineComponent, onMounted, onUnmounted } from 'vue'
 
+import { DeckglProps } from '@/types'
 import { DeckService, HexagonLayerService } from '@/services'
 import scss from './index.module.scss'
 
-type Props = {
-  canvas: string
-  container: string
-}
-
-const html = ({ canvas, container }: Props): JSX.Element => (
+const html = ({ canvas, container }: DeckglProps): JSX.Element => (
   <div>
     <div id={container} class={scss[container]}></div>
     <canvas id={canvas} class={scss[canvas]}></canvas>
@@ -27,16 +23,17 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Props) {
-    const hexagonLayerService = Container.get(HexagonLayerService)
+  setup(props: DeckglProps) {
     onMounted(async (): Promise<void> => {
+      const hexagonLayerService = Container.get(HexagonLayerService)
       await hexagonLayerService.loadHexagonLayer()
     })
     onUnmounted((): void => {
       const deckService = Container.get(DeckService)
+      const hexagonLayerService = Container.get(HexagonLayerService)
       /* eslint-disable @typescript-eslint/unbound-method */
-      deckService.map.off('load', () => deckService.onMapLoadHandler)
-      hexagonLayerService.map.off('load', hexagonLayerService.onMapLoadHandler)
+      deckService.map.off('load', deckService.onMapLoadHandler)
+      deckService.map.off('load', hexagonLayerService.onMapLoadHandler)
     })
     return (): JSX.Element => html(props)
   }

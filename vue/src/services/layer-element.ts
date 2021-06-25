@@ -2,32 +2,35 @@ import { Container, Service } from 'typedi'
 
 import { LayerElements, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
-import { MapService, MarkerService, StoreService } from '@/services'
-import { router } from '@/router'
-
-type LayerElement =
-  | 'biosphere'
-  | 'biosphere-border'
-  | 'deckgl'
-  | 'office'
-  | 'places'
-  | 'satellite'
-  | 'trails'
+import { LayerElement } from '@/types'
+import {
+  MapService,
+  MapStyleService,
+  MarkerService,
+  RouteService,
+  StoreService,
+  StyleLayerService
+} from '@/services'
 
 @Service()
 export default class LayerElementService {
   private _layerElements: Record<string, string> = LayerElements
-  private _router = router
   private _states: Record<string, string> = States
 
   constructor(
     private _mapService: MapService,
+    private _mapStyleService: MapStyleService,
     private _markerService: MarkerService,
-    private _storeService: StoreService
+    private _routeService: RouteService,
+    private _storeService: StoreService,
+    private _styleLayerService: StyleLayerService
   ) {
     this._mapService = Container.get(MapService)
+    this._mapStyleService = Container.get(MapStyleService)
     this._markerService = Container.get(MarkerService)
+    this._routeService = Container.get(RouteService)
     this._storeService = Container.get(StoreService)
+    this._styleLayerService = Container.get(StyleLayerService)
   }
 
   get state(): ILayerElement[] {
@@ -35,9 +38,9 @@ export default class LayerElementService {
     return <ILayerElement[]>this._storeService.getState(LAYER_ELEMENTS)
   }
 
-  private set _state(id: LayerElement) {
+  private set _state(layerElements: ILayerElement[]) {
     const { LAYER_ELEMENTS } = this._states
-    this._storeService.setState(LAYER_ELEMENTS, { id })
+    this._storeService.setState(LAYER_ELEMENTS, layerElements)
   }
 
   displayLayerElement(id: LayerElement): void {
@@ -83,8 +86,14 @@ export default class LayerElementService {
     this.showMarkers(1000)
   }
 
-  private setLayerElementsState = (id: LayerElement): void => {
-    this._state = id
+  private setLayerElementsState(id: LayerElement): void {
+    const layerElements = this.state
+    const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
+    const i = layerElements.findIndex(layerElement)
+    if (i >= 0) {
+      layerElements[i].isActive = !layerElements[i].isActive
+      this._state = layerElements
+    }
   }
 
   private setMapStyle(): void {
@@ -92,12 +101,11 @@ export default class LayerElementService {
   }
 
   private setMapStylesState(): void {
-    const { MAP_STYLES } = this._states
-    this._storeService.setState(MAP_STYLES)
+    this._mapStyleService.setMapStylesState()
   }
 
   private async setRoute(name: string): Promise<void> {
-    await this._router.push({ name })
+    await this._routeService.setRoute(name)
   }
 
   private setStyleLayerVisibility(id: LayerElement): void {
@@ -105,8 +113,7 @@ export default class LayerElementService {
   }
 
   private setStyleLayersState(id: LayerElement): void {
-    const { STYLE_LAYERS } = this._states
-    this._storeService.setState(STYLE_LAYERS, { id })
+    this._styleLayerService.setStyleLayersState(id)
   }
 
   private showMarkers(timeout?: number): void {

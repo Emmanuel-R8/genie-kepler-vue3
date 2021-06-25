@@ -8,15 +8,12 @@
 /* eslint-disable */
 /* @ts-ignore */
 import { HexagonLayer } from '@deck.gl/aggregation-layers'
-/* @ts-ignore */
-import { Deck } from '@deck.gl/core'
-import mapboxgl, { Map } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { hexagonLayer } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerReactiveProps, IHexagonLayerStaticProps } from '@/interfaces'
-import { DataService, DeckService, MarkerService, StoreService } from '@/services'
+import { DataService, DeckService, MapboxService, MarkerService, StoreService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
@@ -26,21 +23,17 @@ export default class HexagonLayerService {
   private _states: Record<string, string> = States
 
   constructor(
-    private _deck: Deck,
-    private _map: Map,
     private _dataService: DataService,
     private _deckService: DeckService,
+    private _mapboxService: MapboxService,
     private _markerService: MarkerService,
     private _storeService: StoreService
   ) {
     this._dataService = Container.get(DataService)
     this._deckService = Container.get(DeckService)
+    this._mapboxService = Container.get(MapboxService)
     this._markerService = Container.get(MarkerService)
     this._storeService = Container.get(StoreService)
-  }
-
-  get map(): Map {
-    return this._map
   }
 
   get state(): IHexagonLayerReactiveProps {
@@ -48,20 +41,16 @@ export default class HexagonLayerService {
     return <IHexagonLayerReactiveProps>this._storeService.getState(HEXAGON_LAYER_REACTIVE_PROPS)
   }
 
-  set state(props: IHexagonLayerReactiveProps) {
+  private set _state(props: IHexagonLayerReactiveProps) {
     const { HEXAGON_LAYER_REACTIVE_PROPS } = this._states
     this._storeService.setState(HEXAGON_LAYER_REACTIVE_PROPS, props)
   }
 
   async loadHexagonLayer(): Promise<void> {
-    !mapboxgl.accessToken && (await this._dataService.getMapboxAccessToken())
-
+    !this._mapboxService.accessToken && (await this._mapboxService.getAccessToken())
     this._deckService.loadDeckgl()
-    this._deck = this._deckService.deck
-
     this._deckService.loadMapbox()
-    this._map = this._deckService.map
-    this._map.on('load', (): void => {
+    this._deckService.map.on('load', (): void => {
       this.onMapLoadHandler()
     })
   }
@@ -72,14 +61,14 @@ export default class HexagonLayerService {
   }
 
   setHexagonLayerReactiveProps(prop: string, value: string): void {
-    const state: IHexagonLayerReactiveProps = this.state
-    state[prop as keyof IHexagonLayerReactiveProps] = +value
-    this.state = state
+    const props = this.state
+    props[prop as keyof IHexagonLayerReactiveProps] = +value
+    this._state = props
     this.renderHexagonLayer()
   }
 
   resetHexagonLayerReactiveProps(): void {
-    this.state = this._reactiveProps
+    this._state = this._reactiveProps
     this.renderHexagonLayer()
   }
 
@@ -91,7 +80,7 @@ export default class HexagonLayerService {
       ...this._staticProps,
       ...this.state
     })
-    this._deck.setProps({ layers: [hexagonLayer] })
+    this._deckService.deck.setProps({ layers: [hexagonLayer] })
   }
 
   private setHexagonLayerData(): void {

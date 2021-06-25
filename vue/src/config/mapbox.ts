@@ -11,7 +11,7 @@ export default {
   },
   settings: {
     bearing: 0,
-    center: [-76.3, 44.5],
+    center: { lng: -76.3, lat: 44.5 },
     pitch: 0,
     style: 'mapbox://styles/mapbox/outdoors-v11',
     zoom: 9.75

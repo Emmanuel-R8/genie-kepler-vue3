@@ -1,17 +1,9 @@
 import { defineComponent, PropType } from 'vue'
 
+import { LayerIconProps } from '@/types'
 import scss from '@/components/LayerElements/index.module.scss'
 
-type Props = {
-  alt: string
-  click: (evt: Event) => void
-  height: number
-  id: string
-  src: string
-  width: number
-}
-
-const html = ({ alt, click, height, id, src, width }: Props): JSX.Element => (
+const html = ({ alt, click, height, id, src, width }: LayerIconProps): JSX.Element => (
   <img alt={alt} class={scss[id]} height={height} id={id} onClick={click} src={src} width={width} />
 )
 
@@ -42,7 +34,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Props) {
+  setup(props: LayerIconProps) {
     return (): JSX.Element => html(props)
   }
 })

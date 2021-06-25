@@ -91,11 +91,6 @@ export interface IModal {
   isActive: boolean
 }
 
-export interface IStore {
-  getState: (key: string) => Record<string, any>
-  setState: (key: string, payload: Record<string, any>) => void
-}
-
 export interface IStyleLayer extends IMarker {
   type: string
   source: {

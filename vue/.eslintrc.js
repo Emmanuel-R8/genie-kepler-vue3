@@ -22,9 +22,6 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off'
+    '@typescript-eslint/no-explicit-any': 'off'
   }
 }

@@ -1,16 +1,15 @@
-import { Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
+import mapboxgl, { Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
-import { States } from '@/enums'
+import { EndPoints, States } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
-import { ModalService, StoreService } from '@/services'
-
-type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+import { HttpService, LogService, MapStyleService, ModalService, StoreService } from '@/services'
+import { NavigationControlPosition } from '@/types'
 
 @Service()
 export default class MapboxService {
-  private _mapStyle = mapbox.settings.style
+  private _endPoints: Record<string, string> = EndPoints
   private _navigationControl = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
   private _skyLayer = <SkyLayer>mapbox.skyLayer
@@ -18,19 +17,25 @@ export default class MapboxService {
 
   constructor(
     private _map: Map,
+    private _httpService: HttpService,
+    private _logService: LogService,
+    private _mapStyleService: MapStyleService,
     private _modalService: ModalService,
     private _storeService: StoreService
   ) {
+    this._httpService = Container.get(HttpService)
+    this._logService = Container.get(LogService)
+    this._mapStyleService = Container.get(MapStyleService)
     this._modalService = Container.get(ModalService)
     this._storeService = Container.get(StoreService)
   }
 
-  get map(): Map {
-    return this._map
+  get accessToken(): string {
+    return mapboxgl.accessToken
   }
 
-  set mapStyle(style: string) {
-    this._mapStyle = style
+  get map(): Map {
+    return this._map
   }
 
   private get _state(): IMapboxSettings {
@@ -43,13 +48,25 @@ export default class MapboxService {
     this._storeService.setState(MAPBOX_SETTINGS, settings)
   }
 
+  async getAccessToken(): Promise<void> {
+    try {
+      const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
+      /* prettier-ignore */
+      /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
+      const { data: { token } } = await this._httpService.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
+      token
+        ? this.setAccessToken(token)
+        : this._logService.printConsoleLog(`No Mapbox Access Token Found:\n`, token)
+    } catch (err) {
+      this._logService.printConsoleError(`${this.getAccessToken.name} Http Failed:\n`, err)
+    }
+  }
+
   loadMapbox(): void {
     const { position, visualizePitch } = this._navigationControl
     const options: MapboxOptions = { ...this._options, ...this._state }
-    const { style } = this._state
-    this._mapStyle = style
     this._map = new Map(options)
-      .addControl(new NavigationControl({ visualizePitch }), <Position>position)
+      .addControl(new NavigationControl({ visualizePitch }), <NavigationControlPosition>position)
       .on('load', (): void => {
         this.onMapLoadHandler()
       })
@@ -60,21 +77,12 @@ export default class MapboxService {
 
   onMapLoadHandler(): void {
     this.addSkyLayer()
+    this.setMapStyle()
     this.hideModal()
   }
 
   onMapIdleHandler(): void {
     this.setMapboxSettingsState()
-  }
-
-  private setMapboxSettingsState(): void {
-    this._state = {
-      bearing: this._map.getBearing(),
-      center: this._map.getCenter(),
-      pitch: this._map.getPitch(),
-      style: this._mapStyle,
-      zoom: this._map.getZoom()
-    }
   }
 
   private addSkyLayer(): void {
@@ -83,5 +91,24 @@ export default class MapboxService {
 
   private hideModal(): void {
     this._modalService.hideModal(100)
+  }
+
+  private setAccessToken(token: string): void {
+    mapboxgl.accessToken = token
+  }
+
+  private setMapStyle(): void {
+    const { style: mapStyle } = this._state
+    this._mapStyleService.mapStyle = mapStyle
+  }
+
+  private setMapboxSettingsState(): void {
+    this._state = {
+      bearing: this._map.getBearing(),
+      center: this._map.getCenter(),
+      pitch: this._map.getPitch(),
+      style: this._mapStyleService.mapStyle,
+      zoom: this._map.getZoom()
+    }
   }
 }

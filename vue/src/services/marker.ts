@@ -16,9 +16,7 @@ export default class MarkerService {
   }
 
   setMarkers(id: string, features: Feature[]): void {
-    const markers: Marker[] = features.map(
-      (feature: Feature): Marker => this.createMarker(id, feature)
-    )
+    const markers: Marker[] = this.createMarkers(id, features)
     this._markers = [...this._markers, markers]
     this.setMarkersHashmap(id)
   }
@@ -40,11 +38,15 @@ export default class MarkerService {
   }
 
   toggleMarkers(id: string): void {
-    for (const marker of this._markers[this._markersHashmap.get(id)!]) {
+    for (const marker of this._markers[<number>this._markersHashmap.get(id)]) {
       const el = <IHTMLMarkerElement>marker.getElement()
       el.isActive = !el.isActive
       el.isActive ? marker.addTo(this._mapboxService.map) : marker.remove()
     }
+  }
+
+  private createMarkers(id: string, features: Feature[]): Marker[] {
+    return features.map((feature: Feature): Marker => this.createMarker(id, feature))
   }
 
   private createMarker(id: string, feature: Feature): Marker {

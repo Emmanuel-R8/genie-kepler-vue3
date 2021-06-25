@@ -17,13 +17,23 @@ export default class ModalService {
     return <IModal>this._storeService.getState(MODAL)
   }
 
-  hideModal(timeout: number): void {
+  private set _state(modal: IModal) {
     const { MODAL } = this._states
-    this.state.isActive && setTimeout((): void => this._storeService.setState(MODAL), timeout)
+    this._storeService.setState(MODAL, modal)
+  }
+
+  hideModal(timeout: number): void {
+    const modal = this.state
+    modal.isActive && setTimeout((): void => this.setModalState(modal), timeout)
   }
 
   showModal(): void {
-    const { MODAL } = this._states
-    !this.state.isActive && this._storeService.setState(MODAL)
+    const modal = this.state
+    !modal.isActive && this.setModalState(modal)
+  }
+
+  private setModalState(modal: IModal): void {
+    modal.isActive = !modal.isActive
+    this._state = modal
   }
 }
