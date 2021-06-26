@@ -5,9 +5,9 @@ import { MapService, MapboxService, MarkerService } from '@/services'
 import { MapboxProps } from '@/types'
 import scss from './index.module.scss'
 
-const showMarkers = (): void => {
+const showMarkerVisibility = (): void => {
   const markerService = Container.get(MarkerService)
-  setTimeout((): void => markerService.showMarkers(), 1000)
+  setTimeout((): void => markerService.showMarkerVisibility(), 1000)
 }
 const html = ({ container }: MapboxProps): JSX.Element => (
   <div id={container} class={scss[container]}></div>
@@ -24,7 +24,7 @@ export default defineComponent({
     onMounted(async (): Promise<void> => {
       const mapService = Container.get(MapService)
       await mapService.loadMapLayer()
-      showMarkers()
+      showMarkerVisibility()
     })
     onUnmounted((): void => {
       const mapService = Container.get(MapService)
@@ -36,7 +36,7 @@ export default defineComponent({
       mapboxService.map.off('mouseleave', mapService.onMapMouseLeaveHandler)
       mapboxService.map.off('idle', mapboxService.onMapIdleHandler)
       mapboxService.map.off('load', mapboxService.onMapLoadHandler)
-      showMarkers()
+      showMarkerVisibility()
     })
     return (): JSX.Element => html(props)
   }

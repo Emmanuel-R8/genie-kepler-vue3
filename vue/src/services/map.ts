@@ -56,7 +56,7 @@ export default class MapService {
   setMapStyle(): void {
     const mapStyle = this._mapStyleService.mapStyle
     this._mapboxService.map.setStyle(mapStyle)
-    /* re-add style layers after 1/2 sec delay to set basemap style */
+    /* re-add style layers after 1/2 sec delay to set mapStyle */
     setTimeout((): void => this.addLayers(), 500)
   }
 

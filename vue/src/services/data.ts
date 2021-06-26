@@ -67,7 +67,7 @@ export default class DataService {
       const fc = await this.getGeoJsonFeatureCollection(layer)
       fc?.features?.length
         ? this.setLayer(fc, layer)
-        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Layer Found:\n`, fc)
+        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Found:\n`, fc)
     } catch (err) {
       this._logService.printConsoleError(`${this.getLayerFeatures.name} Http Failed:\n`, err)
     }
@@ -84,7 +84,7 @@ export default class DataService {
       const { features } = await this.getGeoJsonFeatureCollection(marker)
       features?.length
         ? this.setMarker(id, features)
-        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Markers Found:\n`, features)
+        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Found:\n`, features)
     } catch (err) {
       this._logService.printConsoleError(`${this.getMarkerFeatures.name} Http Failed:\n`, err)
     }

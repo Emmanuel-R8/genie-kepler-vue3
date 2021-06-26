@@ -21,7 +21,7 @@ export default class MarkerService {
     this.setMarkersHashmap(id)
   }
 
-  showMarkers(): void {
+  showMarkerVisibility(): void {
     for (const markers of this._markers) {
       for (const marker of markers) {
         const el = <IHTMLMarkerElement>marker.getElement()
@@ -37,7 +37,7 @@ export default class MarkerService {
     }
   }
 
-  toggleMarkers(id: string): void {
+  toggleMarkerVisibility(id: string): void {
     for (const marker of this._markers[<number>this._markersHashmap.get(id)]) {
       const el = <IHTMLMarkerElement>marker.getElement()
       el.isActive = !el.isActive

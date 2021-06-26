@@ -63,12 +63,12 @@ export default class LayerElementService {
     this.setLayerState(id)
     this.setLayerVisibility(id)
     id === BIOSPHERE && this.setLayerVisibility(<LayerElement>BIOSPHERE_BORDER)
-    id === TRAILS && this.toggleMarkers(id)
+    id === TRAILS && this.toggleMarkerVisibility(id)
   }
 
   private marker = (id: LayerElement): void => {
     this.setLayerElementsState(id)
-    this.toggleMarkers(id)
+    this.toggleMarkerVisibility(id)
   }
 
   private route = async (): Promise<void> => {
@@ -78,9 +78,9 @@ export default class LayerElementService {
 
   private satellite = (id: LayerElement): void => {
     this.setLayerElementsState(id)
+    this.showMarkerVisibility()
     this.setMapStyleState()
     this.setMapStyle()
-    this.showMarkers()
   }
 
   private setLayerElementsState(id: LayerElement): void {
@@ -113,14 +113,14 @@ export default class LayerElementService {
     await this._routeService.setRoute(name)
   }
 
-  private showMarkers(): void {
+  private showMarkerVisibility(): void {
     /* hide active markers when changing map styles */
-    this._markerService.showMarkers()
+    this._markerService.showMarkerVisibility()
     /* show hidden markers when changing map styles */
-    setTimeout((): void => this._markerService.showMarkers(), 1000)
+    setTimeout((): void => this._markerService.showMarkerVisibility(), 1000)
   }
 
-  private toggleMarkers(id: LayerElement): void {
-    this._markerService.toggleMarkers(id)
+  private toggleMarkerVisibility(id: LayerElement): void {
+    this._markerService.toggleMarkerVisibility(id)
   }
 }
