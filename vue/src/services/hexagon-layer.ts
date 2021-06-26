@@ -13,7 +13,7 @@ import { Container, Service } from 'typedi'
 import { hexagonLayer } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerReactiveProps, IHexagonLayerStaticProps } from '@/interfaces'
-import { DataService, DeckService, MapboxService, MarkerService, StoreService } from '@/services'
+import { DataService, DeckService, MapboxService, StoreService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
@@ -26,13 +26,11 @@ export default class HexagonLayerService {
     private _dataService: DataService,
     private _deckService: DeckService,
     private _mapboxService: MapboxService,
-    private _markerService: MarkerService,
     private _storeService: StoreService
   ) {
     this._dataService = Container.get(DataService)
     this._deckService = Container.get(DeckService)
     this._mapboxService = Container.get(MapboxService)
-    this._markerService = Container.get(MarkerService)
     this._storeService = Container.get(StoreService)
   }
 
@@ -56,7 +54,6 @@ export default class HexagonLayerService {
   }
 
   onMapLoadHandler(): void {
-    this.showMarkers()
     this.renderHexagonLayer()
   }
 
@@ -85,9 +82,5 @@ export default class HexagonLayerService {
 
   private setHexagonLayerData(): void {
     this._hexagonLayerData = this._dataService.hexagonLayerData
-  }
-
-  private showMarkers(): void {
-    this._markerService.showMarkers()
   }
 }

@@ -31,7 +31,7 @@ export default class MapStyleService {
     this._storeService.setState(MAP_STYLES, mapStyles)
   }
 
-  setMapStylesState(): void {
+  setMapStyleState(): void {
     const mapStyles = this._state
     mapStyles.forEach((mapStyle: IMapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
     this._state = mapStyles

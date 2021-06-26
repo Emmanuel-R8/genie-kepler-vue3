@@ -3,13 +3,7 @@ import { Container, Service } from 'typedi'
 
 import { LayerElements } from '@/enums'
 import { ILayers, ITrail } from '@/interfaces'
-import {
-  LayerService,
-  MapboxService,
-  MapStyleService,
-  MarkerService,
-  PopupService
-} from '@/services'
+import { LayerService, MapboxService, MapStyleService, PopupService } from '@/services'
 
 @Service()
 export default class MapService {
@@ -19,13 +13,11 @@ export default class MapService {
     private _layerService: LayerService,
     private _mapboxService: MapboxService,
     private _mapStyleService: MapStyleService,
-    private _markerService: MarkerService,
     private _popupService: PopupService
   ) {
     this._layerService = Container.get(LayerService)
     this._mapboxService = Container.get(MapboxService)
     this._mapStyleService = Container.get(MapStyleService)
-    this._markerService = Container.get(MarkerService)
     this._popupService = Container.get(PopupService)
   }
 
@@ -38,7 +30,6 @@ export default class MapService {
   }
 
   onMapLoadHandler(): void {
-    this.showMarkers()
     this.addLayers()
   }
 
@@ -103,9 +94,5 @@ export default class MapService {
           .off('click', id, this.onMapClickHandler)
           .off('mouseenter', id, this.onMapMouseEnterHandler)
           .off('mouseleave', id, this.onMapMouseLeaveHandler)
-  }
-
-  private showMarkers(): void {
-    setTimeout((): void => this._markerService.showMarkers(), 100)
   }
 }

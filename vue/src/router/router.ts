@@ -23,4 +23,5 @@ const routes = [
     component: Mapbox
   }
 ]
+
 export default createRouter({ history, routes })

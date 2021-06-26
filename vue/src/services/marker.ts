@@ -15,9 +15,9 @@ export default class MarkerService {
     this._popupService = Container.get(PopupService)
   }
 
-  setMarkers(id: string, features: Feature[]): void {
-    const markers: Marker[] = this.createMarkers(id, features)
-    this._markers = [...this._markers, markers]
+  setMarker(id: string, features: Feature[]): void {
+    const marker: Marker[] = this.createMarkers(id, features)
+    this._markers = [...this._markers, marker]
     this.setMarkersHashmap(id)
   }
 

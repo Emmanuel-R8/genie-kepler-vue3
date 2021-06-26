@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi'
 
-import { LayerElements, States } from '@/enums'
+import { LayerElements, Routes, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
 import { LayerElement } from '@/types'
 import {
@@ -15,6 +15,7 @@ import {
 @Service()
 export default class LayerElementService {
   private _layerElements: Record<string, string> = LayerElements
+  private _routes: Record<string, string> = Routes
   private _states: Record<string, string> = States
 
   constructor(
@@ -71,7 +72,7 @@ export default class LayerElementService {
   }
 
   private route = async (): Promise<void> => {
-    const { DECKGL } = this._layerElements
+    const { DECKGL } = this._routes
     await this.setRoute(DECKGL)
   }
 
@@ -79,10 +80,7 @@ export default class LayerElementService {
     this.setLayerElementsState(id)
     this.setMapStyleState()
     this.setMapStyle()
-    /* hide active markers when changing map styles for aesthetic purposes */
     this.showMarkers()
-    /* show hidden markers when changing map styles for aesthetic purposes */
-    this.showMarkers(1000)
   }
 
   private setLayerElementsState(id: LayerElement): void {
@@ -115,10 +113,11 @@ export default class LayerElementService {
     await this._routeService.setRoute(name)
   }
 
-  private showMarkers(timeout?: number): void {
-    timeout
-      ? setTimeout((): void => this._markerService.showMarkers(), timeout)
-      : this._markerService.showMarkers()
+  private showMarkers(): void {
+    /* hide active markers when changing map styles */
+    this._markerService.showMarkers()
+    /* show hidden markers when changing map styles */
+    setTimeout((): void => this._markerService.showMarkers(), 1000)
   }
 
   private toggleMarkers(id: LayerElement): void {
