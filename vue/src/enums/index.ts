@@ -22,10 +22,10 @@ export enum States {
   DECKGL_VIEW_SETTINGS = 'deckglViewSettings',
   HEXAGON_LAYER_REACTIVE_PROPS = 'hexagonLayerReactiveProps',
   LAYER_ELEMENTS = 'layerElements',
+  LAYERS = 'layers',
   MAP_STYLES = 'mapStyles',
   MAPBOX_SETTINGS = 'mapboxSettings',
-  MODAL = 'modal',
-  STYLE_LAYERS = 'styleLayers'
+  MODAL = 'modal'
 }
 
 export enum Urls {

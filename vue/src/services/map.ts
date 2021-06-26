@@ -2,13 +2,13 @@ import { FillLayer, LineLayer, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { LayerElements } from '@/enums'
-import { IStyleLayers, ITrail } from '@/interfaces'
+import { ILayers, ITrail } from '@/interfaces'
 import {
+  LayerService,
   MapboxService,
   MapStyleService,
   MarkerService,
-  PopupService,
-  StyleLayerService
+  PopupService
 } from '@/services'
 
 @Service()
@@ -16,17 +16,17 @@ export default class MapService {
   private _layerElements: Record<string, string> = LayerElements
 
   constructor(
+    private _layerService: LayerService,
     private _mapboxService: MapboxService,
     private _mapStyleService: MapStyleService,
     private _markerService: MarkerService,
-    private _popupService: PopupService,
-    private _styleLayerService: StyleLayerService
+    private _popupService: PopupService
   ) {
+    this._layerService = Container.get(LayerService)
     this._mapboxService = Container.get(MapboxService)
     this._mapStyleService = Container.get(MapStyleService)
     this._markerService = Container.get(MarkerService)
     this._popupService = Container.get(PopupService)
-    this._styleLayerService = Container.get(StyleLayerService)
   }
 
   async loadMapLayer(): Promise<void> {
@@ -39,7 +39,7 @@ export default class MapService {
 
   onMapLoadHandler(): void {
     this.showMarkers()
-    this.addStyleLayers()
+    this.addLayers()
   }
 
   onMapClickHandler(evt: MapLayerMouseEvent): void {
@@ -66,28 +66,28 @@ export default class MapService {
     const mapStyle = this._mapStyleService.mapStyle
     this._mapboxService.map.setStyle(mapStyle)
     /* re-add style layers after 1/2 sec delay to set basemap style */
-    setTimeout((): void => this.addStyleLayers(), 500)
+    setTimeout((): void => this.addLayers(), 500)
   }
 
-  setStyleLayerVisibility(id: string): void {
+  setLayerVisibility(id: string): void {
     const { BIOSPHERE } = this._layerElements
-    const styleLayers: IStyleLayers = this._styleLayerService.state
-    styleLayers[id as keyof IStyleLayers].isActive
+    const layers: ILayers = this._layerService.state
+    layers[id as keyof ILayers].isActive
       ? this._mapboxService.map.setLayoutProperty(id, 'visibility', 'visible')
       : this._mapboxService.map.setLayoutProperty(id, 'visibility', 'none')
-    id === BIOSPHERE && this.setStyleLayerVisibilityEventHandlers(id, styleLayers)
+    id === BIOSPHERE && this.setLayerVisibilityEventHandlers(id, layers)
   }
 
-  private addStyleLayers(): void {
-    for (const styleLayer of this._styleLayerService.styleLayers) {
-      const { id } = styleLayer
-      this._mapboxService.map.addLayer(<FillLayer | LineLayer>styleLayer)
-      this.setStyleLayerVisibility(id)
+  private addLayers(): void {
+    for (const layer of this._layerService.layers) {
+      const { id } = layer
+      this._mapboxService.map.addLayer(<FillLayer | LineLayer>layer)
+      this.setLayerVisibility(id)
     }
   }
 
-  private setStyleLayerVisibilityEventHandlers(id: string, styleLayers: IStyleLayers): void {
-    styleLayers[id as keyof IStyleLayers].isActive
+  private setLayerVisibilityEventHandlers(id: string, layers: ILayers): void {
+    layers[id as keyof ILayers].isActive
       ? this._mapboxService.map
           .on('click', id, (evt: MapLayerMouseEvent): void => {
             this.onMapClickHandler(evt)

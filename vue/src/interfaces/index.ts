@@ -56,10 +56,40 @@ export interface IHttpParams {
   table: string
 }
 
+export interface ILayer extends IMarker {
+  type: string
+  source: {
+    type: string
+    data: Record<string, never> | FeatureCollection
+  }
+  layout: {
+    visibility: string
+  }
+  paint: {
+    'fill-color'?: string
+    'fill-opacity'?: number
+    'fill-outline-color'?: string
+    'line-color'?: string
+    'line-width'?: number
+  }
+}
+
 export interface ILayerElement {
   id: string
   isActive: boolean
   name: string
+}
+
+export interface ILayers {
+  biosphere: {
+    isActive: boolean
+  }
+  'biosphere-border': {
+    isActive: boolean
+  }
+  trails: {
+    isActive: boolean
+  }
 }
 
 export interface IMapStyle {
@@ -89,36 +119,6 @@ export interface IMarker {
 
 export interface IModal {
   isActive: boolean
-}
-
-export interface IStyleLayer extends IMarker {
-  type: string
-  source: {
-    type: string
-    data: Record<string, never> | FeatureCollection
-  }
-  layout: {
-    visibility: string
-  }
-  paint: {
-    'fill-color'?: string
-    'fill-opacity'?: number
-    'fill-outline-color'?: string
-    'line-color'?: string
-    'line-width'?: number
-  }
-}
-
-export interface IStyleLayers {
-  biosphere: {
-    isActive: boolean
-  }
-  'biosphere-border': {
-    isActive: boolean
-  }
-  trails: {
-    isActive: boolean
-  }
 }
 
 export interface ITrail {

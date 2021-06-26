@@ -2,16 +2,16 @@ import cloneDeep from 'lodash.clonedeep'
 import { Container, Service } from 'typedi'
 import { reactive } from 'vue'
 
-import { deckgl, hexagonLayer, layerElements, mapbox, modal, styleLayers } from '@/config'
+import { deckgl, hexagonLayer, layerElements, layers, mapbox, modal } from '@/config'
 import { States } from '@/enums'
 import {
   IDeckglViewSettings,
   IHexagonLayerReactiveProps,
   ILayerElement,
+  ILayers,
   IMapStyle,
   IMapboxSettings,
-  IModal,
-  IStyleLayers
+  IModal
 } from '@/interfaces'
 import { LogService } from '@/services'
 
@@ -20,10 +20,10 @@ export default class StoreService {
   private _deckglViewSettings: IDeckglViewSettings = deckgl.settings
   private _hexagonLayerReactiveProps: IHexagonLayerReactiveProps = hexagonLayer.reactiveProps
   private _layerElements: ILayerElement[] = layerElements
+  private _layers: ILayers = layers
   private _mapStyles: IMapStyle[] = mapbox.styles
   private _mapboxSettings: IMapboxSettings = mapbox.settings
   private _modal: IModal = modal
-  private _styleLayers: IStyleLayers = styleLayers
   private _states: Record<string, string> = States
 
   constructor(private _logService: LogService, private _state: Record<string, any>) {
@@ -36,19 +36,19 @@ export default class StoreService {
       DECKGL_VIEW_SETTINGS,
       HEXAGON_LAYER_REACTIVE_PROPS,
       LAYER_ELEMENTS,
+      LAYERS,
       MAP_STYLES,
       MAPBOX_SETTINGS,
-      MODAL,
-      STYLE_LAYERS
+      MODAL
     } = this._states
     this._state = reactive({
       [DECKGL_VIEW_SETTINGS]: this._deckglViewSettings,
       [HEXAGON_LAYER_REACTIVE_PROPS]: this._hexagonLayerReactiveProps,
       [LAYER_ELEMENTS]: this._layerElements,
+      [LAYERS]: this._layers,
       [MAP_STYLES]: this._mapStyles,
       [MAPBOX_SETTINGS]: this._mapboxSettings,
-      [MODAL]: this._modal,
-      [STYLE_LAYERS]: this._styleLayers
+      [MODAL]: this._modal
     })
   }
 
