@@ -78,7 +78,7 @@ export default class LayerElementService {
 
   private satellite = (id: LayerElement): void => {
     this.setLayerElementsState(id)
-    this.showMarkerVisibility()
+    this.setMarkerVisibility()
     this.setMapStyleState()
     this.setMapStyle()
   }
@@ -113,11 +113,11 @@ export default class LayerElementService {
     await this._routeService.setRoute(name)
   }
 
-  private showMarkerVisibility(): void {
+  private setMarkerVisibility(): void {
     /* hide active markers when changing map styles */
-    this._markerService.showMarkerVisibility()
+    this._markerService.setMarkerVisibility()
     /* show hidden markers when changing map styles */
-    setTimeout((): void => this._markerService.showMarkerVisibility(), 1000)
+    setTimeout((): void => this._markerService.setMarkerVisibility(), 1000)
   }
 
   private toggleMarkerVisibility(id: LayerElement): void {

@@ -21,7 +21,7 @@ export default class MarkerService {
     this.setMarkersHashmap(id)
   }
 
-  showMarkerVisibility(): void {
+  setMarkerVisibility(): void {
     for (const markers of this._markers) {
       for (const marker of markers) {
         const el = <IHTMLMarkerElement>marker.getElement()
