@@ -1,3 +1,16 @@
+import { DSVRowArray } from 'd3-dsv'
+import { Feature, FeatureCollection } from 'geojson'
+
+import {
+  IDeckglViewSettings,
+  IHexagonLayerReactiveProps,
+  ILayerElement,
+  ILayers,
+  IMapStyle,
+  IMapboxSettings,
+  IModal
+} from '@/interfaces'
+
 export type DeckglProps = {
   canvas: string
   container: string
@@ -38,6 +51,8 @@ export type LayerIconProps = {
   width: number
 }
 
+export type LogData = DSVRowArray<string> | Feature[] | FeatureCollection | State
+
 export type MapboxProps = {
   container: string
 }
@@ -47,3 +62,12 @@ export type ModalProps = {
 }
 
 export type NavigationControlPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+
+export type State =
+  | IDeckglViewSettings
+  | IHexagonLayerReactiveProps
+  | ILayerElement[]
+  | ILayers
+  | IMapStyle[]
+  | IMapboxSettings
+  | IModal
