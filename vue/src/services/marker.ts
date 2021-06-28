@@ -50,8 +50,8 @@ export default class MarkerService {
   }
 
   private createMarker(id: string, feature: Feature): Marker {
-    /* prettier-ignore */
-    const { geometry, properties: { lng, lat } } = <Record<string, any>>feature
+    const { geometry, properties } = feature
+    const { lat, lng } = <Record<string, number | undefined>>properties
     const el = this.createHTMLMarkerElement(id, feature)
     let marker: Marker
     lat && lng

@@ -14,6 +14,7 @@ import {
   IModal
 } from '@/interfaces'
 import { LogService } from '@/services'
+import { State } from '@/types'
 
 @Service()
 export default class StoreService {
@@ -26,7 +27,7 @@ export default class StoreService {
   private _modal: IModal = modal
   private _states: Record<string, string> = States
 
-  constructor(private _logService: LogService, private _state: Record<string, any>) {
+  constructor(private _logService: LogService, private _state: Record<string, State>) {
     this._logService = Container.get(LogService)
     this.createState()
   }
@@ -52,12 +53,11 @@ export default class StoreService {
     })
   }
 
-  getState(state: string): Record<string, any> {
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-return */
+  getState(state: string): State {
     return cloneDeep(this._state[state])
   }
 
-  setState(state: string, payload: Record<string, any>): void {
+  setState(state: string, payload: State): void {
     // this.logState(state, 'OLD')
     this._state[state] = cloneDeep(payload)
     // this.logState(state, 'NEW')

@@ -8,6 +8,7 @@ import scss from './index.module.scss'
 const onSelectTrailChangeHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const { target: { value: trailName } }: Record<string, any> = evt
   const trailService = Container.get(TrailService)
   trailName && trailService.selectTrail(trailName)

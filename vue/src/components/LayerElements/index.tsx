@@ -10,6 +10,7 @@ import scss from './index.module.scss'
 const onDisplayLayerElementClickHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const { target: { id } }: Record<string, any> = evt
   const layerElementService = Container.get(LayerElementService)
   id && layerElementService.displayLayerElement(id)

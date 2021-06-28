@@ -59,7 +59,7 @@ export default class HexagonLayerService {
 
   setHexagonLayerReactiveProps(prop: string, value: string): void {
     const props = this.state
-    props[prop as keyof IHexagonLayerReactiveProps] = +value
+    props[prop as keyof IHexagonLayerReactiveProps] = Number(value)
     this._state = props
     this.renderHexagonLayer()
   }

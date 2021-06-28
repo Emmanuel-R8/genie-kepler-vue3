@@ -10,6 +10,7 @@ import scss from './index.module.scss'
 const onSetHexagonLayerReactivePropsChangeHandler = (evt: Event): void => {
   evt.stopPropagation()
   /* prettier-ignore */
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const { target: { id: prop, value } }: Record<string, any> = evt
   const hexagonLayerService = Container.get(HexagonLayerService)
   prop && value && hexagonLayerService.setHexagonLayerReactiveProps(prop, value)

@@ -1,3 +1,4 @@
+import { DSVRowArray } from 'd3-dsv'
 import { csv } from 'd3-fetch'
 import { Feature, FeatureCollection } from 'geojson'
 import { Container, Service } from 'typedi'
@@ -32,8 +33,8 @@ export default class DataService {
   }
 
   async loadData(): Promise<void> {
-    await this.getHexagonLayerData()
     await this.getMapLayerData()
+    await this.getHexagonLayerData()
   }
 
   private async getHexagonLayerData(): Promise<void> {
@@ -48,8 +49,8 @@ export default class DataService {
     }
   }
 
-  private setHexagonLayerData(data: Record<string, any>[]): void {
-    this._hexagonLayerData = data.map((d: Record<string, string>): number[] => [+d.lng, +d.lat])
+  private setHexagonLayerData(data: DSVRowArray<string>): void {
+    this._hexagonLayerData = data.map((el): number[] => [Number(el.lng), Number(el.lat)])
   }
 
   private async getMapLayerData(): Promise<void> {
