@@ -2,13 +2,15 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    es2021: true
+    es2021: true,
+    jest: true
   },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier'
+    'plugin:jest/recommended',
+    'plugin:prettier/recommended'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -16,10 +18,14 @@ module.exports = {
     },
     ecmaVersion: 2021,
     parser: '@typescript-eslint/parser',
-    tsconfigRootDir: __dirname,
     project: './tsconfig.json',
-    sourceType: 'module'
+    sourceType: 'module',
+    tsconfigRootDir: __dirname
   },
   plugins: ['@typescript-eslint'],
-  rules: {}
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/unbound-method': 'off'
+  }
 }
