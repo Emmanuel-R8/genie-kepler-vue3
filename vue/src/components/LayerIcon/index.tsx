@@ -1,11 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 
-import { LayerIconProps } from '@/types'
-import scss from '@/components/LayerElements/index.module.scss'
-
-const html = ({ alt, click, height, id, src, width }: LayerIconProps): JSX.Element => (
-  <img alt={alt} class={scss[id]} height={height} id={id} onClick={click} src={src} width={width} />
-)
+import { ILayerElements } from '@/interfaces'
+import layerIcon from '@/components/LayerElements/index.module.scss'
 
 export default defineComponent({
   props: {
@@ -34,7 +30,17 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: LayerIconProps) {
-    return (): JSX.Element => html(props)
+  setup({ alt, click, height, id, src, width }) {
+    return (): JSX.Element => (
+      <img
+        alt={alt}
+        class={layerIcon[id as keyof ILayerElements]}
+        height={height}
+        id={id}
+        onClick={click}
+        src={src}
+        width={width}
+      />
+    )
   }
 })

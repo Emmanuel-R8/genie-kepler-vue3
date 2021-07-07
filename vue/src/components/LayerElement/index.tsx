@@ -1,15 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 
-import { LayerElementProps } from '@/types'
-import scss from '@/components/LayerElements/index.module.scss'
-
-const html = ({ click, id, isActive, name }: LayerElementProps): JSX.Element => (
-  <li>
-    <div id={id} class={scss[isActive ? 'active' : '']} onClick={click}>
-      {name}
-    </div>
-  </li>
-)
+import { active, inactive } from '@/components/LayerElements/index.module.scss'
 
 export default defineComponent({
   props: {
@@ -30,7 +21,14 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: LayerElementProps) {
-    return (): JSX.Element => html(props)
+  setup(props) {
+    const { click, id, name } = props
+    return (): JSX.Element => (
+      <li>
+        <div id={id} class={props.isActive ? active : inactive} onClick={click}>
+          {name}
+        </div>
+      </li>
+    )
   }
 })

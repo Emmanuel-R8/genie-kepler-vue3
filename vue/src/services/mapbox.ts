@@ -52,13 +52,12 @@ export default class MapboxService {
     try {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
       /* prettier-ignore */
-      /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
       const { data: { token } } = await this._httpService.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
       token
         ? this.setAccessToken(token)
-        : this._logService.printConsoleLog(`No Mapbox Access Token Found:\n`, token)
+        : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, token)
     } catch (err) {
-      this._logService.printConsoleError(`${this.getAccessToken.name} Http Failed:\n`, err)
+      this._logService.consoleError(`${this.getAccessToken.name} Http Failed:\n`, err)
     }
   }
 

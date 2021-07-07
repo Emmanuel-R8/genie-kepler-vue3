@@ -1,7 +1,42 @@
 import { defineComponent, PropType } from 'vue'
 
-import { HexagonUIProps } from '@/types'
-import scss from './index.module.scss'
+import { IHexagonUIProps } from '@/interfaces'
+
+export default defineComponent({
+  props: {
+    coverage: {
+      type: Number,
+      required: true
+    },
+    elevationScale: {
+      type: Number,
+      required: true
+    },
+    radius: {
+      type: Number,
+      required: true
+    },
+    upperPercentile: {
+      type: Number,
+      required: true
+    },
+    setHexagonLayerReactiveProps: {
+      type: Function as PropType<(evt: Event) => void>,
+      required: true
+    },
+    resetHexagonLayerReactiveProps: {
+      type: Function as PropType<(evt: Event) => void>,
+      required: true
+    },
+    returnToTrails: {
+      type: Function as PropType<(evt: Event) => void>,
+      required: true
+    }
+  },
+  setup(props: IHexagonUIProps) {
+    return (): JSX.Element => html(props)
+  }
+})
 
 const html = ({
   coverage,
@@ -11,10 +46,9 @@ const html = ({
   setHexagonLayerReactiveProps,
   resetHexagonLayerReactiveProps,
   returnToTrails
-}: HexagonUIProps): JSX.Element => (
-  <div class={scss.Hexagon}>
-    <div class={scss.spacer}></div>
-    <div class={scss.header}>GB Road Accidents</div>
+}: IHexagonUIProps): JSX.Element => (
+  <div>
+    <header>GB Road Accidents</header>
     <hr />
     <div>
       <label>Coverage</label>
@@ -72,47 +106,9 @@ const html = ({
       <span>{upperPercentile}</span>
     </div>
     <hr />
-    <div class={scss.spacer}></div>
     <button onClick={resetHexagonLayerReactiveProps}>Reset Parameters</button>
-    <div class={scss.spacer}></div>
-    <button onClick={returnToTrails}>Return to Trails</button>
-    <div class={scss.spacer}></div>
-    <div class={scss.spacer}></div>
+    <button id="mapbox" onClick={returnToTrails}>
+      Return to Trails
+    </button>
   </div>
 )
-
-export default defineComponent({
-  props: {
-    coverage: {
-      type: Number,
-      required: true
-    },
-    elevationScale: {
-      type: Number,
-      required: true
-    },
-    radius: {
-      type: Number,
-      required: true
-    },
-    upperPercentile: {
-      type: Number,
-      required: true
-    },
-    setHexagonLayerReactiveProps: {
-      type: Function as PropType<(evt: Event) => void>,
-      required: true
-    },
-    resetHexagonLayerReactiveProps: {
-      type: Function as PropType<(evt: Event) => void>,
-      required: true
-    },
-    returnToTrails: {
-      type: Function as PropType<(evt: Event) => void>,
-      required: true
-    }
-  },
-  setup(props: HexagonUIProps) {
-    return (): JSX.Element => html(props)
-  }
-})

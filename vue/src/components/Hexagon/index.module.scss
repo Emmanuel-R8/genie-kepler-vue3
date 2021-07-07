@@ -1,30 +1,36 @@
-@mixin border-radius($radius) {
-  border-radius: $radius;
-}
-
 .hexagon {
-  @include border-radius(4px);
   animation: slide-in 1.5s ease-out forwards;
-  background: rgb(160, 150, 140);
+  background-color: rgb(160, 150, 140);
   border: 3px solid rgb(187, 187, 187);
+  border-radius: 4px;
   color: rgb(60, 75, 90);
   cursor: pointer;
-  font-size: 0.95em;
+  left: 10px;
   line-height: 1.4;
-  padding: 0 15px;
+  padding: 10px 15px;
   position: absolute;
-  right: 10px;
-  top: 55px;
-  width: 140px;
+  top: 75px;
+  width: 175px;
 
   button {
     border: 2px solid rgb(187, 187, 187);
     color: rgb(60, 75, 90);
     cursor: pointer;
-    font-size: 0.9em;
-    line-height: 1.4;
-    padding: 2px 0;
+    font: inherit;
+    margin-top: 5px;
+    padding: 3px 0 2px 0;
+    text-align: center;
     width: 100%;
+
+    &:hover {
+      background-color: rgb(140, 130, 120);
+    }
+  }
+
+  header {
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
   }
 
   input {
@@ -38,26 +44,15 @@
 
   span {
     color: rgb(255, 255, 255);
-    cursor: pointer;
   }
 
-  .header {
-    font-size: 1.08em;
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-150px);
+    }
 
-  .spacer {
-    height: 0.5em;
-  }
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(150px);
-  }
-
-  to {
-    transform: translateX(0);
+    to {
+      transform: translateX(0);
+    }
   }
 }

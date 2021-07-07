@@ -1,38 +1,43 @@
-body {
+html {
   background-color: rgb(0, 0, 0);
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-  margin: 0;
+  box-sizing: border-box;
   overflow: hidden;
-  padding: 0;
-  width: 100%;
-}
 
-.office-marker {
-  background-image: url('@/assets/office.png');
-  height: 25px;
-  width: 22px;
-}
+  body {
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1em;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 
-.places-marker {
-  background-image: url('@/assets/places.png');
-  height: 25px;
-  width: 22px;
-}
+    .office-marker {
+      background-image: url('@/assets/office.png');
+      height: 25px;
+      width: 22px;
+    }
 
-.trails-marker {
-  background-image: url('@/assets/trails.png');
-  height: 25px;
-  width: 22px;
-}
+    .places-marker {
+      background-image: url('@/assets/places.png');
+      height: 25px;
+      width: 22px;
+    }
 
-/* mapboxgl style modifications */
-.mapboxgl-popup {
-  max-width: 250px;
-}
+    .trails-marker {
+      background-image: url('@/assets/trails.png');
+      height: 25px;
+      width: 22px;
+    }
 
-.mapboxgl-popup-content .bold {
-  font-weight: bold;
+    /* mapboxgl style modifications */
+    .mapboxgl-popup {
+      max-width: 250px;
+    }
+
+    .mapboxgl-popup-content .bold {
+      font-weight: bold;
+    }
+  }
 }

@@ -1,11 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { ModalProps } from '@/types'
-import scss from './index.module.scss'
-
-const html = ({ isActive }: ModalProps): JSX.Element => (
-  <div class={`${scss.modal} ${scss[isActive ? 'active' : '']}`}></div>
-)
+import { active, inactive } from './index.module.scss'
 
 export default defineComponent({
   props: {
@@ -14,7 +9,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: ModalProps) {
-    return (): JSX.Element => html(props)
+  setup(props) {
+    return (): JSX.Element => <div class={props.isActive ? active : inactive}></div>
   }
 })

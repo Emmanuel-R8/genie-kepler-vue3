@@ -1,42 +1,39 @@
 .header {
-  background: rgb(120, 110, 100);
+  background-color: rgb(120, 110, 100);
   font-family: 'Orbitron', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 45px;
   position: absolute;
   width: 100%;
-  z-index: 1;
 
   a {
     color: rgb(0, 0, 0);
-    font-size: 0.95em;
+    margin: -24px 0 0 0;
     position: absolute;
-    right: 22px;
-    top: 13px;
+    right: 10px;
+
+    &:hover {
+      color: rgb(216, 216, 216);
+    }
   }
 
   img {
     height: 35px;
-    left: 8px;
+    margin: 6px 0 0 8px;
     position: absolute;
-    top: 6px;
-    width: 35px;
   }
 
   .name {
     color: rgb(0, 0, 0);
-    font-size: 1.34em;
-    left: 50px;
-    position: absolute;
-    top: 9px;
+    font-size: 1.4em;
+    margin: 8px 0 0 50px;
   }
 
   .title {
     color: rgb(160, 0, 0);
-    font-size: 1.09em;
-    left: 250px;
-    position: absolute;
-    top: 13px;
+    font-size: 1.3em;
+    margin: -26px 0 0 0;
+    text-align: center;
   }
 }

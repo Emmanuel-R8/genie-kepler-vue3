@@ -90,7 +90,6 @@ export default class MapService {
             this.onMapMouseLeaveHandler()
           })
       : this._mapboxService.map
-          /* eslint-disable @typescript-eslint/unbound-method */
           .off('click', id, this.onMapClickHandler)
           .off('mouseenter', id, this.onMapMouseEnterHandler)
           .off('mouseleave', id, this.onMapMouseLeaveHandler)

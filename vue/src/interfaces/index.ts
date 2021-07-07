@@ -46,6 +46,16 @@ export interface IHexagonLayerStaticProps {
   }
 }
 
+export interface IHexagonUIProps {
+  coverage: number
+  elevationScale: number
+  radius: number
+  upperPercentile: number
+  setHexagonLayerReactiveProps: (evt: Event) => void
+  resetHexagonLayerReactiveProps: (evt: Event) => void
+  returnToTrails: (evt: Event) => void
+}
+
 export interface IHTMLMarkerElement extends HTMLDivElement {
   isActive: boolean
   isHidden: boolean
@@ -78,6 +88,15 @@ export interface ILayerElement {
   id: string
   isActive: boolean
   name: string
+}
+
+export interface ILayerElements {
+  biosphere: string
+  deckgl: string
+  office: string
+  places: string
+  satellite: string
+  trails: string
 }
 
 export interface ILayers {

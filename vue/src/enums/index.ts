@@ -13,11 +13,6 @@ export enum LayerElements {
   TRAILS = 'trails'
 }
 
-export enum Routes {
-  DECKGL = 'deckgl',
-  MAPBOX = 'mapbox'
-}
-
 export enum States {
   DECKGL_VIEW_SETTINGS = 'deckglViewSettings',
   HEXAGON_LAYER_REACTIVE_PROPS = 'hexagonLayerReactiveProps',

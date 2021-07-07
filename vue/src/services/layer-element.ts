@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi'
 
-import { LayerElements, Routes, States } from '@/enums'
+import { LayerElements, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
 import { LayerElement } from '@/types'
 import {
@@ -15,7 +15,6 @@ import {
 @Service()
 export default class LayerElementService {
   private _layerElements: Record<string, string> = LayerElements
-  private _routes: Record<string, string> = Routes
   private _states: Record<string, string> = States
 
   constructor(
@@ -71,9 +70,8 @@ export default class LayerElementService {
     this.toggleMarkerVisibility(id)
   }
 
-  private route = async (): Promise<void> => {
-    const { DECKGL } = this._routes
-    await this.setRoute(DECKGL)
+  private route = async (id: LayerElement): Promise<void> => {
+    await this.setRoute(id)
   }
 
   private satellite = (id: LayerElement): void => {
@@ -109,8 +107,8 @@ export default class LayerElementService {
     this._mapStyleService.setMapStyleState()
   }
 
-  private async setRoute(name: string): Promise<void> {
-    await this._routeService.setRoute(name)
+  private async setRoute(id: LayerElement): Promise<void> {
+    await this._routeService.setRoute(id)
   }
 
   private setMarkerVisibility(): void {

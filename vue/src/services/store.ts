@@ -27,12 +27,22 @@ export default class StoreService {
   private _modal: IModal = modal
   private _states: Record<string, string> = States
 
-  constructor(private _logService: LogService, private _state: Record<string, State>) {
+  constructor(private _logService: LogService, private _state: Record<string, State[]>) {
     this._logService = Container.get(LogService)
     this.createState()
   }
 
-  createState(): void {
+  getState(state: string): State {
+    return cloneDeep(this._state[state][this._state[state].length - 1])
+  }
+
+  setState(state: string, payload: State): void {
+    // this.logState(state, 'OLD')
+    this._state[state].push(cloneDeep(payload))
+    // this.logState(state, 'NEW')
+  }
+
+  private createState(): void {
     const {
       DECKGL_VIEW_SETTINGS,
       HEXAGON_LAYER_REACTIVE_PROPS,
@@ -43,27 +53,17 @@ export default class StoreService {
       MODAL
     } = this._states
     this._state = reactive({
-      [DECKGL_VIEW_SETTINGS]: this._deckglViewSettings,
-      [HEXAGON_LAYER_REACTIVE_PROPS]: this._hexagonLayerReactiveProps,
-      [LAYER_ELEMENTS]: this._layerElements,
-      [LAYERS]: this._layers,
-      [MAP_STYLES]: this._mapStyles,
-      [MAPBOX_SETTINGS]: this._mapboxSettings,
-      [MODAL]: this._modal
+      [DECKGL_VIEW_SETTINGS]: [this._deckglViewSettings],
+      [HEXAGON_LAYER_REACTIVE_PROPS]: [this._hexagonLayerReactiveProps],
+      [LAYER_ELEMENTS]: [this._layerElements],
+      [LAYERS]: [this._layers],
+      [MAP_STYLES]: [this._mapStyles],
+      [MAPBOX_SETTINGS]: [this._mapboxSettings],
+      [MODAL]: [this._modal]
     })
   }
 
-  getState(state: string): State {
-    return cloneDeep(this._state[state])
-  }
-
-  setState(state: string, payload: State): void {
-    // this.logState(state, 'OLD')
-    this._state[state] = cloneDeep(payload)
-    // this.logState(state, 'NEW')
-  }
-
-  // logState(state: string, status: string): void {
-  //   this._logService.printConsoleLog(`${state} ${status} state:`, this.getState(state))
+  // private logState(state: string, status: string): void {
+  //   this._logService.consoleLog(`${state} ${status} state:`, this.getState(state))
   // }
 }

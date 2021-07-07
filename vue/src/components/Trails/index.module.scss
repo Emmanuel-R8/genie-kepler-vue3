@@ -1,22 +1,19 @@
-.trails {
+.trail {
   animation: slide-in 1s ease-out forwards;
-  border-style: solid;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  border: 2px solid rgb(187, 187, 187);
+  font-size: 0.95em;
   left: 10px;
   position: absolute;
-  top: 380px;
+  top: 385px;
   width: 135px;
-}
 
-@keyframes slide-in {
-  from {
-    transform: translateX(-150px);
-  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-150px);
+    }
 
-  to {
-    transform: translateX(0);
+    to {
+      transform: translateX(0);
+    }
   }
 }

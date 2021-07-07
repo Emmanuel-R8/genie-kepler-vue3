@@ -5,19 +5,19 @@ import { LayerElement, LayerIcon } from '@/components'
 import { layerIcons } from '@/config'
 import { ILayerElement } from '@/interfaces'
 import { LayerElementService } from '@/services'
-import scss from './index.module.scss'
+import { elements, icons } from './index.module.scss'
 
-const onDisplayLayerElementClickHandler = (evt: Event): void => {
-  evt.stopPropagation()
-  /* prettier-ignore */
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const { target: { id } }: Record<string, any> = evt
-  const layerElementService = Container.get(LayerElementService)
-  id && layerElementService.displayLayerElement(id)
-}
+export default defineComponent({
+  setup() {
+    const layerElementService = Container.get(LayerElementService)
+    const state = computed((): ILayerElement[] => layerElementService.state)
+    return (): JSX.Element => html(state.value)
+  }
+})
+
 const html = (layerElements: ILayerElement[]): JSX.Element => (
   <div>
-    <ul class={scss.elements}>
+    <ul class={elements}>
       {layerElements.map(({ id, isActive, name }) => (
         <LayerElement
           click={onDisplayLayerElementClickHandler}
@@ -28,7 +28,7 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
         />
       ))}
     </ul>
-    <ul class={scss.icons}>
+    <ul class={icons}>
       {layerIcons.map(({ height, id, name, src, width }) => (
         <LayerIcon
           alt={name}
@@ -43,11 +43,10 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
     </ul>
   </div>
 )
-
-export default defineComponent({
-  setup() {
-    const layerElementService = Container.get(LayerElementService)
-    const state = computed((): ILayerElement[] => layerElementService.state)
-    return (): JSX.Element => html(state.value)
-  }
-})
+const onDisplayLayerElementClickHandler = (evt: Event): void => {
+  evt.stopPropagation()
+  /* prettier-ignore */
+  const { target: { id } }: Record<string, any> = evt
+  const layerElementService = Container.get(LayerElementService)
+  id && layerElementService.displayLayerElement(id)
+}

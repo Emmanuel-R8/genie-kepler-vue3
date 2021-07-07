@@ -11,12 +11,12 @@ import { HttpService, LayerService, LogService, MarkerService } from '@/services
 @Service()
 export default class DataService {
   private _endPoints: Record<string, string> = EndPoints
-  private _hexagonLayerData: number[][] = []
   private _layers: ILayer[] = layer
   private _markers: IMarker[] = markers
   private _urls: Record<string, string> = Urls
 
   constructor(
+    private _hexagonLayerData: number[][],
     private _httpService: HttpService,
     private _layerService: LayerService,
     private _logService: LogService,
@@ -43,14 +43,14 @@ export default class DataService {
       const data = await csv(HEXAGON_LAYER_DATA_URL)
       data?.length
         ? this.setHexagonLayerData(data)
-        : this._logService.printConsoleLog(`No ${this.getHexagonLayerData.name} Found:\n`, data)
+        : this._logService.consoleLog(`No ${this.getHexagonLayerData.name} Data Found:\n`, data)
     } catch (err) {
-      this._logService.printConsoleError(`${this.getHexagonLayerData.name} Fetch Failed:\n`, err)
+      this._logService.consoleError(`${this.getHexagonLayerData.name} Fetch Failed:\n`, err)
     }
   }
 
   private setHexagonLayerData(data: DSVRowArray<string>): void {
-    this._hexagonLayerData = data.map((el): number[] => [Number(el.lng), Number(el.lat)])
+    this._hexagonLayerData = data.map((d): number[] => [Number(d.lng), Number(d.lat)])
   }
 
   private async getMapLayerData(): Promise<void> {
@@ -68,9 +68,9 @@ export default class DataService {
       const fc = await this.getGeoJsonFeatureCollection(layer)
       fc?.features?.length
         ? this.setLayer(fc, layer)
-        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Found:\n`, fc)
+        : this._logService.consoleLog(`No ${id.toUpperCase()} Features Found:\n`, fc)
     } catch (err) {
-      this._logService.printConsoleError(`${this.getLayerFeatures.name} Http Failed:\n`, err)
+      this._logService.consoleError(`${this.getLayerFeatures.name} Http Failed:\n`, err)
     }
   }
 
@@ -85,9 +85,9 @@ export default class DataService {
       const { features } = await this.getGeoJsonFeatureCollection(marker)
       features?.length
         ? this.setMarker(id, features)
-        : this._logService.printConsoleLog(`No ${id.toUpperCase()} Found:\n`, features)
+        : this._logService.consoleLog(`No ${id.toUpperCase()} Features Found:\n`, features)
     } catch (err) {
-      this._logService.printConsoleError(`${this.getMarkerFeatures.name} Http Failed:\n`, err)
+      this._logService.consoleError(`${this.getMarkerFeatures.name} Http Failed:\n`, err)
     }
   }
 
@@ -101,7 +101,6 @@ export default class DataService {
   }: ILayer | IMarker): Promise<FeatureCollection> {
     const { GEOJSON_ENDPOINT } = this._endPoints
     const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
     const { data } = await this._httpService.get(GEOJSON_ENDPOINT, { params })
     return <FeatureCollection>data
   }
