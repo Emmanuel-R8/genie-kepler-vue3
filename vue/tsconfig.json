@@ -8,10 +8,11 @@
     "lib": ["esnext", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "types": ["vite/client", "@types/jest"],
+    "types": ["vite/client", "jest"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
       "@/*": ["src/*"]

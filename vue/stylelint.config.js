@@ -1,8 +1,11 @@
 module.exports = {
-  extends: 'stylelint-config-recommended-scss',
-  plugins: ['stylelint-scss', 'stylelint-prettier'],
+  extends: [
+    'stylelint-config-recommended-scss',
+    'stylelint-config-css-modules',
+    'stylelint-prettier/recommended'
+  ],
   rules: {
-    'prettier/prettier': true,
-    'max-nesting-depth': [2, { ignore: ['pseudo-classes'] }]
+    'at-rule-no-unknown': null,
+    'scss/at-rule-no-unknown': true
   }
 }
