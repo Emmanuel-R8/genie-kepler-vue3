@@ -1,8 +1,26 @@
 import { Container } from 'typedi'
-import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
 
-import { DeckService, HexagonLayerService } from '@/services'
-import { deckgl, hexagon } from './index.module.scss'
+import { EventService, HexagonLayerService, MapStyleService, MarkerService } from '@/services'
+import { deckgl, hexagonLayer } from './index.module.css'
+
+const addEventListeners = (): void => {
+  const eventService = Container.get(EventService)
+  eventService.setHexagonLayerEventListeners(true)
+}
+const removeEventListeners = (): void => {
+  const eventService = Container.get(EventService)
+  eventService.setHexagonLayerEventListeners(false)
+  eventService.removeDeckglEventListeners()
+}
+const setMarkerVisibility = (): void => {
+  const markerService = Container.get(MarkerService)
+  const mapStyleService = Container.get(MapStyleService)
+  const { mapStyle } = mapStyleService
+  mapStyle.includes('satellite')
+    ? setTimeout((): void => markerService.setMarkerVisibility(), 500)
+    : setTimeout((): void => markerService.setMarkerVisibility(), 1000)
+}
 
 export default defineComponent({
   props: {
@@ -19,17 +37,16 @@ export default defineComponent({
     onMounted(async (): Promise<void> => {
       const hexagonLayerService = Container.get(HexagonLayerService)
       await hexagonLayerService.loadHexagonLayer()
+      addEventListeners()
     })
-    onUnmounted((): void => {
-      const deckService = Container.get(DeckService)
-      const hexagonLayerService = Container.get(HexagonLayerService)
-      deckService.map.off('load', deckService.onMapLoadHandler)
-      deckService.map.off('load', hexagonLayerService.onMapLoadHandler)
+    onBeforeUnmount((): void => {
+      removeEventListeners()
+      setMarkerVisibility()
     })
     return (): JSX.Element => (
       <>
         <div id={container} class={deckgl}></div>
-        <canvas id={canvas} class={hexagon}></canvas>
+        <canvas id={canvas} class={hexagonLayer}></canvas>
       </>
     )
   }

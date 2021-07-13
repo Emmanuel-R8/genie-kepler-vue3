@@ -11,10 +11,10 @@ export default defineComponent({
       await appService.loadData()
     })
     return (): JSX.Element => (
-      <main>
+      <>
         <Header />
         <router-view />
-      </main>
+      </>
     )
   }
 })

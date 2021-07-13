@@ -6,6 +6,15 @@ import { mapbox } from '@/config'
 import { IMapboxOptions, IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
+const html = ({ isActive }: IModal, { container }: IMapboxOptions): JSX.Element => (
+  <>
+    <Mapbox container={container} />
+    <Modal isActive={isActive} />
+    <LayerElements />
+    <Trails />
+  </>
+)
+
 export default defineComponent({
   setup() {
     const { options } = mapbox
@@ -15,12 +24,3 @@ export default defineComponent({
     return (): JSX.Element => html(state.value, options)
   }
 })
-
-const html = ({ isActive }: IModal, { container }: IMapboxOptions): JSX.Element => (
-  <section>
-    <Mapbox container={container} />
-    <Modal isActive={isActive} />
-    <LayerElements />
-    <Trails />
-  </section>
-)
