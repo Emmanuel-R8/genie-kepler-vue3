@@ -1,0 +1,15 @@
+.deckgl {
+  background-color: rgb(0, 0, 0);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 45px;
+  width: 100%;
+}
+
+.hexagonLayer {
+  position: absolute;
+  top: 45px;
+  width: 100%;
+}

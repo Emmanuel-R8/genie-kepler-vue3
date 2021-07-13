@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { active, inactive } from './index.module.scss'
+import { active, inactive } from './index.module.css'
 
 export default defineComponent({
   props: {

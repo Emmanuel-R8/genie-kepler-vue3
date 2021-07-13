@@ -1,0 +1,105 @@
+ul.elements {
+  animation: fade-in 1.5s ease-out forwards;
+  border: 2px solid rgb(187, 187, 187);
+  border-radius: 4px;
+  cursor: pointer;
+  left: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 175px;
+  width: 135px;
+}
+
+ul.elements li div {
+  border: 1px solid rgb(187, 187, 187);
+  border-bottom-width: 0;
+  line-height: 1.1;
+  padding: 6px 0 6px 40px;
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+ul.elements li div.active {
+  background-color: rgb(120, 110, 100);
+  color: rgb(238, 238, 238);
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+ul.elements li div.inactive {
+  background-color: rgb(160, 150, 140);
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+ul.elements li:last-child div {
+  border-bottom-width: 1px;
+}
+
+ul.elements li div:hover:not(.active) {
+  background-color: rgb(140, 130, 120);
+  color: rgb(238, 238, 238);
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+ul.icons {
+  animation: slide-in 1s ease-out forwards;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 183px;
+}
+
+ul.icons img.satellite {
+  left: 22px;
+  position: absolute;
+  top: 0px;
+}
+
+ul.icons img.biosphere {
+  left: 23px;
+  position: absolute;
+  top: 32px;
+}
+
+ul.icons img.office {
+  left: 22px;
+  position: absolute;
+  top: 60px;
+}
+
+ul.icons img.places {
+  left: 22px;
+  position: absolute;
+  top: 90px;
+}
+
+ul.icons img.trails {
+  left: 22px;
+  position: absolute;
+  top: 120px;
+}
+
+ul.icons img.deckgl {
+  left: 22px;
+  position: absolute;
+  top: 150px;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-50px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

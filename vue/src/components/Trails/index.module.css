@@ -1,0 +1,21 @@
+.trail {
+  animation: slide-in 1s ease-out forwards;
+  left: 10px;
+  position: absolute;
+  top: 385px;
+}
+
+.trail select {
+  border: 2px solid rgb(187, 187, 187);
+  font: inherit;
+  width: 139px;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-150px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

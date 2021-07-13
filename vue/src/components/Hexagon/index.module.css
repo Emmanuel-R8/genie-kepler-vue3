@@ -1,0 +1,59 @@
+.hexagon {
+  animation: slide-in 1.5s ease-out forwards;
+  background-color: rgb(160, 150, 140);
+  border: 3px solid rgb(187, 187, 187);
+  border-radius: 4px;
+  cursor: pointer;
+  left: 10px;
+  line-height: 1.4;
+  padding: 10px 15px;
+  position: absolute;
+  top: 75px;
+  width: 175px;
+}
+
+.hexagon button {
+  border: 2px solid rgb(187, 187, 187);
+  cursor: pointer;
+  font: inherit;
+  margin-top: 5px;
+  padding: 3px 0 2px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.hexagon button:hover {
+  background-color: rgb(120, 110, 100);
+  color: rgb(255, 255, 255);
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+.hexagon header {
+  font-size: 1.15em;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+.hexagon input {
+  cursor: pointer;
+  width: 100%;
+}
+
+.hexagon label {
+  cursor: pointer;
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+.hexagon span {
+  color: rgb(255, 255, 255);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-150px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

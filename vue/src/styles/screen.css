@@ -1,0 +1,45 @@
+html {
+  background-color: rgb(166, 163, 157);
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
+
+body {
+  color: rgb(0, 0, 0);
+  font-family: 'Archivo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1em;
+  font-weight: 400;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.mapboxgl-marker.office {
+  background-image: url('@/assets/office.png');
+  height: 25px;
+  width: 22px;
+}
+
+.mapboxgl-marker.places {
+  background-image: url('@/assets/places.png');
+  height: 25px;
+  width: 22px;
+}
+
+.mapboxgl-marker.trails {
+  background-image: url('@/assets/trails.png');
+  height: 25px;
+  width: 22px;
+}
+
+.mapboxgl-popup {
+  max-width: 250px;
+}
+
+.mapboxgl-popup-content div.bold {
+  font-weight: bold;
+}

@@ -1,0 +1,44 @@
+.header {
+  background-color: rgb(120, 110, 100);
+  font-family: 'Michroma', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 45px;
+  position: absolute;
+  width: 100%;
+}
+
+.header img {
+  margin: 6px 0 0 8px;
+  position: absolute;
+}
+
+.header h1.name {
+  font-size: 1.3em;
+  margin: 7px 0 0 51px;
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+.header h2.title {
+  color: rgb(240, 230, 220);
+  font-size: 1.2em;
+  margin: -29px 0 0 0;
+  text-align: center;
+  text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+.header a {
+  color: rgb(0, 0, 0);
+  font-size: 0.95em;
+  font-weight: bold;
+  margin: -24px 0 0 0;
+  position: absolute;
+  right: 10px;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+}
+
+.header a:hover {
+  color: rgb(240, 230, 220);
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}

@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { footer } from './index.module.scss'
+import { footer } from './index.module.css'
 
 export default defineComponent({
   setup() {
