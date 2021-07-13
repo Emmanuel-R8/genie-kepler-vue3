@@ -1,30 +1,46 @@
-import { FillLayer, LineLayer, MapLayerMouseEvent } from 'mapbox-gl'
+import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
+import { mapbox } from '@/config'
 import { LayerElements } from '@/enums'
-import { ILayers, ITrail } from '@/interfaces'
-import { LayerService, MapboxService, MapStyleService, PopupService } from '@/services'
+import { ILayerVisibility, ITrail } from '@/interfaces'
+import {
+  LayerService,
+  LayerVisibilityService,
+  MapboxService,
+  MapStyleService,
+  MarkerService,
+  PopupService
+} from '@/services'
 
 @Service()
 export default class MapService {
   private _layerElements: Record<string, string> = LayerElements
+  private _skyLayer = <SkyLayer>mapbox.skyLayer
 
   constructor(
+    private _map: Map,
     private _layerService: LayerService,
+    private _layerVisibilityService: LayerVisibilityService,
     private _mapboxService: MapboxService,
     private _mapStyleService: MapStyleService,
+    private _markerService: MarkerService,
     private _popupService: PopupService
   ) {
     this._layerService = Container.get(LayerService)
+    this._layerVisibilityService = Container.get(LayerVisibilityService)
     this._mapboxService = Container.get(MapboxService)
     this._mapStyleService = Container.get(MapStyleService)
+    this._markerService = Container.get(MarkerService)
     this._popupService = Container.get(PopupService)
   }
 
   async loadMapLayer(): Promise<void> {
-    !this._mapboxService.accessToken && (await this._mapboxService.getAccessToken())
+    const { accessToken } = this._mapboxService
+    !accessToken && (await this._mapboxService.getAccessToken())
     this._mapboxService.loadMapbox()
-    this._mapboxService.map.on('load', (): void => {
+    this._map = this._mapboxService.map
+    this._map.on('load', (): void => {
       this.onMapLoadHandler()
     })
   }
@@ -38,48 +54,55 @@ export default class MapService {
   }
 
   onMapMouseEnterHandler(): void {
-    this._mapboxService.map.getCanvas().style.cursor = 'pointer'
+    this._map.getCanvas().style.cursor = 'pointer'
   }
 
   onMapMouseLeaveHandler(): void {
-    this._mapboxService.map.getCanvas().style.cursor = ''
+    this._map.getCanvas().style.cursor = ''
     this._popupService.removePopup()
   }
 
   flyTo({ center, zoom }: ITrail): void {
-    this._mapboxService.map.flyTo({
+    this._map.flyTo({
       center,
       zoom
     })
   }
 
   setMapStyle(): void {
-    const mapStyle = this._mapStyleService.mapStyle
-    this._mapboxService.map.setStyle(mapStyle)
-    /* re-add style layers after 1/2 sec delay to set mapStyle */
-    setTimeout((): void => this.addLayers(), 500)
+    const { mapStyle } = this._mapStyleService
+    this._map.setStyle(mapStyle)
+    this.resetMapFeatures()
   }
 
   setLayerVisibility(id: string): void {
     const { BIOSPHERE } = this._layerElements
-    const layers: ILayers = this._layerService.state
-    layers[id as keyof ILayers].isActive
-      ? this._mapboxService.map.setLayoutProperty(id, 'visibility', 'visible')
-      : this._mapboxService.map.setLayoutProperty(id, 'visibility', 'none')
-    id === BIOSPHERE && this.setLayerVisibilityEventHandlers(id, layers)
+    const { state: layers } = this._layerVisibilityService
+    layers[id as keyof ILayerVisibility].isActive
+      ? this._map.setLayoutProperty(id, 'visibility', 'visible')
+      : this._map.setLayoutProperty(id, 'visibility', 'none')
+    id === BIOSPHERE && this.setLayerVisibilityEventListeners(id, layers)
   }
 
   private addLayers(): void {
-    for (const layer of this._layerService.layers) {
+    this._map.addLayer(this._skyLayer)
+    const { layers } = this._layerService
+    for (const layer of layers) {
       const { id } = layer
-      this._mapboxService.map.addLayer(<FillLayer | LineLayer>layer)
+      this._map.addLayer(<FillLayer | LineLayer>layer)
       this.setLayerVisibility(id)
     }
   }
 
-  private setLayerVisibilityEventHandlers(id: string, layers: ILayers): void {
-    layers[id as keyof ILayers].isActive
-      ? this._mapboxService.map
+  private resetMapFeatures(): void {
+    /* reset layers & markers after delay to set mapStyle (basemap) */
+    setTimeout((): void => this.addLayers(), 200)
+    setTimeout((): void => this.setMarkerVisibility(), 800)
+  }
+
+  private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
+    layers[id as keyof ILayerVisibility].isActive
+      ? this._map
           .on('click', id, (evt: MapLayerMouseEvent): void => {
             this.onMapClickHandler(evt)
           })
@@ -89,9 +112,13 @@ export default class MapService {
           .on('mouseleave', id, (): void => {
             this.onMapMouseLeaveHandler()
           })
-      : this._mapboxService.map
+      : this._map
           .off('click', id, this.onMapClickHandler)
           .off('mouseenter', id, this.onMapMouseEnterHandler)
           .off('mouseleave', id, this.onMapMouseLeaveHandler)
+  }
+
+  private setMarkerVisibility(): void {
+    this._markerService.setMarkerVisibility()
   }
 }

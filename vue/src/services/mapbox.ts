@@ -1,10 +1,10 @@
-import mapboxgl, { Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
+import mapboxgl, { Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
 import { EndPoints, States } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
-import { HttpService, LogService, MapStyleService, ModalService, StoreService } from '@/services'
+import { HttpService, LogService, MapStyleService, ModalService, StateService } from '@/services'
 import { NavigationControlPosition } from '@/types'
 
 @Service()
@@ -12,7 +12,6 @@ export default class MapboxService {
   private _endPoints: Record<string, string> = EndPoints
   private _navigationControl = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
-  private _skyLayer = <SkyLayer>mapbox.skyLayer
   private _states: Record<string, string> = States
 
   constructor(
@@ -21,13 +20,13 @@ export default class MapboxService {
     private _logService: LogService,
     private _mapStyleService: MapStyleService,
     private _modalService: ModalService,
-    private _storeService: StoreService
+    private _stateService: StateService
   ) {
     this._httpService = Container.get(HttpService)
     this._logService = Container.get(LogService)
     this._mapStyleService = Container.get(MapStyleService)
     this._modalService = Container.get(ModalService)
-    this._storeService = Container.get(StoreService)
+    this._stateService = Container.get(StateService)
   }
 
   get accessToken(): string {
@@ -40,12 +39,12 @@ export default class MapboxService {
 
   private get _state(): IMapboxSettings {
     const { MAPBOX_SETTINGS } = this._states
-    return <IMapboxSettings>this._storeService.getState(MAPBOX_SETTINGS)
+    return <IMapboxSettings>this._stateService.getStaticState(MAPBOX_SETTINGS)
   }
 
   private set _state(settings: IMapboxSettings) {
     const { MAPBOX_SETTINGS } = this._states
-    this._storeService.setState(MAPBOX_SETTINGS, settings)
+    this._stateService.setStaticState(MAPBOX_SETTINGS, settings)
   }
 
   async getAccessToken(): Promise<void> {
@@ -53,9 +52,9 @@ export default class MapboxService {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
       /* prettier-ignore */
       const { data: { token } } = await this._httpService.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
-      token
-        ? this.setAccessToken(token)
-        : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, token)
+      token && <string>token
+        ? this.setAccessToken(<string>token)
+        : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, <string>token)
     } catch (err) {
       this._logService.consoleError(`${this.getAccessToken.name} Http Failed:\n`, err)
     }
@@ -75,17 +74,12 @@ export default class MapboxService {
   }
 
   onMapLoadHandler(): void {
-    this.addSkyLayer()
     this.setMapStyle()
     this.hideModal()
   }
 
   onMapIdleHandler(): void {
     this.setMapboxSettingsState()
-  }
-
-  private addSkyLayer(): void {
-    this._map.addLayer(this._skyLayer)
   }
 
   private hideModal(): void {
@@ -102,12 +96,13 @@ export default class MapboxService {
   }
 
   private setMapboxSettingsState(): void {
+    const { mapStyle: style } = this._mapStyleService
     this._state = {
       bearing: this._map.getBearing(),
       center: this._map.getCenter(),
       pitch: this._map.getPitch(),
-      style: this._mapStyleService.mapStyle,
-      zoom: this._map.getZoom()
+      zoom: this._map.getZoom(),
+      style
     }
   }
 }

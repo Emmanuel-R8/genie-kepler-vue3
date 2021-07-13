@@ -10,6 +10,7 @@ export default class HttpService {
   }
 
   async get(url: string, params?: AxiosRequestConfig): Promise<AxiosResponse> {
-    return await this._axiosService.instance.get(url, params)
+    const { instance: http } = this._axiosService
+    return await http.get(url, params)
   }
 }

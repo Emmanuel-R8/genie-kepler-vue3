@@ -4,12 +4,12 @@ import { LayerElements, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
 import { LayerElement } from '@/types'
 import {
-  LayerService,
+  LayerVisibilityService,
   MapService,
   MapStyleService,
   MarkerService,
-  RouteService,
-  StoreService
+  RouterService,
+  StateService
 } from '@/services'
 
 @Service()
@@ -18,29 +18,29 @@ export default class LayerElementService {
   private _states: Record<string, string> = States
 
   constructor(
-    private _layerService: LayerService,
+    private _layerVisibilityService: LayerVisibilityService,
     private _mapService: MapService,
     private _mapStyleService: MapStyleService,
     private _markerService: MarkerService,
-    private _routeService: RouteService,
-    private _storeService: StoreService
+    private _routerService: RouterService,
+    private _stateService: StateService
   ) {
-    this._layerService = Container.get(LayerService)
+    this._layerVisibilityService = Container.get(LayerVisibilityService)
     this._mapService = Container.get(MapService)
     this._mapStyleService = Container.get(MapStyleService)
     this._markerService = Container.get(MarkerService)
-    this._routeService = Container.get(RouteService)
-    this._storeService = Container.get(StoreService)
+    this._routerService = Container.get(RouterService)
+    this._stateService = Container.get(StateService)
   }
 
   get state(): ILayerElement[] {
     const { LAYER_ELEMENTS } = this._states
-    return <ILayerElement[]>this._storeService.getState(LAYER_ELEMENTS)
+    return <ILayerElement[]>this._stateService.getReactiveState(LAYER_ELEMENTS)
   }
 
   private set _state(layerElements: ILayerElement[]) {
     const { LAYER_ELEMENTS } = this._states
-    this._storeService.setState(LAYER_ELEMENTS, layerElements)
+    this._stateService.setReactiveState(LAYER_ELEMENTS, layerElements)
   }
 
   displayLayerElement(id: LayerElement): void {
@@ -53,13 +53,13 @@ export default class LayerElementService {
       [SATELLITE]: this.satellite,
       [TRAILS]: this.layer
     }
-    layerElements[id](id)
+    layerElements[id] && layerElements[id](id)
   }
 
   private layer = (id: LayerElement): void => {
     const { BIOSPHERE, BIOSPHERE_BORDER, TRAILS } = this._layerElements
     this.setLayerElementsState(id)
-    this.setLayerState(id)
+    this.setLayerVisibilityState(id)
     this.setLayerVisibility(id)
     id === BIOSPHERE && this.setLayerVisibility(<LayerElement>BIOSPHERE_BORDER)
     id === TRAILS && this.toggleMarkerVisibility(id)
@@ -82,17 +82,17 @@ export default class LayerElementService {
   }
 
   private setLayerElementsState(id: LayerElement): void {
-    const layerElements = this.state
+    const state = this.state
     const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
-    const i = layerElements.findIndex(layerElement)
+    const i = state.findIndex(layerElement)
     if (i >= 0) {
-      layerElements[i].isActive = !layerElements[i].isActive
-      this._state = layerElements
+      state[i].isActive = !state[i].isActive
+      this._state = state
     }
   }
 
-  private setLayerState(id: LayerElement): void {
-    this._layerService.setLayerState(id)
+  private setLayerVisibilityState(id: LayerElement): void {
+    this._layerVisibilityService.setLayerVisibilityState(id)
   }
 
   private setLayerVisibility(id: LayerElement): void {
@@ -108,14 +108,11 @@ export default class LayerElementService {
   }
 
   private async setRoute(id: LayerElement): Promise<void> {
-    await this._routeService.setRoute(id)
+    await this._routerService.setRoute(id)
   }
 
   private setMarkerVisibility(): void {
-    /* hide active markers when changing map styles */
     this._markerService.setMarkerVisibility()
-    /* show hidden markers when changing map styles */
-    setTimeout((): void => this._markerService.setMarkerVisibility(), 1000)
   }
 
   private toggleMarkerVisibility(id: LayerElement): void {

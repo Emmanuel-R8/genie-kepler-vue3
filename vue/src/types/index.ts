@@ -3,9 +3,9 @@ import { Feature, FeatureCollection } from 'geojson'
 
 import {
   IDeckglViewSettings,
-  IHexagonLayerReactiveProps,
+  IHexagonLayerProps,
   ILayerElement,
-  ILayers,
+  ILayerVisibility,
   IMapStyle,
   IMapboxSettings,
   IModal
@@ -20,15 +20,16 @@ export type LayerElement =
   | 'satellite'
   | 'trails'
 
-export type LogData = DSVRowArray<string> | Feature[] | FeatureCollection | State
+export type LogData =
+  | DSVRowArray<string>
+  | Feature[]
+  | FeatureCollection
+  | ReactiveState
+  | StaticState
+  | string
 
 export type NavigationControlPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 
-export type State =
-  | IDeckglViewSettings
-  | IHexagonLayerReactiveProps
-  | ILayerElement[]
-  | ILayers
-  | IMapStyle[]
-  | IMapboxSettings
-  | IModal
+export type ReactiveState = IHexagonLayerProps | ILayerElement[] | IModal
+
+export type StaticState = IDeckglViewSettings | ILayerVisibility | IMapStyle[] | IMapboxSettings

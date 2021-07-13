@@ -6,10 +6,9 @@ import { MapboxService } from '@/services'
 
 @Service()
 export default class PopupService {
-  private _popup = new Popup({ closeButton: false })
-
-  constructor(private _mapboxService: MapboxService) {
+  constructor(private _mapboxService: MapboxService, private _popup: Popup) {
     this._mapboxService = Container.get(MapboxService)
+    this._popup = new Popup({ closeButton: false })
   }
 
   addLayerPopup({ features, lngLat }: MapLayerMouseEvent): void {

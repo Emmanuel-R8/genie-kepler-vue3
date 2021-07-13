@@ -28,7 +28,6 @@ export default class MarkerService {
         if (!el.isActive && !el.isHidden) {
           break
         }
-
         el.isActive = !el.isActive
         el.isActive && marker.addTo(this._mapboxService.map)
         el.isHidden = !el.isHidden
@@ -51,7 +50,7 @@ export default class MarkerService {
 
   private createMarker(id: string, feature: Feature): Marker {
     const { geometry, properties } = feature
-    const { lat, lng } = <Record<string, number | undefined>>properties
+    const { lat, lng } = <Record<string, number>>properties
     const el = this.createHTMLMarkerElement(id, feature)
     let marker: Marker
     lat && lng
@@ -62,7 +61,7 @@ export default class MarkerService {
 
   private createHTMLMarkerElement(id: string, feature: Feature): IHTMLMarkerElement {
     const el = <IHTMLMarkerElement>document.createElement('div')
-    el.className = `${id}-marker`
+    el.className = id
     el.isActive = false
     el.isHidden = false
     el.addEventListener('mouseenter', (): void => {

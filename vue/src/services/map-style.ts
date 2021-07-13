@@ -2,14 +2,14 @@ import { Container, Service } from 'typedi'
 
 import { States } from '@/enums'
 import { IMapStyle } from '@/interfaces'
-import { StoreService } from '@/services'
+import { StateService } from '@/services'
 
 @Service()
 export default class MapStyleService {
   private _states: Record<string, string> = States
 
-  constructor(private _mapStyle: string, private _storeService: StoreService) {
-    this._storeService = Container.get(StoreService)
+  constructor(private _mapStyle: string, private _stateService: StateService) {
+    this._stateService = Container.get(StateService)
   }
 
   get mapStyle(): string {
@@ -23,18 +23,18 @@ export default class MapStyleService {
 
   private get _state(): IMapStyle[] {
     const { MAP_STYLES } = this._states
-    return <IMapStyle[]>this._storeService.getState(MAP_STYLES)
+    return <IMapStyle[]>this._stateService.getStaticState(MAP_STYLES)
   }
 
   private set _state(mapStyles: IMapStyle[]) {
     const { MAP_STYLES } = this._states
-    this._storeService.setState(MAP_STYLES, mapStyles)
+    this._stateService.setStaticState(MAP_STYLES, mapStyles)
   }
 
   setMapStyleState(): void {
-    const mapStyles = this._state
-    mapStyles.forEach((mapStyle: IMapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
-    this._state = mapStyles
+    const state = this._state
+    state.forEach((mapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
+    this._state = state
   }
 
   private getMapStyle(): void {

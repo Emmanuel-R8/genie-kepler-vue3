@@ -21,7 +21,7 @@ export interface IDeckglViewSettings {
   zoom: number
 }
 
-export interface IHexagonLayerReactiveProps {
+export interface IHexagonLayerProps {
   coverage: number
   elevationScale: number
   radius: number
@@ -44,16 +44,6 @@ export interface IHexagonLayerStaticProps {
     coverage: number
     elevationScale: number
   }
-}
-
-export interface IHexagonUIProps {
-  coverage: number
-  elevationScale: number
-  radius: number
-  upperPercentile: number
-  setHexagonLayerReactiveProps: (evt: Event) => void
-  resetHexagonLayerReactiveProps: (evt: Event) => void
-  returnToTrails: (evt: Event) => void
 }
 
 export interface IHTMLMarkerElement extends HTMLDivElement {
@@ -99,7 +89,7 @@ export interface ILayerElements {
   trails: string
 }
 
-export interface ILayers {
+export interface ILayerVisibility {
   biosphere: {
     isActive: boolean
   }

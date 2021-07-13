@@ -15,9 +15,9 @@ export enum LayerElements {
 
 export enum States {
   DECKGL_VIEW_SETTINGS = 'deckglViewSettings',
-  HEXAGON_LAYER_REACTIVE_PROPS = 'hexagonLayerReactiveProps',
+  HEXAGON_LAYER_PROPS = 'hexagonLayerProps',
   LAYER_ELEMENTS = 'layerElements',
-  LAYERS = 'layers',
+  LAYER_VISIBILITY = 'layerVisibilty',
   MAP_STYLES = 'mapStyles',
   MAPBOX_SETTINGS = 'mapboxSettings',
   MODAL = 'modal'

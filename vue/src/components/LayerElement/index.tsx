@@ -1,13 +1,9 @@
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
-import { active, inactive } from '@/components/LayerElements/index.module.scss'
+import { active, inactive } from '@/components/LayerElements/index.module.css'
 
 export default defineComponent({
   props: {
-    click: {
-      type: Function as PropType<(evt: Event) => void>,
-      required: true
-    },
     id: {
       type: String,
       required: true
@@ -22,10 +18,11 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { click, id, name } = props
+    const { id, name } = props
     return (): JSX.Element => (
       <li>
-        <div id={id} class={props.isActive ? active : inactive} onClick={click}>
+        {/* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */}
+        <div id={id} class={`layer-element ${props.isActive ? active : inactive}`}>
           {name}
         </div>
       </li>

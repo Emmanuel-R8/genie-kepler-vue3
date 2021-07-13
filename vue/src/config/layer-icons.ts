@@ -10,8 +10,8 @@ export default [
     id: 'biosphere',
     name: 'Biosphere',
     src: 'assets/biosphere.png',
-    height: 16,
-    width: 16
+    height: 15,
+    width: 15
   },
   {
     id: 'office',

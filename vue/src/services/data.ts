@@ -3,7 +3,7 @@ import { csv } from 'd3-fetch'
 import { Feature, FeatureCollection } from 'geojson'
 import { Container, Service } from 'typedi'
 
-import { layer, markers } from '@/config'
+import { layers, markers } from '@/config'
 import { EndPoints, Urls } from '@/enums'
 import { IHttpParams, ILayer, IMarker } from '@/interfaces'
 import { HttpService, LayerService, LogService, MarkerService } from '@/services'
@@ -11,7 +11,7 @@ import { HttpService, LayerService, LogService, MarkerService } from '@/services
 @Service()
 export default class DataService {
   private _endPoints: Record<string, string> = EndPoints
-  private _layers: ILayer[] = layer
+  private _layers: ILayer[] = layers
   private _markers: IMarker[] = markers
   private _urls: Record<string, string> = Urls
 

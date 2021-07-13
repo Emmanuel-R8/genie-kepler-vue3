@@ -1,16 +1,12 @@
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
 import { ILayerElements } from '@/interfaces'
-import layerIcon from '@/components/LayerElements/index.module.scss'
+import layerIcon from '@/components/LayerElements/index.module.css'
 
 export default defineComponent({
   props: {
     alt: {
       type: String,
-      required: true
-    },
-    click: {
-      type: Function as PropType<(evt: Event) => void>,
       required: true
     },
     height: {
@@ -30,14 +26,13 @@ export default defineComponent({
       required: true
     }
   },
-  setup({ alt, click, height, id, src, width }) {
+  setup({ alt, height, id, src, width }) {
     return (): JSX.Element => (
       <img
         alt={alt}
-        class={layerIcon[id as keyof ILayerElements]}
+        class={`layer-element ${layerIcon[id as keyof ILayerElements]}`}
         height={height}
         id={id}
-        onClick={click}
         src={src}
         width={width}
       />

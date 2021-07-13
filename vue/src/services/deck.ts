@@ -7,7 +7,7 @@ import { Container, Service } from 'typedi'
 import { deckgl } from '@/config'
 import { States } from '@/enums'
 import { IDeckglOptions, IDeckglViewSettings } from '@/interfaces'
-import { ModalService, StoreService } from '@/services'
+import { ModalService, StateService } from '@/services'
 
 @Service()
 export default class DeckService {
@@ -19,10 +19,10 @@ export default class DeckService {
     private _deck: Deck,
     private _map: Map,
     private _modalService: ModalService,
-    private _storeService: StoreService
+    private _stateService: StateService
   ) {
     this._modalService = Container.get(ModalService)
-    this._storeService = Container.get(StoreService)
+    this._stateService = Container.get(StateService)
   }
 
   get deck(): Deck {
@@ -35,12 +35,12 @@ export default class DeckService {
 
   private get _state(): IDeckglViewSettings {
     const { DECKGL_VIEW_SETTINGS } = this._states
-    return <IDeckglViewSettings>this._storeService.getState(DECKGL_VIEW_SETTINGS)
+    return <IDeckglViewSettings>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
   }
 
   private set _state(settings: IDeckglViewSettings) {
     const { DECKGL_VIEW_SETTINGS } = this._states
-    this._storeService.setState(DECKGL_VIEW_SETTINGS, settings)
+    this._stateService.setStaticState(DECKGL_VIEW_SETTINGS, settings)
   }
 
   loadDeckgl(): void {
