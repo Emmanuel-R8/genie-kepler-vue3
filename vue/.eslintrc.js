@@ -22,9 +22,8 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: __dirname
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jest'],
   rules: {
-    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/unbound-method': 'off'
   }
