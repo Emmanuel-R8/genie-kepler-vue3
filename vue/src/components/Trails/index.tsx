@@ -1,15 +1,13 @@
-import { Container } from 'typedi'
 import { defineComponent } from 'vue'
 
 import { trails } from '@/config'
-import { TrailService } from '@/services'
-import { trail } from './index.module.scss'
+import { trail } from './index.module.css'
 
 export default defineComponent({
   setup() {
     return (): JSX.Element => (
-      <div>
-        <select class={trail} onChange={onSelectTrailChangeHandler}>
+      <div class={trail}>
+        <select class="trails">
           {trails.map(({ name }) => (
             <option key={name}>{name}</option>
           ))}
@@ -18,11 +16,3 @@ export default defineComponent({
     )
   }
 })
-
-const onSelectTrailChangeHandler = (evt: Event): void => {
-  evt.stopPropagation()
-  /* prettier-ignore */
-  const { target: { value: trailName } }: Record<string, any> = evt
-  const trailService = Container.get(TrailService)
-  trailName && trailService.selectTrail(trailName)
-}

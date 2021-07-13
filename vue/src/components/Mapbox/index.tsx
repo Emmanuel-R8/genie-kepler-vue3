@@ -1,8 +1,24 @@
 import { Container } from 'typedi'
-import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
 
-import { MapService, MapboxService, MarkerService } from '@/services'
-import { mapbox } from './index.module.scss'
+import { EventService, MapService, MarkerService } from '@/services'
+import { mapbox } from './index.module.css'
+
+const addEventListeners = (): void => {
+  const eventService = Container.get(EventService)
+  eventService.setDisplayLayerElementEventListener(true)
+  eventService.setSelectTrailChangeEventListener(true)
+}
+const removeEventListeners = (): void => {
+  const eventService = Container.get(EventService)
+  eventService.setDisplayLayerElementEventListener(false)
+  eventService.setSelectTrailChangeEventListener(false)
+  eventService.removeMapboxEventListeners()
+}
+const setMarkerVisibility = (): void => {
+  const markerService = Container.get(MarkerService)
+  markerService.setMarkerVisibility()
+}
 
 export default defineComponent({
   props: {
@@ -15,24 +31,12 @@ export default defineComponent({
     onMounted(async (): Promise<void> => {
       const mapService = Container.get(MapService)
       await mapService.loadMapLayer()
-      setMarkerVisibility()
+      addEventListeners()
     })
-    onUnmounted((): void => {
-      const mapService = Container.get(MapService)
-      const mapboxService = Container.get(MapboxService)
-      mapboxService.map.off('click', mapService.onMapClickHandler)
-      mapboxService.map.off('load', mapService.onMapLoadHandler)
-      mapboxService.map.off('mouseenter', mapService.onMapMouseEnterHandler)
-      mapboxService.map.off('mouseleave', mapService.onMapMouseLeaveHandler)
-      mapboxService.map.off('idle', mapboxService.onMapIdleHandler)
-      mapboxService.map.off('load', mapboxService.onMapLoadHandler)
+    onBeforeUnmount((): void => {
+      removeEventListeners()
       setMarkerVisibility()
     })
     return (): JSX.Element => <div id={container} class={mapbox}></div>
   }
 })
-
-const setMarkerVisibility = (): void => {
-  const markerService = Container.get(MarkerService)
-  setTimeout((): void => markerService.setMarkerVisibility(), 1000)
-}
