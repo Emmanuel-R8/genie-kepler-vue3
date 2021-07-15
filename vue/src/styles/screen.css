@@ -1,6 +1,7 @@
 html {
   background-color: rgb(166, 163, 157);
   box-sizing: border-box;
+  font-size: 62.5%;
   overflow-y: hidden;
 }
 
@@ -9,8 +10,7 @@ body {
   font-family: 'Archivo', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 1em;
-  font-weight: 400;
+  font-size: 1.6rem;
   height: 100%;
   margin: 0;
   padding: 0;

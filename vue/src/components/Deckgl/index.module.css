@@ -4,12 +4,12 @@
   left: 0;
   position: absolute;
   right: 0;
-  top: 45px;
+  top: 4.5rem;
   width: 100%;
 }
 
 .hexagonLayer {
   position: absolute;
-  top: 45px;
+  top: 4.5rem;
   width: 100%;
 }

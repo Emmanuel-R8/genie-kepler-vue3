@@ -2,13 +2,13 @@
   animation: slide-in 1s ease-out forwards;
   left: 10px;
   position: absolute;
-  top: 385px;
+  top: 38.5rem;
 }
 
 .trail select {
   border: 2px solid rgb(187, 187, 187);
   font: inherit;
-  width: 139px;
+  width: 13.9rem;
 }
 
 @keyframes slide-in {

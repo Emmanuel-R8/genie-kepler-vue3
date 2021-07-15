@@ -7,12 +7,12 @@ export default defineComponent({
     return (): JSX.Element => (
       <header class={header}>
         <img src="assets/logo.png" alt="Geospatial Web" />
-        <h1 class={name}>Geospatial Web</h1>
-        <h2 class={title}>
+        <div class={name}>Geospatial Web</div>
+        <div class={title}>
           Golang API&ensp;&#58;&ensp;Vue 3 Composition
           API&ensp;&#58;&ensp;TSX&ensp;&#58;&ensp;Mapbox GL&ensp;&#58;&ensp;Deck
           GL&ensp;&#58;&ensp;PostgreSQL
-        </h2>
+        </div>
         <a
           href="https://gitlab.com/geospatialweb/go-vue3-tsx"
           rel="noopener noreferrer"

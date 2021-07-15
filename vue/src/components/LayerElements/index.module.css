@@ -8,8 +8,8 @@ ul.elements {
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 175px;
-  width: 135px;
+  top: 17.5rem;
+  width: 13.5rem;
 }
 
 ul.elements li div {
@@ -47,43 +47,43 @@ ul.icons {
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 183px;
+  top: 175px;
 }
 
 ul.icons img.satellite {
   left: 22px;
   position: absolute;
-  top: 0px;
+  top: 8px;
 }
 
 ul.icons img.biosphere {
   left: 23px;
   position: absolute;
-  top: 32px;
+  top: 40px;
 }
 
 ul.icons img.office {
   left: 22px;
   position: absolute;
-  top: 60px;
+  top: 68px;
 }
 
 ul.icons img.places {
   left: 22px;
   position: absolute;
-  top: 90px;
+  top: 98px;
 }
 
 ul.icons img.trails {
   left: 22px;
   position: absolute;
-  top: 120px;
+  top: 128px;
 }
 
 ul.icons img.deckgl {
   left: 22px;
   position: absolute;
-  top: 150px;
+  top: 158px;
 }
 
 @keyframes fade-in {
