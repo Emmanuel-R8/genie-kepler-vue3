@@ -24,7 +24,6 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'jest'],
   rules: {
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/unbound-method': 'off'
+    '@typescript-eslint/no-unsafe-assignment': 'off'
   }
 }
