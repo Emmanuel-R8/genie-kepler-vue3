@@ -68,8 +68,8 @@ const html = ({
       <span>{upperPercentile}</span>
     </div>
     <hr />
-    <button class="reset">Reset Parameters</button>
-    <button class="mapbox">Return to Trails</button>
+    <button id="reset">Reset Parameters</button>
+    <button id="mapbox">Return to Trails</button>
   </div>
 )
 

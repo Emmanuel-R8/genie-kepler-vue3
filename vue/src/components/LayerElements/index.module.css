@@ -1,14 +1,12 @@
 ul.elements {
-  animation: fade-in 1.5s ease-out forwards;
+  animation: fade-in 2s ease-out forwards;
   border: 2px solid rgb(187, 187, 187);
   border-radius: 4px;
   cursor: pointer;
   left: 10px;
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   position: absolute;
-  top: 17.5rem;
+  top: 18rem;
   width: 13.5rem;
 }
 
@@ -16,7 +14,7 @@ ul.elements li div {
   border: 1px solid rgb(187, 187, 187);
   border-bottom-width: 0;
   line-height: 1.1;
-  padding: 6px 0 6px 40px;
+  padding: 6px 0 6px 4rem;
   text-shadow: 1px 1px 2px rgb(220, 210, 200);
 }
 
@@ -31,59 +29,31 @@ ul.elements li div.inactive {
   text-shadow: 1px 1px 2px rgb(220, 210, 200);
 }
 
-ul.elements li:last-child div {
-  border-bottom-width: 1px;
-}
-
-ul.elements li div:hover:not(.active) {
+ul.elements li div.inactive:hover,
+ul.elements li img:hover + div.inactive {
   background-color: rgb(140, 130, 120);
   color: rgb(238, 238, 238);
   text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 
-ul.icons {
-  animation: slide-in 1s ease-out forwards;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
+ul.elements li img.deckgl,
+ul.elements li img.office,
+ul.elements li img.places,
+ul.elements li img.satellite,
+ul.elements li img.trails {
+  margin-left: 1.2rem;
+  margin-top: 0.6rem;
   position: absolute;
-  top: 175px;
 }
 
-ul.icons img.satellite {
-  left: 22px;
+ul.elements li img.biosphere {
+  margin-left: 1.3rem;
+  margin-top: 0.8rem;
   position: absolute;
-  top: 8px;
 }
 
-ul.icons img.biosphere {
-  left: 23px;
-  position: absolute;
-  top: 40px;
-}
-
-ul.icons img.office {
-  left: 22px;
-  position: absolute;
-  top: 68px;
-}
-
-ul.icons img.places {
-  left: 22px;
-  position: absolute;
-  top: 98px;
-}
-
-ul.icons img.trails {
-  left: 22px;
-  position: absolute;
-  top: 128px;
-}
-
-ul.icons img.deckgl {
-  left: 22px;
-  position: absolute;
-  top: 158px;
+ul.elements li:last-child div {
+  border-bottom-width: 1px;
 }
 
 @keyframes fade-in {
@@ -92,14 +62,5 @@ ul.icons img.deckgl {
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(-50px);
-  }
-  to {
-    transform: translateX(0);
   }
 }

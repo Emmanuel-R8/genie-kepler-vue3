@@ -20,12 +20,10 @@ export default defineComponent({
   setup(props) {
     const { id, name } = props
     return (): JSX.Element => (
-      <li>
-        {/* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */}
-        <div id={id} class={`layer-element ${props.isActive ? active : inactive}`}>
-          {name}
-        </div>
-      </li>
+      /* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */
+      <div id={id} class={`layer-element ${props.isActive ? active : inactive}`}>
+        {name}
+      </div>
     )
   }
 })

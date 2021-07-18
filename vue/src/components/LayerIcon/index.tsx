@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 
 import { ILayerElements } from '@/interfaces'
-import layerIcon from '@/components/LayerElements/index.module.css'
+import layerElements from '@/components/LayerElements/index.module.css'
 
 export default defineComponent({
   props: {
@@ -30,7 +30,7 @@ export default defineComponent({
     return (): JSX.Element => (
       <img
         alt={alt}
-        class={`layer-element ${layerIcon[id as keyof ILayerElements]}`}
+        class={`layer-element ${layerElements[id as keyof ILayerElements]}`}
         height={height}
         id={id}
         src={src}

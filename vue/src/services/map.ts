@@ -45,23 +45,6 @@ export default class MapService {
     })
   }
 
-  onMapLoadHandler(): void {
-    this.addLayers()
-  }
-
-  onMapClickHandler(evt: MapLayerMouseEvent): void {
-    this._popupService.addLayerPopup(evt)
-  }
-
-  onMapMouseEnterHandler(): void {
-    this._map.getCanvas().style.cursor = 'pointer'
-  }
-
-  onMapMouseLeaveHandler(): void {
-    this._map.getCanvas().style.cursor = ''
-    this._popupService.removePopup()
-  }
-
   flyTo({ center, zoom }: ITrail): void {
     this._map.flyTo({
       center,
@@ -84,6 +67,10 @@ export default class MapService {
     id === BIOSPHERE && this.setLayerVisibilityEventListeners(id, layers)
   }
 
+  private onMapLoadHandler(): void {
+    this.addLayers()
+  }
+
   private addLayers(): void {
     this._map.addLayer(this._skyLayer)
     const { layers } = this._layerService
@@ -94,28 +81,36 @@ export default class MapService {
     }
   }
 
+  private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
+    layers[id as keyof ILayerVisibility].isActive
+      ? this._map
+          .on('click', id, (evt: MapLayerMouseEvent): void => this.onMapClickHandler(evt))
+          .on('mouseenter', id, (): void => this.onMapMouseEnterHandler())
+          .on('mouseleave', id, (): void => this.onMapMouseLeaveHandler())
+      : this._map
+          /* eslint-disable @typescript-eslint/unbound-method */
+          .off('click', id, this.onMapClickHandler)
+          .off('mouseenter', id, this.onMapMouseEnterHandler)
+          .off('mouseleave', id, this.onMapMouseLeaveHandler)
+  }
+
+  private onMapClickHandler(evt: MapLayerMouseEvent): void {
+    this._popupService.addLayerPopup(evt)
+  }
+
+  private onMapMouseEnterHandler(): void {
+    this._map.getCanvas().style.cursor = 'pointer'
+  }
+
+  private onMapMouseLeaveHandler(): void {
+    this._map.getCanvas().style.cursor = ''
+    this._popupService.removePopup()
+  }
+
   private resetMapFeatures(): void {
     /* reset layers & markers after delay to set mapStyle (basemap) */
     setTimeout((): void => this.addLayers(), 200)
     setTimeout((): void => this.setMarkerVisibility(), 800)
-  }
-
-  private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
-    layers[id as keyof ILayerVisibility].isActive
-      ? this._map
-          .on('click', id, (evt: MapLayerMouseEvent): void => {
-            this.onMapClickHandler(evt)
-          })
-          .on('mouseenter', id, (): void => {
-            this.onMapMouseEnterHandler()
-          })
-          .on('mouseleave', id, (): void => {
-            this.onMapMouseLeaveHandler()
-          })
-      : this._map
-          .off('click', id, this.onMapClickHandler)
-          .off('mouseenter', id, this.onMapMouseEnterHandler)
-          .off('mouseleave', id, this.onMapMouseLeaveHandler)
   }
 
   private setMarkerVisibility(): void {

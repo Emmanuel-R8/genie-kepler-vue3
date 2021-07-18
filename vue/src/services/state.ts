@@ -42,9 +42,9 @@ export default class StateService {
   }
 
   setReactiveState(state: string, payload: ReactiveState): void {
-    this.logState(true, state, 'OLD')
+    this.logReactiveState(state, 'OLD')
     this._reactiveState[state].push(cloneDeep(payload))
-    this.logState(true, state, 'NEW')
+    this.logReactiveState(state, 'NEW')
   }
 
   getStaticState(state: string): StaticState {
@@ -52,9 +52,9 @@ export default class StateService {
   }
 
   setStaticState(state: string, payload: StaticState): void {
-    this.logState(false, state, 'OLD')
+    this.logStaticState(state, 'OLD')
     this._staticState[state].push(cloneDeep(payload))
-    this.logState(false, state, 'NEW')
+    this.logStaticState(state, 'NEW')
   }
 
   private createReactiveState(): void {
@@ -76,10 +76,11 @@ export default class StateService {
     }
   }
 
-  private logState(reactive: boolean, state: string, status: string): void {
-    this._logService.consoleLog(
-      `${state} ${status} state:`,
-      reactive ? this.getReactiveState(state) : this.getStaticState(state)
-    )
+  private logReactiveState(state: string, status: string): void {
+    this._logService.consoleLog(`${state} ${status} state:`, this.getReactiveState(state))
+  }
+
+  private logStaticState(state: string, status: string): void {
+    this._logService.consoleLog(`${state} ${status} state:`, this.getStaticState(state))
   }
 }

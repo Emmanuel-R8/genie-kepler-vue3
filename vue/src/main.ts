@@ -3,6 +3,6 @@ import { createApp } from 'vue'
 
 import App from './App'
 import { router } from './router'
-import './styles/screen.css'
+import './styles/index.css'
 
 createApp(App).use(router).mount('#app')

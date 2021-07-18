@@ -101,7 +101,7 @@ export default class DataService {
   }: ILayer | IMarker): Promise<FeatureCollection> {
     const { GEOJSON_ENDPOINT } = this._endPoints
     const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
-    const { data } = await this._httpService.get(GEOJSON_ENDPOINT, { params })
+    const { data } = await this._httpService.getRequest(GEOJSON_ENDPOINT, { params })
     return <FeatureCollection>data
   }
 }

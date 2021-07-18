@@ -5,6 +5,7 @@ export interface IDeckglOptions {
   canvas: string
   container: string
   controller: boolean
+  id: string
   interactive: boolean
   maxPitch: number
   maxZoom: number
@@ -75,9 +76,12 @@ export interface ILayer extends IMarker {
 }
 
 export interface ILayerElement {
+  height: number
   id: string
   isActive: boolean
   name: string
+  src: string
+  width: number
 }
 
 export interface ILayerElements {

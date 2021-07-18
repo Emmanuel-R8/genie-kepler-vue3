@@ -1,17 +1,31 @@
 import { Container } from 'typedi'
-import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-import { EventService, HexagonLayerService, MapStyleService, MarkerService } from '@/services'
+import {
+  DeckglService,
+  EventListenerService,
+  HexagonLayerService,
+  MapStyleService,
+  MarkerService
+} from '@/services'
 import { deckgl, hexagonLayer } from './index.module.css'
 
 const addEventListeners = (): void => {
-  const eventService = Container.get(EventService)
-  eventService.setHexagonLayerEventListeners(true)
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.addHexagonLayerEventListeners()
 }
 const removeEventListeners = (): void => {
-  const eventService = Container.get(EventService)
-  eventService.setHexagonLayerEventListeners(false)
-  eventService.removeDeckglEventListeners()
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.removeHexagonLayerEventListeners()
+}
+const removeDeckInstance = (): void => {
+  const deckglService = Container.get(DeckglService)
+  /* eslint-disable-next-line */
+  deckglService.deck.finalize()
+}
+const removeMapInstance = (): void => {
+  const deckglService = Container.get(DeckglService)
+  deckglService.map.remove()
 }
 const setMarkerVisibility = (): void => {
   const markerService = Container.get(MarkerService)
@@ -42,6 +56,10 @@ export default defineComponent({
     onBeforeUnmount((): void => {
       removeEventListeners()
       setMarkerVisibility()
+    })
+    onUnmounted((): void => {
+      removeDeckInstance()
+      removeMapInstance()
     })
     return (): JSX.Element => (
       <>

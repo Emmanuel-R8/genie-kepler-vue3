@@ -7,17 +7,23 @@ import { Urls } from '@/enums'
 export default class AxiosService {
   private _urls: Record<string, string> = Urls
 
-  constructor(private _axios: AxiosStatic, private _instance: AxiosInstance) {
+  constructor(private _axios: AxiosStatic, private _httpClient: AxiosInstance) {
     this._axios = axios
   }
 
-  get instance(): AxiosInstance {
-    return this._instance
+  get httpClient(): AxiosInstance {
+    return this._httpClient
   }
 
-  createInstance(): void {
-    const { create } = this._axios
+  createHttpClient(): void {
     const { API_BASE_URL } = this._urls
-    this._instance = create({ baseURL: API_BASE_URL })
+    this._httpClient = this._axios.create({
+      baseURL: API_BASE_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      timeout: 2000
+    })
   }
 }

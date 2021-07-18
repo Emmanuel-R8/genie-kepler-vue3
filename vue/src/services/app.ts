@@ -10,11 +10,11 @@ export default class AppService {
   }
 
   async loadData(): Promise<void> {
-    this.createAxiosInstance()
+    this.createHttpClient()
     await this._dataService.loadData()
   }
 
-  private createAxiosInstance(): void {
-    this._axiosService.createInstance()
+  private createHttpClient(): void {
+    this._axiosService.createHttpClient()
   }
 }

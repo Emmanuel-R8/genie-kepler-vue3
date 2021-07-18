@@ -13,7 +13,7 @@ import { Container, Service } from 'typedi'
 import { hexagonLayer } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerProps, IHexagonLayerStaticProps } from '@/interfaces'
-import { DataService, DeckService, MapboxService, StateService } from '@/services'
+import { DataService, DeckglService, MapboxService, StateService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
@@ -24,12 +24,12 @@ export default class HexagonLayerService {
 
   constructor(
     private _dataService: DataService,
-    private _deckService: DeckService,
+    private _deckglService: DeckglService,
     private _mapboxService: MapboxService,
     private _stateService: StateService
   ) {
     this._dataService = Container.get(DataService)
-    this._deckService = Container.get(DeckService)
+    this._deckglService = Container.get(DeckglService)
     this._mapboxService = Container.get(MapboxService)
     this._stateService = Container.get(StateService)
   }
@@ -47,15 +47,11 @@ export default class HexagonLayerService {
   async loadHexagonLayer(): Promise<void> {
     const { accessToken } = this._mapboxService
     !accessToken && (await this._mapboxService.getAccessToken())
-    this._deckService.loadDeckgl()
-    this._deckService.loadMapbox()
-    this._deckService.map.on('load', (): void => {
+    this._deckglService.loadDeckgl()
+    this._deckglService.loadMapbox()
+    this._deckglService.map.on('load', (): void => {
       this.onMapLoadHandler()
     })
-  }
-
-  onMapLoadHandler(): void {
-    this.renderHexagonLayer()
   }
 
   setHexagonLayerPropsState(prop: string, value: string): void {
@@ -70,9 +66,13 @@ export default class HexagonLayerService {
     this.renderHexagonLayer()
   }
 
+  private onMapLoadHandler(): void {
+    this.renderHexagonLayer()
+  }
+
   private renderHexagonLayer(): void {
     !this._hexagonLayerData?.length && this.setHexagonLayerData()
-    const { deck } = this._deckService
+    const { deck } = this._deckglService
     const hexagonLayer = new HexagonLayer({
       data: this._hexagonLayerData,
       getPosition: (d: number[]): number[] => d,

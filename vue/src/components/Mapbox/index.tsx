@@ -1,19 +1,22 @@
 import { Container } from 'typedi'
-import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-import { EventService, MapService, MarkerService } from '@/services'
+import { EventListenerService, MapService, MapboxService, MarkerService } from '@/services'
 import { mapbox } from './index.module.css'
 
 const addEventListeners = (): void => {
-  const eventService = Container.get(EventService)
-  eventService.setDisplayLayerElementEventListener(true)
-  eventService.setSelectTrailChangeEventListener(true)
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.addDisplayLayerElementEventListener()
+  eventListenerService.addSelectTrailChangeEventListener()
 }
 const removeEventListeners = (): void => {
-  const eventService = Container.get(EventService)
-  eventService.setDisplayLayerElementEventListener(false)
-  eventService.setSelectTrailChangeEventListener(false)
-  eventService.removeMapboxEventListeners()
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.removeDisplayLayerElementEventListener()
+  eventListenerService.removeSelectTrailChangeEventListener()
+}
+const removeMapInstance = (): void => {
+  const mapboxService = Container.get(MapboxService)
+  mapboxService.map.remove()
 }
 const setMarkerVisibility = (): void => {
   const markerService = Container.get(MarkerService)
@@ -36,6 +39,9 @@ export default defineComponent({
     onBeforeUnmount((): void => {
       removeEventListeners()
       setMarkerVisibility()
+    })
+    onUnmounted((): void => {
+      removeMapInstance()
     })
     return (): JSX.Element => <div id={container} class={mapbox}></div>
   }

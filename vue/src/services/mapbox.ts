@@ -30,7 +30,8 @@ export default class MapboxService {
   }
 
   get accessToken(): string {
-    return mapboxgl.accessToken
+    const { accessToken } = mapboxgl
+    return accessToken
   }
 
   get map(): Map {
@@ -51,7 +52,7 @@ export default class MapboxService {
     try {
       const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
       /* prettier-ignore */
-      const { data: { token } } = await this._httpService.get(MAPBOX_ACCESS_TOKEN_ENDPOINT)
+      const { data: { token } } = await this._httpService.getRequest(MAPBOX_ACCESS_TOKEN_ENDPOINT)
       token && <string>token
         ? this.setAccessToken(<string>token)
         : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, <string>token)
@@ -73,12 +74,12 @@ export default class MapboxService {
       })
   }
 
-  onMapLoadHandler(): void {
+  private onMapLoadHandler(): void {
     this.setMapStyle()
     this.hideModal()
   }
 
-  onMapIdleHandler(): void {
+  private onMapIdleHandler(): void {
     this.setMapboxSettingsState()
   }
 

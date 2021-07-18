@@ -4,7 +4,7 @@ import { computed, defineComponent } from 'vue'
 import { HexagonUI } from '@/components'
 import { IHexagonLayerProps } from '@/interfaces'
 import { HexagonLayerService } from '@/services'
-import { hexagon } from './index.module.css'
+import { hexagonUI } from './index.module.css'
 
 const html = ({
   coverage,
@@ -13,7 +13,7 @@ const html = ({
   upperPercentile
 }: IHexagonLayerProps): JSX.Element => (
   <HexagonUI
-    class={hexagon}
+    class={hexagonUI}
     coverage={coverage}
     elevationScale={elevationScale}
     radius={radius}

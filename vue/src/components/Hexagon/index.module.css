@@ -1,4 +1,4 @@
-.hexagon {
+.hexagonUI {
   animation: slide-in 1.5s ease-out forwards;
   background-color: rgb(160, 150, 140);
   border: 3px solid rgb(187, 187, 187);
@@ -12,40 +12,41 @@
   width: 17.5rem;
 }
 
-.hexagon button {
+.hexagonUI button {
   border: 2px solid rgb(187, 187, 187);
   cursor: pointer;
   font: inherit;
   margin-top: 5px;
-  padding: 3px 0 2px 0;
+  padding-bottom: 2px;
+  padding-top: 3px;
   text-align: center;
   width: 100%;
 }
 
-.hexagon button:hover {
+.hexagonUI button:hover {
   background-color: rgb(120, 110, 100);
   color: rgb(255, 255, 255);
   text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 
-.hexagon header {
+.hexagonUI header {
   font-size: 1.85rem;
   font-weight: bold;
   text-align: center;
   text-shadow: 1px 1px 2px rgb(220, 210, 200);
 }
 
-.hexagon input {
+.hexagonUI input {
   cursor: pointer;
   width: 100%;
 }
 
-.hexagon label {
+.hexagonUI label {
   cursor: pointer;
   text-shadow: 1px 1px 2px rgb(220, 210, 200);
 }
 
-.hexagon span {
+.hexagonUI span {
   color: rgb(255, 255, 255);
 }
 

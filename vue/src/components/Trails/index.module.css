@@ -1,13 +1,11 @@
-.trail {
-  animation: slide-in 1s ease-out forwards;
-  left: 10px;
-  position: absolute;
-  top: 38.5rem;
-}
-
-.trail select {
+select.trail {
+  animation: slide-in 1.25s ease-out forwards;
   border: 2px solid rgb(187, 187, 187);
   font: inherit;
+  font-size: 1.5rem;
+  left: 10px;
+  position: absolute;
+  top: 39rem;
   width: 13.9rem;
 }
 

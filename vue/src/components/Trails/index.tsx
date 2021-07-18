@@ -6,13 +6,12 @@ import { trail } from './index.module.css'
 export default defineComponent({
   setup() {
     return (): JSX.Element => (
-      <div class={trail}>
-        <select class="trails">
-          {trails.map(({ name }) => (
-            <option key={name}>{name}</option>
-          ))}
-        </select>
-      </div>
+      /* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */
+      <select class={`trails ${trail}`}>
+        {trails.map(({ name }) => (
+          <option key={name}>{name}</option>
+        ))}
+      </select>
     )
   }
 })

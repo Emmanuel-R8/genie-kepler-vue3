@@ -1,8 +1,9 @@
 export default {
   options: {
-    canvas: 'hexagon',
+    canvas: 'hexagon-layer',
     container: 'deckgl',
     controller: true,
+    id: 'hexagon-layer',
     interactive: false,
     maxPitch: 80,
     maxZoom: 12,
