@@ -1,7 +1,7 @@
 .hexagonUI {
   animation: slide-in 1.5s ease-out forwards;
-  background-color: rgb(160, 150, 140);
-  border: 3px solid rgb(187, 187, 187);
+  background-color: var(--light-taupe);
+  border: var(--thick-grey-border);
   border-radius: 4px;
   cursor: pointer;
   left: 10px;
@@ -13,7 +13,8 @@
 }
 
 .hexagonUI button {
-  border: 2px solid rgb(187, 187, 187);
+  background-color: var(--light-grey);
+  border: var(--standard-grey-border);
   cursor: pointer;
   font: inherit;
   margin-top: 5px;
@@ -24,16 +25,16 @@
 }
 
 .hexagonUI button:hover {
-  background-color: rgb(120, 110, 100);
-  color: rgb(255, 255, 255);
-  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+  background-color: var(--dark-taupe);
+  color: var(--white);
+  text-shadow: var(--black-text-shadow);
 }
 
 .hexagonUI header {
   font-size: 1.85rem;
   font-weight: bold;
   text-align: center;
-  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+  text-shadow: var(--cream-text-shadow);
 }
 
 .hexagonUI input {
@@ -43,11 +44,11 @@
 
 .hexagonUI label {
   cursor: pointer;
-  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+  text-shadow: var(--cream-text-shadow);
 }
 
 .hexagonUI span {
-  color: rgb(255, 255, 255);
+  color: var(--white);
 }
 
 @keyframes slide-in {

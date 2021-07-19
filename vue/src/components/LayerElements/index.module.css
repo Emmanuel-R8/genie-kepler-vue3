@@ -1,6 +1,6 @@
 ul.elements {
   animation: fade-in 2s ease-out forwards;
-  border: 2px solid rgb(187, 187, 187);
+  border: var(--standard-grey-border);
   border-radius: 4px;
   cursor: pointer;
   left: 10px;
@@ -11,29 +11,29 @@ ul.elements {
 }
 
 ul.elements li div {
-  border: 1px solid rgb(187, 187, 187);
+  border: var(--thin-grey-border);
   border-bottom-width: 0;
   line-height: 1.1;
   padding: 6px 0 6px 4rem;
-  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+  text-shadow: var(--cream-text-shadow);
 }
 
 ul.elements li div.active {
-  background-color: rgb(120, 110, 100);
-  color: rgb(238, 238, 238);
-  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+  background-color: var(--dark-taupe);
+  color: var(--light-grey);
+  text-shadow: var(--black-text-shadow);
 }
 
 ul.elements li div.inactive {
-  background-color: rgb(160, 150, 140);
-  text-shadow: 1px 1px 2px rgb(220, 210, 200);
+  background-color: var(--light-taupe);
+  text-shadow: var(--cream-text-shadow);
 }
 
 ul.elements li div.inactive:hover,
 ul.elements li img:hover + div.inactive {
-  background-color: rgb(140, 130, 120);
-  color: rgb(238, 238, 238);
-  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+  background-color: var(--taupe);
+  color: var(--light-grey);
+  text-shadow: var(--black-text-shadow);
 }
 
 ul.elements li img.deckgl,

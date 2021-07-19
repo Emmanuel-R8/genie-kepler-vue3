@@ -1,5 +1,5 @@
 .deckgl {
-  background-color: rgb(0, 0, 0);
+  background-color: var(--black);
   bottom: 0;
   position: absolute;
   top: 4.5rem;

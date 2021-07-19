@@ -1,6 +1,6 @@
 select.trail {
   animation: slide-in 1.25s ease-out forwards;
-  border: 2px solid rgb(187, 187, 187);
+  border: var(--standard-grey-border);
   font: inherit;
   font-size: 1.5rem;
   left: 10px;

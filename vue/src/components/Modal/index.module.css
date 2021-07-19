@@ -1,5 +1,5 @@
 .modal {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--black-alpha-3);
   bottom: 0;
   position: absolute;
   top: 4.5rem;
