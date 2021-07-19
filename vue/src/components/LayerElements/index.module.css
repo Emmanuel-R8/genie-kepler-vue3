@@ -20,7 +20,7 @@ ul.elements li div {
 
 ul.elements li div.active {
   background-color: var(--dark-taupe);
-  color: var(--light-grey);
+  color: var(--white);
   text-shadow: var(--black-text-shadow);
 }
 
@@ -32,7 +32,7 @@ ul.elements li div.inactive {
 ul.elements li div.inactive:hover,
 ul.elements li img:hover + div.inactive {
   background-color: var(--taupe);
-  color: var(--light-grey);
+  color: var(--white);
   text-shadow: var(--black-text-shadow);
 }
 

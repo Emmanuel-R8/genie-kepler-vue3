@@ -2,20 +2,19 @@
   --black: rgb(0, 0, 0);
   --black-alpha-3: rgba(0, 0, 0, 0.3);
   --cream: rgb(220, 210, 200);
-  --dark-taupe: rgb(120, 110, 100);
-  --grey: rgb(187, 187, 187);
   --light-cream: rgb(240, 230, 220);
-  --light-grey: rgb(238, 238, 238);
-  --light-taupe: rgb(160, 150, 140);
+  --grey: rgb(187, 187, 187);
   --taupe: rgb(140, 130, 120);
+  --light-taupe: rgb(160, 150, 140);
+  --dark-taupe: rgb(120, 110, 100);
   --white: rgb(255, 255, 255);
 
   --black-text-shadow: 1px 1px 2px var(--black);
   --black-bold-text-shadow: 2px 2px 2px var(--black);
   --cream-text-shadow: 1px 1px 2px var(--cream);
 
-  --thin-grey-border: 1px solid var(--grey);
   --standard-grey-border: 2px solid var(--grey);
+  --thin-grey-border: 1px solid var(--grey);
   --thick-grey-border: 3px solid var(--grey);
 }
 

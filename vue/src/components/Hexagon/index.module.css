@@ -13,7 +13,7 @@
 }
 
 .hexagonUI button {
-  background-color: var(--light-grey);
+  background-color: var(--white);
   border: var(--standard-grey-border);
   cursor: pointer;
   font: inherit;
