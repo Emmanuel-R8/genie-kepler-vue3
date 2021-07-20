@@ -12,7 +12,7 @@ const html = ({
     <header>GB Road Accidents</header>
     <hr />
     <div>
-      <label>Coverage</label>
+      <label class="props">Coverage</label>
       {/* prettier-ignore */}
       <input
         id="coverage"
@@ -27,7 +27,7 @@ const html = ({
     </div>
     <hr />
     <div>
-      <label>Elevation Scale</label>
+      <label class="props">Elevation Scale</label>
       <input
         id="elevationScale"
         class="props"
@@ -41,7 +41,7 @@ const html = ({
     </div>
     <hr />
     <div>
-      <label>Radius</label>
+      <label class="props">Radius</label>
       <input
         id="radius"
         class="props"
@@ -55,7 +55,7 @@ const html = ({
     </div>
     <hr />
     <div>
-      <label>Upper Percentile</label>
+      <label class="props">Upper Percentile</label>
       <input
         id="upperPercentile"
         class="props"
