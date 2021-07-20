@@ -58,7 +58,7 @@ export default class LayerElementService {
 
   private layer = (id: LayerElement): void => {
     const { BIOSPHERE, BIOSPHERE_BORDER, TRAILS } = this._layerElements
-    this.setLayerElementsState(id)
+    this.setLayerElementState(id)
     this.setLayerVisibilityState(id)
     this.setLayerVisibility(id)
     id === BIOSPHERE && this.setLayerVisibility(<LayerElement>BIOSPHERE_BORDER)
@@ -66,7 +66,7 @@ export default class LayerElementService {
   }
 
   private marker = (id: LayerElement): void => {
-    this.setLayerElementsState(id)
+    this.setLayerElementState(id)
     this.toggleMarkerVisibility(id)
   }
 
@@ -75,13 +75,13 @@ export default class LayerElementService {
   }
 
   private satellite = (id: LayerElement): void => {
-    this.setLayerElementsState(id)
+    this.setLayerElementState(id)
     this.setMarkerVisibility()
     this.setMapStyleState()
     this.setMapStyle()
   }
 
-  private setLayerElementsState(id: LayerElement): void {
+  private setLayerElementState(id: LayerElement): void {
     const state = this.state
     const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
     const i = state.findIndex(layerElement)

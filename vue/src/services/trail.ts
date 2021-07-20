@@ -13,8 +13,8 @@ export default class TrailService {
   }
 
   selectTrail(trailName: string): void {
-    const trail = (trail: ITrail): boolean => trail.name === trailName
-    const i = this._trails.findIndex(trail)
-    i > 0 && this._mapService.flyTo(this._trails[i])
+    const isSelected = (trail: ITrail): boolean => trail.name === trailName
+    const trail = this._trails.find(isSelected)
+    trail && this._mapService.flyTo(trail)
   }
 }
