@@ -29,26 +29,30 @@ export default class EventListenerService {
   }
 
   addHexagonLayerEventListeners(): void {
-    for (const el of document.querySelectorAll('button#mapbox')) {
-      el.addEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))
+    for (const el of document.querySelectorAll('input.props')) {
+      el.addEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+      el.addEventListener('mouseover', (evt): void => this.onInputElementMouseEventHandler(evt))
+      el.addEventListener('mouseout', (evt): void => this.onInputElementMouseEventHandler(evt))
     }
     for (const el of document.querySelectorAll('button#reset')) {
       el.addEventListener('click', (evt): void => this.onResetHexagonLayerPropsClickHandler(evt))
     }
-    for (const el of document.querySelectorAll('input.props')) {
-      el.addEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+    for (const el of document.querySelectorAll('button#mapbox')) {
+      el.addEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))
     }
   }
 
   removeHexagonLayerEventListeners(): void {
-    for (const el of document.querySelectorAll('button#mapbox')) {
-      el.removeEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))
+    for (const el of document.querySelectorAll('input.props')) {
+      el.removeEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+      el.removeEventListener('mouseover', (evt): void => this.onInputElementMouseEventHandler(evt))
+      el.removeEventListener('mouseout', (evt): void => this.onInputElementMouseEventHandler(evt))
     }
     for (const el of document.querySelectorAll('button#reset')) {
       el.removeEventListener('click', (evt): void => this.onResetHexagonLayerPropsClickHandler(evt))
     }
-    for (const el of document.querySelectorAll('input.props')) {
-      el.removeEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+    for (const el of document.querySelectorAll('button#mapbox')) {
+      el.removeEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))
     }
   }
 
@@ -64,7 +68,7 @@ export default class EventListenerService {
     }
   }
 
-  private onDisplayLayerElementClickHandler = (evt: Event): void => {
+  private onDisplayLayerElementClickHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -72,20 +76,19 @@ export default class EventListenerService {
     id && this._layerElementService.displayLayerElement(id)
   }
 
-  private onReturnToTrailsClickHandler = (evt: Event): void => {
+  private onInputElementMouseEventHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { id } }: Record<string, any> = evt
-    id && this._routerService.setRoute(id)
+    const label = (el: Element): boolean =>
+      el.innerHTML.replace(' ', '').toLowerCase() === (id as string).toLowerCase()
+    const el = [...document.querySelectorAll('label.props')].find(label)
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+    evt.type === 'mouseover' ? el!.classList.add('mouseover') : el!.classList.remove('mouseover')
   }
 
-  private onResetHexagonLayerPropsClickHandler = (evt: Event): void => {
-    evt.stopPropagation()
-    this._hexagonLayerService.resetHexagonLayerPropsState()
-  }
-
-  private onSetHexagonLayerPropsChangeHandler = (evt: Event): void => {
+  private onSetHexagonLayerPropsChangeHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -93,7 +96,20 @@ export default class EventListenerService {
     prop && value && this._hexagonLayerService.setHexagonLayerPropsState(prop, value)
   }
 
-  private onSelectTrailChangeHandler = (evt: Event): void => {
+  private onResetHexagonLayerPropsClickHandler(evt: Event): void {
+    evt.stopPropagation()
+    this._hexagonLayerService.resetHexagonLayerPropsState()
+  }
+
+  private onReturnToTrailsClickHandler(evt: Event): void {
+    evt.stopPropagation()
+    /* prettier-ignore */
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    const { target: { id } }: Record<string, any> = evt
+    id && this._routerService.setRoute(id)
+  }
+
+  private onSelectTrailChangeHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
