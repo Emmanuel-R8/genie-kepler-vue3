@@ -49,6 +49,7 @@
 
 .hexagonUI span {
   color: var(--white);
+  text-shadow: var(--black-text-shadow);
 }
 
 @keyframes slide-in {
