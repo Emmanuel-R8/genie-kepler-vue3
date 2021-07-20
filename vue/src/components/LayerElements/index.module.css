@@ -10,7 +10,7 @@ ul.elements {
   width: 13.5rem;
 }
 
-ul.elements li div {
+ul.elements > li > div {
   border: var(--thin-grey-border);
   border-bottom-width: 0;
   line-height: 1.1;
@@ -18,41 +18,41 @@ ul.elements li div {
   text-shadow: var(--cream-text-shadow);
 }
 
-ul.elements li div.active {
+ul.elements > li > div.active {
   background-color: var(--dark-taupe);
   color: var(--white);
   text-shadow: var(--black-text-shadow);
 }
 
-ul.elements li div.inactive {
+ul.elements > li > div.inactive {
   background-color: var(--light-taupe);
   text-shadow: var(--cream-text-shadow);
 }
 
-ul.elements li div.inactive:hover,
-ul.elements li img:hover + div.inactive {
+ul.elements > li > div.inactive:hover,
+ul.elements > li > img:hover + div.inactive {
   background-color: var(--taupe);
   color: var(--white);
   text-shadow: var(--black-text-shadow);
 }
 
-ul.elements li img.deckgl,
-ul.elements li img.office,
-ul.elements li img.places,
-ul.elements li img.satellite,
-ul.elements li img.trails {
+ul.elements > li > img.deckgl,
+ul.elements > li > img.office,
+ul.elements > li > img.places,
+ul.elements > li > img.satellite,
+ul.elements > li > img.trails {
   margin-left: 1.2rem;
   margin-top: 0.6rem;
   position: absolute;
 }
 
-ul.elements li img.biosphere {
+ul.elements > li > img.biosphere {
   margin-left: 1.3rem;
   margin-top: 0.8rem;
   position: absolute;
 }
 
-ul.elements li:last-child div {
+ul.elements > li:last-child > div {
   border-bottom-width: 1px;
 }
 
