@@ -1,13 +1,7 @@
 import { Container } from 'typedi'
-import { defineComponent, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-import {
-  DeckglService,
-  EventListenerService,
-  HexagonLayerService,
-  MapStyleService,
-  MarkerService
-} from '@/services'
+import { DeckglService, EventListenerService, HexagonLayerService, ModalService } from '@/services'
 import { deckgl, hexagonLayer } from './index.module.css'
 
 export default defineComponent({
@@ -22,6 +16,9 @@ export default defineComponent({
     }
   },
   setup(props: Record<string, string>) {
+    onBeforeMount((): void => {
+      showModal()
+    })
     onMounted(async (): Promise<void> => {
       const hexagonLayerService = Container.get(HexagonLayerService)
       await hexagonLayerService.loadHexagonLayer()
@@ -29,7 +26,6 @@ export default defineComponent({
     })
     onBeforeUnmount((): void => {
       removeEventListeners()
-      setMarkerVisibility()
     })
     onUnmounted((): void => {
       removeDeckInstance()
@@ -66,10 +62,7 @@ const removeMapInstance = (): void => {
   deckglService.removeMapInstance()
 }
 
-const setMarkerVisibility = (): void => {
-  const markerService = Container.get(MarkerService)
-  const { mapStyle } = Container.get(MapStyleService)
-  mapStyle.includes('satellite')
-    ? setTimeout((): void => markerService.setMarkerVisibility(), 500)
-    : setTimeout((): void => markerService.setMarkerVisibility(), 1000)
+const showModal = (): void => {
+  const modalService = Container.get(ModalService)
+  modalService.showModal()
 }

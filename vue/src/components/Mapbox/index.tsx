@@ -1,12 +1,13 @@
 import { Container } from 'typedi'
-import { defineComponent, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 import {
   EventListenerService,
   MapService,
   MapboxService,
   MapStyleService,
-  MarkerService
+  MarkerService,
+  ModalService
 } from '@/services'
 import { outdoors, satellite } from './index.module.css'
 
@@ -18,6 +19,10 @@ export default defineComponent({
     }
   },
   setup(props: Record<string, string>) {
+    onBeforeMount((): void => {
+      setMarkerVisibility()
+      showModal()
+    })
     onMounted(async (): Promise<void> => {
       const mapService = Container.get(MapService)
       await mapService.loadMapLayer()
@@ -58,5 +63,13 @@ const removeMapInstance = (): void => {
 
 const setMarkerVisibility = (): void => {
   const markerService = Container.get(MarkerService)
-  markerService.setMarkerVisibility()
+  const { mapStyle } = Container.get(MapStyleService)
+  mapStyle.includes('outdoors')
+    ? setTimeout((): void => markerService.setMarkerVisibility(), 2000)
+    : setTimeout((): void => markerService.setMarkerVisibility(), 250)
+}
+
+const showModal = (): void => {
+  const modalService = Container.get(ModalService)
+  modalService.showModal()
 }
