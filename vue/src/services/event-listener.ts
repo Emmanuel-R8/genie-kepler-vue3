@@ -71,7 +71,6 @@ export default class EventListenerService {
   private onDisplayLayerElementClickHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { id } }: Record<string, any> = evt
     id && this._layerElementService.displayLayerElement(id)
   }
@@ -79,10 +78,11 @@ export default class EventListenerService {
   private onInputElementMouseEventHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { id } }: Record<string, any> = evt
     const label = (el: Element): boolean =>
-      el.innerHTML.replace(' ', '').toLowerCase() === (id as string).toLowerCase()
+      el.innerHTML.includes(' ')
+        ? el.innerHTML.replace(' ', '').toLowerCase() === (id as string).toLowerCase()
+        : el.innerHTML.toLowerCase() === id
     const el = [...document.querySelectorAll('label.props')].find(label)
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     evt.type === 'mouseover' ? el!.classList.add('mouseover') : el!.classList.remove('mouseover')
@@ -91,7 +91,6 @@ export default class EventListenerService {
   private onSetHexagonLayerPropsChangeHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { id: prop, value } }: Record<string, any> = evt
     prop && value && this._hexagonLayerService.setHexagonLayerPropsState(prop, value)
   }
@@ -104,7 +103,6 @@ export default class EventListenerService {
   private onReturnToTrailsClickHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { id } }: Record<string, any> = evt
     id && this._routerService.setRoute(id)
   }
@@ -112,7 +110,6 @@ export default class EventListenerService {
   private onSelectTrailChangeHandler(evt: Event): void {
     evt.stopPropagation()
     /* prettier-ignore */
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const { target: { value: trailName } }: Record<string, any> = evt
     trailName && this._trailService.selectTrail(trailName)
   }
