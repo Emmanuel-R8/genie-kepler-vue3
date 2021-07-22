@@ -74,6 +74,10 @@ export default class MapboxService {
       })
   }
 
+  removeMapInstance(): void {
+    this._map.remove()
+  }
+
   private onMapLoadHandler(): void {
     this.setMapStyle()
     this.hideModal()

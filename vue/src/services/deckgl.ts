@@ -79,6 +79,14 @@ export default class DeckglService {
     })
   }
 
+  removeDeckInstance(): void {
+    this._deck.finalize()
+  }
+
+  removeMapInstance(): void {
+    this._map.remove()
+  }
+
   private onMapLoadHandler(): void {
     this.addSkyLayer()
     this.hideModal()
