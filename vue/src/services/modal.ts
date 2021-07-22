@@ -22,8 +22,8 @@ export default class ModalService {
     this._stateService.setReactiveState(MODAL, modal)
   }
 
-  hideModal(timeout: number): void {
-    this.state.isActive && setTimeout((): void => this.setModalState(), timeout)
+  hideModal(): void {
+    this.state.isActive && this.setModalState()
   }
 
   showModal(): void {

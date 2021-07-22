@@ -88,7 +88,7 @@ export default class MapboxService {
   }
 
   private hideModal(): void {
-    this._modalService.hideModal(100)
+    this._modalService.hideModal()
   }
 
   private setAccessToken(token: string): void {

@@ -97,6 +97,6 @@ export default class DeckglService {
   }
 
   private hideModal(): void {
-    this._modalService.hideModal(400)
+    this._modalService.hideModal()
   }
 }
