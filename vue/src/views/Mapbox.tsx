@@ -12,7 +12,6 @@ export default defineComponent({
     const { options: { container } } = mapbox
     const modalService = Container.get(ModalService)
     const state = computed((): IModal => modalService.state)
-    modalService.showModal()
     return (): JSX.Element => html(state.value, container)
   }
 })

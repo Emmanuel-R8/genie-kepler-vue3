@@ -109,8 +109,11 @@ export default class MapService {
 
   private resetMapFeatures(): void {
     /* reset layers & markers after delay to set mapStyle (basemap) */
+    const { mapStyle } = this._mapStyleService
     setTimeout((): void => this.addLayers(), 200)
-    setTimeout((): void => this.setMarkerVisibility(), 800)
+    mapStyle.includes('outdoors')
+      ? setTimeout((): void => this.setMarkerVisibility(), 1000)
+      : setTimeout((): void => this.setMarkerVisibility(), 200)
   }
 
   private setMarkerVisibility(): void {

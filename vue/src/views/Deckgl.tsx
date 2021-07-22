@@ -12,12 +12,11 @@ export default defineComponent({
     const { options: { canvas, container } } = deckgl
     const modalService = Container.get(ModalService)
     const state = computed((): IModal => modalService.state)
-    modalService.showModal()
-    return (): JSX.Element => html(state.value, { canvas, container })
+    return (): JSX.Element => html(state.value, canvas, container)
   }
 })
 
-const html = ({ isActive }: IModal, { canvas, container }: Record<string, string>): JSX.Element => (
+const html = ({ isActive }: IModal, canvas: string, container: string): JSX.Element => (
   <>
     <Deckgl canvas={canvas} container={container} />
     <Modal isActive={isActive} />
