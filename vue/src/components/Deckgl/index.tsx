@@ -10,32 +10,6 @@ import {
 } from '@/services'
 import { deckgl, hexagonLayer } from './index.module.css'
 
-const addEventListeners = (): void => {
-  const eventListenerService = Container.get(EventListenerService)
-  eventListenerService.addHexagonLayerEventListeners()
-}
-const removeEventListeners = (): void => {
-  const eventListenerService = Container.get(EventListenerService)
-  eventListenerService.removeHexagonLayerEventListeners()
-}
-const removeDeckInstance = (): void => {
-  const deckglService = Container.get(DeckglService)
-  /* eslint-disable-next-line */
-  deckglService.deck.finalize()
-}
-const removeMapInstance = (): void => {
-  const deckglService = Container.get(DeckglService)
-  deckglService.map.remove()
-}
-const setMarkerVisibility = (): void => {
-  const markerService = Container.get(MarkerService)
-  const mapStyleService = Container.get(MapStyleService)
-  const { mapStyle } = mapStyleService
-  mapStyle.includes('satellite')
-    ? setTimeout((): void => markerService.setMarkerVisibility(), 500)
-    : setTimeout((): void => markerService.setMarkerVisibility(), 1000)
-}
-
 export default defineComponent({
   props: {
     canvas: {
@@ -47,7 +21,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup({ canvas, container }) {
+  setup(props: Record<string, string>) {
     onMounted(async (): Promise<void> => {
       const hexagonLayerService = Container.get(HexagonLayerService)
       await hexagonLayerService.loadHexagonLayer()
@@ -61,11 +35,41 @@ export default defineComponent({
       removeDeckInstance()
       removeMapInstance()
     })
-    return (): JSX.Element => (
-      <>
-        <div id={container} class={deckgl}></div>
-        <canvas id={canvas} class={hexagonLayer}></canvas>
-      </>
-    )
+    return (): JSX.Element => html(props)
   }
 })
+
+const html = ({ canvas, container }: Record<string, string>): JSX.Element => (
+  <>
+    <div id={container} class={deckgl}></div>
+    <canvas id={canvas} class={hexagonLayer}></canvas>
+  </>
+)
+
+const addEventListeners = (): void => {
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.addHexagonLayerEventListeners()
+}
+
+const removeEventListeners = (): void => {
+  const eventListenerService = Container.get(EventListenerService)
+  eventListenerService.removeHexagonLayerEventListeners()
+}
+
+const removeDeckInstance = (): void => {
+  const deckglService = Container.get(DeckglService)
+  deckglService.removeDeckInstance()
+}
+
+const removeMapInstance = (): void => {
+  const deckglService = Container.get(DeckglService)
+  deckglService.removeMapInstance()
+}
+
+const setMarkerVisibility = (): void => {
+  const markerService = Container.get(MarkerService)
+  const { mapStyle } = Container.get(MapStyleService)
+  mapStyle.includes('satellite')
+    ? setTimeout((): void => markerService.setMarkerVisibility(), 500)
+    : setTimeout((): void => markerService.setMarkerVisibility(), 1000)
+}

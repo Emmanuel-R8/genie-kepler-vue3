@@ -3,10 +3,21 @@ import { computed, defineComponent } from 'vue'
 
 import { LayerElements, Mapbox, Modal, Trails } from '@/components'
 import { mapbox } from '@/config'
-import { IMapboxOptions, IModal } from '@/interfaces'
+import { IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
-const html = ({ isActive }: IModal, { container }: IMapboxOptions): JSX.Element => (
+export default defineComponent({
+  setup() {
+    /* prettier-ignore */
+    const { options: { container } } = mapbox
+    const modalService = Container.get(ModalService)
+    const state = computed((): IModal => modalService.state)
+    modalService.showModal()
+    return (): JSX.Element => html(state.value, container)
+  }
+})
+
+const html = ({ isActive }: IModal, container: string): JSX.Element => (
   <>
     <Mapbox container={container} />
     <Modal isActive={isActive} />
@@ -14,13 +25,3 @@ const html = ({ isActive }: IModal, { container }: IMapboxOptions): JSX.Element 
     <Trails />
   </>
 )
-
-export default defineComponent({
-  setup() {
-    const { options } = mapbox
-    const modalService = Container.get(ModalService)
-    const state = computed((): IModal => modalService.state)
-    modalService.showModal()
-    return (): JSX.Element => html(state.value, options)
-  }
-})

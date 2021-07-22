@@ -6,6 +6,14 @@ import { IHexagonLayerProps } from '@/interfaces'
 import { HexagonLayerService } from '@/services'
 import { hexagonUI } from './index.module.css'
 
+export default defineComponent({
+  setup() {
+    const hexagonLayerService = Container.get(HexagonLayerService)
+    const state = computed((): IHexagonLayerProps => hexagonLayerService.state)
+    return (): JSX.Element => html(state.value)
+  }
+})
+
 const html = ({
   coverage,
   elevationScale,
@@ -20,11 +28,3 @@ const html = ({
     upperPercentile={upperPercentile}
   />
 )
-
-export default defineComponent({
-  setup() {
-    const hexagonLayerService = Container.get(HexagonLayerService)
-    const state = computed((): IHexagonLayerProps => hexagonLayerService.state)
-    return (): JSX.Element => html(state.value)
-  }
-})

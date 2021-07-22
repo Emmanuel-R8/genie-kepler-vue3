@@ -2,6 +2,30 @@ import { defineComponent } from 'vue'
 
 import { IHexagonLayerProps } from '@/interfaces'
 
+export default defineComponent({
+  props: {
+    coverage: {
+      type: Number,
+      required: true
+    },
+    elevationScale: {
+      type: Number,
+      required: true
+    },
+    radius: {
+      type: Number,
+      required: true
+    },
+    upperPercentile: {
+      type: Number,
+      required: true
+    }
+  },
+  setup(props: IHexagonLayerProps) {
+    return (): JSX.Element => html(props)
+  }
+})
+
 const html = ({
   coverage,
   elevationScale,
@@ -72,27 +96,3 @@ const html = ({
     <button id="mapbox">Return to Trails</button>
   </div>
 )
-
-export default defineComponent({
-  props: {
-    coverage: {
-      type: Number,
-      required: true
-    },
-    elevationScale: {
-      type: Number,
-      required: true
-    },
-    radius: {
-      type: Number,
-      required: true
-    },
-    upperPercentile: {
-      type: Number,
-      required: true
-    }
-  },
-  setup(props: IHexagonLayerProps) {
-    return (): JSX.Element => html(props)
-  }
-})

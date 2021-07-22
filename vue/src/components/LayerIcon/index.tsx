@@ -26,16 +26,18 @@ export default defineComponent({
       required: true
     }
   },
-  setup({ alt, height, id, src, width }) {
-    return (): JSX.Element => (
-      <img
-        alt={alt}
-        class={`layer-element ${layerElements[id as keyof ILayerElements]}`}
-        height={height}
-        id={id}
-        src={src}
-        width={width}
-      />
-    )
+  setup(props: Record<string, any>) {
+    return (): JSX.Element => html(props)
   }
 })
+
+const html = ({ alt, height, id, src, width }: Record<string, any>): JSX.Element => (
+  <img
+    alt={alt}
+    class={`layer-element ${layerElements[id as keyof ILayerElements]}`}
+    height={height}
+    id={id}
+    src={src}
+    width={width}
+  />
+)

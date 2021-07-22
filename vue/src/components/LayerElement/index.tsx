@@ -17,13 +17,13 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
-    const { id, name } = props
-    return (): JSX.Element => (
-      /* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */
-      <div id={id} class={`layer-element ${props.isActive ? active : inactive}`}>
-        {name}
-      </div>
-    )
+  setup(props: Record<string, any>) {
+    return (): JSX.Element => html(props)
   }
 })
+
+const html = ({ id, isActive, name }: Record<string, any>): JSX.Element => (
+  <div id={id} class={`layer-element ${isActive ? active : inactive}`}>
+    {name}
+  </div>
+)
