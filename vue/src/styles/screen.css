@@ -92,11 +92,3 @@ label.props.mouseover {
 .mapboxgl-popup-content > div.bold {
   font-weight: bold;
 }
-
-.outdoors {
-  background-color: var(--light-cream);
-}
-
-.satellite {
-  background-color: var(--black);
-}

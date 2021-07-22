@@ -4,3 +4,13 @@
   top: 4.5rem;
   width: 100%;
 }
+
+.outdoors {
+  composes: mapbox;
+  background-color: var(--light-cream);
+}
+
+.satellite {
+  composes: mapbox;
+  background-color: var(--black);
+}
