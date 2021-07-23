@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { computed, defineComponent } from 'vue'
+import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElement, LayerIcon } from '@/components'
 import { ILayerElement } from '@/interfaces'
@@ -8,9 +8,8 @@ import { layerElement } from './index.module.css'
 
 export default defineComponent({
   setup() {
-    const layerElementService = Container.get(LayerElementService)
-    const state = computed((): ILayerElement[] => layerElementService.state)
-    return (): JSX.Element => html(state.value)
+    const layerElementsState = getLayerElementsState()
+    return (): JSX.Element => html(layerElementsState.value)
   }
 })
 
@@ -24,3 +23,8 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
     ))}
   </ul>
 )
+
+const getLayerElementsState = (): ComputedRef<ILayerElement[]> => {
+  const layerElementService = Container.get(LayerElementService)
+  return computed((): ILayerElement[] => layerElementService.state)
+}

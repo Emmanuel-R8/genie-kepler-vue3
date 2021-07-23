@@ -24,8 +24,7 @@ export default defineComponent({
       showModal()
     })
     onMounted(async (): Promise<void> => {
-      const mapService = Container.get(MapService)
-      await mapService.loadMapLayer()
+      await loadMapLayer()
       addEventListeners()
     })
     onBeforeUnmount((): void => {
@@ -43,6 +42,11 @@ export default defineComponent({
 const html = ({ container }: Record<string, string>, mapStyle: string): JSX.Element => (
   <div id={container} class={mapStyle.includes('outdoors') ? outdoors : satellite}></div>
 )
+
+const loadMapLayer = async (): Promise<void> => {
+  const mapService = Container.get(MapService)
+  await mapService.loadMapLayer()
+}
 
 const addEventListeners = (): void => {
   const eventListenerService = Container.get(EventListenerService)

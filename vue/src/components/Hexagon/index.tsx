@@ -1,5 +1,5 @@
 import { Container } from 'typedi'
-import { computed, defineComponent } from 'vue'
+import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { HexagonUI } from '@/components'
 import { IHexagonLayerProps } from '@/interfaces'
@@ -8,9 +8,8 @@ import { hexagonUI } from './index.module.css'
 
 export default defineComponent({
   setup() {
-    const hexagonLayerService = Container.get(HexagonLayerService)
-    const state = computed((): IHexagonLayerProps => hexagonLayerService.state)
-    return (): JSX.Element => html(state.value)
+    const hexagonLayerPropsState = getHexagonLayerPropsState()
+    return (): JSX.Element => html(hexagonLayerPropsState.value)
   }
 })
 
@@ -28,3 +27,8 @@ const html = ({
     upperPercentile={upperPercentile}
   />
 )
+
+const getHexagonLayerPropsState = (): ComputedRef<IHexagonLayerProps> => {
+  const hexagonLayerService = Container.get(HexagonLayerService)
+  return computed((): IHexagonLayerProps => hexagonLayerService.state)
+}

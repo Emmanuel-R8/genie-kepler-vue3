@@ -20,8 +20,7 @@ export default defineComponent({
       showModal()
     })
     onMounted(async (): Promise<void> => {
-      const hexagonLayerService = Container.get(HexagonLayerService)
-      await hexagonLayerService.loadHexagonLayer()
+      await loadHexagonLayer()
       addEventListeners()
     })
     onBeforeUnmount((): void => {
@@ -41,6 +40,11 @@ const html = ({ canvas, container }: Record<string, string>): JSX.Element => (
     <canvas id={canvas} class={hexagonLayer}></canvas>
   </>
 )
+
+const loadHexagonLayer = async (): Promise<void> => {
+  const hexagonLayerService = Container.get(HexagonLayerService)
+  await hexagonLayerService.loadHexagonLayer()
+}
 
 const addEventListeners = (): void => {
   const eventListenerService = Container.get(EventListenerService)
