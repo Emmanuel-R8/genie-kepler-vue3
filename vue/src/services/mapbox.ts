@@ -1,4 +1,4 @@
-import { Map, MapboxOptions, NavigationControl, SkyLayer } from 'mapbox-gl'
+import { Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { mapbox } from '@/config'
@@ -11,7 +11,6 @@ import { NavigationControlPosition } from '@/types'
 export default class MapboxService {
   private _navigationControl = mapbox.navigationControl
   private _options: IMapboxOptions = mapbox.options
-  private _skyLayer = <SkyLayer>mapbox.skyLayer
   private _states: Record<string, string> = States
 
   constructor(
@@ -37,10 +36,6 @@ export default class MapboxService {
   private set _state(settings: IMapboxSettings) {
     const { MAPBOX_SETTINGS } = this._states
     this._stateService.setStaticState(MAPBOX_SETTINGS, settings)
-  }
-
-  addSkyLayer(): void {
-    this._map.addLayer(this._skyLayer)
   }
 
   loadMapbox(): void {

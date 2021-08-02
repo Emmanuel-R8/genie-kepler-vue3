@@ -1,6 +1,7 @@
-import { FillLayer, LineLayer, Map, MapLayerMouseEvent } from 'mapbox-gl'
+import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
+import { mapbox } from '@/config'
 import { LayerElements } from '@/enums'
 import { ILayerVisibility, ITrail } from '@/interfaces'
 import {
@@ -15,6 +16,7 @@ import {
 @Service()
 export default class MapService {
   private _layerElements: Record<string, string> = LayerElements
+  private _skyLayer = <SkyLayer>mapbox.skyLayer
 
   constructor(
     private _map: Map,
@@ -78,7 +80,7 @@ export default class MapService {
   }
 
   private addSkyLayer(): void {
-    this._mapboxService.addSkyLayer()
+    this._map.addLayer(this._skyLayer)
   }
 
   private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
