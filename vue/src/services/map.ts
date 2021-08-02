@@ -51,9 +51,7 @@ export default class MapService {
   setMapStyle(): void {
     const { mapStyle } = this._mapStyleService
     this._map.setStyle(mapStyle)
-    /* reset layers & marker visibility after delay to set mapStyle (basemap) */
-    this.resetLayers()
-    this.resetMarkerVisibility()
+    this.resetMapFeatures()
   }
 
   setLayerVisibility(id: string): void {
@@ -70,6 +68,10 @@ export default class MapService {
     this.addLayers()
   }
 
+  private addSkyLayer(): void {
+    this._map.addLayer(this._skyLayer)
+  }
+
   private addLayers(): void {
     const { layers } = this._layerService
     for (const layer of layers) {
@@ -77,10 +79,6 @@ export default class MapService {
       this._map.addLayer(<FillLayer | LineLayer>layer)
       this.setLayerVisibility(id)
     }
-  }
-
-  private addSkyLayer(): void {
-    this._map.addLayer(this._skyLayer)
   }
 
   private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
@@ -108,8 +106,18 @@ export default class MapService {
     this._popupService.removePopup()
   }
 
-  private resetLayers(): void {
+  private resetMapFeatures(): void {
+    /* reset layers & marker visibility after delay to set mapStyle (basemap) */
+    this.resetSkyLayer()
+    this.resetLayers()
+    this.resetMarkerVisibility()
+  }
+
+  private resetSkyLayer(): void {
     setTimeout((): void => this.addSkyLayer(), 100)
+  }
+
+  private resetLayers(): void {
     setTimeout((): void => this.addLayers(), 200)
   }
 
