@@ -1,7 +1,14 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-import { DeckglService, EventListenerService, HexagonLayerService, ModalService } from '@/services'
+import { IDeckglProps } from '@/interfaces'
+import {
+  DataService,
+  DeckglService,
+  EventListenerService,
+  HexagonLayerService,
+  ModalService
+} from '@/services'
 import { deckgl, hexagonLayer } from './index.module.css'
 
 export default defineComponent({
@@ -15,16 +22,13 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, string>) {
-    onBeforeMount((): void => {
-      showModal()
-    })
+  setup(props: IDeckglProps) {
+    onBeforeMount((): void => showModal())
+    onBeforeUnmount((): void => removeEventListeners())
     onMounted(async (): Promise<void> => {
-      await loadHexagonLayer()
+      await getMapboxAccessToken()
+      loadHexagonLayer()
       addEventListeners()
-    })
-    onBeforeUnmount((): void => {
-      removeEventListeners()
     })
     onUnmounted((): void => {
       removeDeckInstance()
@@ -34,16 +38,22 @@ export default defineComponent({
   }
 })
 
-const html = ({ canvas, container }: Record<string, string>): JSX.Element => (
+const html = ({ canvas, container }: IDeckglProps): JSX.Element => (
   <>
     <div id={container} class={deckgl}></div>
     <canvas id={canvas} class={hexagonLayer}></canvas>
   </>
 )
 
-const loadHexagonLayer = async (): Promise<void> => {
+const getMapboxAccessToken = async (): Promise<void> => {
+  const dataService = Container.get(DataService)
+  const { mapboxAccessToken } = dataService
+  mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
+}
+
+const loadHexagonLayer = (): void => {
   const hexagonLayerService = Container.get(HexagonLayerService)
-  await hexagonLayerService.loadHexagonLayer()
+  hexagonLayerService.loadHexagonLayer()
 }
 
 const addEventListeners = (): void => {

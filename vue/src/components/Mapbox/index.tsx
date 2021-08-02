@@ -1,7 +1,9 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
+import { IMapboxProps } from '@/interfaces'
 import {
+  DataService,
   EventListenerService,
   MapService,
   MapboxService,
@@ -18,34 +20,39 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, string>) {
+  setup(props: IMapboxProps) {
+    const { mapStyle } = Container.get(MapStyleService)
     onBeforeMount((): void => {
       setMarkerVisibility()
       showModal()
     })
+    onBeforeUnmount((): void => {
+      setMarkerVisibility()
+      removeEventListeners()
+    })
     onMounted(async (): Promise<void> => {
-      await loadMapLayer()
+      await getMapboxAccessToken()
+      loadMapLayer()
       addEventListeners()
     })
-    onBeforeUnmount((): void => {
-      removeEventListeners()
-      setMarkerVisibility()
-    })
-    onUnmounted((): void => {
-      removeMapInstance()
-    })
-    const { mapStyle } = Container.get(MapStyleService)
+    onUnmounted((): void => removeMapInstance())
     return (): JSX.Element => html(props, mapStyle)
   }
 })
 
-const html = ({ container }: Record<string, string>, mapStyle: string): JSX.Element => (
+const html = ({ container }: IMapboxProps, mapStyle: string): JSX.Element => (
   <div id={container} class={mapStyle.includes('outdoors') ? outdoors : satellite}></div>
 )
 
-const loadMapLayer = async (): Promise<void> => {
+const getMapboxAccessToken = async (): Promise<void> => {
+  const dataService = Container.get(DataService)
+  const { mapboxAccessToken } = dataService
+  mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
+}
+
+const loadMapLayer = (): void => {
   const mapService = Container.get(MapService)
-  await mapService.loadMapLayer()
+  mapService.loadMapLayer()
 }
 
 const addEventListeners = (): void => {

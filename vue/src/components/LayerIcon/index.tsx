@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { ILayerElements } from '@/interfaces'
+import { ILayerElements, ILayerIconProps } from '@/interfaces'
 import layerElements from '@/components/LayerElements/index.module.css'
 
 export default defineComponent({
@@ -26,12 +26,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, any>) {
+  setup(props: ILayerIconProps) {
     return (): JSX.Element => html(props)
   }
 })
 
-const html = ({ alt, height, id, src, width }: Record<string, any>): JSX.Element => (
+const html = ({ alt, height, id, src, width }: ILayerIconProps): JSX.Element => (
   <img
     alt={alt}
     class={`layer-element ${layerElements[id as keyof ILayerElements]}`}

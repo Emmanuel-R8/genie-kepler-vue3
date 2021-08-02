@@ -2,7 +2,6 @@ import { Container, Service } from 'typedi'
 
 import { LayerElements, States } from '@/enums'
 import { ILayerElement } from '@/interfaces'
-import { LayerElement } from '@/types'
 import {
   LayerVisibilityService,
   MapService,
@@ -11,6 +10,7 @@ import {
   RouterService,
   StateService
 } from '@/services'
+import { LayerElement } from '@/types'
 
 @Service()
 export default class LayerElementService {

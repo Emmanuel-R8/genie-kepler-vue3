@@ -64,7 +64,7 @@ export default class DeckglService {
       },
       getTooltip: ({ object }: Record<string, any>): string | null => {
         if (!object) return null
-        const { points } = object
+        const { points }: Record<string, []> = object
         return `${points.length} Accidents`
       }
     })
@@ -73,10 +73,7 @@ export default class DeckglService {
   loadMapbox(): void {
     const { container, interactive, style } = this._options
     const options: MapboxOptions = { container, interactive, style, ...this._state }
-    this._map = new Map(options)
-    this._map.on('load', (): void => {
-      this.onMapLoadHandler()
-    })
+    this._map = new Map(options).on('load', (): void => this.onMapLoadHandler())
   }
 
   removeDeckInstance(): void {

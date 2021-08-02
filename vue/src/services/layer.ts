@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash.clonedeep'
+import { FeatureCollection } from 'geojson'
 import { Service } from 'typedi'
 
 import { ILayer } from '@/interfaces'
@@ -12,7 +14,12 @@ export default class LayerService {
     return this._layers
   }
 
-  setLayer(layer: ILayer): void {
-    this._layers.push(layer)
+  setLayer(fc: FeatureCollection, layer: ILayer): void {
+    this._layers.push(this.setLayerSourceData(fc, layer))
+  }
+
+  private setLayerSourceData(fc: FeatureCollection, layer: ILayer): ILayer {
+    layer.source.data = fc
+    return cloneDeep(layer)
   }
 }

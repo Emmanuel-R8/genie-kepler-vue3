@@ -16,13 +16,15 @@ export default class AxiosService {
   }
 
   createHttpClient(): void {
+    const { create } = this._axios
     const { API_BASE_URL } = this._urls
-    this._httpClient = this._axios.create({
+    this._httpClient = create({
       baseURL: API_BASE_URL,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
+      responseType: 'json',
       timeout: 2000
     })
   }

@@ -13,7 +13,7 @@ import { Container, Service } from 'typedi'
 import { hexagonLayer } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerProps, IHexagonLayerStaticProps } from '@/interfaces'
-import { DataService, DeckglService, MapboxService, StateService } from '@/services'
+import { DataService, DeckglService, StateService } from '@/services'
 
 @Service()
 export default class HexagonLayerService {
@@ -25,12 +25,10 @@ export default class HexagonLayerService {
   constructor(
     private _dataService: DataService,
     private _deckglService: DeckglService,
-    private _mapboxService: MapboxService,
     private _stateService: StateService
   ) {
     this._dataService = Container.get(DataService)
     this._deckglService = Container.get(DeckglService)
-    this._mapboxService = Container.get(MapboxService)
     this._stateService = Container.get(StateService)
   }
 
@@ -44,14 +42,11 @@ export default class HexagonLayerService {
     this._stateService.setReactiveState(HEXAGON_LAYER_PROPS, props)
   }
 
-  async loadHexagonLayer(): Promise<void> {
-    const { accessToken } = this._mapboxService
-    !accessToken && (await this._mapboxService.getAccessToken())
+  loadHexagonLayer(): void {
     this._deckglService.loadDeckgl()
     this._deckglService.loadMapbox()
-    this._deckglService.map.on('load', (): void => {
-      this.onMapLoadHandler()
-    })
+    const { map } = this._deckglService
+    map.on('load', (): void => this.onMapLoadHandler())
   }
 
   setHexagonLayerPropsState(prop: string, value: string): void {

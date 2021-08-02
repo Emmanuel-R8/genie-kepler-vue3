@@ -1,7 +1,6 @@
-import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
+import { FillLayer, LineLayer, Map, MapLayerMouseEvent } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { mapbox } from '@/config'
 import { LayerElements } from '@/enums'
 import { ILayerVisibility, ITrail } from '@/interfaces'
 import {
@@ -16,7 +15,6 @@ import {
 @Service()
 export default class MapService {
   private _layerElements: Record<string, string> = LayerElements
-  private _skyLayer = <SkyLayer>mapbox.skyLayer
 
   constructor(
     private _map: Map,
@@ -35,14 +33,10 @@ export default class MapService {
     this._popupService = Container.get(PopupService)
   }
 
-  async loadMapLayer(): Promise<void> {
-    const { accessToken } = this._mapboxService
-    !accessToken && (await this._mapboxService.getAccessToken())
+  loadMapLayer(): void {
     this._mapboxService.loadMapbox()
-    this._map = this._mapboxService.map
-    this._map.on('load', (): void => {
-      this.onMapLoadHandler()
-    })
+    const { map } = this._mapboxService
+    this._map = map.on('load', (): void => this.onMapLoadHandler())
   }
 
   flyTo({ center, zoom }: ITrail): void {
@@ -55,7 +49,9 @@ export default class MapService {
   setMapStyle(): void {
     const { mapStyle } = this._mapStyleService
     this._map.setStyle(mapStyle)
-    this.resetMapFeatures()
+    /* reset layers & marker visibility after delay to set mapStyle (basemap) */
+    this.resetLayers()
+    this.resetMarkerVisibility()
   }
 
   setLayerVisibility(id: string): void {
@@ -68,17 +64,21 @@ export default class MapService {
   }
 
   private onMapLoadHandler(): void {
+    this.addSkyLayer()
     this.addLayers()
   }
 
   private addLayers(): void {
-    this._map.addLayer(this._skyLayer)
     const { layers } = this._layerService
     for (const layer of layers) {
       const { id } = layer
       this._map.addLayer(<FillLayer | LineLayer>layer)
       this.setLayerVisibility(id)
     }
+  }
+
+  private addSkyLayer(): void {
+    this._mapboxService.addSkyLayer()
   }
 
   private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
@@ -88,7 +88,6 @@ export default class MapService {
           .on('mouseenter', id, (): void => this.onMapMouseEnterHandler())
           .on('mouseleave', id, (): void => this.onMapMouseLeaveHandler())
       : this._map
-          /* eslint-disable @typescript-eslint/unbound-method */
           .off('click', id, this.onMapClickHandler)
           .off('mouseenter', id, this.onMapMouseEnterHandler)
           .off('mouseleave', id, this.onMapMouseLeaveHandler)
@@ -107,10 +106,13 @@ export default class MapService {
     this._popupService.removePopup()
   }
 
-  private resetMapFeatures(): void {
-    /* reset layers & markers after delay to set mapStyle (basemap) */
-    const { mapStyle } = Container.get(MapStyleService)
+  private resetLayers(): void {
+    setTimeout((): void => this.addSkyLayer(), 100)
     setTimeout((): void => this.addLayers(), 200)
+  }
+
+  private resetMarkerVisibility(): void {
+    const { mapStyle } = this._mapStyleService
     mapStyle.includes('outdoors')
       ? setTimeout((): void => this.setMarkerVisibility(), 1000)
       : setTimeout((): void => this.setMarkerVisibility(), 200)

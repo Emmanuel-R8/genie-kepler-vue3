@@ -1,9 +1,8 @@
+import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
-export interface IDeckglOptions {
-  canvas: string
-  container: string
+export interface IDeckglOptions extends IDeckglProps {
   controller: boolean
   id: string
   interactive: boolean
@@ -11,6 +10,11 @@ export interface IDeckglOptions {
   maxZoom: number
   minZoom: number
   style: string
+}
+
+export interface IDeckglProps {
+  canvas: string
+  container: string
 }
 
 export interface IDeckglViewSettings {
@@ -57,6 +61,12 @@ export interface IHttpParams {
   table: string
 }
 
+export interface IHttpResponse<F = FeatureCollection, R = Record<string, string>>
+  extends AxiosResponse {
+  data: F
+  token: R
+}
+
 export interface ILayer extends IMarker {
   type: string
   source: {
@@ -75,13 +85,16 @@ export interface ILayer extends IMarker {
   }
 }
 
-export interface ILayerElement {
+export interface ILayerElement extends ILayerElementProps {
   height: number
+  src: string
+  width: number
+}
+
+export interface ILayerElementProps {
   id: string
   isActive: boolean
   name: string
-  src: string
-  width: number
 }
 
 export interface ILayerElements {
@@ -91,6 +104,14 @@ export interface ILayerElements {
   places: string
   satellite: string
   trails: string
+}
+
+export interface ILayerIconProps {
+  alt: string
+  height: number
+  id: string
+  src: string
+  width: number
 }
 
 export interface ILayerVisibility {
@@ -110,11 +131,14 @@ export interface IMapStyle {
   url: string
 }
 
-export interface IMapboxOptions {
-  container: string
+export interface IMapboxOptions extends IMapboxProps {
   doubleClickZoom: boolean
   maxZoom: number
   minZoom: number
+}
+
+export interface IMapboxProps {
+  container: string
 }
 
 export interface IMapboxSettings {

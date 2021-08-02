@@ -1,11 +1,13 @@
+import { AxiosResponse } from 'axios'
 import { DSVRowArray } from 'd3-dsv'
 import { csv } from 'd3-fetch'
 import { Feature, FeatureCollection } from 'geojson'
+import mapboxgl from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
 import { layers, markers } from '@/config'
 import { EndPoints, Urls } from '@/enums'
-import { IHttpParams, ILayer, IMarker } from '@/interfaces'
+import { IHttpParams, IHttpResponse, ILayer, IMarker } from '@/interfaces'
 import { HttpService, LayerService, LogService, MarkerService } from '@/services'
 
 @Service()
@@ -32,67 +34,72 @@ export default class DataService {
     return this._hexagonLayerData
   }
 
+  get mapboxAccessToken(): string {
+    const { accessToken } = mapboxgl
+    return accessToken
+  }
+
   async loadData(): Promise<void> {
-    await this.getMapLayerData()
+    await this.getLayerData()
+    await this.getMarkerData()
     await this.getHexagonLayerData()
+  }
+
+  async getMapboxAccessToken(): Promise<void> {
+    const { MAPBOX_ACCESS_TOKEN_ENDPOINT } = this._endPoints
+    /* prettier-ignore */
+    const { data: { token } } = <IHttpResponse<Record<string, string>>>
+      await this.httpGetRequest(MAPBOX_ACCESS_TOKEN_ENDPOINT)
+    this.setMapboxAccessToken(token)
+  }
+
+  private setMapboxAccessToken(token: string): void {
+    token
+      ? (mapboxgl.accessToken = token)
+      : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, token)
   }
 
   private async getHexagonLayerData(): Promise<void> {
     try {
       const { HEXAGON_LAYER_DATA_URL } = this._urls
       const data = await csv(HEXAGON_LAYER_DATA_URL)
-      data?.length
-        ? this.setHexagonLayerData(data)
-        : this._logService.consoleLog(`No ${this.getHexagonLayerData.name} Data Found:\n`, data)
+      this.setHexagonLayerData(data)
     } catch (err) {
       this._logService.consoleError(`${this.getHexagonLayerData.name} Fetch Failed:\n`, err)
     }
   }
 
   private setHexagonLayerData(data: DSVRowArray<string>): void {
-    this._hexagonLayerData = data.map((d): number[] => [Number(d.lng), Number(d.lat)])
+    data?.length
+      ? (this._hexagonLayerData = data.map((d): number[] => [Number(d.lng), Number(d.lat)]))
+      : this._logService.consoleLog(`No ${this.getHexagonLayerData.name} Found:\n`, data)
   }
 
-  private async getMapLayerData(): Promise<void> {
+  private async getLayerData(): Promise<void> {
     for (const layer of this._layers) {
-      await this.getLayerFeatures(layer)
-    }
-    for (const marker of this._markers) {
-      await this.getMarkerFeatures(marker)
-    }
-  }
-
-  private async getLayerFeatures(layer: ILayer): Promise<void> {
-    try {
-      const { id } = layer
       const fc = await this.getGeoJsonFeatureCollection(layer)
-      fc?.features?.length
-        ? this.setLayer(fc, layer)
-        : this._logService.consoleLog(`No ${id.toUpperCase()} Features Found:\n`, fc)
-    } catch (err) {
-      this._logService.consoleError(`${this.getLayerFeatures.name} Http Failed:\n`, err)
+      this.setLayer(fc, layer)
     }
   }
 
   private setLayer(fc: FeatureCollection, layer: ILayer): void {
-    layer.source.data = fc
-    this._layerService.setLayer(layer)
+    fc?.features?.length
+      ? this._layerService.setLayer(fc, layer)
+      : this._logService.consoleLog(`No ${this.getLayerData.name} Features Found:\n`, fc)
   }
 
-  private async getMarkerFeatures(marker: IMarker): Promise<void> {
-    try {
+  private async getMarkerData(): Promise<void> {
+    for (const marker of this._markers) {
       const { id } = marker
       const { features } = await this.getGeoJsonFeatureCollection(marker)
-      features?.length
-        ? this.setMarker(id, features)
-        : this._logService.consoleLog(`No ${id.toUpperCase()} Features Found:\n`, features)
-    } catch (err) {
-      this._logService.consoleError(`${this.getMarkerFeatures.name} Http Failed:\n`, err)
+      this.setMarkers(id, features)
     }
   }
 
-  private setMarker(id: string, features: Feature[]): void {
-    this._markerService.setMarker(id, features)
+  private setMarkers(id: string, features: Feature[]): void {
+    features?.length
+      ? this._markerService.setMarkers(id, features)
+      : this._logService.consoleLog(`No ${this.getMarkerData.name} Features Found:\n`, features)
   }
 
   private async getGeoJsonFeatureCollection({
@@ -101,7 +108,17 @@ export default class DataService {
   }: ILayer | IMarker): Promise<FeatureCollection> {
     const { GEOJSON_ENDPOINT } = this._endPoints
     const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
-    const { data } = await this._httpService.getRequest(GEOJSON_ENDPOINT, { params })
-    return <FeatureCollection>data
+    const { data } = <IHttpResponse<FeatureCollection>>(
+      await this.httpGetRequest(GEOJSON_ENDPOINT, params)
+    )
+    return data
+  }
+
+  private async httpGetRequest(url: string, params?: IHttpParams): Promise<AxiosResponse | void> {
+    try {
+      return await this._httpService.getRequest(url, { params })
+    } catch (err) {
+      this._logService.consoleError(`HTTP GET ${url} Request Failed:\n`, err)
+    }
   }
 }

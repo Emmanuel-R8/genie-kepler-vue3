@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
 
+import { ILayerElementProps } from '@/interfaces'
 import { active, inactive } from '@/components/LayerElements/index.module.css'
 
 export default defineComponent({
@@ -17,12 +18,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props: Record<string, any>) {
+  setup(props: ILayerElementProps) {
     return (): JSX.Element => html(props)
   }
 })
 
-const html = ({ id, isActive, name }: Record<string, any>): JSX.Element => (
+const html = ({ id, isActive, name }: ILayerElementProps): JSX.Element => (
   <div id={id} class={`layer-element ${isActive ? active : inactive}`}>
     {name}
   </div>
