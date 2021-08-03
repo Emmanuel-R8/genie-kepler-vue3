@@ -4,7 +4,7 @@ import { Container, Service } from 'typedi'
 import { mapbox } from '@/config'
 import { States } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
-import { MapStyleService, ModalService, StateService } from '@/services'
+import { MapStyleService, StateService } from '@/services'
 import { NavigationControlPosition } from '@/types'
 
 @Service()
@@ -16,11 +16,9 @@ export default class MapboxService {
   constructor(
     private _map: Map,
     private _mapStyleService: MapStyleService,
-    private _modalService: ModalService,
     private _stateService: StateService
   ) {
     this._mapStyleService = Container.get(MapStyleService)
-    this._modalService = Container.get(ModalService)
     this._stateService = Container.get(StateService)
   }
 
@@ -43,7 +41,6 @@ export default class MapboxService {
     const options: MapboxOptions = { ...this._options, ...this._state }
     this._map = new Map(options)
       .addControl(new NavigationControl({ visualizePitch }), <NavigationControlPosition>position)
-      .on('load', (): void => this.onMapLoadHandler())
       .on('idle', (): void => this.onMapIdleHandler())
   }
 
@@ -51,22 +48,8 @@ export default class MapboxService {
     this._map.remove()
   }
 
-  private onMapLoadHandler(): void {
-    this.setMapStyle()
-    this.hideModal()
-  }
-
   private onMapIdleHandler(): void {
     this.setMapboxSettingsState()
-  }
-
-  private hideModal(): void {
-    this._modalService.hideModal()
-  }
-
-  private setMapStyle(): void {
-    const { style: mapStyle } = this._state
-    this._mapStyleService.mapStyle = mapStyle
   }
 
   private setMapboxSettingsState(): void {

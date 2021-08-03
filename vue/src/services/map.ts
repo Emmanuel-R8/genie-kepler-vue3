@@ -10,6 +10,7 @@ import {
   MapboxService,
   MapStyleService,
   MarkerService,
+  ModalService,
   PopupService
 } from '@/services'
 
@@ -25,6 +26,7 @@ export default class MapService {
     private _mapboxService: MapboxService,
     private _mapStyleService: MapStyleService,
     private _markerService: MarkerService,
+    private _modalService: ModalService,
     private _popupService: PopupService
   ) {
     this._layerService = Container.get(LayerService)
@@ -32,6 +34,7 @@ export default class MapService {
     this._mapboxService = Container.get(MapboxService)
     this._mapStyleService = Container.get(MapStyleService)
     this._markerService = Container.get(MarkerService)
+    this._modalService = Container.get(ModalService)
     this._popupService = Container.get(PopupService)
   }
 
@@ -66,6 +69,7 @@ export default class MapService {
   private onMapLoadHandler(): void {
     this.addSkyLayer()
     this.addLayers()
+    this.hideModal()
   }
 
   private addSkyLayer(): void {
@@ -79,6 +83,10 @@ export default class MapService {
       this._map.addLayer(<FillLayer | LineLayer>layer)
       this.setLayerVisibility(id)
     }
+  }
+
+  private hideModal(): void {
+    this._modalService.hideModal()
   }
 
   private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {

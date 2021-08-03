@@ -100,6 +100,7 @@ export default class LayerElementService {
   }
 
   private setMapStyle(): void {
+    this._mapStyleService.setMapStyle()
     this._mapService.setMapStyle()
   }
 

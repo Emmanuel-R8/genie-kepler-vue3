@@ -92,7 +92,7 @@ export default class EventListenerService {
     evt.stopPropagation()
     /* prettier-ignore */
     const { target: { id: prop, value } }: Record<string, any> = evt
-    prop && value && this._hexagonLayerService.setHexagonLayerPropsState(prop, value)
+    prop && value && this._hexagonLayerService.setHexagonLayerPropsState({ prop, value })
   }
 
   private onResetHexagonLayerPropsClickHandler(evt: Event): void {

@@ -10,15 +10,11 @@ export default class MapStyleService {
 
   constructor(private _mapStyle: string, private _stateService: StateService) {
     this._stateService = Container.get(StateService)
+    this.setMapStyle()
   }
 
   get mapStyle(): string {
-    this.getMapStyle()
     return this._mapStyle
-  }
-
-  set mapStyle(mapStyle: string) {
-    this._mapStyle = mapStyle
   }
 
   private get _state(): IMapStyle[] {
@@ -31,19 +27,16 @@ export default class MapStyleService {
     this._stateService.setStaticState(MAP_STYLES, mapStyles)
   }
 
+  setMapStyle(): void {
+    const mapStyles = this._state
+    const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
+    const mapStyle = mapStyles.find(isActive)
+    mapStyle && (this._mapStyle = mapStyle.url)
+  }
+
   setMapStyleState(): void {
     const state = this._state
     state.forEach((mapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
     this._state = state
-  }
-
-  private getMapStyle(): void {
-    const mapStyles = this._state
-    const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
-    const i = mapStyles.findIndex(isActive)
-    if (i >= 0) {
-      const { url: mapStyle } = mapStyles[i]
-      this._mapStyle = mapStyle
-    }
   }
 }

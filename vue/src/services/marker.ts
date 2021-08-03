@@ -47,7 +47,7 @@ export default class MarkerService {
   }
 
   private createMarkers(id: string, features: Feature[]): Marker[] {
-    const markers = features.map((feature: Feature): Marker => {
+    const markers = features.map((feature): Marker => {
       const el = this.setHTMLMarkerElement(id, feature)
       const marker = this.createMarker(el, feature)
       return marker

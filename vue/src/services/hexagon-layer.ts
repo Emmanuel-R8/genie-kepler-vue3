@@ -49,7 +49,7 @@ export default class HexagonLayerService {
     map.on('load', (): void => this.onMapLoadHandler())
   }
 
-  setHexagonLayerPropsState(prop: string, value: string): void {
+  setHexagonLayerPropsState({ prop, value }: Record<string, string>): void {
     const state = this.state
     state[prop as keyof IHexagonLayerProps] = Number(value)
     this._state = state

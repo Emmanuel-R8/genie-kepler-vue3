@@ -16,7 +16,7 @@ export default class PopupService {
       const { map } = this._mapboxService
       /* prettier-ignore */
       const { properties: { description, name } } = features[0]
-      this.setPopupHTML(description, name)
+      this.setPopupHTML({ description, name })
       this._popup.setLngLat(lngLat).setOffset(4).addTo(map)
     }
   }
@@ -29,7 +29,7 @@ export default class PopupService {
       lat && lng
         ? this._popup.setLngLat([lng, lat])
         : this._popup.setLngLat(<LngLatLike>(<Point>geometry).coordinates)
-      this.setPopupHTML(description, name)
+      this.setPopupHTML({ description, name })
       this._popup.setOffset(14).addTo(map)
     }
   }
@@ -38,7 +38,7 @@ export default class PopupService {
     this._popup.remove()
   }
 
-  private setPopupHTML(description: string, name: string): void {
+  private setPopupHTML({ description, name }: Record<string, string>): void {
     this._popup.setHTML(
       `<div class="bold">${name}</div>
        <div>${description}</div>`
