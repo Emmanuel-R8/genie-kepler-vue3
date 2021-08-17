@@ -1,4 +1,4 @@
-module gitlab.com/AlbaIntelligence/genie-kepler-vue3
+module github.com/AlbaIntelligence/genie-kepler-vue3
 
 go 1.16
 
