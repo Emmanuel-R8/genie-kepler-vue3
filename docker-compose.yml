@@ -17,7 +17,7 @@ services:
 
   golang:
     container_name: golang
-    # build: .
+    build: .
     image: albaintelligence/genie-kepler-vue3:latest
     command: /app/main
     restart: on-failure

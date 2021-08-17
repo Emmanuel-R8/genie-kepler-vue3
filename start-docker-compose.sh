@@ -1,7 +1,11 @@
-#!/usr/bin/env sh
-export POSTGRES_DBNAME="genie-kepler-vue3"
-export POSTGRES_USER="generic_user"
-export POSTGRES_PASS=""
+#!/usr/bin/sh
 
-. docker-compose up
+# Get environment variables defining POSTGRES_DBNAME, POSTGRES_USER, POSTGRES_PASS and MAPBOX_ACCESS_TOKEN
+# From a file ignored by .gitignore
+source ./.env
+
+# No need to build. Compose will do it
+# docker build .
+
+docker-compose up
 
