@@ -1,4 +1,4 @@
-module gitlab.com/geospatialweb/go-vue3-tsx
+module gitlab.com/AlbaIntelligence/genie-kepler-vue3
 
 go 1.16
 

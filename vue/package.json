@@ -22,7 +22,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/geospatialweb/go-vue3-tsx"
+    "url": "https://gitlab.com/AlbaIntelligence/genie-kepler-vue3"
   },
   "scripts": {
     "dev": "vite",

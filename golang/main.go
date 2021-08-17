@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/geospatialweb/go-vue3-tsx/app"
-	"gitlab.com/geospatialweb/go-vue3-tsx/env"
+	"gitlab.com/AlbaIntelligence/genie-kepler-vue3/app"
+	"gitlab.com/AlbaIntelligence/genie-kepler-vue3/env"
 )
 
 func main() {
