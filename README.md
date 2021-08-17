@@ -1,3 +1,16 @@
+# Build
+
+The project includes 4 sub-parts:
+
+  - A Vue 3 frontend wrapping Deck.gl
+  - A Go server to access a PSQL PostGIS server and serve that to the app in Geo/JSON.
+  - A PostGIS server
+  - A NGinx server
+
+To run the project, start up the Dockoer-compose set-up with the local script `start-docker-compose.sh`.
+
+
+
 # Geospatial Web
 
 http://www.geospatialweb.ca
