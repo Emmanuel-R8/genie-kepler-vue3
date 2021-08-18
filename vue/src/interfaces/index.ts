@@ -8,12 +8,10 @@ import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
-
 export interface IDeckglProps {
   canvas: string
   container: string
 }
-
 
 export interface IDeckglOptions extends IDeckglProps {
   controller: boolean
@@ -25,7 +23,6 @@ export interface IDeckglOptions extends IDeckglProps {
   style: string
 }
 
-
 export interface IDeckglViewSettings {
   bearing: number
   center: LngLatLike
@@ -35,14 +32,12 @@ export interface IDeckglViewSettings {
   zoom: number
 }
 
-
 export interface IHexagonLayerProps {
   coverage: number
   elevationScale: number
   radius: number
   upperPercentile: number
 }
-
 
 export interface IHexagonLayerStaticProps {
   colorRange: number[][]
@@ -62,25 +57,21 @@ export interface IHexagonLayerStaticProps {
   }
 }
 
-
 export interface IHTMLMarkerElement extends HTMLDivElement {
   isActive: boolean
   isHidden: boolean
 }
-
 
 export interface IHttpParams {
   fields: string
   table: string
 }
 
-
 export interface IHttpResponse<F = FeatureCollection, R = Record<string, string>>
   extends AxiosResponse {
   data: F
   token: R
 }
-
 
 export interface ILayer extends IMarker {
   type: string
@@ -100,20 +91,17 @@ export interface ILayer extends IMarker {
   }
 }
 
-
 export interface ILayerElement extends ILayerElementProps {
   height: number
   src: string
   width: number
 }
 
-
 export interface ILayerElementProps {
   id: string
   isActive: boolean
   name: string
 }
-
 
 export interface ILayerElements {
   biosphere: string
@@ -124,7 +112,6 @@ export interface ILayerElements {
   trails: string
 }
 
-
 export interface ILayerIconProps {
   alt: string
   height: number
@@ -132,7 +119,6 @@ export interface ILayerIconProps {
   src: string
   width: number
 }
-
 
 export interface ILayerVisibility {
   biosphere: {
@@ -146,24 +132,20 @@ export interface ILayerVisibility {
   }
 }
 
-
 export interface IMapStyle {
   isActive: boolean
   url: string
 }
 
-
 export interface IMapboxProps {
   container: string
 }
-
 
 export interface IMapboxOptions extends IMapboxProps {
   doubleClickZoom: boolean
   maxZoom: number
   minZoom: number
 }
-
 
 export interface IMapboxSettings {
   bearing: number
@@ -173,17 +155,14 @@ export interface IMapboxSettings {
   zoom: number
 }
 
-
 export interface IMarker {
   fields: string
   id: string
 }
 
-
 export interface IModal {
   isActive: boolean
 }
-
 
 export interface ITrail {
   center?: LngLatLike
