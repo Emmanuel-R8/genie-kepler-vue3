@@ -1,3 +1,9 @@
+// All additional types in this app are implemented as interfaces. They are reimported in the
+// `types/index.ts` deifinitions.
+// The only exception are the `enums` defined as `types` in that file, instead of `interfaces`.
+// Typescript `interfaces` are what other languages call `structs`, whereas typescript
+// `types` are more like type aliases.
+
 import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'

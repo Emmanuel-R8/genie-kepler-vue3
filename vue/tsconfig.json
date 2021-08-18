@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true,      // Required by `typestack/typedi` dependency injection package
     "esModuleInterop": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true,     // Required by `typestack/typedi` dependency injection package
     "jsx": "preserve",
     "lib": [
       "esnext",
