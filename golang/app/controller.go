@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"gitlab.com/geospatialweb/go-vue3-tsx/collection"
+	"github.com/AlbaIntelligence/genie-kepler-vue3/collection"
 )
 
 type token struct {

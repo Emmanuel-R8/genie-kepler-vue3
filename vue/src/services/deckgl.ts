@@ -11,6 +11,7 @@ import { ModalService, StateService } from '@/services'
 
 @Service()
 export default class DeckglService {
+  // Graphical options re: the DeckGL rendering
   private _options: IDeckglOptions = deckgl.options
   private _skyLayer = <SkyLayer>deckgl.skyLayer
   private _states: Record<string, string> = States
@@ -55,6 +56,7 @@ export default class DeckglService {
         minZoom,
         ...this._state
       },
+
       onViewStateChange: ({
         viewState: { bearing, latitude, longitude, pitch, zoom }
       }: ViewState): void => {
@@ -62,6 +64,7 @@ export default class DeckglService {
         this._state = { bearing, center, latitude, longitude, pitch, zoom }
         this._map.jumpTo(this._state)
       },
+
       getTooltip: ({ object }: Record<string, any>): string | null => {
         if (!object) return null
         const { points }: Record<string, []> = object

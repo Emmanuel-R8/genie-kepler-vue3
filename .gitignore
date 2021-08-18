@@ -1,6 +1,16 @@
 .*cache
+
+# Any .env (and various variants) in any folder
 .env
+.env.dev
+.env.prod
+.env.global
+.env.local
+
 .vscode
 dist
 logs
-node_modules
+
+vue/node_modules
+vue/yarn.lock
+
