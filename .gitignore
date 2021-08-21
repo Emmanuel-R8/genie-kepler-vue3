@@ -3,4 +3,6 @@
 .vscode
 dist
 logs
+
 node_modules
+vue/yarn.lock
