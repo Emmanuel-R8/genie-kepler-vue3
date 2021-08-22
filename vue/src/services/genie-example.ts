@@ -5,16 +5,17 @@ import { Container, Service } from 'typedi'
 import { Deck, ViewState } from '@deck.gl/core'
 import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 
-import { deckglConfig } from '@/config'
+import { genieExampleConfig } from '@/config'
 import { States } from '@/enums'
-import { IDeckglOptions, IDeckglViewSettings } from '@/interfaces'
+import { IGenieExampleOptions, IGenieExampleViewSettings } from '@/interfaces'
 import { ModalService, StateService } from '@/services'
 
+
 @Service()
-export default class DeckglService {
+export default class GenieExampleService {
     // Graphical options re: the DeckGL rendering
-    private _options: IDeckglOptions = deckglConfig.options
-    private _skyLayer = <SkyLayer>deckglConfig.skyLayer
+    private _options: IGenieExampleOptions = genieExampleConfig.options
+    private _skyLayer = <SkyLayer>genieExampleConfig.skyLayer
     private _states: Record<string, string> = States
 
     constructor(
@@ -35,12 +36,12 @@ export default class DeckglService {
         return this._map
     }
 
-    private get _state(): IDeckglViewSettings {
+    private get _state(): IGenieExampleViewSettings {
         const { DECKGL_VIEW_SETTINGS } = this._states
-        return <IDeckglViewSettings>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
+        return <IGenieExampleViewSettings>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
     }
 
-    private set _state(settings: IDeckglViewSettings) {
+    private set _state(settings: IGenieExampleViewSettings) {
         const { DECKGL_VIEW_SETTINGS } = this._states
         this._stateService.setStaticState(DECKGL_VIEW_SETTINGS, settings)
     }

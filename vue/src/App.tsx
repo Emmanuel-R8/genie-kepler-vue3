@@ -1,7 +1,7 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount } from 'vue'
 
-import { Header } from '@/components'
+import { HeaderVue } from '@/components'
 import { AppService } from '@/services'
 
 export default defineComponent({
@@ -13,7 +13,7 @@ export default defineComponent({
 
 const html = (): JSX.Element => (
     <>
-        <Header />
+        <HeaderVue />
         <router-view />
     </>
 )

@@ -5,6 +5,7 @@ export default {
         radius: 1000,
         upperPercentile: 100
     },
+
     staticProps: {
         id: 'hexagon-layer',
         colorRange: [

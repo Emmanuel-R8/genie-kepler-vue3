@@ -1,9 +1,18 @@
-import cloneDeep from 'lodash.clonedeep'
 import { Container, Service } from 'typedi'
 import { reactive } from 'vue'
+import cloneDeep from 'lodash.clonedeep'
 
-import { deckgl, hexagonLayer, layerElements, layerVisibility, mapbox, modal } from '@/config'
 import { States } from '@/enums'
+import { LogService } from '@/services'
+import { ReactiveState, StaticState } from '@/types'
+import {
+    deckglConfig,
+    hexagonLayerConfig,
+    layerElementsConfig,
+    layerVisibilityConfig,
+    mapboxConfig,
+    modalConfig
+} from '@/config'
 import {
     IDeckglViewSettings,
     IHexagonLayerProps,
@@ -13,18 +22,16 @@ import {
     IMapboxSettings,
     IModal
 } from '@/interfaces'
-import { LogService } from '@/services'
-import { ReactiveState, StaticState } from '@/types'
 
 @Service()
 export default class StateService {
-    private _deckglViewSettings: IDeckglViewSettings = deckgl.settings
-    private _hexagonLayerProps: IHexagonLayerProps = hexagonLayer.reactiveProps
-    private _layerElements: ILayerElement[] = layerElements
-    private _layerVisibility: ILayerVisibility = layerVisibility
-    private _mapStyles: IMapStyle[] = mapbox.styles
-    private _mapboxSettings: IMapboxSettings = mapbox.settings
-    private _modal: IModal = modal
+    private _deckglViewSettings: IDeckglViewSettings = deckglConfig.settings
+    private _hexagonLayerProps: IHexagonLayerProps = hexagonLayerConfig.reactiveProps
+    private _layerElements: ILayerElement[] = layerElementsConfig
+    private _layerVisibility: ILayerVisibility = layerVisibilityConfig
+    private _mapStyles: IMapStyle[] = mapboxConfig.styles
+    private _mapboxSettings: IMapboxSettings = mapboxConfig.settings
+    private _modal: IModal = modalConfig
     private _states: Record<string, string> = States
 
     constructor(

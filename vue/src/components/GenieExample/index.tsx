@@ -1,20 +1,25 @@
 import { Container } from 'typedi'
+import { IGenieExampleProps } from '@/interfaces'
+
+/* eslint-disable-next-line */
+import { genie_example_element, hexagonLayer } from './index.module.css'
+
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { DataService, GenieExampleService, EventListenerService, HexagonLayerService, ModalService } from '@/services'
 
-import { IDeckglProps } from '@/interfaces'
-import { deckgl, hexagonLayer } from './index.module.css'
-
-import { DataService, DeckglService, EventListenerService, HexagonLayerService, ModalService } from '@/services'
-
-//
-//
 export default defineComponent({
     props: {
-        canvas: { type: String, required: true },
-        container: { type: String, required: true }
+        canvas: {
+            type: String,
+            required: true
+        },
+        container: {
+            type: String,
+            required: true
+        }
     },
 
-    setup(props: IDeckglProps) {
+    setup(props: IGenieExampleProps) {
         onBeforeMount((): void => showModal())
 
         onMounted(async (): Promise<void> => {
@@ -29,14 +34,13 @@ export default defineComponent({
             removeDeckInstance()
             removeMapInstance()
         })
-
         return (): JSX.Element => html(props)
     }
 })
 
-const html = ({ canvas, container }: IDeckglProps): JSX.Element => (
+const html = ({ canvas, container }: IGenieExampleProps): JSX.Element => (
     <>
-        <div id={container} class={deckgl}></div>
+        <div id={container} class={genie_example_element}></div>
         <canvas id={canvas} class={hexagonLayer}></canvas>
     </>
 )
@@ -63,13 +67,15 @@ const removeEventListeners = (): void => {
 }
 
 const removeDeckInstance = (): void => {
-    const deckglService = Container.get(DeckglService)
-    deckglService.removeDeckInstance()
+    const deckglService = Container.get(GenieExampleService)
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+    GenieExampleService.removeDeckInstance()
 }
 
 const removeMapInstance = (): void => {
-    const deckglService = Container.get(DeckglService)
-    deckglService.removeMapInstance()
+    const deckglService = Container.get(GenieExampleService)
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+    GenieExampleService.removeMapInstance()
 }
 
 const showModal = (): void => {

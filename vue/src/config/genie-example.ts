@@ -1,7 +1,7 @@
 export default {
     options: {
         canvas: 'hexagon-layer',
-        container: 'deckgl',
+        container: 'genieexample',
         controller: true,
         id: 'hexagon-layer',
         interactive: false,

@@ -1,16 +1,16 @@
-/*
- * URL: https://deck.gl/gallery/hexagon-layer
- * Title: deck.gl HexagonLayer Example
- * Data URL: https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv
- * Data Source: https://data.gov.uk
- */
-
 /* eslint-disable */
 /* @ts-ignore */
-import { HexagonLayer } from '@deck.gl/aggregation-layers'
 import { Container, Service } from 'typedi'
 
-import { hexagonLayer } from '@/config'
+/*
+* URL: https://deck.gl/gallery/hexagon-layer
+* Title: deck.gl HexagonLayer Example
+* Data URL: https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv
+* Data Source: https://data.gov.uk
+*/
+import { HexagonLayer } from '@deck.gl/aggregation-layers'
+
+import { hexagonLayerConfig } from '@/config'
 import { States } from '@/enums'
 import { IHexagonLayerProps, IHexagonLayerStaticProps } from '@/interfaces'
 import { DataService, DeckglService, StateService } from '@/services'
@@ -18,8 +18,8 @@ import { DataService, DeckglService, StateService } from '@/services'
 @Service()
 export default class HexagonLayerService {
     private _hexagonLayerData: number[][] = []
-    private _reactiveProps: IHexagonLayerProps = hexagonLayer.reactiveProps
-    private _staticProps: IHexagonLayerStaticProps = hexagonLayer.staticProps
+    private _reactiveProps: IHexagonLayerProps = hexagonLayerConfig.reactiveProps
+    private _staticProps: IHexagonLayerStaticProps = hexagonLayerConfig.staticProps
     private _states: Record<string, string> = States
 
     constructor(

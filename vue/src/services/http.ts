@@ -1,5 +1,6 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Container, Service } from 'typedi'
+
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import { AxiosService } from '@/services'
 

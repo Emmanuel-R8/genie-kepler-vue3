@@ -1,7 +1,8 @@
-import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { mapbox } from '@/config'
+import { FillLayer, LineLayer, Map, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
+
+import { mapboxConfig } from '@/config'
 import { LayerElements } from '@/enums'
 import { ILayerVisibility, ITrail } from '@/interfaces'
 import {
@@ -17,7 +18,7 @@ import {
 @Service()
 export default class MapService {
     private _layerElements: Record<string, string> = LayerElements
-    private _skyLayer = <SkyLayer>mapbox.skyLayer
+    private _skyLayer = <SkyLayer>mapboxConfig.skyLayer
 
     constructor(
         private _map: Map,

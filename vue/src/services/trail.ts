@@ -1,12 +1,12 @@
 import { Container, Service } from 'typedi'
 
-import { trails } from '@/config'
+import { trailsConfig } from '@/config'
 import { ITrail } from '@/interfaces'
 import { MapService } from '@/services'
 
 @Service()
 export default class TrailService {
-    private _trails: ITrail[] = trails
+    private _trails: ITrail[] = trailsConfig
 
     constructor(private _mapService: MapService) {
         this._mapService = Container.get(MapService)

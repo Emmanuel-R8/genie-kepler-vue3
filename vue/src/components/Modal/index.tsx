@@ -5,11 +5,9 @@ import { active, inactive } from './index.module.css'
 
 export default defineComponent({
     props: {
-        isActive: {
-            type: Boolean,
-            required: true
-        }
+        isActive: { type: Boolean, required: true }
     },
+
     setup(props: IModal) {
         return (): JSX.Element => html(props)
     }

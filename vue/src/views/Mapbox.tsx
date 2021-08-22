@@ -1,15 +1,15 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { LayerElements, Mapbox, Modal, Trails } from '@/components'
-import { mapbox } from '@/config'
+import { LayerElementsVue, MapboxVue, ModalVue, TrailsVue } from '@/components'
+import { mapboxConfig } from '@/config'
 import { IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
 export default defineComponent({
     setup() {
         /* prettier-ignore */
-        const { options: { container } } = mapbox
+        const { options: { container } } = mapboxConfig
         const modalState = getModalState()
         return (): JSX.Element => html(modalState.value, container)
     }
@@ -17,10 +17,10 @@ export default defineComponent({
 
 const html = ({ isActive }: IModal, container: string): JSX.Element => (
     <>
-        <Mapbox container={container} />
-        <Modal isActive={isActive} />
-        <LayerElements />
-        <Trails />
+        <MapboxVue container={container} />
+        <ModalVue isActive={isActive} />
+        <LayerElementsVue />
+        <TrailsVue />
     </>
 )
 

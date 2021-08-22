@@ -8,6 +8,30 @@ import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
+export interface IGenieExampleProps {
+    canvas: string
+    container: string
+}
+
+export interface IGenieExampleOptions extends IGenieExampleProps {
+    controller: boolean
+    id: string
+    interactive: boolean
+    maxPitch: number
+    maxZoom: number
+    minZoom: number
+    style: string
+}
+
+export interface IGenieExampleViewSettings {
+    bearing: number
+    center: LngLatLike
+    latitude: number
+    longitude: number
+    pitch: number
+    zoom: number
+}
+
 export interface IDeckglProps {
     canvas: string
     container: string
@@ -67,8 +91,7 @@ export interface IHttpParams {
     table: string
 }
 
-export interface IHttpResponse<F = FeatureCollection, R = Record<string, string>>
-    extends AxiosResponse {
+export interface IHttpResponse<F = FeatureCollection, R = Record<string, string>> extends AxiosResponse {
     data: F
     token: R
 }

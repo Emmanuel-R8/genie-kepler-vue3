@@ -20,21 +20,25 @@ export default defineComponent({
             required: true
         }
     },
+
     setup(props: IMapboxProps) {
         const { mapStyle } = Container.get(MapStyleService)
         onBeforeMount((): void => {
             setMarkerVisibility()
             showModal()
         })
-        onBeforeUnmount((): void => {
-            setMarkerVisibility()
-            removeEventListeners()
-        })
+
         onMounted(async (): Promise<void> => {
             await getMapboxAccessToken()
             loadMapLayer()
             addEventListeners()
         })
+
+        onBeforeUnmount((): void => {
+            setMarkerVisibility()
+            removeEventListeners()
+        })
+
         onUnmounted((): void => removeMapInstance())
         return (): JSX.Element => html(props, mapStyle)
     }

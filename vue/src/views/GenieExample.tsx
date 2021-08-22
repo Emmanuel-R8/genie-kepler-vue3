@@ -1,15 +1,15 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { DeckglVue, FooterVue, HexagonVue, ModalVue } from '@/components'
-import { deckglConfig } from '@/config'
+import { GenieExampleVue, FooterVue, HexagonVue, ModalVue } from '@/components'
+import { genieExampleConfig } from '@/config'
 import { IModal } from '@/interfaces'
 import { ModalService } from '@/services'
 
 export default defineComponent({
     setup() {
         /* prettier-ignore */
-        const { options: { canvas, container } } = deckglConfig
+        const { options: { canvas, container } } = genieExampleConfig
         const modalState = getModalState()
         return (): JSX.Element => html(modalState.value, canvas, container)
     }
@@ -17,7 +17,7 @@ export default defineComponent({
 
 const html = ({ isActive }: IModal, canvas: string, container: string): JSX.Element => (
     <>
-        <DeckglVue canvas={canvas} container={container} />
+        <GenieExampleVue canvas={canvas} container={container} />
         <ModalVue isActive={isActive} />
         <HexagonVue />
         <FooterVue />

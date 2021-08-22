@@ -1,6 +1,7 @@
+import { Container, Service } from 'typedi'
+
 import { Feature, Point } from 'geojson'
 import { LngLatLike, MapLayerMouseEvent, Popup } from 'mapbox-gl'
-import { Container, Service } from 'typedi'
 
 import { MapboxService } from '@/services'
 

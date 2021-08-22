@@ -1,7 +1,8 @@
-import { Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
 import { Container, Service } from 'typedi'
 
-import { mapbox } from '@/config'
+import { Map, MapboxOptions, NavigationControl } from 'mapbox-gl'
+
+import { mapboxConfig } from '@/config'
 import { States } from '@/enums'
 import { IMapboxOptions, IMapboxSettings } from '@/interfaces'
 import { MapStyleService, StateService } from '@/services'
@@ -9,15 +10,11 @@ import { NavigationControlPosition } from '@/types'
 
 @Service()
 export default class MapboxService {
-    private _navigationControl = mapbox.navigationControl
-    private _options: IMapboxOptions = mapbox.options
+    private _navigationControl = mapboxConfig.navigationControl
+    private _options: IMapboxOptions = mapboxConfig.options
     private _states: Record<string, string> = States
 
-    constructor(
-        private _map: Map,
-        private _mapStyleService: MapStyleService,
-        private _stateService: StateService
-    ) {
+    constructor(private _map: Map, private _mapStyleService: MapStyleService, private _stateService: StateService) {
         this._mapStyleService = Container.get(MapStyleService)
         this._stateService = Container.get(StateService)
     }
@@ -40,10 +37,7 @@ export default class MapboxService {
         const { position, visualizePitch } = this._navigationControl
         const options: MapboxOptions = { ...this._options, ...this._state }
         this._map = new Map(options)
-            .addControl(
-                new NavigationControl({ visualizePitch }),
-                <NavigationControlPosition>position
-            )
+            .addControl(new NavigationControl({ visualizePitch }), <NavigationControlPosition>position)
             .on('idle', (): void => this.onMapIdleHandler())
     }
 

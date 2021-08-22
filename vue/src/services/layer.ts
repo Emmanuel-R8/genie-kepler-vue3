@@ -1,6 +1,7 @@
+import { Service } from 'typedi'
+
 import cloneDeep from 'lodash.clonedeep'
 import { FeatureCollection } from 'geojson'
-import { Service } from 'typedi'
 
 import { ILayer } from '@/interfaces'
 

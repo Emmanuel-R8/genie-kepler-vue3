@@ -1,11 +1,12 @@
+import { Container, Service } from 'typedi'
+
 import { AxiosResponse } from 'axios'
 import { DSVRowArray } from 'd3-dsv'
 import { csv } from 'd3-fetch'
 import { Feature, FeatureCollection } from 'geojson'
 import mapboxgl from 'mapbox-gl'
-import { Container, Service } from 'typedi'
 
-import { layers, markers } from '@/config'
+import { layersConfig, markersConfig } from '@/config'
 import { EndPoints, Urls } from '@/enums'
 import { IHttpParams, IHttpResponse, ILayer, IMarker } from '@/interfaces'
 import { HttpService, LayerService, LogService, MarkerService } from '@/services'
@@ -13,8 +14,8 @@ import { HttpService, LayerService, LogService, MarkerService } from '@/services
 @Service()
 export default class DataService {
     private _endPoints: Record<string, string> = EndPoints
-    private _layers: ILayer[] = layers
-    private _markers: IMarker[] = markers
+    private _layers: ILayer[] = layersConfig
+    private _markers: IMarker[] = markersConfig
     private _urls: Record<string, string> = Urls
 
     constructor(
@@ -54,9 +55,7 @@ export default class DataService {
     }
 
     private setMapboxAccessToken(token: string): void {
-        token
-            ? (mapboxgl.accessToken = token)
-            : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, token)
+        token ? (mapboxgl.accessToken = token) : this._logService.consoleLog(`No Mapbox Access Token Found:\n`, token)
     }
 
     private async getHexagonLayerData(): Promise<void> {
@@ -99,21 +98,13 @@ export default class DataService {
     private setMarkers(id: string, features: Feature[]): void {
         features?.length
             ? this._markerService.setMarkers(id, features)
-            : this._logService.consoleLog(
-                  `No ${this.getMarkerData.name} Features Found:\n`,
-                  features
-              )
+            : this._logService.consoleLog(`No ${this.getMarkerData.name} Features Found:\n`, features)
     }
 
-    private async getGeoJsonFeatureCollection({
-        id,
-        fields
-    }: ILayer | IMarker): Promise<FeatureCollection> {
+    private async getGeoJsonFeatureCollection({ id, fields }: ILayer | IMarker): Promise<FeatureCollection> {
         const { GEOJSON_ENDPOINT } = this._endPoints
         const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
-        const { data } = <IHttpResponse<FeatureCollection>>(
-            await this.httpGetRequest(GEOJSON_ENDPOINT, params)
-        )
+        const { data } = <IHttpResponse<FeatureCollection>>await this.httpGetRequest(GEOJSON_ENDPOINT, params)
         return data
     }
 
