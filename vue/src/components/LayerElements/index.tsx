@@ -7,24 +7,24 @@ import { LayerElementService } from '@/services'
 import { layerElement } from './index.module.css'
 
 export default defineComponent({
-  setup() {
-    const layerElementsState = getLayerElementsState()
-    return (): JSX.Element => html(layerElementsState.value)
-  }
+    setup() {
+        const layerElementsState = getLayerElementsState()
+        return (): JSX.Element => html(layerElementsState.value)
+    }
 })
 
 const html = (layerElements: ILayerElement[]): JSX.Element => (
-  <ul class={layerElement}>
-    {layerElements.map(({ height, id, isActive, name, src, width }) => (
-      <li>
-        <LayerIcon alt={name} height={height} id={id} key={id} src={src} width={width} />
-        <LayerElement id={id} isActive={isActive} key={id} name={name} />
-      </li>
-    ))}
-  </ul>
+    <ul class={layerElement}>
+        {layerElements.map(({ height, id, isActive, name, src, width }) => (
+            <li>
+                <LayerIcon alt={name} height={height} id={id} key={id} src={src} width={width} />
+                <LayerElement id={id} isActive={isActive} key={id} name={name} />
+            </li>
+        ))}
+    </ul>
 )
 
 const getLayerElementsState = (): ComputedRef<ILayerElement[]> => {
-  const layerElementService = Container.get(LayerElementService)
-  return computed((): ILayerElement[] => layerElementService.state)
+    const layerElementService = Container.get(LayerElementService)
+    return computed((): ILayerElement[] => layerElementService.state)
 }

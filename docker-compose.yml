@@ -1,47 +1,61 @@
 version: "3.5"
+
 services:
+
+  #############################################################################
   nginx:
     container_name: nginx
     image: nginx:stable-alpine
     restart: on-failure
     depends_on:
       - golang
-    ports:
-      - "80:80"
+
     networks:
       - app-network
+    ports:
+      - "80:80"
+
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./dist:/var/www/public:ro
       - ./logs:/var/log/nginx
 
+
+  #############################################################################
   golang:
     container_name: golang
-    build: .
     image: albaintelligence/genie-kepler-vue3:latest
+    build: .
     command: /app/main
     restart: on-failure
     depends_on:
       - postgres
-    ports:
-      - "8000:8000"
+
     networks:
       - app-network
+    ports:
+      - "8000:8000"
 
+
+  #############################################################################
   postgres:
     container_name: postgis
     image: kartoza/postgis:12.0
     restart: on-failure
-    ports:
-      - "5432:5432"
+
     networks:
       - app-network
-    volumes:
-      - ./postgres/postgis.sql:/docker-entrypoint-initdb.d/postgis.sql
+    ports:
+      - "5432:5432"
+
     environment:
       POSTGRES_DBNAME:  ${POSTGRES_DBNAME}
       POSTGRES_USER:    ${POSTGRES_USER}
       POSTGRES_PASS:    ${POSTGRES_PASSWORD}
+
+    volumes:
+      - ./postgres/postgis.sql:/docker-entrypoint-initdb.d/postgis.sql
+
 
 networks:
   app-network:

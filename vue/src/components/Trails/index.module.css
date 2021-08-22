@@ -1,19 +1,19 @@
 select.trail {
-  animation: slide-in 1.25s ease-out forwards;
-  border: var(--standard-grey-border);
-  font: inherit;
-  font-size: 1.5rem;
-  left: 10px;
-  position: absolute;
-  top: 39rem;
-  width: 13.9rem;
+    animation: slide-in 1.25s ease-out forwards;
+    border: var(--standard-grey-border);
+    font: inherit;
+    font-size: 1.5rem;
+    left: 10px;
+    position: absolute;
+    top: 39rem;
+    width: 13.9rem;
 }
 
 @keyframes slide-in {
-  from {
-    transform: translateX(-150px);
-  }
-  to {
-    transform: translateX(0);
-  }
+    from {
+        transform: translateX(-150px);
+    }
+    to {
+        transform: translateX(0);
+    }
 }

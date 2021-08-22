@@ -1,42 +1,42 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "emitDecoratorMetadata": true,      // Required by `typestack/typedi` dependency injection package
-    "esModuleInterop": true,
-    "experimentalDecorators": true,     // Required by `typestack/typedi` dependency injection package
-    "jsx": "preserve",
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
+    "compilerOptions": {
+        "baseUrl": ".",
+        "emitDecoratorMetadata": true, // Required by `typestack/typedi` dependency injection package
+        "esModuleInterop": true,
+        "experimentalDecorators": true, // Required by `typestack/typedi` dependency injection package
+        "jsx": "preserve",
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "plugins": [
+            {
+                "name": "typescript-plugin-css-modules"
+            }
+        ],
+        "sourceMap": true,
+        "strict": true,
+        "target": "esnext",
+        "types": [
+            "vite/client",
+            "jest"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*.ts*"
     ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ],
-    "sourceMap": true,
-    "strict": true,
-    "target": "esnext",
-    "types": [
-      "vite/client",
-      "jest"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    }
-  },
-  "include": [
-    "src/**/*.ts*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "exclude": [
+        "node_modules"
+    ]
 }
