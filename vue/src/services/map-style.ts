@@ -6,37 +6,37 @@ import { StateService } from '@/services'
 
 @Service()
 export default class MapStyleService {
-  private _states: Record<string, string> = States
+    private _states: Record<string, string> = States
 
-  constructor(private _mapStyle: string, private _stateService: StateService) {
-    this._stateService = Container.get(StateService)
-    this.setMapStyle()
-  }
+    constructor(private _mapStyle: string, private _stateService: StateService) {
+        this._stateService = Container.get(StateService)
+        this.setMapStyle()
+    }
 
-  get mapStyle(): string {
-    return this._mapStyle
-  }
+    get mapStyle(): string {
+        return this._mapStyle
+    }
 
-  private get _state(): IMapStyle[] {
-    const { MAP_STYLES } = this._states
-    return <IMapStyle[]>this._stateService.getStaticState(MAP_STYLES)
-  }
+    private get _state(): IMapStyle[] {
+        const { MAP_STYLES } = this._states
+        return <IMapStyle[]>this._stateService.getStaticState(MAP_STYLES)
+    }
 
-  private set _state(mapStyles: IMapStyle[]) {
-    const { MAP_STYLES } = this._states
-    this._stateService.setStaticState(MAP_STYLES, mapStyles)
-  }
+    private set _state(mapStyles: IMapStyle[]) {
+        const { MAP_STYLES } = this._states
+        this._stateService.setStaticState(MAP_STYLES, mapStyles)
+    }
 
-  setMapStyle(): void {
-    const mapStyles = this._state
-    const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
-    const mapStyle = mapStyles.find(isActive)
-    mapStyle && (this._mapStyle = mapStyle.url)
-  }
+    setMapStyle(): void {
+        const mapStyles = this._state
+        const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
+        const mapStyle = mapStyles.find(isActive)
+        mapStyle && (this._mapStyle = mapStyle.url)
+    }
 
-  setMapStyleState(): void {
-    const state = this._state
-    state.forEach((mapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
-    this._state = state
-  }
+    setMapStyleState(): void {
+        const state = this._state
+        state.forEach((mapStyle): boolean => (mapStyle.isActive = !mapStyle.isActive))
+        this._state = state
+    }
 }

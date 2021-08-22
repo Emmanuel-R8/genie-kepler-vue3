@@ -1,3 +1,3 @@
 export default {
-  isActive: false
+    isActive: false
 }

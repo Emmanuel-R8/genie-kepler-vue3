@@ -1,18 +1,18 @@
 .modal {
-  background-color: var(--black-alpha-3);
-  bottom: 0;
-  position: absolute;
-  top: 4.5rem;
-  width: 100%;
-  z-index: 2;
+    background-color: var(--black-alpha-3);
+    bottom: 0;
+    position: absolute;
+    top: 4.5rem;
+    width: 100%;
+    z-index: 2;
 }
 
 .active {
-  composes: modal;
-  display: block;
+    composes: modal;
+    display: block;
 }
 
 .inactive {
-  composes: modal;
-  display: none;
+    composes: modal;
+    display: none;
 }
