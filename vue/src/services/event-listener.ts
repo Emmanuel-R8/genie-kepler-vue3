@@ -103,9 +103,7 @@ export default class EventListenerService {
                 : el.innerHTML.toLowerCase() === id
         const el = [...document.querySelectorAll('label.props')].find(label)
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        evt.type === 'mouseover'
-            ? el!.classList.add('mouseover')
-            : el!.classList.remove('mouseover')
+        evt.type === 'mouseover' ? el!.classList.add('mouseover') : el!.classList.remove('mouseover')
     }
 
     private onSetHexagonLayerPropsChangeHandler(evt: Event): void {
