@@ -17,11 +17,11 @@ const html = (): JSX.Element => (
       GL&ensp;&#58;&ensp;Deck GL&ensp;&#58;&ensp;PostgreSQL
     </div>
     <a
-      href="https://gitlab.com/geospatialweb/go-vue3-tsx"
+      href="https://github.com/AlbaIntelligence/genie-kepler-vue3/"
       rel="noopener noreferrer"
       target="_blank"
     >
-      GitLab Repository
+      Github Repository
     </a>
   </header>
 )

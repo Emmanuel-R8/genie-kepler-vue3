@@ -43,6 +43,7 @@ export default class HexagonLayerService {
   }
 
   loadHexagonLayer(): void {
+    // WHY? SECOND LOAD OVERWRITES THE FIRST???
     this._deckglService.loadDeckgl()
     this._deckglService.loadMapbox()
     const { map } = this._deckglService

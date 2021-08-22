@@ -40,8 +40,8 @@ services:
       - ./postgres/postgis.sql:/docker-entrypoint-initdb.d/postgis.sql
     environment:
       POSTGRES_DBNAME:  ${POSTGRES_DBNAME}
-      POSTGRES_PASS:    ${POSTGRES_PASSWORD}
       POSTGRES_USER:    ${POSTGRES_USER}
+      POSTGRES_PASS:    ${POSTGRES_PASSWORD}
 
 networks:
   app-network:

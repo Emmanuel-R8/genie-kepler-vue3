@@ -8,6 +8,11 @@ import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 import { LngLatLike } from 'mapbox-gl'
 
+export interface IDeckglProps {
+  canvas: string
+  container: string
+}
+
 export interface IDeckglOptions extends IDeckglProps {
   controller: boolean
   id: string
@@ -16,11 +21,6 @@ export interface IDeckglOptions extends IDeckglProps {
   maxZoom: number
   minZoom: number
   style: string
-}
-
-export interface IDeckglProps {
-  canvas: string
-  container: string
 }
 
 export interface IDeckglViewSettings {
@@ -137,14 +137,14 @@ export interface IMapStyle {
   url: string
 }
 
+export interface IMapboxProps {
+  container: string
+}
+
 export interface IMapboxOptions extends IMapboxProps {
   doubleClickZoom: boolean
   maxZoom: number
   minZoom: number
-}
-
-export interface IMapboxProps {
-  container: string
 }
 
 export interface IMapboxSettings {
