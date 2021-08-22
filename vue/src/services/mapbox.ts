@@ -40,7 +40,10 @@ export default class MapboxService {
         const { position, visualizePitch } = this._navigationControl
         const options: MapboxOptions = { ...this._options, ...this._state }
         this._map = new Map(options)
-            .addControl(new NavigationControl({ visualizePitch }), <NavigationControlPosition>position)
+            .addControl(
+                new NavigationControl({ visualizePitch }),
+                <NavigationControlPosition>position
+            )
             .on('idle', (): void => this.onMapIdleHandler())
     }
 

@@ -99,7 +99,10 @@ export default class DataService {
     private setMarkers(id: string, features: Feature[]): void {
         features?.length
             ? this._markerService.setMarkers(id, features)
-            : this._logService.consoleLog(`No ${this.getMarkerData.name} Features Found:\n`, features)
+            : this._logService.consoleLog(
+                  `No ${this.getMarkerData.name} Features Found:\n`,
+                  features
+              )
     }
 
     private async getGeoJsonFeatureCollection({

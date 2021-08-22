@@ -92,13 +92,13 @@ export default class MapService {
     private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
         layers[id as keyof ILayerVisibility].isActive
             ? this._map
-                .on('click', id, (evt: MapLayerMouseEvent): void => this.onMapClickHandler(evt))
-                .on('mouseenter', id, (): void => this.onMapMouseEnterHandler())
-                .on('mouseleave', id, (): void => this.onMapMouseLeaveHandler())
+                  .on('click', id, (evt: MapLayerMouseEvent): void => this.onMapClickHandler(evt))
+                  .on('mouseenter', id, (): void => this.onMapMouseEnterHandler())
+                  .on('mouseleave', id, (): void => this.onMapMouseLeaveHandler())
             : this._map
-                .off('click', id, this.onMapClickHandler)
-                .off('mouseenter', id, this.onMapMouseEnterHandler)
-                .off('mouseleave', id, this.onMapMouseLeaveHandler)
+                  .off('click', id, this.onMapClickHandler)
+                  .off('mouseenter', id, this.onMapMouseEnterHandler)
+                  .off('mouseleave', id, this.onMapMouseLeaveHandler)
     }
 
     private onMapClickHandler(evt: MapLayerMouseEvent): void {
