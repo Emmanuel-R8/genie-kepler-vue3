@@ -1,42 +1,52 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "emitDecoratorMetadata": true, // Required by `typestack/typedi` dependency injection package
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+
         "esModuleInterop": true,
-        "experimentalDecorators": true, // Required by `typestack/typedi` dependency injection package
+
+        // Required by `typestack/typedi` dependency injection package
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+
+        // TS pre-processing should not touch any JSX syntax.
         "jsx": "preserve",
+
         "lib": [
             "esnext",
             "dom",
             "dom.iterable"
         ],
         "module": "esnext",
+        "target": "esnext",
+
         "moduleResolution": "node",
         "plugins": [
             {
                 "name": "typescript-plugin-css-modules"
             }
         ],
+
         "sourceMap": true,
         "strict": true,
-        "target": "esnext",
         "types": [
             "vite/client",
             "jest"
         ],
+
         "typeRoots": [
             "node_modules/@types"
         ],
-        "paths": {
-            "@/*": [
-                "src/*"
-            ]
-        }
     },
+
     "include": [
         "src/**/*.ts*"
     ],
     "exclude": [
         "node_modules"
-    ]
+    ],
 }

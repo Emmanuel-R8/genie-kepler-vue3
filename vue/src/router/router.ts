@@ -1,7 +1,15 @@
+//
+// The routes are imported by `src/main.ts` (via importing `src/router/index.ts`.
+//
+// import GenieExampleView from '@/views/GenieExampleView'
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Deckgl = () => import('@/views/Deckgl')
-const Mapbox = () => import('@/views/Mapbox')
+const Deckgl = () => import('@/views/DeckglView')
+const Mapbox = () => import('@/views/MapboxView')
+
+// Modif step 1: Local image
+const LocalStaticImage = () => import('@/views/LocalStaticImageView')
+
 const history = createWebHistory()
 const routes = [
     {
@@ -13,6 +21,11 @@ const routes = [
         path: '/deckgl',
         name: 'deckgl',
         component: Deckgl
+    },
+    {
+        path: '/localstaticimage',
+        name: 'genie_example',
+        component: LocalStaticImage
     },
     {
         path: '/:pathMatch(.*)*',

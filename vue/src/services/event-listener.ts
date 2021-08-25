@@ -1,19 +1,23 @@
 import { Container, Service } from 'typedi'
 
-import { HexagonLayerService, LayerElementService, RouterService, TrailService } from '@/services'
+import { Router_Service } from '@/services'
+
+import { HexagonLayer_Service } from '../components/Hexagon/services'
+import { LayerElement_Service } from '../components/LayerElement/services'
+import { Trail_Service } from '../components/Trails/services'
 
 @Service()
 export default class EventListenerService {
     constructor(
-        private _hexagonLayerService: HexagonLayerService,
-        private _layerElementService: LayerElementService,
-        private _routerService: RouterService,
-        private _trailService: TrailService
+        private _hexagonLayerService: HexagonLayer_Service,
+        private _layerElementService: LayerElement_Service,
+        private _routerService: Router_Service,
+        private _trailService: Trail_Service
     ) {
-        this._hexagonLayerService = Container.get(HexagonLayerService)
-        this._layerElementService = Container.get(LayerElementService)
-        this._routerService = Container.get(RouterService)
-        this._trailService = Container.get(TrailService)
+        this._hexagonLayerService = Container.get(HexagonLayer_Service)
+        this._layerElementService = Container.get(LayerElement_Service)
+        this._routerService = Container.get(Router_Service)
+        this._trailService = Container.get(Trail_Service)
     }
 
     addDisplayLayerElementEventListener(): void {
@@ -24,28 +28,18 @@ export default class EventListenerService {
 
     removeDisplayLayerElementEventListener(): void {
         for (const el of document.querySelectorAll('.layer-element')) {
-            el.removeEventListener('click', (evt): void =>
-                this.onDisplayLayerElementClickHandler(evt)
-            )
+            el.removeEventListener('click', (evt): void => this.onDisplayLayerElementClickHandler(evt))
         }
     }
 
     addHexagonLayerEventListeners(): void {
         for (const el of document.querySelectorAll('input.props')) {
-            el.addEventListener('change', (evt): void =>
-                this.onSetHexagonLayerPropsChangeHandler(evt)
-            )
-            el.addEventListener('mouseover', (evt): void =>
-                this.onInputElementMouseEventHandler(evt)
-            )
-            el.addEventListener('mouseout', (evt): void =>
-                this.onInputElementMouseEventHandler(evt)
-            )
+            el.addEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+            el.addEventListener('mouseover', (evt): void => this.onInputElementMouseEventHandler(evt))
+            el.addEventListener('mouseout', (evt): void => this.onInputElementMouseEventHandler(evt))
         }
         for (const el of document.querySelectorAll('button#reset')) {
-            el.addEventListener('click', (evt): void =>
-                this.onResetHexagonLayerPropsClickHandler(evt)
-            )
+            el.addEventListener('click', (evt): void => this.onResetHexagonLayerPropsClickHandler(evt))
         }
         for (const el of document.querySelectorAll('button#mapbox')) {
             el.addEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))
@@ -54,20 +48,12 @@ export default class EventListenerService {
 
     removeHexagonLayerEventListeners(): void {
         for (const el of document.querySelectorAll('input.props')) {
-            el.removeEventListener('change', (evt): void =>
-                this.onSetHexagonLayerPropsChangeHandler(evt)
-            )
-            el.removeEventListener('mouseover', (evt): void =>
-                this.onInputElementMouseEventHandler(evt)
-            )
-            el.removeEventListener('mouseout', (evt): void =>
-                this.onInputElementMouseEventHandler(evt)
-            )
+            el.removeEventListener('change', (evt): void => this.onSetHexagonLayerPropsChangeHandler(evt))
+            el.removeEventListener('mouseover', (evt): void => this.onInputElementMouseEventHandler(evt))
+            el.removeEventListener('mouseout', (evt): void => this.onInputElementMouseEventHandler(evt))
         }
         for (const el of document.querySelectorAll('button#reset')) {
-            el.removeEventListener('click', (evt): void =>
-                this.onResetHexagonLayerPropsClickHandler(evt)
-            )
+            el.removeEventListener('click', (evt): void => this.onResetHexagonLayerPropsClickHandler(evt))
         }
         for (const el of document.querySelectorAll('button#mapbox')) {
             el.removeEventListener('click', (evt): void => this.onReturnToTrailsClickHandler(evt))

@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
-import { Router } from 'vue-router'
 
+import { Router } from 'vue-router'
 import { router } from '@/router'
 
 @Service()

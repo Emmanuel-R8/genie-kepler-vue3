@@ -1,4 +1,5 @@
 import vueJsx from '@vitejs/plugin-vue-jsx'
+
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
@@ -10,11 +11,7 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    deckgl: [
-                        '@deck.gl/aggregation-layers',
-                        '@deck.gl/core',
-                        '@deck.gl/layers'
-                    ],
+                    deckgl: ['@deck.gl/aggregation-layers', '@deck.gl/core', '@deck.gl/layers'],
                     mapboxgl: ['mapbox-gl']
                 }
             }
