@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { IHexagonLayerProps } from '@/interfaces'
+import { IHexagonLayer_ReactiveProps } from '../Hexagon/interfaces'
 
 export default defineComponent({
     props: {
@@ -21,17 +21,12 @@ export default defineComponent({
             required: true
         }
     },
-    setup(props: IHexagonLayerProps) {
+    setup(props: IHexagonLayer_ReactiveProps) {
         return (): JSX.Element => html(props)
     }
 })
 
-const html = ({
-    coverage,
-    elevationScale,
-    radius,
-    upperPercentile
-}: IHexagonLayerProps): JSX.Element => (
+const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLayer_ReactiveProps): JSX.Element => (
     <div>
         <header>GB Road Accidents</header>
         <hr />
@@ -52,29 +47,13 @@ const html = ({
         <hr />
         <div>
             <label class="props">Elevation Scale</label>
-            <input
-                id="elevationScale"
-                class="props"
-                type="range"
-                min="0"
-                max="100"
-                step="20"
-                value={elevationScale}
-            />
+            <input id="elevationScale" class="props" type="range" min="0" max="100" step="20" value={elevationScale} />
             <span>{elevationScale}</span>
         </div>
         <hr />
         <div>
             <label class="props">Radius</label>
-            <input
-                id="radius"
-                class="props"
-                type="range"
-                min="1000"
-                max="5000"
-                step="500"
-                value={radius}
-            />
+            <input id="radius" class="props" type="range" min="1000" max="5000" step="500" value={radius} />
             <span>{radius}</span>
         </div>
         <hr />

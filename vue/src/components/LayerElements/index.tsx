@@ -2,8 +2,10 @@ import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
 import { LayerElementVue, LayerIconVue } from '@/components'
-import { ILayerElement } from '@/interfaces'
-import { LayerElementService } from '@/services'
+
+import { ILayerElement } from '../LayerElement/interfaces'
+import { LayerElement_Service } from '../LayerElement/services'
+
 import { layerElement } from './index.module.css'
 
 export default defineComponent({
@@ -25,6 +27,6 @@ const html = (layerElements: ILayerElement[]): JSX.Element => (
 )
 
 const getLayerElementsState = (): ComputedRef<ILayerElement[]> => {
-    const layerElementService = Container.get(LayerElementService)
+    const layerElementService = Container.get(LayerElement_Service)
     return computed((): ILayerElement[] => layerElementService.state)
 }

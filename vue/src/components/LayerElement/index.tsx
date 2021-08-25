@@ -1,7 +1,8 @@
 import { defineComponent } from 'vue'
 
-import { ILayerElementProps } from '@/interfaces'
-import { active, inactive } from '@/components/LayerElements/index.module.css'
+import { ILayerElementProps } from '../LayerElement/interfaces'
+
+import { active, inactive } from '../Modal/index.module.css'
 
 export default defineComponent({
     props: {

@@ -17,14 +17,27 @@ The code is commented as it is read and modified/refactored.
 NGinx serves ------> Vue 3 pages/components ---(Axios)---> Go app ------> Prepopulated PSQL
 
 
-## Vue 3
+## Frontend / Vue 3
 
 ### Of note
 
+- Bundling is done with [`Vite`](https://vitejs.dev/) which uses `esbuild`.
+- A `Vite` plugin handles `Vue` and the JSX/TSX files transpilation.
+- As a consequence of `Vite`, the format of the JSX/TSX files has a couple of requirements to be properly detected (see the documentation of the [Vite Vue JSX plugin](https://github.com/vitejs/vite/tree/main/packages/plugin-vue-jsx)):
+
+  - component must be exported.
+  - The component must be declared by calling defineComponent via a root-level statement, either variable declaration or export declaration.
+
 - Extensive use of interfaces (Typescript linguo for structs/types, since types are what other languages simetimes call type aliases or type synonyms).
-
 - Interfaces are then used for Dependency injections. Useful pattern for class-based object languages. Multiple dispatch, where are thou?
+- No use of the Vue 2 _Options API_. Everything is under the _Composition API_.
 
+
+### Type definitions.
+
+Warning: All Vue 3 props are [reactive by default](https://v3.vuejs.org/guide/composition-api-setup.html#arguments).
+
+`src\types\index.ts` collects all defined types. Types are defined in the `src\interfaces\index.ts`.
 
 ### General
 
@@ -106,5 +119,33 @@ front-end frameworks, namely:
 * Vue 3: Composition API, reactive ES6 proxies and reactive local/global state management without Vuex
 
 His conclusions: "To that end, this experiment has been a huge success. Employing Vite and Volar in lieu of Vue CLI and Vetur is highly recommended. Everything coalesces perfectly. Including Vuex or Redux if required. You be the judge..."
+
+
+# Change log
+
+## Adding a new route to load a static local image
+
+### Routes
+
+Modify `src/router/router.ts` to add a new route `localstaticimage`. This route requires a _view_ and a _component_.
+
+### View
+
+New `src/views/LocalStaticImageView.tsx` file. This in turn references a Vue and a config file.
+
+### Interface
+
+Define structs associated with the image. By default, we create static and reactive props, and options.
+
+In this case, static = the name of the local file.
+
+### Config
+
+Add a config in a new file in `src/config/local-static-image.ts`. The config exported as default in that file is associated to an identifier in `src/config/index.ts`.
+
+
+### Config file
+
+The file contains information to initialise fields defined in the interface.
 
 

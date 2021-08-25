@@ -1,10 +1,10 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
+import { hexagonUI } from './index.module.css'
 
 import { HexagonUIVue } from '@/components'
-import { IHexagonLayerProps } from '@/interfaces'
-import { HexagonLayerService } from '@/services'
-import { hexagonUI } from './index.module.css'
+import { IHexagonLayer_ReactiveProps } from './interfaces'
+import { HexagonLayer_Service } from './services'
 
 export default defineComponent({
     setup() {
@@ -13,7 +13,7 @@ export default defineComponent({
     }
 })
 
-const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLayerProps): JSX.Element => (
+const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLayer_ReactiveProps): JSX.Element => (
     <HexagonUIVue
         class={hexagonUI}
         coverage={coverage}
@@ -23,7 +23,7 @@ const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLay
     />
 )
 
-const getHexagonLayerPropsState = (): ComputedRef<IHexagonLayerProps> => {
-    const hexagonLayerService = Container.get(HexagonLayerService)
-    return computed((): IHexagonLayerProps => hexagonLayerService.state)
+const getHexagonLayerPropsState = (): ComputedRef<IHexagonLayer_ReactiveProps> => {
+    const hexagonLayerService = Container.get(HexagonLayer_Service)
+    return computed((): IHexagonLayer_ReactiveProps => HexagonLayer_Service.state())
 }

@@ -1,84 +1,84 @@
-import { Container } from 'typedi'
-import { IGenieExampleProps } from '@/interfaces'
+// import { Container } from 'typedi'
+// import { IGenieExampleProps } from './interfaces'
 
-/* eslint-disable-next-line */
-import { genie_example_element, hexagonLayer } from './index.module.css'
+// /* eslint-disable-next-line */
+// import { 'genie-example-element', hexagonLayer } from './index.module.css'
 
-import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
-import { DataService, GenieExampleService, EventListenerService, HexagonLayerService, ModalService } from '@/services'
+// import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+// import { Data_Service, GenieExample_Service, EventListener_Service, HexagonLayer_Service, Modal_Service } from '@/services'
 
-export default defineComponent({
-    props: {
-        canvas: {
-            type: String,
-            required: true
-        },
-        container: {
-            type: String,
-            required: true
-        }
-    },
+// export default defineComponent({
+//     props: {
+//         canvas: {
+//             type: String,
+//             required: true
+//         },
+//         container: {
+//             type: String,
+//             required: true
+//         }
+//     },
 
-    setup(props: IGenieExampleProps) {
-        onBeforeMount((): void => showModal())
+//     setup(props: IGenieExampleProps) {
+//         onBeforeMount((): void => showModal())
 
-        onMounted(async (): Promise<void> => {
-            await getMapboxAccessToken()
-            loadHexagonLayer()
-            addEventListeners()
-        })
+//         onMounted(async (): Promise<void> => {
+//             await getMapboxAccessToken()
+//             loadHexagonLayer()
+//             addEventListeners()
+//         })
 
-        onBeforeUnmount((): void => removeEventListeners())
+//         onBeforeUnmount((): void => removeEventListeners())
 
-        onUnmounted((): void => {
-            removeDeckInstance()
-            removeMapInstance()
-        })
-        return (): JSX.Element => html(props)
-    }
-})
+//         onUnmounted((): void => {
+//             removeDeckInstance()
+//             removeMapInstance()
+//         })
+//         return (): JSX.Element => html(props)
+//     }
+// })
 
-const html = ({ canvas, container }: IGenieExampleProps): JSX.Element => (
-    <>
-        <div id={container} class={genie_example_element}></div>
-        <canvas id={canvas} class={hexagonLayer}></canvas>
-    </>
-)
+// const html = ({ canvas, container }: IGenieExampleProps): JSX.Element => (
+//     <>
+//         <div id={container} class={genie-example_-element}></div>
+//         <canvas id={canvas} class={hexagonLayer}></canvas>
+//     </>
+// )
 
-const getMapboxAccessToken = async (): Promise<void> => {
-    const dataService = Container.get(DataService)
-    const { mapboxAccessToken } = dataService
-    mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
-}
+// const getMapboxAccessToken = async (): Promise<void> => {
+//     const dataService = Container.get(Data_Service)
+//     const { mapboxAccessToken } = dataService
+//     mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
+// }
 
-const loadHexagonLayer = (): void => {
-    const hexagonLayerService = Container.get(HexagonLayerService)
-    hexagonLayerService.loadHexagonLayer()
-}
+// const loadHexagonLayer = (): void => {
+//     const hexagonLayerService = Container.get(HexagonLayer_Service)
+//     hexagonLayerService.loadHexagonLayer()
+// }
 
-const addEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListenerService)
-    eventListenerService.addHexagonLayerEventListeners()
-}
+// const addEventListeners = (): void => {
+//     const eventListenerService = Container.get(EventListener_Service)
+//     eventListenerService.addHexagonLayerEventListeners()
+// }
 
-const removeEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListenerService)
-    eventListenerService.removeHexagonLayerEventListeners()
-}
+// const removeEventListeners = (): void => {
+//     const eventListenerService = Container.get(EventListener_Service)
+//     eventListenerService.removeHexagonLayerEventListeners()
+// }
 
-const removeDeckInstance = (): void => {
-    const deckglService = Container.get(GenieExampleService)
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-    GenieExampleService.removeDeckInstance()
-}
+// const removeDeckInstance = (): void => {
+//     const genieExampleService = Container.get(GenieExample_Service)
+//     /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+//     GenieExample_Service.removeDeckInstance()
+// }
 
-const removeMapInstance = (): void => {
-    const deckglService = Container.get(GenieExampleService)
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-    GenieExampleService.removeMapInstance()
-}
+// const removeMapInstance = (): void => {
+//     const genieExampleService = Container.get(GenieExample_Service)
+//     /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+//     GenieExample_Service.removeMapInstance()
+// }
 
-const showModal = (): void => {
-    const modalService = Container.get(ModalService)
-    modalService.showModal()
-}
+// const showModal = (): void => {
+//     const modalService = Container.get(Modal_Service)
+//     modalService.showModal()
+// }

@@ -3,43 +3,45 @@ import { reactive } from 'vue'
 import cloneDeep from 'lodash.clonedeep'
 
 import { States } from '@/enums'
-import { LogService } from '@/services'
+import { Log_Service } from '@/services'
 import { ReactiveState, StaticState } from '@/types'
-import {
-    deckglConfig,
-    hexagonLayerConfig,
-    layerElementsConfig,
-    layerVisibilityConfig,
-    mapboxConfig,
-    modalConfig
-} from '@/config'
-import {
-    IDeckglViewSettings,
-    IHexagonLayerProps,
-    ILayerElement,
-    ILayerVisibility,
-    IMapStyle,
-    IMapboxSettings,
-    IModal
-} from '@/interfaces'
+
+import { deckgl_Config } from '../components/Deckgl/config'
+import { IDeckglView_Settings, IDeckgl_ReactiveProps } from '../components/Deckgl/interfaces'
+import { Deckgl_Service } from '../components/Deckgl/services'
+
+import { hexagonLayer_Config } from '../components/Hexagon/config'
+import { IHexagonLayer_ReactiveProps } from '../components/Hexagon/interfaces'
+
+import { layerVisibility_Config } from '../components/LayerElement/config'
+import { ILayerElement } from '../components/LayerElement/interfaces'
+
+import { layerElements_Config } from '../components/LayerElements/config'
+import { ILayerVisibility } from '../components/LayerElements/interfaces'
+
+import { mapbox_Config } from '../components/Mapbox/config'
+import { IMapStyle, IMapboxSettings } from '../components/Mapbox/interfaces'
+
+import { modal_Config } from '../components/Modal/config'
+import { IModal } from '../components/Modal/interfaces'
 
 @Service()
-export default class StateService {
-    private _deckglViewSettings: IDeckglViewSettings = deckglConfig.settings
-    private _hexagonLayerProps: IHexagonLayerProps = hexagonLayerConfig.reactiveProps
-    private _layerElements: ILayerElement[] = layerElementsConfig
-    private _layerVisibility: ILayerVisibility = layerVisibilityConfig
-    private _mapStyles: IMapStyle[] = mapboxConfig.styles
-    private _mapboxSettings: IMapboxSettings = mapboxConfig.settings
-    private _modal: IModal = modalConfig
+export default class State_Service {
+    private _deckglViewSettings: IDeckglView_Settings = deckgl_Config.settings
+    private _hexagonLayerProps: IHexagonLayer_ReactiveProps = hexagonLayer_Config.reactiveProps
+    private _layerElements: ILayerElement[] = layerElements_Config
+    private _layerVisibility: ILayerVisibility = layerVisibility_Config
+    private _mapStyles: IMapStyle[] = mapbox_Config.styles
+    private _mapboxSettings: IMapboxSettings = mapbox_Config.settings
+    private _modal: IModal = modal_Config
     private _states: Record<string, string> = States
 
     constructor(
-        private _logService: LogService,
+        private _logService: Log_Service,
         private _reactiveState: Record<string, ReactiveState>,
         private _staticState: Record<string, StaticState>
     ) {
-        this._logService = Container.get(LogService)
+        this._logService = Container.get(Log_Service)
         this.createReactiveState()
         this.createStaticState()
     }

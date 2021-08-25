@@ -1,19 +1,23 @@
 import { Container, Service } from 'typedi'
 
-import { HexagonLayerService, LayerElementService, RouterService, TrailService } from '@/services'
+import { Router_Service } from '@/services'
+
+import { HexagonLayer_Service } from '../components/Hexagon/services'
+import { LayerElement_Service } from '../components/LayerElement/services'
+import { Trail_Service } from '../components/Trails/services'
 
 @Service()
 export default class EventListenerService {
     constructor(
-        private _hexagonLayerService: HexagonLayerService,
-        private _layerElementService: LayerElementService,
-        private _routerService: RouterService,
-        private _trailService: TrailService
+        private _hexagonLayerService: HexagonLayer_Service,
+        private _layerElementService: LayerElement_Service,
+        private _routerService: Router_Service,
+        private _trailService: Trail_Service
     ) {
-        this._hexagonLayerService = Container.get(HexagonLayerService)
-        this._layerElementService = Container.get(LayerElementService)
-        this._routerService = Container.get(RouterService)
-        this._trailService = Container.get(TrailService)
+        this._hexagonLayerService = Container.get(HexagonLayer_Service)
+        this._layerElementService = Container.get(LayerElement_Service)
+        this._routerService = Container.get(Router_Service)
+        this._trailService = Container.get(Trail_Service)
     }
 
     addDisplayLayerElementEventListener(): void {
