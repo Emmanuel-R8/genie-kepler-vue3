@@ -1,4 +1,6 @@
-# Build
+# Get started
+
+## Build
 
 The project includes 4 sub-parts:
 
@@ -7,7 +9,14 @@ The project includes 4 sub-parts:
   - A PostGIS server
   - A NGinx server
 
+
 To run the project, start up the Dockoer-compose set-up with the local script `start-docker-compose.sh`.
+
+
+## Required before running
+
+- Install all JS/TS modules. `yarn`has been used. `npm` should be OK too.
+- Create a `.env` file in the top directory (where `package.json` is) containing various environment variables. There is a `env.template` to see what is needed.
 
 
 # Code structure
@@ -17,15 +26,15 @@ The code is commented as it is read and modified/refactored.
 NGinx serves ------> Vue 3 pages/components ---(Axios)---> Go app ------> Prepopulated PSQL
 
 
-## Vue 3
+# Vue 3
 
-### Of note
+## Of note
 
 - Extensive use of interfaces (Typescript linguo for structs/types, since types are what other languages simetimes call type aliases or type synonyms).
 - Interfaces then used for Dependency injections. Useful pattern for class-based object languages. Multiple dispatch, where are thou?
 
 
-### General
+## General
 
 New data types (Typescript interfaces) in `src/interfaces/index.ts`. As expected for new types, only type signatures and no methods which come in
 
