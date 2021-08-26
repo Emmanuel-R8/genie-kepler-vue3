@@ -1,4 +1,6 @@
-# Build
+# Get started
+
+## Build
 
 The project includes 4 sub-parts:
 
@@ -7,7 +9,14 @@ The project includes 4 sub-parts:
   - A PostGIS server
   - A NGinx server
 
+
 To run the project, start up the Dockoer-compose set-up with the local script `start-docker-compose.sh`.
+
+
+## Required before running
+
+- Install all JS/TS modules. `yarn` has been used. `npm` should be OK too.
+- Create a `.env` file in the top directory (where `package.json` is) containing various environment variables. `env.template` indicates what is needed.
 
 
 # Code structure
@@ -19,7 +28,7 @@ NGinx serves ------> Vue 3 pages/components ---(Axios)---> Go app ------> Prepop
 
 ## Frontend / Vue 3
 
-### Of note
+## Of note
 
 - Bundling is done with [`Vite`](https://vitejs.dev/) which uses `esbuild`.
 - A `Vite` plugin handles `Vue` and the JSX/TSX files transpilation.
@@ -39,7 +48,7 @@ Warning: All Vue 3 props are [reactive by default](https://v3.vuejs.org/guide/co
 
 `src\types\index.ts` collects all defined types. Types are defined in the `src\interfaces\index.ts`.
 
-### General
+
 
   - Classes are defined in `src/services` using injecting the interfaces as services. See
     [Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection) for a refresher on the vocabulary.
@@ -48,6 +57,7 @@ Warning: All Vue 3 props are [reactive by default](https://v3.vuejs.org/guide/co
     type signatures and no methods which come in. A `struct` definition within `src/interfaces/index.ts`.
   - A corresponding config file (in `src/config`) which it imports
   - If this structure reflects a Vue module, its component difinition in `src/Components/_COM_`.
+
 
 
 Starting the app:
@@ -100,6 +110,23 @@ file.
 
 [TO BE COMPLETED]
 
+
+# Additions
+
+Follows a list of additions in order of complexity. One component = one `Vue`. But one component could be several interfaces and/or services.
+
+## Local static image
+
+
+### State
+
+Modify `src/Global_State.ts` to add an entry that will contain the reactive and static state of the image (even if
+not used). Then modify the methods in `src/common_services/state.ts`.
+
+### Route
+
+Modify `src/route/routers`
+
 # Origins
 This code base started from [Geospatial Web](http://www.geospatialweb.ca) available at
 [https://gitlab.com/geospatialweb/go-vue3-tsx]().
@@ -147,5 +174,4 @@ Add a config in a new file in `src/config/local-static-image.ts`. The config exp
 ### Config file
 
 The file contains information to initialise fields defined in the interface.
-
 

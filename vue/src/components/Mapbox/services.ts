@@ -1,29 +1,39 @@
 import { Container, Service } from 'typedi'
 
-import { LayerElements, States } from '@/enums'
-import { NavigationControlPosition } from '@/types'
+//
+// Global state
+//
+import { States } from '../../Global_State'
 
+//
+// Imports common to all components
+//
+import { LayerElements } from '@/enums'
+import { NavigationControlPosition } from '@/types'
+import { Popup_Common_Service } from '../../common_services/Popup/services'
+import { State_Common_Service } from '../../common_services/State/services'
+
+//
+// Component-specific
+//
 import { mapbox_Config } from './config'
-import { IMapbox_Settings, IMapboxSettings, IMapStyle } from './interfaces'
-import { Popup_Service, State_Service } from '@/services'
+import { IMapbox_Settings, IMapbox_StaticProps, IMapStyle_ReactiveProps } from './interfaces'
 
 import { FillLayer, LineLayer, Map, MapboxOptions, NavigationControl, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 
-import { ILayerVisibility } from '../LayerElements/interfaces'
+import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
 import { ITrail } from '../Trails/interfaces'
 
 import { Layer_Service, LayerVisibility_Service } from '../LayerElement/services'
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'
 
-import {} from '@/services'
-
 @Service()
 export class MapStyle_Service {
     private _states: Record<string, string> = States
 
-    constructor(private _mapStyle: string, private _stateService: State_Service) {
-        this._stateService = Container.get(State_Service)
+    constructor(private _mapStyle: string, private _stateService: State_Common_Service) {
+        this._stateService = Container.get(State_Common_Service)
         this.setMapStyle()
     }
 
@@ -31,19 +41,19 @@ export class MapStyle_Service {
         return this._mapStyle
     }
 
-    private get _state(): IMapStyle[] {
+    private get _state(): IMapStyle_ReactiveProps[] {
         const { MAP_STYLES } = this._states
-        return <IMapStyle[]>this._stateService.getStaticState(MAP_STYLES)
+        return <IMapStyle_ReactiveProps[]>this._stateService.getStaticState(MAP_STYLES)
     }
 
-    private set _state(mapStyles: IMapStyle[]) {
+    private set _state(mapStyles: IMapStyle_ReactiveProps[]) {
         const { MAP_STYLES } = this._states
         this._stateService.setStaticState(MAP_STYLES, mapStyles)
     }
 
     setMapStyle(): void {
         const mapStyles = this._state
-        const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
+        const isActive = (mapStyle: IMapStyle_ReactiveProps): boolean => mapStyle.isActive
         const mapStyle = mapStyles.find(isActive)
         mapStyle && (this._mapStyle = mapStyle.url)
     }
@@ -61,21 +71,25 @@ export class Mapbox_Service {
     private _options: IMapbox_Settings = mapbox_Config.options
     private _states: Record<string, string> = States
 
-    constructor(private _map: Map, private _mapStyleService: MapStyle_Service, private _stateService: State_Service) {
+    constructor(
+        private _map: Map,
+        private _mapStyleService: MapStyle_Service,
+        private _stateService: State_Common_Service
+    ) {
         this._mapStyleService = Container.get(MapStyle_Service)
-        this._stateService = Container.get(State_Service)
+        this._stateService = Container.get(State_Common_Service)
     }
 
     get map(): Map {
         return this._map
     }
 
-    private get _state(): IMapboxSettings {
+    private get _state(): IMapbox_StaticProps {
         const { MAPBOX_SETTINGS } = this._states
-        return <IMapboxSettings>this._stateService.getStaticState(MAPBOX_SETTINGS)
+        return <IMapbox_StaticProps>this._stateService.getStaticState(MAPBOX_SETTINGS)
     }
 
-    private set _state(settings: IMapboxSettings) {
+    private set _state(settings: IMapbox_StaticProps) {
         const { MAPBOX_SETTINGS } = this._states
         this._stateService.setStaticState(MAPBOX_SETTINGS, settings)
     }
@@ -121,7 +135,7 @@ export class Map_Service {
         private _mapStyleService: MapStyle_Service,
         private _markerService: Marker_Service,
         private _modalService: Modal_Service,
-        private _popupService: Popup_Service
+        private _popupService: Popup_Common_Service
     ) {
         this._layerService = Container.get(Layer_Service)
         this._layerVisibilityService = Container.get(LayerVisibility_Service)
@@ -129,7 +143,7 @@ export class Map_Service {
         this._mapStyleService = Container.get(MapStyle_Service)
         this._markerService = Container.get(Marker_Service)
         this._modalService = Container.get(Modal_Service)
-        this._popupService = Container.get(Popup_Service)
+        this._popupService = Container.get(Popup_Common_Service)
     }
 
     loadMapLayer(): void {
@@ -154,7 +168,7 @@ export class Map_Service {
     setLayerVisibility(id: string): void {
         const { BIOSPHERE } = this._layerElements
         const { state: layers } = this._layerVisibilityService
-        layers[id as keyof ILayerVisibility].isActive
+        layers[id as keyof ILayerVisibility_StaticProps].isActive
             ? this._map.setLayoutProperty(id, 'visibility', 'visible')
             : this._map.setLayoutProperty(id, 'visibility', 'none')
         id === BIOSPHERE && this.setLayerVisibilityEventListeners(id, layers)
@@ -183,8 +197,8 @@ export class Map_Service {
         this._modalService.hideModal()
     }
 
-    private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility): void {
-        layers[id as keyof ILayerVisibility].isActive
+    private setLayerVisibilityEventListeners(id: string, layers: ILayerVisibility_StaticProps): void {
+        layers[id as keyof ILayerVisibility_StaticProps].isActive
             ? this._map
                   .on('click', id, (evt: MapLayerMouseEvent): void => this.onMapClickHandler(evt))
                   .on('mouseenter', id, (): void => this.onMapMouseEnterHandler())

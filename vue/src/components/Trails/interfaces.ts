@@ -1,3 +1,5 @@
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+
 import { LngLatLike } from 'mapbox-gl'
 
 export interface ITrail {

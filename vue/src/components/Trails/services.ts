@@ -1,5 +1,8 @@
 import { Container, Service } from 'typedi'
 
+//
+// Imports common to all components
+//
 import { trails_Config } from './config'
 import { ITrail } from './interfaces'
 import { Map_Service } from '../Mapbox/services'

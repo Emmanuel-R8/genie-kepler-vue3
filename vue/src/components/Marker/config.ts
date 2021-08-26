@@ -1,14 +1,20 @@
-export const markers_Config = [
-    {
-        id: 'office',
-        fields: 'name,description,geom'
-    },
-    {
-        id: 'places',
-        fields: 'name,description,geom'
-    },
-    {
-        id: 'trails',
-        fields: 'name,description,lat,lng,geom'
+export const markers_Config = {
+    reactiveProps: [
+        {
+            id: 'office',
+            fields: 'name,description,geom'
+        },
+        {
+            id: 'places',
+            fields: 'name,description,geom'
+        },
+        {
+            id: 'trails',
+            fields: 'name,description,lat,lng,geom'
+        }
+    ],
+
+    staticProps: {
+        UNUSED: ''
     }
-]
+}

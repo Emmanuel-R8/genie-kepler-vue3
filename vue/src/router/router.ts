@@ -4,11 +4,14 @@
 // import GenieExampleView from '@/views/GenieExampleView'
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Deckgl = () => import('@/views/DeckglView')
-const Mapbox = () => import('@/views/MapboxView')
+const Deckgl = () => import('../root_views/Deckgl_Root_View')
+const Mapbox = () => import('../root_views/Mapbox_Root_View')
+
+// TEMPLATE FOR ADDITIONAL ROUTE
+// const Template = () => import('@/views/Template_Root_View')
 
 // Modif step 1: Local image
-const LocalStaticImage = () => import('@/views/LocalStaticImageView')
+const LocalStaticImage = () => import('../root_views/LocalStaticImage_Root_View')
 
 const history = createWebHistory()
 const routes = [
@@ -24,7 +27,7 @@ const routes = [
     },
     {
         path: '/localstaticimage',
-        name: 'genie_example',
+        name: 'localstaticimage',
         component: LocalStaticImage
     },
     {

@@ -1,9 +1,9 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { DeckglVue, FooterVue, HexagonVue, ModalVue } from '@/components'
+import { Deckgl_Vue, Footer_Vue, Hexagon_Vue, Modal_Vue } from '@/components'
 import { deckgl_Config } from '../components/Deckgl/config'
-import { IModal } from '../components/Modal/interfaces'
+import { IModal_ReactiveProps } from '../components/Modal/interfaces'
 import { Modal_Service } from '../components/Modal/services'
 
 export default defineComponent({
@@ -15,16 +15,16 @@ export default defineComponent({
     }
 })
 
-const html = ({ isActive }: IModal, canvas: string, container: string): JSX.Element => (
+const html = ({ isActive }: IModal_ReactiveProps, canvas: string, container: string): JSX.Element => (
     <>
-        <DeckglVue canvas={canvas} container={container} />
-        <ModalVue isActive={isActive} />
-        <HexagonVue />
-        <FooterVue />
+        <Deckgl_Vue canvas={canvas} container={container} />
+        <Modal_Vue isActive={isActive} />
+        <Hexagon_Vue />
+        <Footer_Vue />
     </>
 )
 
-const getModalState = (): ComputedRef<IModal> => {
+const getModalState = (): ComputedRef<IModal_ReactiveProps> => {
     const modalService = Container.get(Modal_Service)
-    return computed((): IModal => modalService.state)
+    return computed((): IModal_ReactiveProps => modalService.state)
 }

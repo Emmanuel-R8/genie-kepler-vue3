@@ -2,38 +2,43 @@
 /* @ts-ignore */
 import { Container, Service } from 'typedi'
 
+
+//
+// Imports common to all components
+//
+import { Axios_Common_Service } from '../../common_services/Axios/services'
+import { Data_Common_Service } from '../../common_services/Data/services'
+import { EventListener_Common_Service } from '../../common_services/EventListener/services'
+import { Http_Common_Service } from '../../common_services/Http/services'
+import { Log_Common_Service } from '../../common_services/Log/services'
+import { Popup_Common_Service } from '../../common_services/Popup/services'
+import { Router_Common_Service } from '../../common_services/Router/services'
+import { State_Common_Service } from '../../common_services/State/services'
+
+import {States} from '../../Global_State'
+
 // Import interfaces and config defined for that service
 import { localStaticImage_Config } from './config'
-import {
-    ILocalStaticImage_Settings,
-    ILocalStaticImage_StaticProps,
-    ILocalStaticImage_ReactiveProps
-} from './interfaces'
+import { ILocalStaticImage_ReactiveProps, ILocalStaticImage_StaticProps} from './interfaces'
 
-// Import substructures part of this structure as services to be injected
-import { Modal_Service, State_Service } from '@/services'
 
 @Service()
 export default class LocalStaticImage_Service {
-    // Graphical options re: the DeckGL rendering
-    private _options: ILocalStaticImage_Settings = localStaticImage_Config.settings
-    // TO BE KEPT AS EXAMPLE
-    // private _skyLayer = <SkyLayer>deckgl_Config.skyLayer
-    // private _states: Record<string, string> = States
+
+    private _reactiveProps: ILocalStaticImage_ReactiveProps = localStaticImage_Config.reactiveProps
+    private _staticProps: ILocalStaticImage_StaticProps = localStaticImage_Config.staticProps
+    private _states: Record<string, string> = States
 
     constructor(
-
         // -- Class variables
         // private _deck: Deck,
         // private _map: Map,
 
         // -- Class variables as injected dependencies
-        // private _modalService: ModalService,
-        // private _stateService: StateService
+        private _globalState: State_Common_Service
     ) {
         // Injection
-        // this._modalService = Container.get(ModalService)
-        // this._stateService = Container.get(StateService)
+        this._globalState = Container.get(State_Common_Service)
     }
 
     // -- Class variables getters/setters
@@ -47,10 +52,10 @@ export default class LocalStaticImage_Service {
 
 
     // -- Initialise from settings
-    // private get _state(): IDeckglViewSettings {
-    //     const { DECKGL_VIEW_SETTINGS } = this._states
-    //     return <IDeckglViewSettings>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
-    // }
+    private get _state(): ILocalStaticImage_ReactiveProps {
+        const { LOCAL_STATIC_IMAGE_REACTIVESTATE } = this._states
+        return <ILocalStaticImage_ReactiveProps>this._globalState.getReactiveState(LOCAL_STATIC_IMAGE_REACTIVESTATE)
+    }
 
     // private set _state(settings: IDeckglViewSettings) {
     //     const { DECKGL_VIEW_SETTINGS } = this._states
@@ -103,13 +108,5 @@ export default class LocalStaticImage_Service {
     // private onMapLoadHandler(): void {
     //     this.addSkyLayer()
     //     this.hideModal()
-    // }
-
-    // private addSkyLayer(): void {
-    //     this._map.addLayer(this._skyLayer)
-    // }
-
-    // private hideModal(): void {
-    //     this._modalService.hideModal()
     // }
 }

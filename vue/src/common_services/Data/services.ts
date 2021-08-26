@@ -1,5 +1,11 @@
 import { Container, Service } from 'typedi'
 
+//
+// Imports common to all components
+//
+import { Http_Common_Service } from '../../common_services/Http/services'
+import { Log_Common_Service } from '../../common_services/Log/services'
+
 import { AxiosResponse } from 'axios'
 import { DSVRowArray } from 'd3-dsv'
 import { csv } from 'd3-fetch'
@@ -7,20 +13,18 @@ import { Feature, FeatureCollection } from 'geojson'
 import mapboxgl from 'mapbox-gl'
 
 import { EndPoints, Urls } from '@/enums'
-import { IHttpParams, IHttpResponse } from '../common_interfaces/http'
+import { IHttpParams, IHttpResponse } from '../Http/interfaces'
 
-import { layers_Config, layerVisibility_Config } from '../components/LayerElement/config'
-import { ILayer } from '../components/LayerElement/interfaces'
-import { Layer_Service } from '../components/LayerElement/services'
+import { layers_Config } from '../../components/LayerElement/config'
+import { ILayer } from '../../components/LayerElement/interfaces'
+import { Layer_Service } from '../../components/LayerElement/services'
 
-import { markers_Config } from '../components/Marker/config'
-import { IMarker } from '../components/Marker/interfaces'
-import { Marker_Service } from '../components/Marker/services'
-
-import { Http_Service, Log_Service } from '@/services'
+import { markers_Config } from '../../components/Marker/config'
+import { IMarker } from '../../components/Marker/interfaces'
+import { Marker_Service } from '../../components/Marker/services'
 
 @Service()
-export default class DataService {
+export class Data_Common_Service {
     private _endPoints: Record<string, string> = EndPoints
     private _layers: ILayer[] = layers_Config
     private _markers: IMarker[] = markers_Config
@@ -28,14 +32,14 @@ export default class DataService {
 
     constructor(
         private _hexagonLayerData: number[][],
-        private _httpService: Http_Service,
+        private _httpService: Http_Common_Service,
         private _layerService: Layer_Service,
-        private _logService: Log_Service,
+        private _logService: Log_Common_Service,
         private _markerService: Marker_Service
     ) {
-        this._httpService = Container.get(Http_Service)
+        this._httpService = Container.get(Http_Common_Service)
         this._layerService = Container.get(Layer_Service)
-        this._logService = Container.get(Log_Service)
+        this._logService = Container.get(Log_Common_Service)
         this._markerService = Container.get(Marker_Service)
     }
 

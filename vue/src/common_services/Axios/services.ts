@@ -4,7 +4,7 @@ import { Service } from 'typedi'
 import { Urls } from '@/enums'
 
 @Service()
-export default class AxiosService {
+export class Axios_Common_Service {
     private _urls: Record<string, string> = Urls
 
     constructor(private _axios: AxiosStatic, private _httpClient: AxiosInstance) {

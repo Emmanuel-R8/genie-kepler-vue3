@@ -1,3 +1,5 @@
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+
 export interface IMarker {
     fields: string
     id: string
