@@ -10,9 +10,22 @@ import { Container, Service } from 'typedi'
 */
 import { HexagonLayer } from '@deck.gl/aggregation-layers'
 
-import { States } from '@/enums'
-import { Data_Service, State_Service } from '@/services'
+//
+// Global state
+//
+import { States } from '../../Global_State'
 
+
+//
+// Imports common to all components
+//
+import { State_Common_Service } from '../../common_services/State/services'
+import { Data_Common_Service } from '../../common_services/Data/services'
+
+
+//
+// Component-specific
+//
 import { Deckgl_Service } from '../Deckgl/services'
 
 import { hexagonLayer_Config } from './config'
@@ -27,13 +40,13 @@ export class HexagonLayer_Service {
     private _states: Record<string, string> = States
 
     constructor(
-        private _dataService: Data_Service,
+        private _dataService: Data_Common_Service,
         private _deckglService: Deckgl_Service,
-        private _stateService: State_Service
+        private _stateService: State_Common_Service
     ) {
-        this._dataService = Container.get(Data_Service)
+        this._dataService = Container.get(Data_Common_Service)
         this._deckglService = Container.get(Deckgl_Service)
-        this._stateService = Container.get(State_Service)
+        this._stateService = Container.get(State_Common_Service)
     }
 
     get state(): IHexagonLayer_ReactiveProps {

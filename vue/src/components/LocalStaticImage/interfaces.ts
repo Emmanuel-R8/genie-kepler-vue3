@@ -1,13 +1,18 @@
-// //
-// // Local static image
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+
 // //
 // // more structures than needed but hopefully start of a systematic template.
 // //
 
-// // Static properties
-// export interface ILocalStaticImage_StaticProps {
-//     filename: string
-// }
+
+// Reactive properties
+export interface ILocalStaticImage_ReactiveProps extends IAbstractReactiveState {
+    UNUSED: string
+}
+
+
+export interface ILocalStaticImage_StaticProps extends IAbstractStaticState {
+
 
 // // Static options.
 // export type ILocalStaticImage_Settings = ILocalStaticImage_StaticProps

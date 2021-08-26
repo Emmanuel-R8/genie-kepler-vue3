@@ -2,14 +2,24 @@ import { Container, Service } from 'typedi'
 import cloneDeep from 'lodash.clonedeep'
 import { FeatureCollection } from 'geojson'
 
+//
+// Global state
+//
+import { States } from '../../Global_State'
+
+//
+// Imports common to all components
+//
 import { LayerElement } from '@/types'
-import { LayerElements, States } from '@/enums'
+import { LayerElements } from '@/enums'
+import { Router_Common_Service } from '../../common_services/Router/services'
+import { State_Common_Service } from '../../common_services/State/services'
 
-import { ILayer, ILayerElement } from './interfaces'
-import { ILayerVisibility } from '../LayerElements/interfaces'
-
-import { Router_Service, State_Service } from '@/services'
-
+//
+// Component-specific
+//
+import { ILayer, ILayerElement_ReactiveProps } from './interfaces'
+import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
 import { Map_Service, MapStyle_Service } from '../Mapbox/services'
 import { Marker_Service } from '../Marker/services'
 
@@ -23,23 +33,23 @@ export class LayerElement_Service {
         private _mapService: Map_Service,
         private _mapStyleService: MapStyle_Service,
         private _markerService: Marker_Service,
-        private _routerService: Router_Service,
-        private _stateService: State_Service
+        private _routerService: Router_Common_Service,
+        private _stateService: State_Common_Service
     ) {
         this._layerVisibilityService = Container.get(LayerVisibility_Service)
         this._mapService = Container.get(Map_Service)
         this._mapStyleService = Container.get(MapStyle_Service)
         this._markerService = Container.get(Marker_Service)
-        this._routerService = Container.get(Router_Service)
-        this._stateService = Container.get(State_Service)
+        this._routerService = Container.get(Router_Common_Service)
+        this._stateService = Container.get(State_Common_Service)
     }
 
-    get state(): ILayerElement[] {
+    get state(): ILayerElement_ReactiveProps[] {
         const { LAYER_ELEMENTS } = this._states
-        return <ILayerElement[]>this._stateService.getReactiveState(LAYER_ELEMENTS)
+        return <ILayerElement_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS)
     }
 
-    private set _state(layerElements: ILayerElement[]) {
+    private set _state(layerElements: ILayerElement_ReactiveProps[]) {
         const { LAYER_ELEMENTS } = this._states
         this._stateService.setReactiveState(LAYER_ELEMENTS, layerElements)
     }
@@ -84,7 +94,7 @@ export class LayerElement_Service {
 
     private setLayerElementState(id: LayerElement): void {
         const state = this.state
-        const layerElement = (layerElement: ILayerElement): boolean => layerElement.id === id
+        const layerElement = (layerElement: ILayerElement_ReactiveProps): boolean => layerElement.id === id
         const i = state.findIndex(layerElement)
         if (i >= 0) {
             state[i].isActive = !state[i].isActive
@@ -127,16 +137,16 @@ export class LayerVisibility_Service {
     private _layerElements: Record<string, string> = LayerElements
     private _states: Record<string, string> = States
 
-    constructor(private _stateService: State_Service) {
-        this._stateService = Container.get(State_Service)
+    constructor(private _stateService: State_Common_Service) {
+        this._stateService = Container.get(State_Common_Service)
     }
 
-    get state(): ILayerVisibility {
+    get state(): ILayerVisibility_StaticProps {
         const { LAYER_VISIBILITY } = this._states
-        return <ILayerVisibility>this._stateService.getStaticState(LAYER_VISIBILITY)
+        return <ILayerVisibility_StaticProps>this._stateService.getStaticState(LAYER_VISIBILITY)
     }
 
-    private set _state(layers: ILayerVisibility) {
+    private set _state(layers: ILayerVisibility_StaticProps) {
         const { LAYER_VISIBILITY } = this._states
         this._stateService.setStaticState(LAYER_VISIBILITY, layers)
     }
@@ -144,10 +154,11 @@ export class LayerVisibility_Service {
     setLayerVisibilityState(id: string): void {
         const { BIOSPHERE, BIOSPHERE_BORDER } = this._layerElements
         const state = this.state
-        state[id as keyof ILayerVisibility].isActive = !state[id as keyof ILayerVisibility].isActive
+        state[id as keyof ILayerVisibility_StaticProps].isActive =
+            !state[id as keyof ILayerVisibility_StaticProps].isActive
         if (id === BIOSPHERE) {
-            state[BIOSPHERE_BORDER as keyof ILayerVisibility].isActive =
-                !state[BIOSPHERE_BORDER as keyof ILayerVisibility].isActive
+            state[BIOSPHERE_BORDER as keyof ILayerVisibility_StaticProps].isActive =
+                !state[BIOSPHERE_BORDER as keyof ILayerVisibility_StaticProps].isActive
         }
         this._state = state
     }

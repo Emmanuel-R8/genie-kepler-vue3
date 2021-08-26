@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-cd vue && npm run pre-commit
+# cd vue && yarn run pre-commit
 # cd vue
+cd vue

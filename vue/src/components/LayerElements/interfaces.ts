@@ -1,3 +1,5 @@
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+
 export interface ILayerElements {
     biosphere: string
     deckgl: string
@@ -15,7 +17,9 @@ export interface ILayerIconProps {
     width: number
 }
 
-export interface ILayerVisibility {
+export type ILayerVisibility_ReactiveProps = IAbstractReactiveState
+
+export interface ILayerVisibility_StaticProps extends IAbstractStaticState {
     biosphere: {
         isActive: boolean
     }

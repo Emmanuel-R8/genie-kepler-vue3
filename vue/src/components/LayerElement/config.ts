@@ -36,7 +36,13 @@ export const layers_Config = [
 ]
 
 export const layerVisibility_Config = {
-    biosphere: { isActive: true },
-    'biosphere-border': { isActive: true },
-    trails: { isActive: false }
+    reactiveProps: {
+        UNUSED: ''
+    },
+
+    staticProps: {
+        biosphere: { isActive: true },
+        'biosphere-border': { isActive: true },
+        trails: { isActive: false }
+    }
 }

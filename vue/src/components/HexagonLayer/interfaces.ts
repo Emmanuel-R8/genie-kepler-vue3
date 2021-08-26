@@ -1,11 +1,12 @@
-export interface IHexagonLayer_ReactiveProps {
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+export interface IHexagonLayer_ReactiveProps extends IAbstractReactiveState {
     coverage: number
     elevationScale: number
     radius: number
     upperPercentile: number
 }
 
-export interface IHexagonLayer_StaticProps {
+export interface IHexagonLayer_StaticProps extends IAbstractStaticState {
     colorRange: number[][]
     elevationRange: number[]
     extruded: boolean
