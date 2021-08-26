@@ -10,7 +10,7 @@ export interface ILocalStaticImage_StaticProps {
 }
 
 // Static options.
-export type ILocalStaticImage_Settings = ILocalStaticImage_StaticProps
+// export type ILocalStaticImage_Settings = ILocalStaticImage_StaticProps
 
 // What it says on the tin.
-export interface ILocalStaticImage_ReactiveProps {}
+// export interface ILocalStaticImage_ReactiveProps {}

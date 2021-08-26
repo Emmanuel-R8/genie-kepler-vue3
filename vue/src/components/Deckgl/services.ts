@@ -2,13 +2,14 @@
 /* @ts-ignore */
 import { Container, Service } from 'typedi'
 
+/* eslint-disable-next-line */
 import { Deck, ViewState } from '@deck.gl/core'
 import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 
 import { deckgl_Config } from './config'
 import { States } from '@/enums'
 import { IDeckgl_Settings, IDeckglView_Settings } from './interfaces'
-import { State_Service } from '@/services'
+import { State_Service } from '@/common_services'
 
 import { Modal_Service } from '../Modal/services'
 

@@ -17,7 +17,6 @@ export default defineComponent({
     props: {
         canvas: { type: String, required: true },
         container: { type: String, required: true }
-
     },
 
     setup(props: IDeckgl_ReactiveProps) {

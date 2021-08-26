@@ -25,5 +25,5 @@ const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLay
 
 const getHexagonLayerPropsState = (): ComputedRef<IHexagonLayer_ReactiveProps> => {
     const hexagonLayerService = Container.get(HexagonLayer_Service)
-    return computed((): IHexagonLayer_ReactiveProps => HexagonLayer_Service.state())
+    return computed((): IHexagonLayer_ReactiveProps => hexagonLayerService.state)
 }
