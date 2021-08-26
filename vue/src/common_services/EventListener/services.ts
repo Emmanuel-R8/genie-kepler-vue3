@@ -1,22 +1,25 @@
 import { Container, Service } from 'typedi'
 
-import { Router_Service } from '@/common_services'
+//
+// Imports common to all components
+//
+import { Router_Common_Service } from '../../common_services/Router/services'
 
-import { HexagonLayer_Service } from '../components/Hexagon/services'
-import { LayerElement_Service } from '../components/LayerElement/services'
-import { Trail_Service } from '../components/Trails/services'
+import { HexagonLayer_Service } from '../../components/HexagonLayer/services'
+import { LayerElement_Service } from '../../components/LayerElement/services'
+import { Trail_Service } from '../../components/Trails/services'
 
 @Service()
-export default class EventListenerService {
+export class EventListener_Common_Service {
     constructor(
         private _hexagonLayerService: HexagonLayer_Service,
         private _layerElementService: LayerElement_Service,
-        private _routerService: Router_Service,
+        private _routerService: Router_Common_Service,
         private _trailService: Trail_Service
     ) {
         this._hexagonLayerService = Container.get(HexagonLayer_Service)
         this._layerElementService = Container.get(LayerElement_Service)
-        this._routerService = Container.get(Router_Service)
+        this._routerService = Container.get(Router_Common_Service)
         this._trailService = Container.get(Trail_Service)
     }
 

@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { IHexagonLayer_ReactiveProps } from '../Hexagon/interfaces'
+import { IHexagonLayer_ReactiveProps } from '../HexagonLayer/interfaces'
 
 export default defineComponent({
     props: {

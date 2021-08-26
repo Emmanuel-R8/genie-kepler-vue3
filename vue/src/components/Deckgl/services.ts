@@ -6,13 +6,13 @@ import { Container, Service } from 'typedi'
 import { Deck, ViewState } from '@deck.gl/core'
 import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 
-import { deckgl_Config } from './config'
-import { States } from '@/enums'
-import { IDeckgl_Settings, IDeckglView_Settings } from './interfaces'
-import { State_Service } from '@/common_services'
+import { States } from '../../Global_State'
+import { State_Common_Service } from '../../common_services/State/services'
 
+import { deckgl_Config } from './config'
 import { Modal_Service } from '../Modal/services'
 
+import { IDeckgl_Settings, IDeckgl_StaticProps } from './interfaces'
 
 @Service()
 export class Deckgl_Service {
@@ -25,10 +25,10 @@ export class Deckgl_Service {
         private _deck: Deck,
         private _map: Map,
         private _modalService: Modal_Service,
-        private _stateService: State_Service
+        private _stateService: State_Common_Service
     ) {
         this._modalService = Container.get(Modal_Service)
-        this._stateService = Container.get(State_Service)
+        this._stateService = Container.get(State_Common_Service)
     }
 
     get deck(): Deck {
@@ -39,12 +39,12 @@ export class Deckgl_Service {
         return this._map
     }
 
-    private get _state(): IDeckglView_Settings {
+    private get _state(): IDeckgl_StaticProps {
         const { DECKGL_VIEW_SETTINGS } = this._states
-        return <IDeckglView_Settings>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
+        return <IDeckgl_StaticProps>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
     }
 
-    private set _state(settings: IDeckglView_Settings) {
+    private set _state(settings: IDeckgl_StaticProps) {
         const { DECKGL_VIEW_SETTINGS } = this._states
         this._stateService.setStaticState(DECKGL_VIEW_SETTINGS, settings)
     }

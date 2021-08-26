@@ -1,9 +1,9 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { LayerElementVue, LayerIconVue } from '@/components'
+import { LayerElement_Vue, LayerIcon_Vue } from '@/components'
 
-import { ILayerElement } from '../LayerElement/interfaces'
+import { ILayerElement_ReactiveProps } from '../LayerElement/interfaces'
 import { LayerElement_Service } from '../LayerElement/services'
 
 import { layerElement } from './index.module.css'
@@ -15,18 +15,18 @@ export default defineComponent({
     }
 })
 
-const html = (layerElements: ILayerElement[]): JSX.Element => (
+const html = (layerElements: ILayerElement_ReactiveProps[]): JSX.Element => (
     <ul class={layerElement}>
         {layerElements.map(({ height, id, isActive, name, src, width }) => (
             <li>
-                <LayerIconVue alt={name} height={height} id={id} key={id} src={src} width={width} />
-                <LayerElementVue id={id} isActive={isActive} key={id} name={name} />
+                <LayerIcon_Vue alt={name} height={height} id={id} key={id} src={src} width={width} />
+                <LayerElement_Vue id={id} isActive={isActive} key={id} name={name} />
             </li>
         ))}
     </ul>
 )
 
-const getLayerElementsState = (): ComputedRef<ILayerElement[]> => {
+const getLayerElementsState = (): ComputedRef<ILayerElement_ReactiveProps[]> => {
     const layerElementService = Container.get(LayerElement_Service)
-    return computed((): ILayerElement[] => layerElementService.state)
+    return computed((): ILayerElement_ReactiveProps[] => layerElementService.state)
 }

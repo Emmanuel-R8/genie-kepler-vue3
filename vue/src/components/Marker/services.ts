@@ -3,8 +3,14 @@ import { Container, Service } from 'typedi'
 import { Feature, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 
-import { Popup_Service } from '@/common_services'
+//
+// Imports common to all components
+//
+import { Popup_Common_Service } from '../../common_services/Popup/services'
 
+//
+// Component-specific
+//
 import { IHTMLMarkerElement } from './interfaces'
 import { Mapbox_Service } from '../Mapbox/services'
 
@@ -13,9 +19,9 @@ export class Marker_Service {
     private _markers: Marker[][] = []
     private _markersHashmap: Map<string, number> = new Map()
 
-    constructor(private _mapboxService: Mapbox_Service, private _popupService: Popup_Service) {
+    constructor(private _mapboxService: Mapbox_Service, private _popupService: Popup_Common_Service) {
         this._mapboxService = Container.get(Mapbox_Service)
-        this._popupService = Container.get(Popup_Service)
+        this._popupService = Container.get(Popup_Common_Service)
     }
 
     setMarkers(id: string, features: Feature[]): void {

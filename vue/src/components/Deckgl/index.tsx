@@ -4,14 +4,15 @@ import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted
 /* eslint-disable-next-line */
 import { deckgl, hexagonLayer } from './index.module.css'
 
-import { Data_Service, EventListener_Service } from '@/common_services'
-
-import { HexagonLayer_Service } from '../Hexagon/services'
-
-import { Modal_Service } from '../Modal/services'
+import { Data_Common_Service } from '../../common_services/Data/services'
+import { EventListener_Common_Service } from '../../common_services/EventListener/services'
 
 import { Deckgl_Service } from './services'
 import { IDeckgl_ReactiveProps } from './interfaces'
+
+import { HexagonLayer_Service } from '../HexagonLayer/services'
+
+import { Modal_Service } from '../Modal/services'
 
 export default defineComponent({
     props: {
@@ -47,7 +48,7 @@ const html = ({ canvas, container }: IDeckgl_ReactiveProps): JSX.Element => (
 )
 
 const getMapboxAccessToken = async (): Promise<void> => {
-    const dataService = Container.get(Data_Service)
+    const dataService = Container.get(Data_Common_Service)
     const { mapboxAccessToken } = dataService
     mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
 }
@@ -58,12 +59,12 @@ const loadHexagonLayer = (): void => {
 }
 
 const addEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListener_Service)
+    const eventListenerService = Container.get(EventListener_Common_Service)
     eventListenerService.addHexagonLayerEventListeners()
 }
 
 const removeEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListener_Service)
+    const eventListenerService = Container.get(EventListener_Common_Service)
     eventListenerService.removeHexagonLayerEventListeners()
 }
 

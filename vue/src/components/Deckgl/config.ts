@@ -1,4 +1,17 @@
 export const deckgl_Config = {
+    reactiveProps: {
+        UNUSED: ''
+    },
+
+    staticProps: {
+        bearing: -30,
+        center: { lng: -3.0, lat: 53.0 },
+        latitude: 53.0,
+        longitude: -3.0,
+        pitch: 50,
+        zoom: 6.5
+    },
+
     options: {
         canvas: 'hexagon-layer',
         container: 'deckgl',
@@ -9,15 +22,6 @@ export const deckgl_Config = {
         maxZoom: 12,
         minZoom: 5,
         style: 'mapbox://styles/mapbox/dark-v10'
-    },
-
-    settings: {
-        bearing: -30,
-        center: { lng: -3.0, lat: 53.0 },
-        latitude: 53.0,
-        longitude: -3.0,
-        pitch: 50,
-        zoom: 6.5
     },
 
     skyLayer: {

@@ -2,7 +2,7 @@ import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 import { hexagonUI } from './index.module.css'
 
-import { HexagonUIVue } from '@/components'
+import { HexagonUI_Vue } from '@/components'
 import { IHexagonLayer_ReactiveProps } from './interfaces'
 import { HexagonLayer_Service } from './services'
 
@@ -14,7 +14,7 @@ export default defineComponent({
 })
 
 const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLayer_ReactiveProps): JSX.Element => (
-    <HexagonUIVue
+    <HexagonUI_Vue
         class={hexagonUI}
         coverage={coverage}
         elevationScale={elevationScale}

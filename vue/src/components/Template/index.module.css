@@ -1,1 +1,7 @@
-/* TO BE FILLED */
+/* Just an example */
+.template {
+    position: absolute;
+    bottom: 0;
+    top: 1rem;
+}
+

@@ -1,9 +1,9 @@
 import { Container } from 'typedi'
 import { computed, ComputedRef, defineComponent } from 'vue'
 
-import { LayerElementsVue, MapboxVue, ModalVue, TrailsVue } from '@/components'
+import { LayerElements_Vue, Mapbox_Vue, Modal_Vue, Trails_Vue } from '@/components'
 import { mapbox_Config } from '../components/Mapbox/config'
-import { IModal } from '../components/Modal/interfaces'
+import { IModal_ReactiveProps } from '../components/Modal/interfaces'
 import { Modal_Service } from '../components/Modal/services'
 
 export default defineComponent({
@@ -15,16 +15,16 @@ export default defineComponent({
     }
 })
 
-const html = ({ isActive }: IModal, container: string): JSX.Element => (
+const html = ({ isActive }: IModal_ReactiveProps, container: string): JSX.Element => (
     <>
-        <MapboxVue container={container} />
-        <ModalVue isActive={isActive} />
-        <LayerElementsVue />
-        <TrailsVue />
+        <Mapbox_Vue container={container} />
+        <Modal_Vue isActive={isActive} />
+        <LayerElements_Vue />
+        <Trails_Vue />
     </>
 )
 
-const getModalState = (): ComputedRef<IModal> => {
+const getModalState = (): ComputedRef<IModal_ReactiveProps> => {
     const modalService = Container.get(Modal_Service)
-    return computed((): IModal => modalService.state)
+    return computed((): IModal_ReactiveProps => modalService.state)
 }

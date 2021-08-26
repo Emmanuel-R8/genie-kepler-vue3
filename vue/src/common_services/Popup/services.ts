@@ -3,10 +3,10 @@ import { Container, Service } from 'typedi'
 import { Feature, Point } from 'geojson'
 import { LngLatLike, MapLayerMouseEvent, Popup } from 'mapbox-gl'
 
-import { Mapbox_Service } from '../components/Mapbox/services'
+import { Mapbox_Service } from '../../components/Mapbox/services'
 
 @Service()
-export default class PopupService {
+export class Popup_Common_Service {
     constructor(private _mapboxService: Mapbox_Service, private _popup: Popup) {
         this._mapboxService = Container.get(Mapbox_Service)
         this._popup = new Popup({ closeButton: false })

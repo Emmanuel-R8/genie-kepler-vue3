@@ -1,9 +1,9 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount } from 'vue'
 
-import { HeaderVue } from '@/components'
+import { Header_Vue } from '@/components'
 
-import { App_Service } from '@/common_services'
+import { Application_Common_Service } from './common_services/Application/services'
 
 export default defineComponent({
     setup() {
@@ -14,12 +14,12 @@ export default defineComponent({
 
 const html = (): JSX.Element => (
     <>
-        <HeaderVue />
+        <Header_Vue />
         <router-view />
     </>
 )
 
 const loadData = async (): Promise<void> => {
-    const appService = Container.get(App_Service)
+    const appService = Container.get(Application_Common_Service)
     await appService.loadData()
 }

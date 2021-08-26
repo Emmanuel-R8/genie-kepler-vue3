@@ -1,3 +1,9 @@
 export const modal_Config = {
-    isActive: false
+    reactiveState: {
+        isActive: false
+    },
+
+    staticState: {
+        isActive: false
+    }
 }

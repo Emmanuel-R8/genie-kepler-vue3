@@ -1,13 +1,16 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-// Common Services
-import { Data_Service, EventListener_Service } from '@/common_services'
+//
+// Imports common to all components
+//
+import { Data_Common_Service } from '../../common_services/Data/services'
+import { EventListener_Common_Service } from '../../common_services/EventListener/services'
 
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'
 
-import { IMapbox_Props } from './interfaces'
+import { IMapbox_ReactiveProps } from './interfaces'
 import { Map_Service, Mapbox_Service, MapStyle_Service } from '../Mapbox/services'
 
 /* eslint-disable-next-line */
@@ -21,7 +24,7 @@ export default defineComponent({
         }
     },
 
-    setup(props: IMapbox_Props) {
+    setup(props: IMapbox_ReactiveProps) {
         const { mapStyle } = Container.get(MapStyle_Service)
         onBeforeMount((): void => {
             setMarkerVisibility()
@@ -44,12 +47,12 @@ export default defineComponent({
     }
 })
 
-const html = ({ container }: IMapbox_Props, mapStyle: string): JSX.Element => (
+const html = ({ container }: IMapbox_ReactiveProps, mapStyle: string): JSX.Element => (
     <div id={container} class={mapStyle.includes('outdoors') ? outdoors : satellite}></div>
 )
 
 const getMapboxAccessToken = async (): Promise<void> => {
-    const dataService = Container.get(Data_Service)
+    const dataService = Container.get(Data_Common_Service)
     const { mapboxAccessToken } = dataService
     mapboxAccessToken ?? (await dataService.getMapboxAccessToken())
 }
@@ -60,13 +63,13 @@ const loadMapLayer = (): void => {
 }
 
 const addEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListener_Service)
+    const eventListenerService = Container.get(EventListener_Common_Service)
     eventListenerService.addDisplayLayerElementEventListener()
     eventListenerService.addSelectTrailChangeEventListener()
 }
 
 const removeEventListeners = (): void => {
-    const eventListenerService = Container.get(EventListener_Service)
+    const eventListenerService = Container.get(EventListener_Common_Service)
     eventListenerService.removeDisplayLayerElementEventListener()
     eventListenerService.removeSelectTrailChangeEventListener()
 }

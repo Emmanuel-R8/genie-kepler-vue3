@@ -4,7 +4,7 @@ import { Router } from 'vue-router'
 import { router } from '@/router'
 
 @Service()
-export default class RouterService {
+export class Router_Common_Service {
     constructor(private _router: Router) {
         this._router = router
     }

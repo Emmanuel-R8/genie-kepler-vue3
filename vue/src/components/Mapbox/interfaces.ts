@@ -1,16 +1,18 @@
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+
 import { LngLatLike } from 'mapbox-gl'
 
-export interface IMapbox_Props {
+export interface IMapbox_ReactiveProps extends IAbstractReactiveState {
     container: string
 }
 
-export interface IMapbox_Settings extends IMapbox_Props {
+export interface IMapbox_Settings extends IMapbox_ReactiveProps {
     doubleClickZoom: boolean
     maxZoom: number
     minZoom: number
 }
 
-export interface IMapboxSettings {
+export interface IMapbox_StaticProps extends IAbstractStaticState {
     bearing: number
     center: LngLatLike
     pitch: number

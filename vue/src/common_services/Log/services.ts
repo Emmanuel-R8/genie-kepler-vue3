@@ -3,7 +3,7 @@ import { Service } from 'typedi'
 import { LogData } from '@/types'
 
 @Service()
-export default class LogService {
+export class Log_Common_Service {
     consoleError(message: string, err: Error): void {
         console.error(message, err)
     }

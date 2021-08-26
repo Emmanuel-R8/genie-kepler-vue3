@@ -15,8 +15,8 @@ To run the project, start up the Dockoer-compose set-up with the local script `s
 
 ## Required before running
 
-- Install all JS/TS modules. `yarn`has been used. `npm` should be OK too.
-- Create a `.env` file in the top directory (where `package.json` is) containing various environment variables. There is a `env.template` to see what is needed.
+- Install all JS/TS modules. `yarn` has been used. `npm` should be OK too.
+- Create a `.env` file in the top directory (where `package.json` is) containing various environment variables. `env.template` indicates what is needed.
 
 
 # Code structure
@@ -109,6 +109,23 @@ file.
 #### Marker data
 
 [TO BE COMPLETED]
+
+
+# Additions
+
+Follows a list of additions in order of complexity. One component = one `Vue`. But one component could be several interfaces and/or services.
+
+## Local static image
+
+
+### State
+
+Modify `src/Global_State.ts` to add an entry that will contain the reactive and static state of the image (even if
+not used). Then modify the methods in `src/common_services/state.ts`.
+
+### Route
+
+Modify `src/route/routers`
 
 # Origins
 This code base started from [Geospatial Web](http://www.geospatialweb.ca) available at

@@ -1,5 +1,6 @@
 import { FeatureCollection } from 'geojson'
 
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
 import { IMarker } from '../Marker/interfaces'
 
 export interface ILayer extends IMarker {
@@ -20,7 +21,7 @@ export interface ILayer extends IMarker {
     }
 }
 
-export interface ILayerElement extends ILayerElementProps {
+export interface ILayerElement_ReactiveProps extends ILayerElementProps, IAbstractReactiveState {
     height: number
     src: string
     width: number
