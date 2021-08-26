@@ -2,11 +2,9 @@ import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 /* eslint-disable-next-line */
-
-
 import { deckgl, hexagonLayer } from './index.module.css'
 
-import { Data_Service, EventListener_Service } from '@/services'
+import { Data_Service, EventListener_Service } from '@/common_services'
 
 import { HexagonLayer_Service } from '../Hexagon/services'
 

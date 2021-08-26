@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi'
 
-import { Router_Service } from '@/services'
+import { Router_Service } from '@/common_services'
 
 import { HexagonLayer_Service } from '../components/Hexagon/services'
 import { LayerElement_Service } from '../components/LayerElement/services'

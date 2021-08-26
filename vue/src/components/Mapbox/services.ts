@@ -5,7 +5,7 @@ import { NavigationControlPosition } from '@/types'
 
 import { mapbox_Config } from './config'
 import { IMapbox_Settings, IMapboxSettings, IMapStyle } from './interfaces'
-import { Popup_Service, State_Service } from '@/services'
+import { Popup_Service, State_Service } from '@/common_services'
 
 import { FillLayer, LineLayer, Map, MapboxOptions, NavigationControl, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 
@@ -16,7 +16,7 @@ import { Layer_Service, LayerVisibility_Service } from '../LayerElement/services
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'
 
-import {} from '@/services'
+import {} from '@/common_services'
 
 @Service()
 export class MapStyle_Service {

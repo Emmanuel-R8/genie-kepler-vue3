@@ -8,10 +8,12 @@ import { LayerElements, States } from '@/enums'
 import { ILayer, ILayerElement } from './interfaces'
 import { ILayerVisibility } from '../LayerElements/interfaces'
 
-import { Router_Service, State_Service } from '@/services'
+import { Router_Service, State_Service } from '@/common_services'
 
 import { Map_Service, MapStyle_Service } from '../Mapbox/services'
+
 import { Marker_Service } from '../Marker/services'
+
 
 @Service()
 export class LayerElement_Service {

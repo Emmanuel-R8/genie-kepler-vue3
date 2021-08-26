@@ -2,7 +2,7 @@ import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 // Common Services
-import { Data_Service, EventListener_Service } from '@/services'
+import { Data_Service, EventListener_Service } from '@/common_services'
 
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'

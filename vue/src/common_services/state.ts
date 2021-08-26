@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import cloneDeep from 'lodash.clonedeep'
 
 import { States } from '@/enums'
-import { Log_Service } from '@/services'
+import { Log_Service } from '@/common_services'
 import { ReactiveState, StaticState } from '@/types'
 
 import { deckgl_Config } from '../components/Deckgl/config'

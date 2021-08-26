@@ -11,7 +11,7 @@ import { Container, Service } from 'typedi'
 import { HexagonLayer } from '@deck.gl/aggregation-layers'
 
 import { States } from '@/enums'
-import { Data_Service, State_Service } from '@/services'
+import { Data_Service, State_Service } from '@/common_services'
 
 import { Deckgl_Service } from '../Deckgl/services'
 

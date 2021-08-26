@@ -3,7 +3,7 @@ import { Container, Service } from 'typedi'
 import { Feature, Point } from 'geojson'
 import { LngLatLike, Marker } from 'mapbox-gl'
 
-import { Popup_Service } from '@/services'
+import { Popup_Service } from '@/common_services'
 
 import { IHTMLMarkerElement } from './interfaces'
 import { Mapbox_Service } from '../Mapbox/services'

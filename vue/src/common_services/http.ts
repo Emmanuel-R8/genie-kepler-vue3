@@ -2,7 +2,7 @@ import { Container, Service } from 'typedi'
 
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { Axios_Service } from '@/services'
+import { Axios_Service } from '@/common_services'
 
 @Service()
 export default class HttpService {

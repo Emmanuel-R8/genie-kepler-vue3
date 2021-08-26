@@ -4,14 +4,10 @@ import { Container, Service } from 'typedi'
 
 // Import interfaces and config defined for that service
 import { localStaticImage_Config } from './config'
-import {
-    ILocalStaticImage_Settings,
-    ILocalStaticImage_StaticProps,
-    ILocalStaticImage_ReactiveProps
-} from './interfaces'
+import { ILocalStaticImage_Settings, } from './interfaces'
 
 // Import substructures part of this structure as services to be injected
-import { Modal_Service, State_Service } from '@/services'
+// import { Modal_Service, State_Service } from '@/common_services'
 
 @Service()
 export default class LocalStaticImage_Service {

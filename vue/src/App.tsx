@@ -2,7 +2,8 @@ import { Container } from 'typedi'
 import { defineComponent, onBeforeMount } from 'vue'
 
 import { HeaderVue } from '@/components'
-import { App_Service } from '@/services'
+
+import { App_Service } from '@/common_services'
 
 export default defineComponent({
     setup() {

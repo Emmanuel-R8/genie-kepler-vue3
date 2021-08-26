@@ -9,7 +9,7 @@ import mapboxgl from 'mapbox-gl'
 import { EndPoints, Urls } from '@/enums'
 import { IHttpParams, IHttpResponse } from '../common_interfaces/http'
 
-import { layers_Config, layerVisibility_Config } from '../components/LayerElement/config'
+import { layers_Config, } from '../components/LayerElement/config'
 import { ILayer } from '../components/LayerElement/interfaces'
 import { Layer_Service } from '../components/LayerElement/services'
 
@@ -17,7 +17,7 @@ import { markers_Config } from '../components/Marker/config'
 import { IMarker } from '../components/Marker/interfaces'
 import { Marker_Service } from '../components/Marker/services'
 
-import { Http_Service, Log_Service } from '@/services'
+import { Http_Service, Log_Service } from '@/common_services'
 
 @Service()
 export default class DataService {

@@ -1,5 +1,5 @@
 import { Container, Service } from 'typedi'
-import { Axios_Service, Data_Service } from '@/services'
+import { Axios_Service, Data_Service } from '@/common_services'
 
 @Service()
 export default class AppService {

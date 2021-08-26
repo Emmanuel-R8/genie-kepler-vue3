@@ -2,7 +2,7 @@ import { Container, Service } from 'typedi'
 
 import { States } from '@/enums'
 import { IModal } from './interfaces'
-import { State_Service } from '@/services'
+import { State_Service } from '@/common_services'
 
 @Service()
 export class Modal_Service {

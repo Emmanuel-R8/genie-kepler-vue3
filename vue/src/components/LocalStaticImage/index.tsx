@@ -11,7 +11,7 @@ import {
 /* eslint-disable-next-line */
 import localstaticimage from './index.module.css'
 
-import { EventListener_Service, HexagonLayer_Service, LocalStaticImage_Service } from '@/services'
+import { EventListener_Service, HexagonLayer_Service, LocalStaticImage_Service } from '@/common_services'
 
 //
 //
