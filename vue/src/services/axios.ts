@@ -5,27 +5,27 @@ import { Urls } from '@/enums'
 
 @Service()
 export default class AxiosService {
-  private _urls: Record<string, string> = Urls
+    private _urls: Record<string, string> = Urls
 
-  constructor(private _axios: AxiosStatic, private _httpClient: AxiosInstance) {
-    this._axios = axios
-  }
+    constructor(private _axios: AxiosStatic, private _httpClient: AxiosInstance) {
+        this._axios = axios
+    }
 
-  get httpClient(): AxiosInstance {
-    return this._httpClient
-  }
+    get httpClient(): AxiosInstance {
+        return this._httpClient
+    }
 
-  createHttpClient(): void {
-    const { create } = this._axios
-    const { API_BASE_URL } = this._urls
-    this._httpClient = create({
-      baseURL: API_BASE_URL,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      responseType: 'json',
-      timeout: 2000
-    })
-  }
+    createHttpClient(): void {
+        const { create } = this._axios
+        const { API_BASE_URL } = this._urls
+        this._httpClient = create({
+            baseURL: API_BASE_URL,
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            responseType: 'json',
+            timeout: 2000
+        })
+    }
 }
