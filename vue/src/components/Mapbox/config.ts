@@ -1,9 +1,9 @@
 export const mapbox_Config = {
-    reactiveState: {
+    reactiveProps: {
         UNUSED: ''
     },
 
-    staticState: {
+    staticProps: {
         bearing: 0,
         center: { lng: -76.3, lat: 44.5 },
         pitch: 0,
@@ -35,11 +35,11 @@ export const mapbox_Config = {
 }
 
 export const mapStyles_Config = {
-    reactiveState: {
+    reactiveProps: {
         USUSED: ''
     },
 
-    staticState: [
+    staticProps: [
         {
             isActive: true,
             url: 'mapbox://styles/mapbox/outdoors-v11'

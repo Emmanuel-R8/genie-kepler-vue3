@@ -20,7 +20,11 @@ export interface IMapbox_StaticProps extends IAbstractStaticState {
     zoom: number
 }
 
-export interface IMapStyle {
+export interface IMapStyle_ReactiveProps {
     isActive: boolean
     url: string
+}
+
+export interface IMapStyle_StaticProps {
+    unused: string
 }

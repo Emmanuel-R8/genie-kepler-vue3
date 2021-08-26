@@ -1,6 +1,7 @@
 export const deckgl_Config = {
     reactiveProps: {
-        UNUSED: ''
+        container: 'deckgl',
+        canvas: 'hexagon-layer'
     },
 
     staticProps: {
@@ -13,8 +14,6 @@ export const deckgl_Config = {
     },
 
     options: {
-        canvas: 'hexagon-layer',
-        container: 'deckgl',
         controller: true,
         id: 'hexagon-layer',
         interactive: false,

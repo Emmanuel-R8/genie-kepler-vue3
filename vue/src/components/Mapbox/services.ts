@@ -17,7 +17,7 @@ import { State_Common_Service } from '../../common_services/State/services'
 // Component-specific
 //
 import { mapbox_Config } from './config'
-import { IMapbox_Settings, IMapbox_StaticProps, IMapStyle } from './interfaces'
+import { IMapbox_Settings, IMapbox_StaticProps, IMapStyle_ReactiveProps } from './interfaces'
 
 import { FillLayer, LineLayer, Map, MapboxOptions, NavigationControl, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 
@@ -41,19 +41,19 @@ export class MapStyle_Service {
         return this._mapStyle
     }
 
-    private get _state(): IMapStyle[] {
+    private get _state(): IMapStyle_ReactiveProps[] {
         const { MAP_STYLES } = this._states
-        return <IMapStyle[]>this._stateService.getStaticState(MAP_STYLES)
+        return <IMapStyle_ReactiveProps[]>this._stateService.getStaticState(MAP_STYLES)
     }
 
-    private set _state(mapStyles: IMapStyle[]) {
+    private set _state(mapStyles: IMapStyle_ReactiveProps[]) {
         const { MAP_STYLES } = this._states
         this._stateService.setStaticState(MAP_STYLES, mapStyles)
     }
 
     setMapStyle(): void {
         const mapStyles = this._state
-        const isActive = (mapStyle: IMapStyle): boolean => mapStyle.isActive
+        const isActive = (mapStyle: IMapStyle_ReactiveProps): boolean => mapStyle.isActive
         const mapStyle = mapStyles.find(isActive)
         mapStyle && (this._mapStyle = mapStyle.url)
     }
