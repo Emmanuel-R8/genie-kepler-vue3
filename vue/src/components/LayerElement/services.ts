@@ -45,8 +45,8 @@ export class LayerElement_Service {
     }
 
     get state(): ILayerElement_ReactiveProps[] {
-        const { LAYER_ELEMENTS } = this._states
-        return <ILayerElement_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS)
+        const { LAYER_ELEMENTS_REACTIVESTATE } = this._states
+        return <ILayerElement_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS_REACTIVESTATE)
     }
 
     private set _state(layerElements: ILayerElement_ReactiveProps[]) {
@@ -142,13 +142,13 @@ export class LayerVisibility_Service {
     }
 
     get state(): ILayerVisibility_StaticProps {
-        const { LAYER_VISIBILITY } = this._states
-        return <ILayerVisibility_StaticProps>this._stateService.getStaticState(LAYER_VISIBILITY)
+        const { LAYER_VISIBILITY_STATICSTATE } = this._states
+        return <ILayerVisibility_StaticProps>this._stateService.getStaticState(LAYER_VISIBILITY_STATICSTATE)
     }
 
     private set _state(layers: ILayerVisibility_StaticProps) {
-        const { LAYER_VISIBILITY } = this._states
-        this._stateService.setStaticState(LAYER_VISIBILITY, layers)
+        const { LAYER_VISIBILITY_STATICSTATE } = this._states
+        this._stateService.setStaticState(LAYER_VISIBILITY_STATICSTATE, layers)
     }
 
     setLayerVisibilityState(id: string): void {

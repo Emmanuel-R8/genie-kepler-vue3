@@ -51,6 +51,8 @@ export const layerElements_Config = {
     ],
 
     staticProps: {
-        UNUSED: ''
+        id: '',
+        isActive: false,
+        name: ''
     }
 }

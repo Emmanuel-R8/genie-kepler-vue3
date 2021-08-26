@@ -7,8 +7,6 @@ import { ILocalStaticImage_Settings, ILocalStaticImage_StaticProps, ILocalStatic
 // /* eslint-disable-next-line */
 // import localstaticimage from './index.module.css'
 
-
-
 // //
 // //
 // export default defineComponent({
@@ -39,7 +37,7 @@ import { ILocalStaticImage_Settings, ILocalStaticImage_StaticProps, ILocalStatic
 
 // const html = ({ filename }: ILocalStaticImage_StaticProps): JSX.Element => (
 //     <>
-        <img src={filename} />
+;<img src={filename} />
 //     </>
 // )
 

@@ -21,13 +21,13 @@ export interface ILayer extends IMarker {
     }
 }
 
-export interface ILayerElement_ReactiveProps extends ILayerElementProps, IAbstractReactiveState {
+export interface ILayerElement_ReactiveProps extends IAbstractReactiveState {
     height: number
     src: string
     width: number
 }
 
-export interface ILayerElementProps {
+export interface ILayerElement_StaticProps extends IAbstractStaticState {
     id: string
     isActive: boolean
     name: string

@@ -6,18 +6,27 @@ import { Container, Service } from 'typedi'
 import { Deck, ViewState } from '@deck.gl/core'
 import { LngLatLike, Map, MapboxOptions, SkyLayer } from 'mapbox-gl'
 
+
+//
+// Global state
+//
 import { States } from '../../Global_State'
 import { State_Common_Service } from '../../common_services/State/services'
 
+
+//
+// Imports of individual components
+//
 import { deckgl_Config } from './config'
 import { Modal_Service } from '../Modal/services'
 
 import { IDeckgl_Settings, IDeckgl_StaticProps } from './interfaces'
 
+
 @Service()
 export class Deckgl_Service {
     // Graphical options re: the DeckGL rendering
-    private _options: IDeckgl_Settings = deckgl_Config.options
+    private _reactiveProps: IDeckgl_Settings = deckgl_Config.reactiveProps
     private _skyLayer = <SkyLayer>deckgl_Config.skyLayer
     private _states: Record<string, string> = States
 
@@ -40,17 +49,17 @@ export class Deckgl_Service {
     }
 
     private get _state(): IDeckgl_StaticProps {
-        const { DECKGL_VIEW_SETTINGS } = this._states
-        return <IDeckgl_StaticProps>this._stateService.getStaticState(DECKGL_VIEW_SETTINGS)
+        const { DECKGL_VIEW_STATICSTATE } = this._states
+        return <IDeckgl_StaticProps>this._stateService.getStaticState(DECKGL_VIEW_STATICSTATE)
     }
 
     private set _state(settings: IDeckgl_StaticProps) {
-        const { DECKGL_VIEW_SETTINGS } = this._states
-        this._stateService.setStaticState(DECKGL_VIEW_SETTINGS, settings)
+        const { DECKGL_VIEW_STATICSTATE } = this._states
+        this._stateService.setStaticState(DECKGL_VIEW_STATICSTATE, settings)
     }
 
     loadDeckgl(): void {
-        const { canvas, controller, id, maxPitch, maxZoom, minZoom } = this._options
+        const { canvas, controller, id, maxPitch, maxZoom, minZoom } = this._reactiveProps
         this._deck = new Deck({
             canvas,
             controller,
@@ -79,7 +88,7 @@ export class Deckgl_Service {
     }
 
     loadMapbox(): void {
-        const { container, interactive, style } = this._options
+        const { container, interactive, style } = this._reactiveProps
         const options: MapboxOptions = { container, interactive, style, ...this._state }
         this._map = new Map(options).on('load', (): void => this.onMapLoadHandler())
     }

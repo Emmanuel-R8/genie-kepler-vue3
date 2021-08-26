@@ -4,13 +4,16 @@ import { LngLatLike } from 'mapbox-gl'
 
 export interface IMapbox_ReactiveProps extends IAbstractReactiveState {
     container: string
-}
-
-export interface IMapbox_Settings extends IMapbox_ReactiveProps {
     doubleClickZoom: boolean
     maxZoom: number
     minZoom: number
 }
+
+// export interface IMapbox_Settings extends IMapbox_ReactiveProps {
+//     doubleClickZoom: boolean
+//     maxZoom: number
+//     minZoom: number
+// }
 
 export interface IMapbox_StaticProps extends IAbstractStaticState {
     bearing: number
