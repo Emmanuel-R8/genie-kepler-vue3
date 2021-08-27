@@ -1,13 +1,13 @@
-import { trails_Config } from './config'
-import { trail } from './index.module.css'
+import { trails_Config } from './config';
+import { trail } from './index.module.css';
 
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup() {
-        return (): JSX.Element => html()
+        return (): JSX.Element => html();
     }
-})
+});
 
 const html = (): JSX.Element => (
     <select class={`trails ${trail}`}>
@@ -15,4 +15,4 @@ const html = (): JSX.Element => (
             <option key={name}>{name}</option>
         ))}
     </select>
-)
+);

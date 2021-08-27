@@ -6,16 +6,12 @@
                 "src/*"
             ]
         },
-
         "esModuleInterop": true,
-
         // Required by `typestack/typedi` dependency injection package
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-
         // TS pre-processing should not touch any JSX syntax.
         "jsx": "preserve",
-
         "lib": [
             "esnext",
             "dom",
@@ -23,26 +19,22 @@
         ],
         "module": "esnext",
         "target": "esnext",
-
         "moduleResolution": "node",
         "plugins": [
             {
                 "name": "typescript-plugin-css-modules"
             }
         ],
-
         "sourceMap": true,
         "strict": true,
         "types": [
             "vite/client",
             "jest"
         ],
-
         "typeRoots": [
             "node_modules/@types"
         ],
     },
-
     "include": [
         "src/**/*.ts*"
     ],

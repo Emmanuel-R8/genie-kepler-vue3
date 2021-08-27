@@ -15,11 +15,11 @@ import { Popup_Common_Service } from '../../common_services/Popup/services'
 import { Router_Common_Service } from '../../common_services/Router/services'
 import { State_Common_Service } from '../../common_services/State/services'
 
-import {States} from '../../Global_State'
+import { States } from '../../Global_State'
 
 // Import interfaces and config defined for that service
 import { localStaticImage_Config } from './config'
-import { ILocalStaticImage_ReactiveProps, ILocalStaticImage_StaticProps} from './interfaces'
+import { ILocalStaticImage_ReactiveProps, ILocalStaticImage_StaticProps } from './interfaces'
 
 
 @Service()

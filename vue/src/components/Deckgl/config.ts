@@ -21,7 +21,7 @@ export const deckgl_Config = {
         zoom: 6.5
     },
 
-    options: {},
+    options: { },
 
     skyLayer: {
         id: 'sky',

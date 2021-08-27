@@ -1,7 +1,7 @@
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
-import { IModal } from '@/interfaces'
-import { active, inactive } from './index.module.css'
+import { IModal } from '@/interfaces';
+import { active, inactive } from './index.module.css';
 
 export default defineComponent({
     props: {
@@ -9,8 +9,8 @@ export default defineComponent({
     },
 
     setup(props: IModal) {
-        return (): JSX.Element => html(props)
+        return (): JSX.Element => html(props);
     }
-})
+});
 
-const html = ({ isActive }: IModal): JSX.Element => <div class={isActive ? active : inactive}></div>
+const html = ({ isActive }: IModal): JSX.Element => <div class={isActive ? active : inactive}></div>;

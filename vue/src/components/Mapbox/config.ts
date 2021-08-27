@@ -19,7 +19,7 @@ export const mapbox_Config = {
         visualizePitch: true
     },
 
-    options: {},
+    options: { },
 
     skyLayer: {
         id: 'sky',

@@ -4,7 +4,7 @@ export const layers_Config = {
             id: 'biosphere',
             fields: 'name,description,geom',
             type: 'fill',
-            source: { type: 'geojson', data: {} },
+            source: { type: 'geojson', data: { } },
             layout: { visibility: 'none' },
             paint: {
                 'fill-color': '#0A0',
@@ -16,7 +16,7 @@ export const layers_Config = {
             id: 'biosphere-border',
             fields: 'name,description,geom',
             type: 'line',
-            source: { type: 'geojson', data: {} },
+            source: { type: 'geojson', data: { } },
             layout: { visibility: 'none' },
             paint: {
                 'line-color': '#000',
@@ -27,7 +27,7 @@ export const layers_Config = {
             id: 'trails',
             fields: 'name,description,lat,lng,geom',
             type: 'line',
-            source: { type: 'geojson', data: {} },
+            source: { type: 'geojson', data: { } },
             layout: { visibility: 'none' },
             paint: {
                 'line-color': '#900',

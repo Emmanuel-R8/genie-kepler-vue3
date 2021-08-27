@@ -1,19 +1,19 @@
-import { Container } from 'typedi'
-import { computed, ComputedRef, defineComponent } from 'vue'
+import { Container } from 'typedi';
+import { computed, ComputedRef, defineComponent } from 'vue';
 
-import { LayerElements_Vue, Mapbox_Vue, Modal_Vue, Trails_Vue } from '@/components'
-import { mapbox_Config } from '../components/Mapbox/config'
-import { IModal_ReactiveProps } from '../components/Modal/interfaces'
-import { Modal_Service } from '../components/Modal/services'
+import { LayerElements_Vue, Mapbox_Vue, Modal_Vue, Trails_Vue } from '@/components';
+import { mapbox_Config } from '../components/Mapbox/config';
+import { IModal_ReactiveProps } from '../components/Modal/interfaces';
+import { Modal_Service } from '../components/Modal/services';
 
 export default defineComponent({
     setup() {
         /* prettier-ignore */
         const { container } = mapbox_Config.reactiveProps
-        const modalState = getModalState()
-        return (): JSX.Element => html(modalState.value, container)
+        const modalState = getModalState();
+        return (): JSX.Element => html(modalState.value, container);
     }
-})
+});
 
 const html = ({ isActive }: IModal_ReactiveProps, container: string): JSX.Element => (
     <>
@@ -22,9 +22,9 @@ const html = ({ isActive }: IModal_ReactiveProps, container: string): JSX.Elemen
         <LayerElements_Vue />
         <Trails_Vue />
     </>
-)
+);
 
 const getModalState = (): ComputedRef<IModal_ReactiveProps> => {
-    const modalService = Container.get(Modal_Service)
-    return computed((): IModal_ReactiveProps => modalService.state)
-}
+    const modalService = Container.get(Modal_Service);
+    return computed((): IModal_ReactiveProps => modalService.state);
+};

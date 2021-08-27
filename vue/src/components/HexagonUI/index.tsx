@@ -1,6 +1,6 @@
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
-import { IHexagonLayer_ReactiveProps } from '../HexagonLayer/interfaces'
+import { IHexagonLayer_ReactiveProps } from '../HexagonLayer/interfaces';
 
 export default defineComponent({
     props: {
@@ -22,9 +22,9 @@ export default defineComponent({
         }
     },
     setup(props: IHexagonLayer_ReactiveProps) {
-        return (): JSX.Element => html(props)
+        return (): JSX.Element => html(props);
     }
-})
+});
 
 const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLayer_ReactiveProps): JSX.Element => (
     <div>
@@ -74,4 +74,4 @@ const html = ({ coverage, elevationScale, radius, upperPercentile }: IHexagonLay
         <button id="reset">Reset Parameters</button>
         <button id="mapbox">Return to Trails</button>
     </div>
-)
+);

@@ -1,11 +1,11 @@
-import { Container } from 'typedi'
-import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { Container } from 'typedi';
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue';
 
 // Import all relevant interfaces
 
 /* eslint-disable-next-line */
-import template from './index.module.css'
-import { ITemplate_ReactiveProps } from './interfaces'
+import template from './index.module.css';
+import { ITemplate_ReactiveProps } from './interfaces';
 
 export default defineComponent({
     props: {
@@ -14,23 +14,23 @@ export default defineComponent({
 
     setup(props: ITemplate_ReactiveProps) {
         onBeforeMount((): void => {
-            return
-        })
+            return;
+        });
 
         // onMounted(async (): Promise<void> => {
         //     await function()
         // })
 
         onBeforeUnmount((): void => {
-            return
-        })
+            return;
+        });
 
         onUnmounted((): void => {
-            return
-        })
+            return;
+        });
 
-        return (): JSX.Element => html(props)
+        return (): JSX.Element => html(props);
     }
-})
+});
 
-const html = ({ UNUSED }: ITemplate_ReactiveProps): JSX.Element => <div></div>
+const html = ({ UNUSED }: ITemplate_ReactiveProps): JSX.Element => <div></div>;

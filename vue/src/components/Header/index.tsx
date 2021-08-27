@@ -1,12 +1,12 @@
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
-import { header, name, title } from './index.module.css'
+import { header, name, title } from './index.module.css';
 
 export default defineComponent({
     setup() {
-        return (): JSX.Element => html()
+        return (): JSX.Element => html();
     }
-})
+});
 
 const html = (): JSX.Element => (
     <header class={header}>
@@ -20,4 +20,4 @@ const html = (): JSX.Element => (
             Github Repository
         </a>
     </header>
-)
+);

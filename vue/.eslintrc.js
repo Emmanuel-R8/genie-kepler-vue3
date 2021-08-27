@@ -8,12 +8,12 @@ module.exports = {
     },
 
     extends: [
-        'plugin:prettier',
+        // 'plugin:prettier',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:jest/recommended',
-        'plugin:prettier/recommended',
+        'plugin:prettier/recommended'
         // 'plugin:vue/vue3-essential',
         // 'plugin:vue/vue3-base',
         // 'plugin:vue/vue3-strongly-recommended',
@@ -23,7 +23,7 @@ module.exports = {
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
-            tsx: true,
+            tsx: true
         },
         ecmaVersion: 2021,
         parser: '@typescript-eslint/parser',
@@ -32,10 +32,7 @@ module.exports = {
         tsconfigRootDir: __dirname
     },
 
-    plugins: [
-        'prettier',
-        '@typescript-eslint',
-        'jest'],
+    plugins: ['prettier', '@typescript-eslint', 'jest'],
 
     rules: {
         '@typescript-eslint/no-explicit-any': 'off',
@@ -43,4 +40,4 @@ module.exports = {
         '@typescript-eslint/restrict-template-expressions': 'off',
         '@typescript-eslint/unbound-method': 'off'
     }
-}
+};

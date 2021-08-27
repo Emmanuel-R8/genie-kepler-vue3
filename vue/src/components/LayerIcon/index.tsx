@@ -1,7 +1,7 @@
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
-import { ILayerElements, ILayerIconProps } from '@/interfaces'
-import layerElements from '@/components/LayerElements/index.module.css'
+import { ILayerElements, ILayerIconProps } from '@/interfaces';
+import layerElements from '@/components/LayerElements/index.module.css';
 
 export default defineComponent({
     props: {
@@ -12,9 +12,9 @@ export default defineComponent({
         width: { type: Number, required: true }
     },
     setup(props: ILayerIconProps) {
-        return (): JSX.Element => html(props)
+        return (): JSX.Element => html(props);
     }
-})
+});
 
 const html = ({ alt, height, id, src, width }: ILayerIconProps): JSX.Element => (
     <img
@@ -25,4 +25,4 @@ const html = ({ alt, height, id, src, width }: ILayerIconProps): JSX.Element => 
         src={src}
         width={width}
     />
-)
+);
