@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 
-import { ILayerElement_ReactiveProps } from '../LayerElement/interfaces';
+import { ISingleLayer_ReactiveProps } from '../LayerElement/interfaces';
 
 import { active, inactive } from '../Modal/index.module.css';
 
@@ -11,12 +11,12 @@ export default defineComponent({
         name: { type: String, required: true }
     },
 
-    setup(props: ILayerElement_ReactiveProps) {
+    setup(props: ISingleLayer_ReactiveProps) {
         return (): JSX.Element => html(props);
     }
 });
 
-const html = ({ id, isActive, name }: ILayerElement_ReactiveProps): JSX.Element => (
+const html = ({ id, isActive, name }: ISingleLayer_ReactiveProps): JSX.Element => (
     <div id={id} class={`layer-element ${isActive ? active : inactive}`}>
         {name}
     </div>

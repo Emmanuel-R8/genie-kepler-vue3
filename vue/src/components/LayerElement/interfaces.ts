@@ -1,9 +1,22 @@
 import { FeatureCollection } from 'geojson'
 
 import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
-import { IMarker } from '../Marker/interfaces'
+import { IMarker_StaticProps } from '../Marker/interfaces'
 
-export interface ILayer extends IMarker {
+
+export interface ISingleLayer_ReactiveProps extends IAbstractReactiveState {
+    id: string
+    name: string
+    src: string
+    height: number
+    width: number
+    isActive: boolean
+}
+
+export interface ISingleLayer_StaticProps extends IMarker_StaticProps, IAbstractStaticState {
+    // id and fields are provided by IMearker
+    // id: string
+    // fields: string
     type: string
     source: {
         type: string
@@ -21,13 +34,21 @@ export interface ILayer extends IMarker {
     }
 }
 
-export interface ILayerElement_ReactiveProps extends IAbstractReactiveState {
-    height: number
-    src: string
-    width: number
+
+export interface ILayerVisibility_ReactiveProps extends IAbstractReactiveState {
     id: string
     isActive: boolean
     name: string
 }
 
-export type ILayerElement_StaticProps = IAbstractStaticState
+export interface ILayerVisibility_StaticProps extends IAbstractStaticState {
+    biosphere: {
+        isActive: boolean
+    }
+    'biosphere-border': {
+        isActive: boolean
+    }
+    trails: {
+        isActive: boolean
+    }
+}

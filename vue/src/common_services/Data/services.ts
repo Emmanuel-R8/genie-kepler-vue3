@@ -15,19 +15,19 @@ import mapboxgl from 'mapbox-gl'
 import { EndPoints, Urls } from '@/enums'
 import { IHttpParams, IHttpResponse } from '../Http/interfaces'
 
-import { layers_Config } from '../../components/LayerElement/config'
-import { ILayer } from '../../components/LayerElement/interfaces'
+import { perLayer_Config } from '../../components/LayerElement/config'
+import { ISingleLayer_StaticProps } from '../../components/LayerElement/interfaces'
 import { Layer_Service } from '../../components/LayerElement/services'
 
 import { markers_Config } from '../../components/Marker/config'
-import { IMarker } from '../../components/Marker/interfaces'
+import { IMarker_StaticProps } from '../../components/Marker/interfaces'
 import { Marker_Service } from '../../components/Marker/services'
 
 @Service()
 export class Data_Common_Service {
     private _endPoints: Record<string, string> = EndPoints
-    private _layers: ILayer[] = layers_Config
-    private _markers: IMarker[] = markers_Config
+    private _layers: ISingleLayer_StaticProps[] = perLayer_Config.staticProps
+    private _markers: IMarker_StaticProps[] = markers_Config.staticProps
     private _urls: Record<string, string> = Urls
 
     constructor(
@@ -93,7 +93,7 @@ export class Data_Common_Service {
         }
     }
 
-    private setLayer(fc: FeatureCollection, layer: ILayer): void {
+    private setLayer(fc: FeatureCollection, layer: ISingleLayer_StaticProps): void {
         fc?.features?.length
             ? this._layerService.setLayer(fc, layer)
             : this._logService.consoleLog(`No ${this.getLayerData.name} Features Found:\n`, fc)
@@ -113,7 +113,7 @@ export class Data_Common_Service {
             : this._logService.consoleLog(`No ${this.getMarkerData.name} Features Found:\n`, features)
     }
 
-    private async getGeoJsonFeatureCollection({ id, fields }: ILayer | IMarker): Promise<FeatureCollection> {
+    private async getGeoJsonFeatureCollection({ id, fields }: ISingleLayer_StaticProps | IMarker_StaticProps): Promise<FeatureCollection> {
         const { GEOJSON_ENDPOINT } = this._endPoints
         const params: IHttpParams = { fields, table: id.replace(/-(.*)$/, '') }
         const { data } = <IHttpResponse<FeatureCollection>>await this.httpGetRequest(GEOJSON_ENDPOINT, params)

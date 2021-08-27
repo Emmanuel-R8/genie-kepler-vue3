@@ -17,8 +17,8 @@ import { State_Common_Service } from '../../common_services/State/services'
 //
 // Component-specific
 //
-import { ILayer, ILayerElement_ReactiveProps } from './interfaces'
-import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
+import { ISingleLayer_StaticProps, ISingleLayer_ReactiveProps } from './interfaces'
+import { ILayerVisibility_StaticProps } from '../LayerElement/interfaces'
 import { Map_Service, MapStyle_Service } from '../Mapbox/services'
 import { Marker_Service } from '../Marker/services'
 
@@ -45,12 +45,12 @@ export class LayerElement_Service {
         this._stateService = Container.get(State_Common_Service)
     }
 
-    get state(): ILayerElement_ReactiveProps[] {
+    get state(): ISingleLayer_ReactiveProps[] {
         const { LAYER_ELEMENTS_REACTIVESTATE } = this._states
-        return <ILayerElement_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS_REACTIVESTATE)
+        return <ISingleLayer_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS_REACTIVESTATE)
     }
 
-    private set _state(layerElements: ILayerElement_ReactiveProps[]) {
+    private set _state(layerElements: ISingleLayer_ReactiveProps[]) {
         const { LAYER_ELEMENTS } = this._states
         this._stateService.setReactiveState(LAYER_ELEMENTS, layerElements)
     }
@@ -95,7 +95,7 @@ export class LayerElement_Service {
 
     private setLayerElementState(id: LayerElement): void {
         const state = this.state
-        const layerElement = (layerElement: ILayerElement_ReactiveProps): boolean => layerElement.id === id
+        const layerElement = (layerElement: ISingleLayer_ReactiveProps): boolean => layerElement.id === id
         const i = state.findIndex(layerElement)
         if (i >= 0) {
             state[i].isActive = !state[i].isActive
@@ -167,19 +167,19 @@ export class LayerVisibility_Service {
 
 @Service()
 export class Layer_Service {
-    constructor(private _layers: ILayer[]) {
+    constructor(private _layers: ISingleLayer_StaticProps[]) {
         this._layers = []
     }
 
-    get layers(): ILayer[] {
+    get layers(): ISingleLayer_StaticProps[] {
         return this._layers
     }
 
-    setLayer(fc: FeatureCollection, layer: ILayer): void {
+    setLayer(fc: FeatureCollection, layer: ISingleLayer_StaticProps): void {
         this._layers.push(this.setLayerSourceData(fc, layer))
     }
 
-    private setLayerSourceData(fc: FeatureCollection, layer: ILayer): ILayer {
+    private setLayerSourceData(fc: FeatureCollection, layer: ISingleLayer_StaticProps): ISingleLayer_StaticProps {
         layer.source.data = fc
         return cloneDeep(layer)
     }

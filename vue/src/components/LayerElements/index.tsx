@@ -3,7 +3,7 @@ import { computed, ComputedRef, defineComponent } from 'vue';
 
 import { LayerElement_Vue, LayerIcon_Vue } from '@/components';
 
-import { ILayerElement_ReactiveProps } from '../LayerElement/interfaces';
+import { ISingleLayer_ReactiveProps } from '../LayerElement/interfaces';
 import { LayerElement_Service } from '../LayerElement/services';
 
 import { layerElement } from './index.module.css';
@@ -15,7 +15,7 @@ export default defineComponent({
     }
 });
 
-const html = (layerElements: ILayerElement_ReactiveProps[]): JSX.Element => (
+const html = (layerElements: ISingleLayer_ReactiveProps[]): JSX.Element => (
     <ul class={layerElement}>
         {layerElements.map(({ height, id, isActive, name, src, width }) => (
             <li>
@@ -26,7 +26,7 @@ const html = (layerElements: ILayerElement_ReactiveProps[]): JSX.Element => (
     </ul>
 );
 
-const getLayerElementsState = (): ComputedRef<ILayerElement_ReactiveProps[]> => {
+const getLayerElementsState = (): ComputedRef<ISingleLayer_ReactiveProps[]> => {
     const layerElementService = Container.get(LayerElement_Service);
-    return computed((): ILayerElement_ReactiveProps[] => layerElementService.state);
+    return computed((): ISingleLayer_ReactiveProps[] => layerElementService.state);
 };

@@ -16,17 +16,3 @@ export interface ILayerIconProps {
     src: string
     width: number
 }
-
-export type ILayerVisibility_ReactiveProps = IAbstractReactiveState
-
-export interface ILayerVisibility_StaticProps extends IAbstractStaticState {
-    biosphere: {
-        isActive: boolean
-    }
-    'biosphere-border': {
-        isActive: boolean
-    }
-    trails: {
-        isActive: boolean
-    }
-}

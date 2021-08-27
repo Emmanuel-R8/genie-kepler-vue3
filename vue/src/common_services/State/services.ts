@@ -26,11 +26,14 @@ import { IDeckgl_ReactiveProps, IDeckgl_StaticProps } from '../../components/Dec
 import { hexagonLayer_Config } from '../../components/HexagonLayer/config'
 import { IHexagonLayer_ReactiveProps, IHexagonLayer_StaticProps } from '../../components/HexagonLayer/interfaces'
 
-import { layerVisibility_Config } from '../../components/LayerElement/config'
-import { ILayerElement_ReactiveProps, ILayerElement_StaticProps } from '../../components/LayerElement/interfaces'
+import { layerVisibility_Config, perLayer_Config } from '../../components/LayerElement/config'
+import {
+    ISingleLayer_ReactiveProps, ISingleLayer_StaticProps,
+    ILayerVisibility_ReactiveProps, ILayerVisibility_StaticProps,
+} from '../../components/LayerElement/interfaces'
 
 import { layerElements_Config } from '../../components/LayerElements/config'
-import { ILayerVisibility_ReactiveProps, ILayerVisibility_StaticProps } from '../../components/LayerElements/interfaces'
+import { } from '../../components/LayerElements/interfaces'
 
 import { mapbox_Config, mapStyles_Config } from '../../components/Mapbox/config'
 import {
@@ -61,8 +64,8 @@ export class State_Common_Service {
     private _hexagonLayer_ReactiveState: IHexagonLayer_ReactiveProps = hexagonLayer_Config.reactiveProps
     private _hexagonLayer_StaticState: IHexagonLayer_StaticProps = hexagonLayer_Config.staticProps
 
-    private _layerElements_ReactiveState: ILayerElement_ReactiveProps[] = layerElements_Config.staticProps
-    private _layerElements_StaticState: ILayerElement_StaticProps[] = layerElements_Config.reactiveProps
+    private _perLayer_ReactiveState: ISingleLayer_ReactiveProps[] = perLayer_Config.reactiveProps
+    private _perLayer_StaticState: ISingleLayer_StaticProps[] = perLayer_Config.staticProps
 
     private _layerVisibility_ReactiveState: ILayerVisibility_ReactiveProps = layerVisibility_Config.reactiveProps
     private _layerVisibility_StaticState: ILayerVisibility_StaticProps = layerVisibility_Config.staticProps
@@ -150,7 +153,7 @@ export class State_Common_Service {
         this._reactiveState = reactive({
             [DECKGL_VIEW_REACTIVESTATE]: this._deckglView_ReactiveState,
             [HEXAGON_LAYER_REACTIVESTATE]: this._hexagonLayer_ReactiveState,
-            [LAYER_ELEMENTS_REACTIVESTATE]: this._layerElements_ReactiveState,
+            [LAYER_ELEMENTS_REACTIVESTATE]: this._perLayer_ReactiveState,
             [LAYER_VISIBILITY_REACTIVESTATE]: this._layerVisibility_ReactiveState,
             [MAP_STYLES_REACTIVESTATE]: this._mapStyles_ReactiveState,
             [MAPBOX_VIEW_REACTIVESTATE]: this._mapboxView_ReactiveState,
@@ -198,7 +201,7 @@ export class State_Common_Service {
         this._staticState = {
             [DECKGL_VIEW_STATICSTATE]: this._deckglView_StaticState,
             [HEXAGON_LAYER_STATICSTATE]: this._hexagonLayer_StaticState,
-            [LAYER_ELEMENTS_STATICSTATE]: this._layerElements_StaticState,
+            [LAYER_ELEMENTS_STATICSTATE]: this._perLayer_StaticState,
             [LAYER_VISIBILITY_STATICSTATE]: this._layerVisibility_StaticState,
             [MAP_STYLES_STATICSTATE]: this._mapStyles_StaticState,
             [MAPBOX_VIEW_STATICSTATE]: this._mapboxView_StaticState,

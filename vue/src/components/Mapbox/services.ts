@@ -18,13 +18,14 @@ import { State_Common_Service } from '../../common_services/State/services'
 // Component-specific
 //
 import { Layer_Service, LayerVisibility_Service } from '../LayerElement/services'
-import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
+import { ILayerVisibility_StaticProps } from '../LayerElement/interfaces'
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'
 import { ITrail } from '../Trails/interfaces'
 
 import { mapbox_Config } from './config'
 import { IMapbox_ReactiveProps, IMapbox_StaticProps, IMapStyle_ReactiveProps } from './interfaces'
+
 
 @Service()
 export class MapStyle_Service {

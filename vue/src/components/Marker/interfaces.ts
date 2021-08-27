@@ -1,11 +1,11 @@
 import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
 
-export interface IMarker {
+export interface IMarker_StaticProps extends IAbstractStaticState {
     fields: string
     id: string
 }
 
-export interface IHTMLMarkerElement extends HTMLDivElement {
+export interface IMarker_ReactiveProps extends HTMLDivElement, IAbstractReactiveState {
     isActive: boolean
     isHidden: boolean
 }

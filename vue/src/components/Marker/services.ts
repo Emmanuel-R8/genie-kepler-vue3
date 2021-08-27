@@ -11,7 +11,7 @@ import { Popup_Common_Service } from '../../common_services/Popup/services'
 //
 // Component-specific
 //
-import { IHTMLMarkerElement } from './interfaces'
+import { IMarker_ReactiveProps } from './interfaces'
 import { Mapbox_Service } from '../Mapbox/services'
 
 @Service()
@@ -34,7 +34,7 @@ export class Marker_Service {
         for (const markers of this._markers) {
             for (const marker of markers) {
                 const { map } = this._mapboxService
-                const el = <IHTMLMarkerElement>marker.getElement()
+                const el = <IMarker_ReactiveProps>marker.getElement()
                 if (!el.isActive && !el.isHidden) {
                     break
                 }
@@ -49,7 +49,7 @@ export class Marker_Service {
     toggleMarkerVisibility(id: string): void {
         for (const marker of this._markers[<number>this._markersHashmap.get(id)]) {
             const { map } = this._mapboxService
-            const el = <IHTMLMarkerElement>marker.getElement()
+            const el = <IMarker_ReactiveProps>marker.getElement()
             el.isActive = !el.isActive
             el.isActive ? marker.addTo(map) : marker.remove()
         }
@@ -64,7 +64,7 @@ export class Marker_Service {
         return markers
     }
 
-    private setHTMLMarkerElement(id: string, feature: Feature): IHTMLMarkerElement {
+    private setHTMLMarkerElement(id: string, feature: Feature): IMarker_ReactiveProps {
         const el = this.createHTMLMarkerElement()
         el.className = id
         el.isActive = false
@@ -74,11 +74,11 @@ export class Marker_Service {
         return el
     }
 
-    private createHTMLMarkerElement(): IHTMLMarkerElement {
-        return <IHTMLMarkerElement>document.createElement('div')
+    private createHTMLMarkerElement(): IMarker_ReactiveProps {
+        return <IMarker_ReactiveProps>document.createElement('div')
     }
 
-    private createMarker(el: IHTMLMarkerElement, feature: Feature): Marker {
+    private createMarker(el: IMarker_ReactiveProps, feature: Feature): Marker {
         const { geometry, properties } = feature
         const { lat, lng } = <Record<string, number>>properties
         if (lat && lng) return new Marker(el).setLngLat([lng, lat])

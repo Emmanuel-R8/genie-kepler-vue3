@@ -1,5 +1,5 @@
 export const markers_Config = {
-    reactiveProps: [
+    staticProps: [
         {
             id: 'office',
             fields: 'name,description,geom'
@@ -14,7 +14,7 @@ export const markers_Config = {
         }
     ],
 
-    staticProps: {
+    reactiveProps: {
         UNUSED: ''
     }
 }

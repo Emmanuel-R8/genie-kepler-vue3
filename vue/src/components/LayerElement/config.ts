@@ -1,5 +1,5 @@
-export const layers_Config = {
-    reativeProps: [
+export const perLayer_Config = {
+    staticProps: [
         {
             id: 'biosphere',
             fields: 'name,description,geom',
@@ -36,9 +36,32 @@ export const layers_Config = {
         }
     ],
 
-    staticProps: {
-        UNUSED: ''
-    }
+    reactiveProps: [
+        {
+            id: '',
+            name: '',
+            src: '',
+            height: 512,
+            width: 512,
+            isActive: false,
+        },
+        {
+            id: '',
+            name: '',
+            src: '',
+            height: 512,
+            width: 512,
+            isActive: false,
+        },
+        {
+            id: '',
+            name: '',
+            src: '',
+            height: 512,
+            width: 512,
+            isActive: false,
+        },
+    ]
 }
 
 export const layerVisibility_Config = {

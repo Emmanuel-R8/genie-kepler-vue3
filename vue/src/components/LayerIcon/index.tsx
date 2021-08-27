@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 
-import { ILayerElements, ILayerIconProps } from '@/interfaces';
+import { ILayerElements, ILayerIconProps } from '../LayerElements/interfaces';
 import layerElements from '@/components/LayerElements/index.module.css';
 
 export default defineComponent({

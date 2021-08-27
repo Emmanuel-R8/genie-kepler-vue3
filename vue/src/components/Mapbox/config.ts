@@ -33,11 +33,7 @@ export const mapbox_Config = {
 }
 
 export const mapStyles_Config = {
-    reactiveProps: {
-        USUSED: ''
-    },
-
-    staticProps: [
+    reactiveProps: [
         {
             isActive: true,
             url: 'mapbox://styles/mapbox/outdoors-v11'
@@ -46,5 +42,11 @@ export const mapStyles_Config = {
             isActive: false,
             url: 'mapbox://styles/mapbox/satellite-v9'
         }
-    ]
+    ],
+
+    staticProps: [
+        { UNUSED: '', },
+        { UNUSED: '', },
+        { UNUSED: '', },
+    ],
 }

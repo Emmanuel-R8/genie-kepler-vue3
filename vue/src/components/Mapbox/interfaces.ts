@@ -29,5 +29,5 @@ export interface IMapStyle_ReactiveProps {
 }
 
 export interface IMapStyle_StaticProps {
-    unused: string
+    UNUSED: string
 }
