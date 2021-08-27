@@ -1,9 +1,9 @@
 export const modal_Config = {
-    reactiveState: {
+    reactiveProps: {
         isActive: false
     },
 
-    staticState: {
-        isActive: false
+    staticProps: {
+        UNUSED: ''
     }
 }
