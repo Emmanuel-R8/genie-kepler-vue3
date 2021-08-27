@@ -32,4 +32,4 @@ export const trails_Config = [
         center: { lng: -76.22, lat: 44.485 },
         zoom: 14
     }
-]
+];

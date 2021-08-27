@@ -1,12 +1,12 @@
-import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces';
 
-import { LngLatLike } from 'mapbox-gl'
+import { LngLatLike } from 'mapbox-gl';
 
 export interface IMapbox_ReactiveProps extends IAbstractReactiveState {
-    container: string
-    doubleClickZoom: boolean
-    maxZoom: number
-    minZoom: number
+    container: string;
+    doubleClickZoom: boolean;
+    maxZoom: number;
+    minZoom: number;
 }
 
 // export interface IMapbox_Settings extends IMapbox_ReactiveProps {
@@ -16,18 +16,18 @@ export interface IMapbox_ReactiveProps extends IAbstractReactiveState {
 // }
 
 export interface IMapbox_StaticProps extends IAbstractStaticState {
-    bearing: number
-    center: LngLatLike
-    pitch: number
-    style: string
-    zoom: number
+    bearing: number;
+    center: LngLatLike;
+    pitch: number;
+    style: string;
+    zoom: number;
 }
 
 export interface IMapStyle_ReactiveProps {
-    isActive: boolean
-    url: string
+    isActive: boolean;
+    url: string;
 }
 
 export interface IMapStyle_StaticProps {
-    UNUSED: string
+    UNUSED: string;
 }

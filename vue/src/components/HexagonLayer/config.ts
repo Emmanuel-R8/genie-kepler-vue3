@@ -30,4 +30,4 @@ export const hexagonLayer_Config = {
             elevationScale: 1000
         }
     }
-}
+};

@@ -6,4 +6,4 @@ export const modal_Config = {
     staticProps: {
         UNUSED: ''
     }
-}
+};

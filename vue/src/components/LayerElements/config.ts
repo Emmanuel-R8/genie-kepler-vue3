@@ -55,4 +55,4 @@ export const layerElements_Config = {
             width: 18
         }
     ]
-}
+};

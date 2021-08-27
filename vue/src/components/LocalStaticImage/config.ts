@@ -13,4 +13,4 @@ export const localStaticImage_Config = {
     settings: {
         filename: 'assets/biosphere.png'
     }
-}
+};

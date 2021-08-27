@@ -17,4 +17,4 @@ export const markers_Config = {
     reactiveProps: {
         UNUSED: ''
     }
-}
+};

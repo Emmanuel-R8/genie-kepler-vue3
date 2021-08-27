@@ -1,6 +1,6 @@
-import { IAbstractReactiveState, IAbstractStaticState } from '@/common_services/State/interfaces'
-import { DSVRowArray } from 'd3-dsv'
-import { Feature, FeatureCollection } from 'geojson'
+import { IAbstractReactiveState, IAbstractStaticState } from '@/common_services/State/interfaces';
+import { DSVRowArray } from 'd3-dsv';
+import { Feature, FeatureCollection } from 'geojson';
 
 export type LogData =
     | DSVRowArray<string>
@@ -8,6 +8,6 @@ export type LogData =
     | FeatureCollection
     | IAbstractReactiveState
     | IAbstractStaticState
-    | string
+    | string;
 
-export type NavigationControlPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+export type NavigationControlPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';

@@ -9,4 +9,4 @@ export const template_Config = {
     staticProps: {
         UNUSED: ''
     }
-}
+};

@@ -4,7 +4,7 @@ export const perLayer_Config = {
             id: 'biosphere',
             fields: 'name,description,geom',
             type: 'fill',
-            source: { type: 'geojson', data: { } },
+            source: { type: 'geojson', data: {} },
             layout: { visibility: 'none' },
             paint: {
                 'fill-color': '#0A0',
@@ -16,7 +16,7 @@ export const perLayer_Config = {
             id: 'biosphere-border',
             fields: 'name,description,geom',
             type: 'line',
-            source: { type: 'geojson', data: { } },
+            source: { type: 'geojson', data: {} },
             layout: { visibility: 'none' },
             paint: {
                 'line-color': '#000',
@@ -27,7 +27,7 @@ export const perLayer_Config = {
             id: 'trails',
             fields: 'name,description,lat,lng,geom',
             type: 'line',
-            source: { type: 'geojson', data: { } },
+            source: { type: 'geojson', data: {} },
             layout: { visibility: 'none' },
             paint: {
                 'line-color': '#900',
@@ -43,7 +43,7 @@ export const perLayer_Config = {
             src: '',
             height: 512,
             width: 512,
-            isActive: false,
+            isActive: false
         },
         {
             id: '',
@@ -51,7 +51,7 @@ export const perLayer_Config = {
             src: '',
             height: 512,
             width: 512,
-            isActive: false,
+            isActive: false
         },
         {
             id: '',
@@ -59,10 +59,10 @@ export const perLayer_Config = {
             src: '',
             height: 512,
             width: 512,
-            isActive: false,
-        },
+            isActive: false
+        }
     ]
-}
+};
 
 export const layerVisibility_Config = {
     reactiveProps: {
@@ -76,4 +76,4 @@ export const layerVisibility_Config = {
         'biosphere-border': { isActive: true },
         trails: { isActive: false }
     }
-}
+};

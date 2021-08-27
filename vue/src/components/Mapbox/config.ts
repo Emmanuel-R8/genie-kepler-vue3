@@ -19,7 +19,7 @@ export const mapbox_Config = {
         visualizePitch: true
     },
 
-    options: { },
+    options: {},
 
     skyLayer: {
         id: 'sky',
@@ -30,7 +30,7 @@ export const mapbox_Config = {
             'sky-atmosphere-sun-intensity': 25
         }
     }
-}
+};
 
 export const mapStyles_Config = {
     reactiveProps: [
@@ -44,9 +44,5 @@ export const mapStyles_Config = {
         }
     ],
 
-    staticProps: [
-        { UNUSED: '', },
-        { UNUSED: '', },
-        { UNUSED: '', },
-    ],
-}
+    staticProps: [{ UNUSED: '' }, { UNUSED: '' }, { UNUSED: '' }]
+};

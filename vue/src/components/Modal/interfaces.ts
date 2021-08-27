@@ -1,9 +1,9 @@
-import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces';
 
 export interface IModal_ReactiveProps extends IAbstractReactiveState {
-    isActive: boolean
+    isActive: boolean;
 }
 
 export interface IModal_StaticProps extends IAbstractStaticState {
-    UNUSED: string
+    UNUSED: string;
 }
