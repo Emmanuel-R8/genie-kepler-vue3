@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 
-import { ILayerElementProps } from '../LayerElement/interfaces'
+import { ILayerElement_StaticProps } from '../LayerElement/interfaces'
 
 import { active, inactive } from '../Modal/index.module.css'
 
@@ -10,12 +10,12 @@ export default defineComponent({
         isActive: { type: Boolean, required: true },
         name: { type: String, required: true }
     },
-    setup(props: ILayerElementProps) {
+    setup(props: ILayerElement_StaticProps) {
         return (): JSX.Element => html(props)
     }
 })
 
-const html = ({ id, isActive, name }: ILayerElementProps): JSX.Element => (
+const html = ({ id, isActive, name }: ILayerElement_StaticProps): JSX.Element => (
     <div id={id} class={`layer-element ${isActive ? active : inactive}`}>
         {name}
     </div>

@@ -1,6 +1,9 @@
 export const mapbox_Config = {
     reactiveProps: {
-        UNUSED: ''
+        container: 'mapbox',
+        doubleClickZoom: false,
+        maxZoom: 18,
+        minZoom: 2
     },
 
     staticProps: {
@@ -16,12 +19,7 @@ export const mapbox_Config = {
         visualizePitch: true
     },
 
-    options: {
-        container: 'mapbox',
-        doubleClickZoom: false,
-        maxZoom: 18,
-        minZoom: 2
-    },
+    options: {},
 
     skyLayer: {
         id: 'sky',

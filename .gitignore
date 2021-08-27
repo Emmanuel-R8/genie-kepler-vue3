@@ -11,5 +11,5 @@
 dist
 logs
 
-vue/node_modules
+vue/node_modules/**
 vue/yarn.lock

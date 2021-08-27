@@ -1,5 +1,4 @@
 export { default as Deckgl_Vue } from './Deckgl'
-// export { default as GenieExample_Vue } from './GenieExample'
 export { default as Footer_Vue } from './Footer'
 export { default as Header_Vue } from './Header'
 export { default as Hexagon_Vue } from './HexagonLayer'

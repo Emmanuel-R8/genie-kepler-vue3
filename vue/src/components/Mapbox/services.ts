@@ -1,4 +1,5 @@
 import { Container, Service } from 'typedi'
+import { FillLayer, LineLayer, Map, MapboxOptions, NavigationControl, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
 
 //
 // Global state
@@ -16,17 +17,14 @@ import { State_Common_Service } from '../../common_services/State/services'
 //
 // Component-specific
 //
-import { mapbox_Config } from './config'
-import { IMapbox_Settings, IMapbox_StaticProps, IMapStyle_ReactiveProps } from './interfaces'
-
-import { FillLayer, LineLayer, Map, MapboxOptions, NavigationControl, MapLayerMouseEvent, SkyLayer } from 'mapbox-gl'
-
-import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
-import { ITrail } from '../Trails/interfaces'
-
 import { Layer_Service, LayerVisibility_Service } from '../LayerElement/services'
+import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
 import { Marker_Service } from '../Marker/services'
 import { Modal_Service } from '../Modal/services'
+import { ITrail } from '../Trails/interfaces'
+
+import { mapbox_Config } from './config'
+import { IMapbox_ReactiveProps, IMapbox_StaticProps, IMapStyle_ReactiveProps } from './interfaces'
 
 @Service()
 export class MapStyle_Service {
@@ -42,13 +40,13 @@ export class MapStyle_Service {
     }
 
     private get _state(): IMapStyle_ReactiveProps[] {
-        const { MAP_STYLES } = this._states
-        return <IMapStyle_ReactiveProps[]>this._stateService.getStaticState(MAP_STYLES)
+        const { MAP_STYLES_REACTIVESTATE } = this._states
+        return <IMapStyle_ReactiveProps[]>this._stateService.getStaticState(MAP_STYLES_REACTIVESTATE)
     }
 
     private set _state(mapStyles: IMapStyle_ReactiveProps[]) {
-        const { MAP_STYLES } = this._states
-        this._stateService.setStaticState(MAP_STYLES, mapStyles)
+        const { MAP_STYLES_REACTIVESTATE } = this._states
+        this._stateService.setStaticState(MAP_STYLES_REACTIVESTATE, mapStyles)
     }
 
     setMapStyle(): void {
@@ -68,7 +66,7 @@ export class MapStyle_Service {
 @Service()
 export class Mapbox_Service {
     private _navigationControl = mapbox_Config.navigationControl
-    private _options: IMapbox_Settings = mapbox_Config.options
+    private _reactiveProps: IMapbox_ReactiveProps = mapbox_Config.reactiveProps
     private _states: Record<string, string> = States
 
     constructor(
@@ -85,18 +83,18 @@ export class Mapbox_Service {
     }
 
     private get _state(): IMapbox_StaticProps {
-        const { MAPBOX_SETTINGS } = this._states
-        return <IMapbox_StaticProps>this._stateService.getStaticState(MAPBOX_SETTINGS)
+        const { MAPBOX_VIEW_STATICSTATE } = this._states
+        return <IMapbox_StaticProps>this._stateService.getStaticState(MAPBOX_VIEW_STATICSTATE)
     }
 
     private set _state(settings: IMapbox_StaticProps) {
-        const { MAPBOX_SETTINGS } = this._states
-        this._stateService.setStaticState(MAPBOX_SETTINGS, settings)
+        const { MAPBOX_VIEW_STATICSTATE } = this._states
+        this._stateService.setStaticState(MAPBOX_VIEW_STATICSTATE, settings)
     }
 
     loadMapbox(): void {
         const { position, visualizePitch } = this._navigationControl
-        const options: MapboxOptions = { ...this._options, ...this._state }
+        const options: MapboxOptions = { ...this._reactiveProps, ...this._state }
         this._map = new Map(options)
             .addControl(new NavigationControl({ visualizePitch }), <NavigationControlPosition>position)
             .on('idle', (): void => this.onMapIdleHandler())

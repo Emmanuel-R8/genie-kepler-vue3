@@ -27,16 +27,21 @@ import { hexagonLayer_Config } from '../../components/HexagonLayer/config'
 import { IHexagonLayer_ReactiveProps, IHexagonLayer_StaticProps } from '../../components/HexagonLayer/interfaces'
 
 import { layerVisibility_Config } from '../../components/LayerElement/config'
-import { ILayerElement_ReactiveProps } from '../../components/LayerElement/interfaces'
+import { ILayerElement_ReactiveProps, ILayerElement_StaticProps } from '../../components/LayerElement/interfaces'
 
 import { layerElements_Config } from '../../components/LayerElements/config'
-import { ILayerVisibility_StaticProps } from '../../components/LayerElements/interfaces'
+import { ILayerVisibility_ReactiveProps, ILayerVisibility_StaticProps } from '../../components/LayerElements/interfaces'
 
 import { mapbox_Config, mapStyles_Config } from '../../components/Mapbox/config'
-import { IMapbox_ReactiveProps, IMapbox_StaticProps } from '../../components/Mapbox/interfaces'
+import {
+    IMapbox_ReactiveProps,
+    IMapbox_StaticProps,
+    IMapStyle_ReactiveProps,
+    IMapStyle_StaticProps
+} from '../../components/Mapbox/interfaces'
 
 import { modal_Config } from '../../components/Modal/config'
-import { IModal_ReactiveProps } from '../../components/Modal/interfaces'
+import { IModal_ReactiveProps, IModal_StaticProps } from '../../components/Modal/interfaces'
 
 import { localStaticImage_Config } from '../../components/LocalStaticImage/config'
 import {

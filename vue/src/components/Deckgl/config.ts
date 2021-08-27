@@ -1,6 +1,15 @@
 export const deckgl_Config = {
     // The interface integrates the reactive props within the settings
     reactiveProps: {
+        container: 'deckgl',
+        canvas: 'hexagon-layer',
+        controller: true,
+        id: 'hexagon-layer',
+        interactive: false,
+        maxPitch: 80,
+        maxZoom: 12,
+        minZoom: 5,
+        style: 'mapbox://styles/mapbox/dark-v10'
     },
 
     staticProps: {
@@ -12,17 +21,7 @@ export const deckgl_Config = {
         zoom: 6.5
     },
 
-    settings: {
-        container: 'deckgl',
-        canvas: 'hexagon-layer',
-        controller: true,
-        id: 'hexagon-layer',
-        interactive: false,
-        maxPitch: 80,
-        maxZoom: 12,
-        minZoom: 5,
-        style: 'mapbox://styles/mapbox/dark-v10',
-    },
+    options: {},
 
     skyLayer: {
         id: 'sky',
