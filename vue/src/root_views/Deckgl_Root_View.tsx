@@ -9,7 +9,7 @@ import { Modal_Service } from '../components/Modal/services'
 export default defineComponent({
     setup() {
         /* prettier-ignore */
-        const { options: { canvas, container } } = deckgl_Config
+        const { settings: { canvas, container } } = deckgl_Config
         const modalState = getModalState()
         return (): JSX.Element => html(modalState.value, canvas, container)
     }

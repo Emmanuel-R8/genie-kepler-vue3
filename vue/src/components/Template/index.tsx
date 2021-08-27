@@ -13,6 +13,23 @@ export default defineComponent({
     },
 
     setup(props: ITemplate_ReactiveProps) {
+        onBeforeMount((): void => {
+            return
+        })
+
+        onMounted(async (): Promise<void> => {
+            return
+        })
+
+        onBeforeUnmount((): void => {
+            return
+        })
+
+        onUnmounted((): void => {
+            return
+        })
+
+        return (): JSX.Element => html(props)
         return (): JSX.Element => html(props)
     }
 })

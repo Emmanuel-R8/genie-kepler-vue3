@@ -1,8 +1,21 @@
 import { Container } from 'typedi'
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-// Import all relevant interfaces
-import { ILocalStaticImage_Settings, ILocalStaticImage_StaticProps, ILocalStaticImage_ReactiveProps } from '.interfaces'
+//
+// Global state
+//
+import { IAbstractReactiveState, IAbstractStaticState } from '../../common_services/State/interfaces'
+import { States } from '../../Global_State'
+
+//
+// Imports common to all components
+//
+import { EventListener_Common_Service } from '../../common_services/EventListener/services'
+
+//
+// Imports of individual components
+//
+import { ILocalStaticImage_StaticProps, ILocalStaticImage_ReactiveProps } from './interfaces'
 
 /* eslint-disable-next-line */
 import localstaticimage from './index.module.css'
@@ -20,15 +33,15 @@ export default defineComponent({
         })
 
         onMounted(async (): Promise<void> => {
-            // await getMapboxAccessToken()
-            // loadHexagonLayer()
-            // addEventListeners()
+            return
         })
 
-        onBeforeUnmount((): void => removeEventListeners())
+        onBeforeUnmount((): void => {
+            return
+        })
 
         onUnmounted((): void => {
-            removeDeckInstance()
+            return
         })
 
         return (): JSX.Element => html(props)
@@ -40,23 +53,3 @@ const html = ({ filename }: ILocalStaticImage_StaticProps): JSX.Element => (
         <img src={filename} />
     </>
 )
-
-// const addEventListeners = (): void => {
-//     const eventListenerService = Container.get(EventListener_Service)
-//     eventListenerService.addHexagonLayerEventListeners()
-// }
-
-// const removeEventListeners = (): void => {
-//     const eventListenerService = Container.get(EventListener_Service)
-//     eventListenerService.removeHexagonLayerEventListeners()
-// }
-
-// const removeDeckInstance = (): void => {
-//     const deckglService = Container.get(LocalStaticImage_Service)
-//     deckglService.removeDeckInstance()
-// }
-
-// const removeMapInstance = (): void => {
-//     const deckglService = Container.get(LocalStaticImage_Service)
-//     deckglService.removeMapInstance()
-// }

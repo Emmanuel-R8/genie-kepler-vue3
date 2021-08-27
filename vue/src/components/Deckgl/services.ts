@@ -12,12 +12,12 @@ import { State_Common_Service } from '../../common_services/State/services'
 import { deckgl_Config } from './config'
 import { Modal_Service } from '../Modal/services'
 
-import { IDeckgl_Settings, IDeckgl_StaticProps } from './interfaces'
+import { IDeckgl_ReactiveProps, IDeckgl_Settings, IDeckgl_StaticProps } from './interfaces'
 
 @Service()
 export class Deckgl_Service {
     // Graphical options re: the DeckGL rendering
-    private _options: IDeckgl_Settings = deckgl_Config.options
+    private _settings: IDeckgl_Settings = deckgl_Config.settings
     private _skyLayer = <SkyLayer>deckgl_Config.skyLayer
     private _states: Record<string, string> = States
 
@@ -50,7 +50,7 @@ export class Deckgl_Service {
     }
 
     loadDeckgl(): void {
-        const { canvas, controller, id, maxPitch, maxZoom, minZoom } = this._options
+        const { canvas, controller, id, maxPitch, maxZoom, minZoom } = this._settings
         this._deck = new Deck({
             canvas,
             controller,
@@ -79,7 +79,7 @@ export class Deckgl_Service {
     }
 
     loadMapbox(): void {
-        const { container, interactive, style } = this._options
+        const { container, interactive, style } = this._settings
         const options: MapboxOptions = { container, interactive, style, ...this._state }
         this._map = new Map(options).on('load', (): void => this.onMapLoadHandler())
     }

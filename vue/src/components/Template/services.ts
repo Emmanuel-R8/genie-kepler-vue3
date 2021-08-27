@@ -21,7 +21,7 @@ import { ITemplate_ReactiveProps } from './interfaces'
 
 @Service()
 export class Template_Service {
-    private _template_var = undefined
+    private _template_Settings = undefined
 
     constructor(
         // Example of services to be injected
