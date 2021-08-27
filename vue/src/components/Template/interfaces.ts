@@ -4,6 +4,7 @@ import { IAbstractReactiveState, IAbstractStaticState } from '../../common_servi
 // At a minimum the ITemplate_ReactiveProps and ITemplate_StaticProps interfaces are required.
 // They are expected in `src/common_services/state.ts`.
 
+
 //
 // Props are always reactive in Vue 3
 //

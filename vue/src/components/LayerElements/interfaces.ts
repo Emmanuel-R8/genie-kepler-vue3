@@ -17,7 +17,7 @@ export interface ILayerIconProps {
     width: number
 }
 
-export type ILayerVisibility_ReactiveProps = IAbstractReactiveState
+export type ILayerVisibility_ReactiveProps extends IAbstractReactiveState
 
 export interface ILayerVisibility_StaticProps extends IAbstractStaticState {
     biosphere: {

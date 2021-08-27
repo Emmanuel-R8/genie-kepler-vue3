@@ -9,7 +9,7 @@ import { Modal_Service } from '../components/Modal/services'
 export default defineComponent({
     setup() {
         /* prettier-ignore */
-        const { options: { container } } = mapbox_Config
+        const { container } = mapbox_Config.reactiveProps
         const modalState = getModalState()
         return (): JSX.Element => html(modalState.value, container)
     }
