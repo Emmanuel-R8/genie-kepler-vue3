@@ -20,6 +20,6 @@ const html = (): JSX.Element => (
 );
 
 const loadData = async (): Promise<void> => {
-    const appService = Container.get(Application_Common_Service);
-    await appService.loadData();
+    const applicaton_Service = Container.get(Application_Common_Service);
+    await applicaton_Service.loadData();
 };
