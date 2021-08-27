@@ -3,8 +3,8 @@ import { Container, Service } from 'typedi';
 //
 // Imports common to all components
 //
-import { Http_Common_Service } from '../../common_services/Http/services';
-import { Log_Common_Service } from '../../common_services/Log/services';
+import { Http_Common_Service } from '..//BaseHttp/services';
+import { Log_Common_Service } from '../Log/services';
 
 import { AxiosResponse } from 'axios';
 import { DSVRowArray } from 'd3-dsv';
@@ -13,7 +13,7 @@ import { Feature, FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 
 import { EndPoints, Urls } from '@/enums';
-import { IHttpParams, IHttpResponse } from '../Http/interfaces';
+import { IHttpParams, IHttpResponse } from '../BaseHttp/interfaces';
 
 import { perLayer_Config } from '../../components/LayerElement/config';
 import { ISingleLayer_StaticProps } from '../../components/LayerElement/interfaces';
