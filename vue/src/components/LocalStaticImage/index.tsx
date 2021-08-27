@@ -1,11 +1,11 @@
-import { Container } from 'typedi'
-import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { Container } from 'typedi';
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue';
 
 // // Import all relevant interfaces
-import { ILocalStaticImage_StaticProps, ILocalStaticImage_ReactiveProps } from './interfaces'
+import { ILocalStaticImage_StaticProps, ILocalStaticImage_ReactiveProps } from './interfaces';
 
 /* eslint-disable-next-line */
-import { localstaticimage } from './index.module.css'
+import { localstaticimage } from './index.module.css';
 
 //
 //
@@ -16,27 +16,27 @@ export default defineComponent({
 
     setup(props: ILocalStaticImage_StaticProps) {
         onBeforeMount((): void => {
-            return
-        })
+            return;
+        });
 
         onMounted((): void => {
-            return
-        })
+            return;
+        });
 
         onBeforeUnmount((): void => {
-            return
-        })
+            return;
+        });
 
         onUnmounted((): void => {
-            return
-        })
+            return;
+        });
 
-        return (): JSX.Element => html(props)
+        return (): JSX.Element => html(props);
     }
-})
+});
 
 const html = ({ filename }: ILocalStaticImage_StaticProps): JSX.Element => (
     <>
         <img src={filename} />
     </>
-)
+);

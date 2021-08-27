@@ -1,3 +1,6 @@
+# Editors
+.vscode
+
 .*cache
 
 # Any .env (and various variants) in any folder
@@ -7,7 +10,6 @@
 .env.global
 .env.local
 
-.vscode
 dist
 logs
 

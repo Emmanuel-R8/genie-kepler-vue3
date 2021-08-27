@@ -8,16 +8,22 @@ module.exports = {
     },
 
     extends: [
+        'plugin:prettier',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:jest/recommended',
-        'plugin:prettier/recommended'
+        'plugin:prettier/recommended',
+        // 'plugin:vue/vue3-essential',
+        // 'plugin:vue/vue3-base',
+        // 'plugin:vue/vue3-strongly-recommended',
+        // 'plugin:vue/vue3-recommended',
     ],
 
     parserOptions: {
         ecmaFeatures: {
-            jsx: true
+            jsx: true,
+            tsx: true,
         },
         ecmaVersion: 2021,
         parser: '@typescript-eslint/parser',
@@ -27,6 +33,7 @@ module.exports = {
     },
 
     plugins: [
+        'prettier',
         '@typescript-eslint',
         'jest'],
 
