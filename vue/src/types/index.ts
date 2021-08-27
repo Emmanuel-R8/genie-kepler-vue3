@@ -2,8 +2,6 @@ import { IAbstractReactiveState, IAbstractStaticState } from '@/common_services/
 import { DSVRowArray } from 'd3-dsv'
 import { Feature, FeatureCollection } from 'geojson'
 
-export type LayerElement = 'biosphere' | 'biosphere-border' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
-
 export type LogData =
     | DSVRowArray<string>
     | Feature[]

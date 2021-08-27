@@ -17,11 +17,10 @@ import { State_Common_Service } from '../../common_services/State/services'
 //
 // Component-specific
 //
-import { ILayer, ILayerElement_StaticProps } from './interfaces'
+import { ILayer, ILayerElement_ReactiveProps } from './interfaces'
 import { ILayerVisibility_StaticProps } from '../LayerElements/interfaces'
 import { Map_Service, MapStyle_Service } from '../Mapbox/services'
 import { Marker_Service } from '../Marker/services'
-
 
 export type LayerElement = 'biosphere' | 'biosphere-border' | 'deckgl' | 'office' | 'places' | 'satellite' | 'trails'
 
@@ -46,12 +45,12 @@ export class LayerElement_Service {
         this._stateService = Container.get(State_Common_Service)
     }
 
-    get state(): ILayerElement_StaticProps[] {
+    get state(): ILayerElement_ReactiveProps[] {
         const { LAYER_ELEMENTS_REACTIVESTATE } = this._states
-        return <ILayerElement_StaticProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS_REACTIVESTATE)
+        return <ILayerElement_ReactiveProps[]>this._stateService.getReactiveState(LAYER_ELEMENTS_REACTIVESTATE)
     }
 
-    private set _state(layerElements: ILayerElement_StaticProps[]) {
+    private set _state(layerElements: ILayerElement_ReactiveProps[]) {
         const { LAYER_ELEMENTS } = this._states
         this._stateService.setReactiveState(LAYER_ELEMENTS, layerElements)
     }
@@ -96,7 +95,7 @@ export class LayerElement_Service {
 
     private setLayerElementState(id: LayerElement): void {
         const state = this.state
-        const layerElement = (layerElement: ILayerElement_StaticProps): boolean => layerElement.id === id
+        const layerElement = (layerElement: ILayerElement_ReactiveProps): boolean => layerElement.id === id
         const i = state.findIndex(layerElement)
         if (i >= 0) {
             state[i].isActive = !state[i].isActive

@@ -19,7 +19,7 @@ export default defineComponent({
             return
         })
 
-        onMounted(async (): Promise<void> => {
+        onMounted((): void => {
             return
         })
 

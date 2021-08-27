@@ -2,7 +2,6 @@ import { IAbstractReactiveState, IAbstractStaticState } from '../../common_servi
 
 import { LngLatLike } from 'mapbox-gl'
 
-
 // This interface is extended by IDeckgl_Settings
 export interface IDeckgl_ReactiveProps extends IAbstractReactiveState {
     canvas: string

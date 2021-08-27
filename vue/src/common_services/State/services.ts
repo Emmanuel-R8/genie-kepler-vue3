@@ -61,8 +61,8 @@ export class State_Common_Service {
     private _hexagonLayer_ReactiveState: IHexagonLayer_ReactiveProps = hexagonLayer_Config.reactiveProps
     private _hexagonLayer_StaticState: IHexagonLayer_StaticProps = hexagonLayer_Config.staticProps
 
-    private _layerElements_ReactiveState: ILayerElement_ReactiveProps[] = layerElements_Config.reactiveProps
-    private _layerElements_StaticState: ILayerElement_StaticProps[] = layerElements_Config.staticProps
+    private _layerElements_ReactiveState: ILayerElement_ReactiveProps[] = layerElements_Config.staticProps
+    private _layerElements_StaticState: ILayerElement_StaticProps[] = layerElements_Config.reactiveProps
 
     private _layerVisibility_ReactiveState: ILayerVisibility_ReactiveProps = layerVisibility_Config.reactiveProps
     private _layerVisibility_StaticState: ILayerVisibility_StaticProps = layerVisibility_Config.staticProps

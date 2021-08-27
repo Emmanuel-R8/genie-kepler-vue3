@@ -25,10 +25,9 @@ export interface ILayerElement_ReactiveProps extends IAbstractReactiveState {
     height: number
     src: string
     width: number
-}
-
-export interface ILayerElement_StaticProps extends IAbstractStaticState {
     id: string
     isActive: boolean
     name: string
 }
+
+export type ILayerElement_StaticProps = IAbstractStaticState

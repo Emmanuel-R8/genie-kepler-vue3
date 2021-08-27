@@ -14,4 +14,3 @@ export { default as LocalStaticImage_Vue } from './LocalStaticImage'
 
 // TEMPLATE
 // export { default as Template_Vue } from './Template'
-

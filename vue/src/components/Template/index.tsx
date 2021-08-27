@@ -17,9 +17,9 @@ export default defineComponent({
             return
         })
 
-        onMounted(async (): Promise<void> => {
-            return
-        })
+        // onMounted(async (): Promise<void> => {
+        //     await function()
+        // })
 
         onBeforeUnmount((): void => {
             return
@@ -29,7 +29,6 @@ export default defineComponent({
             return
         })
 
-        return (): JSX.Element => html(props)
         return (): JSX.Element => html(props)
     }
 })

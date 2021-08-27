@@ -1,5 +1,11 @@
 export const layerElements_Config = {
-    reactiveProps: [
+    reactiveProps: {
+        id: '',
+        isActive: false,
+        name: ''
+    },
+
+    staticProps: [
         {
             id: 'satellite',
             name: 'Satellite',
@@ -48,11 +54,5 @@ export const layerElements_Config = {
             height: 18,
             width: 18
         }
-    ],
-
-    staticProps: {
-        id: '',
-        isActive: false,
-        name: ''
-    }
+    ]
 }
