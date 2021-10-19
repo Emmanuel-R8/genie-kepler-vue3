@@ -1,18 +1,20 @@
-import { trails_Config } from './config'
-import { trail } from './index.module.css'
-
 import { defineComponent } from 'vue'
 
+import { trails } from '@/config'
+import { trail } from './index.module.css'
+
 export default defineComponent({
-    setup() {
-        return (): JSX.Element => html()
-    }
+  setup() {
+    return (): JSX.Element => html()
+  }
 })
 
 const html = (): JSX.Element => (
-    <select class={`trails ${trail}`}>
-        {trails_Config.map(({ name }) => (
-            <option key={name}>{name}</option>
-        ))}
-    </select>
+  <select aria-label="Select Trail" class={`trails ${trail}`}>
+    {trails.map(({ name }) => (
+      <option aria-label={name} key={name}>
+        {name}
+      </option>
+    ))}
+  </select>
 )

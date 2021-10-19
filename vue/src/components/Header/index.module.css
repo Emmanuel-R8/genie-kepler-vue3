@@ -1,49 +1,49 @@
 .header {
-    background-color: var(--dark-taupe);
-    font-family: 'Michroma', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    height: 4.5rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1;
+  background-color: var(--dark-taupe);
+  font-family: 'Michroma', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 4.5rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 }
 
 .header > img {
-    height: 3.5rem;
-    margin-left: 10px;
-    margin-top: 0.5rem;
-    position: absolute;
-    width: 3.5rem;
+  height: 3.5rem;
+  margin-left: 10px;
+  margin-top: 0.5rem;
+  position: absolute;
+  width: 3.5rem;
 }
 
 .header > div.name {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-left: 5.5rem;
-    margin-top: 0.7rem;
-    text-shadow: var(--cream-text-shadow);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 5.5rem;
+  margin-top: 0.7rem;
+  text-shadow: var(--cream-text-shadow);
 }
 
 .header > div.title {
-    color: var(--light-cream);
-    font-size: 2rem;
-    margin-top: -2.8rem;
-    text-align: center;
-    text-shadow: var(--black-bold-text-shadow);
+  color: var(--light-cream);
+  font-size: 2rem;
+  margin-top: -2.8rem;
+  text-align: center;
+  text-shadow: var(--black-bold-text-shadow);
 }
 
 .header > a {
-    color: var(--black);
-    font-weight: bold;
-    margin-top: -2.5rem;
-    position: absolute;
-    right: 10px;
-    text-decoration: none;
-    text-shadow: var(--cream-text-shadow);
+  color: var(--black);
+  font-weight: bold;
+  margin-top: -2.5rem;
+  position: absolute;
+  right: 10px;
+  text-decoration: none;
+  text-shadow: var(--cream-text-shadow);
 }
 
 .header > a:hover {
-    color: var(--light-cream);
-    text-shadow: var(--black-bold-text-shadow);
+  color: var(--light-cream);
+  text-shadow: var(--black-bold-text-shadow);
 }

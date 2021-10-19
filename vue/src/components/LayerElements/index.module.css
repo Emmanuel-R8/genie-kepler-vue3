@@ -1,39 +1,39 @@
 ul.layerElement {
-    animation: fade-in 2s ease-out forwards;
-    border: var(--standard-grey-border);
-    border-radius: 4px;
-    cursor: pointer;
-    left: 10px;
-    list-style-type: none;
-    position: absolute;
-    top: 18rem;
-    width: 13.5rem;
+  animation: fade-in 2s ease-out forwards;
+  border: var(--standard-grey-border);
+  border-radius: 4px;
+  cursor: pointer;
+  left: 10px;
+  list-style-type: none;
+  position: absolute;
+  top: 18rem;
+  width: 13.5rem;
 }
 
 ul.layerElement > li > div {
-    border: var(--thin-grey-border);
-    border-bottom-width: 0;
-    line-height: 1.1;
-    padding: 6px 0 6px 4rem;
-    text-shadow: var(--cream-text-shadow);
+  border: var(--thin-grey-border);
+  border-bottom-width: 0;
+  line-height: 1.1;
+  padding: 6px 0 6px 4rem;
+  text-shadow: var(--cream-text-shadow);
 }
 
 ul.layerElement > li > div.active {
-    background-color: var(--dark-taupe);
-    color: var(--white);
-    text-shadow: var(--black-text-shadow);
+  background-color: var(--dark-taupe);
+  color: var(--white);
+  text-shadow: var(--black-text-shadow);
 }
 
 ul.layerElement > li > div.inactive {
-    background-color: var(--light-taupe);
-    text-shadow: var(--cream-text-shadow);
+  background-color: var(--light-taupe);
+  text-shadow: var(--cream-text-shadow);
 }
 
 ul.layerElement > li > div.inactive:hover,
 ul.layerElement > li > img:hover + div.inactive {
-    background-color: var(--taupe);
-    color: var(--white);
-    text-shadow: var(--black-text-shadow);
+  background-color: var(--taupe);
+  color: var(--white);
+  text-shadow: var(--black-text-shadow);
 }
 
 ul.layerElement > li > img.deckgl,
@@ -41,26 +41,26 @@ ul.layerElement > li > img.office,
 ul.layerElement > li > img.places,
 ul.layerElement > li > img.satellite,
 ul.layerElement > li > img.trails {
-    margin-left: 1.2rem;
-    margin-top: 0.6rem;
-    position: absolute;
+  margin-left: 1.2rem;
+  margin-top: 0.6rem;
+  position: absolute;
 }
 
 ul.layerElement > li > img.biosphere {
-    margin-left: 1.3rem;
-    margin-top: 0.8rem;
-    position: absolute;
+  margin-left: 1.3rem;
+  margin-top: 0.8rem;
+  position: absolute;
 }
 
 ul.layerElement > li:last-child > div {
-    border-bottom-width: 1px;
+  border-bottom-width: 1px;
 }
 
 @keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
